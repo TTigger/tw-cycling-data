@@ -43,6 +43,19 @@ describe("trendByYearSeries", () => {
     expect(t.counts["A"]).toEqual([1, 1]);
     expect(t.counts["B"]).toEqual([0, 1]);
   });
+
+  it("buckets series beyond topN into 其他", () => {
+    const rows = [
+      rec({ y: 2025, s: "A" }), rec({ y: 2025, s: "A" }), // A total 2
+      rec({ y: 2025, s: "B" }),                            // B total 1
+      rec({ y: 2025, s: "C" }),                            // C total 1
+    ];
+    const t = trendByYearSeries(rows, 1); // only top-1 (A) named, B+C -> 其他
+    expect(t.series).toContain("A");
+    expect(t.series).toContain("其他");
+    expect(t.counts["A"]).toEqual([2]);
+    expect(t.counts["其他"]).toEqual([2]); // B + C
+  });
 });
 
 describe("womenShareBySeries", () => {
