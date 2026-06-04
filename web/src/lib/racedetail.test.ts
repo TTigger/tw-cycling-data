@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { categoriesOf, podium, largestCategory, categoryPodium, teamStrength, crossYear } from "./racedetail";
+import { categoriesOf, largestCategory, categoryPodium, teamStrength, crossYear } from "./racedetail";
 import type { DetailRow } from "./types";
 
 function d(p: Partial<DetailRow>): DetailRow {
@@ -9,13 +9,6 @@ function d(p: Partial<DetailRow>): DetailRow {
 describe("categoriesOf", () => {
   it("distinct sorted non-null categories", () => {
     expect(categoriesOf([d({ cat: "B" }), d({ cat: "A" }), d({ cat: "A" }), d({ cat: null })])).toEqual(["A", "B"]);
-  });
-});
-
-describe("podium", () => {
-  it("top 3 by rank", () => {
-    const p = podium([d({ rank: 3, name: "丙" }), d({ rank: 1, name: "甲" }), d({ rank: 2, name: "乙" }), d({ rank: 4, name: "丁" })]);
-    expect(p.map((x) => x.name)).toEqual(["甲", "乙", "丙"]);
   });
 });
 

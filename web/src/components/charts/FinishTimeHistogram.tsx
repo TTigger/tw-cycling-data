@@ -18,6 +18,7 @@ export default function FinishTimeHistogram({ rows }: { rows: SlimRecord[] }) {
       trigger: "axis",
       formatter: (p: any) => {
         const b = bins[p[0].dataIndex];
+        if (!b) return "";
         return `${secondsToHMS(b.x0)}–${secondsToHMS(b.x1)}<br/>${p[0].value} 人`;
       },
     },
