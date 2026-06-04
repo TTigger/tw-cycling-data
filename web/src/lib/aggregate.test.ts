@@ -42,6 +42,11 @@ describe("boxByGroup", () => {
 });
 
 describe("raceSpread", () => {
+  it("excludes 電輔車 race_class", () => {
+    const rows = Array.from({ length: 10 }, (_, i) => ({ rk: "E", y: 2025, t: 100 + i, rc: "電輔車", s: "96聯賽" }));
+    expect(raceSpread(rows, 10)).toEqual([]);
+  });
+
   it("winner/median/ratio per race; excludes 認證 and small fields", () => {
     const rows = [
       ...Array.from({ length: 10 }, (_, i) => ({ rk: "A", y: 2025, t: 100 + i * 10, rc: "競賽", s: "96聯賽" })),

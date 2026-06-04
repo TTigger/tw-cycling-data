@@ -6,13 +6,6 @@ export function categoriesOf(rows: DetailRow[]): string[] {
 }
 
 export interface PodiumEntry { rank: number; name: string | null; team: string | null; t: number | null; }
-export function podium(rows: DetailRow[], n = 3): PodiumEntry[] {
-  return rows
-    .filter((r) => r.rank != null)
-    .sort((a, b) => (a.rank as number) - (b.rank as number))
-    .slice(0, n)
-    .map((r) => ({ rank: r.rank as number, name: r.name, team: r.team, t: r.t }));
-}
 
 export function largestCategory(rows: DetailRow[]): string | null {
   const counts = new Map<string, number>();
