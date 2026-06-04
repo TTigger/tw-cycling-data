@@ -1,0 +1,9 @@
+---
+import Base from "../layouts/Base.astro";
+import RaceDetailApp from "../components/race/RaceDetailApp.tsx";
+---
+<Base title="賽事 | 台灣公路車賽事成績儀表板">
+  <h1 class="font-display text-3xl">賽事</h1>
+  <p class="mt-2 mb-6 text-muted">選一場賽事,查看排行榜、領獎台、完賽時間分布,並用 percentile 看你的成績落點。</p>
+  <RaceDetailApp client:only="react" />
+</Base>
