@@ -13,7 +13,7 @@ def test_extract_distance_km():
     assert bv.extract_distance_km(None, None, None) is None
 
 def test_avg_speed_kmh():
-    assert bv.avg_speed_kmh(100, 3600) == 100.0
+    assert bv.avg_speed_kmh(50, 3600) == 50.0
     assert round(bv.avg_speed_kmh(45, 7200), 1) == 22.5
     assert bv.avg_speed_kmh(None, 3600) is None
     assert bv.avg_speed_kmh(100, None) is None

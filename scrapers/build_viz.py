@@ -28,11 +28,11 @@ def extract_distance_km(category_raw, result_label, race_name):
 
 
 def avg_speed_kmh(distance_km, finish_seconds):
-    """km/h from distance + elapsed seconds. None if missing or implausible (>300km/h)."""
+    """km/h from distance + elapsed seconds. None if missing or implausible (>80km/h)."""
     if not distance_km or not finish_seconds or finish_seconds <= 0:
         return None
     spd = distance_km / (finish_seconds / 3600)
-    if spd > 300:
+    if spd > 80:
         return None
     return round(spd, 1)
 
@@ -50,7 +50,7 @@ def slim_record(rec):
                                rec.get("race_name_raw") or rec.get("race_name_canonical"))
     t = rec.get("finish_seconds")
     return {
-        "rk": rec.get("race_key"), "rn": rec.get("race_name_canonical"),
+        "rk": rec.get("race_key"),
         "y": rec.get("year"), "mon": month_of(rec.get("date")),
         "s": rec.get("series"), "rc": rec.get("race_class"),
         "cat": rec.get("category_raw"), "g": rec.get("gender"), "ag": rec.get("age_group"),
