@@ -9,6 +9,18 @@ export default defineConfig({
   integrations: [react()],
 
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+    build: {
+      chunkSizeWarningLimit: 1200,
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes("node_modules/echarts") || id.includes("node_modules/echarts-for-react")) {
+              return "echarts";
+            }
+          },
+        },
+      },
+    },
   }
 });
