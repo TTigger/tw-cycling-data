@@ -20,7 +20,8 @@ data/processed/_*
 web/node_modules/
 web/dist/
 web/.astro/
-web/public/data/
+# NOTE: web/public/data/ IS committed (deploy artifact) — Vercel build has no Python
+# to regenerate it. Refresh with: python scrapers/build_viz.py
 
 # OS
 .DS_Store

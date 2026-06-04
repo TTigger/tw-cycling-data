@@ -13,10 +13,11 @@
 | 正規化 + 合併 + 驗證工具層 | ✅ `normalize.py` / `merge.py` / `validate.py` |
 | **★ 合併 master 資料集(2024–26)** | ✅ **33,051 筆 / 47 場 / 20 系列**,已驗證去識別化 |
 | Phase 1d de-risk:cycling.org.tw | ✅ `cycorg-poc-findings.md`(含 UCI ID 發現) |
+| **Phase 2:互動視覺化儀表板(4 頁)** | ✅ `web/`(總覽/探索/賽事/傳奇爬坡;Astro+React+ECharts,Claude 風,RWD) |
+| 部署 Vercel | ⏳ 前置完成,待連結 GitHub→Vercel |
 | Phase 1c:歷史回填 2014–2023(cyclist 已支援 `--years`) | 待辦 |
 | Phase 1d:cycling.org.tw 國家級源(1998–2026) | 待辦 |
-| Phase 2:互動視覺化儀表板 | 待辦(資料齊全後再議) |
-| Phase 3:選手歷年追蹤 | 待辦 |
+| Phase 3:選手歷年追蹤(UCI ID) | 待辦 |
 
 ## 目錄
 
@@ -62,6 +63,28 @@ python scrapers\bravelog_crawl.py                     # 2) 爬成績(可續跑;-
 python scrapers\merge.py                               # 合併所有來源 → master
 python scrapers\validate.py master_2024_2026.json      # 資料品質檢查
 ```
+
+## 前端儀表板(`web/`)
+
+Astro + React islands + Tailwind v4 + ECharts,Claude 暖色風,4 頁:`/`(總覽)、`/explore`(探索)、`/race`(賽事詳情)、`/climbs`(傳奇爬坡)。
+
+```powershell
+# 1) 產生前端要的資料檔(由 master.public 轉出 viz/races/race;Vercel 無 Python 故需先產好並 commit)
+python scrapers\build_viz.py            # -> web/public/data/{viz.json, races.json, race/*.json}
+
+cd web
+npm install
+npm run dev                             # 本機開發 http://localhost:4321
+npm test                                # vitest(純函式單元測試)
+npx astro check                         # 型別檢查
+npm run build                           # 產出 web/dist(靜態)
+```
+
+## 部署(Vercel,GitHub 自動)
+
+- 資料檔 `web/public/data/*` **已納入版控**(部署用 artifact;Vercel build 無 Python 無法重生)。更新資料:重跑 `python scrapers\build_viz.py` 後 commit。
+- Vercel 專案設定:**Root Directory = `web`**、Framework = Astro(自動偵測)、Build = `astro build`、Output = `dist`。純靜態,無需 adapter。
+- 流程:push 到 GitHub(private)→ Vercel 連結該 repo → 每次 push 自動部署。
 
 ## 統一資料欄位(每筆 = 一位選手在一場賽事的成績)
 
