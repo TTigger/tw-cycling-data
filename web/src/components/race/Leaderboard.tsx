@@ -21,7 +21,7 @@ export default function Leaderboard({ rows }: { rows: DetailRow[] }) {
   return (
     <div>
       <div className="mb-3 flex items-center gap-3 text-sm">
-        <select className="rounded-lg border border-border bg-surface px-3 py-2 text-ink"
+        <select className="max-w-[14rem] rounded-lg border border-border bg-surface px-3 py-2 text-ink"
           value={cat} onChange={(e) => { setCat(e.target.value); setPage(0); }}>
           <option value="">全部組別</option>
           {cats.map((c) => <option key={c} value={c}>{c}</option>)}
