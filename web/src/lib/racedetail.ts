@@ -18,14 +18,19 @@ export interface MainPodium { label: string | null; entries: PodiumEntry[]; }
 export function mainPodium(rows: DetailRow[], n = 3): MainPodium {
   const g = new Map<string, DetailRow[]>();
   for (const r of rows) {
-    const k = r.label ?? r.cat ?? "";
+    const k = r.cat ?? r.label ?? "";
     const a = g.get(k) || [];
     a.push(r);
     g.set(k, a);
   }
   let bestKey = ""; let best: DetailRow[] = [];
   for (const [k, arr] of g) if (arr.length > best.length) { best = arr; bestKey = k; }
-  return { label: bestKey || null, entries: podium(best, n) };
+  const ranked = [...best]
+    .filter((r) => r.t != null)
+    .sort((a, b) => (a.t as number) - (b.t as number))
+    .slice(0, n)
+    .map((r, i) => ({ rank: i + 1, name: r.name, team: r.team, t: r.t }));
+  return { label: bestKey || null, entries: ranked };
 }
 
 export interface TeamStat { team: string; top: number; podium: number; }
