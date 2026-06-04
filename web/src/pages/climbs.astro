@@ -1,0 +1,9 @@
+---
+import Base from "../layouts/Base.astro";
+import ClimbsApp from "../components/climbs/ClimbsApp.tsx";
+---
+<Base title="傳奇爬坡 | 台灣公路車賽事成績儀表板">
+  <h1 class="font-display text-3xl">傳奇爬坡</h1>
+  <p class="mt-2 mb-6 text-muted">武嶺、KOM 登山王等台灣招牌爬坡賽。輸入你的完賽時間,看你在全民中的落點。</p>
+  <ClimbsApp client:only="react" />
+</Base>
