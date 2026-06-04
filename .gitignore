@@ -20,6 +20,7 @@ data/processed/_*
 web/node_modules/
 web/dist/
 web/.astro/
+web/public/data/
 
 # OS
 .DS_Store
