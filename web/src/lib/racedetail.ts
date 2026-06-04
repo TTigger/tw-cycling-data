@@ -23,14 +23,22 @@ export function mainPodium(rows: DetailRow[], n = 3): MainPodium {
     a.push(r);
     g.set(k, a);
   }
-  let bestKey = ""; let best: DetailRow[] = [];
-  for (const [k, arr] of g) if (arr.length > best.length) { best = arr; bestKey = k; }
+  const minTime = (arr: DetailRow[]) => {
+    let m = Infinity;
+    for (const r of arr) if (r.t != null && r.t < m) m = r.t;
+    return m;
+  };
+  let bestKey: string | null = null; let best: DetailRow[] = []; let bestMin = Infinity;
+  for (const [k, arr] of g) {
+    const mt = minTime(arr);
+    if (mt < bestMin) { bestMin = mt; best = arr; bestKey = k; }
+  }
   const ranked = [...best]
     .filter((r) => r.t != null)
     .sort((a, b) => (a.t as number) - (b.t as number))
     .slice(0, n)
     .map((r, i) => ({ rank: i + 1, name: r.name, team: r.team, t: r.t }));
-  return { label: bestKey || null, entries: ranked };
+  return { label: bestKey, entries: ranked };
 }
 
 export interface TeamStat { team: string; top: number; podium: number; }
