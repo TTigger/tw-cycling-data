@@ -12,7 +12,7 @@ export default function RaceTimeHistogram({ rows }: { rows: DetailRow[] }) {
     grid: { left: 48, right: 16, top: 24, bottom: 40 },
     tooltip: {
       trigger: "axis",
-      formatter: (p: any) => { const b = bins[p[0].dataIndex]; return `${secondsToHMS(b.x0)}–${secondsToHMS(b.x1)}<br/>${p[0].value} 人`; },
+      formatter: (p: any) => { const b = bins[p[0].dataIndex]; if (!b) return ""; return `${secondsToHMS(b.x0)}–${secondsToHMS(b.x1)}<br/>${p[0].value} 人`; },
     },
     xAxis: { type: "category", data: bins.map((b) => secondsToHMS(b.x0)),
       axisLabel: { interval: Math.max(0, Math.floor(bins.length / 8)) } },
