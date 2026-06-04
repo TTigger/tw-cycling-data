@@ -200,7 +200,7 @@ def main():
             print(f"[cat {cat_pno} {cat_name}] LIST ERROR {e}")
             continue
         kept = [e for e in events if e[2] in YEARS]
-        print(f"\n[cat {cat_pno} {cat_name}] events={len(events)} in-range(2024-26)={len(kept)}")
+        print(f"\n[cat {cat_pno} {cat_name}] events={len(events)} in-range({min(YEARS)}-{max(YEARS)})={len(kept)}")
         for event_pno, ltitle, yr in kept:
             if args.limit and events_done >= args.limit:
                 break

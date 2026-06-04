@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 """
 Merge all source datasets into one master dataset, applying cross-source
-normalization (race_class + series). Safe to run with only some sources present.
+normalization (race_class + series). Auto-discovers every source file matching
+cyclist_*.json / bravelog_*.json / cycling_*.json (excluding .public + _summary),
+so adding a new year range or source needs no edit here.
 
 Outputs:
-  data/processed/master_2024_2026.json         (full, internal — has name_raw)
-  data/processed/master_2024_2026.public.json  (de-identified — for frontend/Vercel)
-  data/processed/master_summary.json           (stats for QC + viz)
+  data/processed/master.json         (full, internal — has name_raw)
+  data/processed/master.public.json  (de-identified — for frontend/Vercel)
+  data/processed/master_summary.json (stats for QC + viz)
 """
+import glob
 import json
 import os
 import sys
@@ -18,24 +21,30 @@ import normalize  # noqa: E402
 
 sys.stdout.reconfigure(encoding="utf-8")
 OUT = os.path.join(os.path.dirname(__file__), "..", "data", "processed")
-SOURCES = ["cyclist_2024_2026.json", "bravelog_2024_2026.json"]
+SOURCE_PREFIXES = ("cyclist_", "bravelog_", "cycling_")
 
 
-def load(name):
-    p = os.path.join(OUT, name)
-    if not os.path.exists(p):
-        print(f"  (skip, not found: {name})")
-        return []
+def discover_sources():
+    """Every full source dataset: <source>_*.json minus .public.json / _summary.json."""
+    out = []
+    for p in sorted(glob.glob(os.path.join(OUT, "*.json"))):
+        b = os.path.basename(p)
+        if b.startswith(SOURCE_PREFIXES) and not b.endswith((".public.json", "_summary.json")):
+            out.append(p)
+    return out
+
+
+def load(p):
     d = json.load(open(p, encoding="utf-8"))
-    print(f"  loaded {len(d):>6}  {name}")
+    print(f"  loaded {len(d):>6}  {os.path.basename(p)}")
     return d
 
 
 def main():
     print("merging sources:")
     records = []
-    for s in SOURCES:
-        records.extend(load(s))
+    for p in discover_sources():
+        records.extend(load(p))
     # drop zero-time DNF/未計時 noise (00:00:00) — not real finishes
     before = len(records)
     records = [r for r in records if r.get("finish_seconds") is None or r["finish_seconds"] > 0]
@@ -44,10 +53,10 @@ def main():
     for r in records:
         normalize.enrich(r)
 
-    full = os.path.join(OUT, "master_2024_2026.json")
+    full = os.path.join(OUT, "master.json")
     json.dump(records, open(full, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
     pub = [{k: v for k, v in r.items() if k != "name_raw"} for r in records]
-    json.dump(pub, open(os.path.join(OUT, "master_2024_2026.public.json"), "w", encoding="utf-8"),
+    json.dump(pub, open(os.path.join(OUT, "master.public.json"), "w", encoding="utf-8"),
               ensure_ascii=False, indent=2)
 
     # summary
@@ -83,7 +92,7 @@ def main():
     print(f"  series ({len(summary['by_series'])}):")
     for k, v in list(summary["by_series"].items())[:20]:
         print(f"     {v:>6}  {k}")
-    print(f"\n  -> master_2024_2026.json (+ .public.json, master_summary.json)")
+    print(f"\n  -> master.json (+ .public.json, master_summary.json)")
 
 
 if __name__ == "__main__":

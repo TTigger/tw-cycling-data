@@ -1,53 +1,61 @@
 {
-  "total_records": 33051,
+  "total_records": 40414,
   "by_platform": {
-    "cyclist.org.tw": 3913,
-    "bravelog.tw": 29138
+    "bravelog.tw": 29138,
+    "cyclist.org.tw": 11276
   },
   "by_year": {
+    "2015": 23,
+    "2018": 2,
+    "2019": 241,
+    "2020": 649,
+    "2021": 224,
+    "2022": 3033,
+    "2023": 3191,
     "2024": 10671,
     "2025": 19028,
     "2026": 3352
   },
   "by_gender": {
-    "M": 7086,
-    "F": 1395,
-    "null": 24570
+    "null": 24743,
+    "M": 13546,
+    "F": 2125
   },
   "by_race_class": {
-    "分齡": 2901,
-    "女子": 26,
-    "電輔車": 427,
-    "未分類": 12397,
-    "青少年": 432,
-    "競賽": 3370,
-    "挑戰": 8412,
-    "團體計時": 25,
-    "市民經典": 5061
+    "挑戰": 9076,
+    "未分類": 12459,
+    "電輔車": 460,
+    "競賽": 3841,
+    "市民經典": 5061,
+    "女子": 58,
+    "分齡": 8908,
+    "青少年": 526,
+    "團體計時": 25
   },
   "by_series": {
     "TIS崇越盃系列": 6874,
     "TBA 長途認證": 4501,
+    "環大臺北自行車挑戰": 3520,
     "捷安特自行車嘉年華": 3319,
     "L'Étape 環法日月潭": 3249,
     "96聯賽": 2403,
     "戀戀197": 2131,
+    "null": 1794,
+    "臺灣KOM登山王之路": 1643,
     "LAVA 落日飛車350": 1571,
+    "花蓮太平洋盃": 1551,
+    "臺灣KOM登山王挑戰": 1448,
     "臺灣自行車聯賽(TCL)": 1287,
     "台灣登山大滿貫(雪巴)": 966,
     "仙山單車挑戰賽": 955,
-    "null": 877,
     "環花東國際自行車賽": 832,
     "屏東四重溪自行車挑戰賽": 819,
-    "環大臺北自行車挑戰": 725,
     "瘋系列環台賽": 696,
-    "花蓮太平洋盃": 664,
     "自由車錦標賽/選拔": 455,
-    "臺灣KOM登山王之路": 327,
     "銅礦88經典挑戰賽": 322,
     "臺灣KOM太平洋經典賽": 78
   },
-  "distinct_races": 47,
+  "distinct_races": 57,
   "races": [
     {
       "race_key": "TBA北高360雙塔520四極602自行車認證",
@@ -57,6 +65,18 @@
         2025
       ],
       "rows": 4501
+    },
+    {
+      "race_key": "環大臺北自行車挑戰成績",
+      "series": "環大臺北自行車挑戰",
+      "platform": "cyclist.org.tw",
+      "years": [
+        2018,
+        2022,
+        2023,
+        2025
+      ],
+      "rows": 3520
     },
     {
       "race_key": "L’Étape環法自行車挑戰賽紐崔萊•日月潭站",
@@ -115,6 +135,18 @@
       "rows": 1697
     },
     {
+      "race_key": "臺灣KOM登山王之路夏季",
+      "series": "臺灣KOM登山王之路",
+      "platform": "cyclist.org.tw",
+      "years": [
+        2020,
+        2021,
+        2022,
+        2023
+      ],
+      "rows": 1134
+    },
+    {
       "race_key": "仙山單車挑戰賽一輪盃3",
       "series": "仙山單車挑戰賽",
       "platform": "bravelog.tw",
@@ -122,6 +154,17 @@
         2024
       ],
       "rows": 955
+    },
+    {
+      "race_key": "花蓮太平洋盃自行車系列活動",
+      "series": "花蓮太平洋盃",
+      "platform": "cyclist.org.tw",
+      "years": [
+        2021,
+        2022,
+        2023
+      ],
+      "rows": 887
     },
     {
       "race_key": "環花東國際自行車賽",
@@ -153,13 +196,14 @@
       "rows": 792
     },
     {
-      "race_key": "環大臺北自行車挑戰成績",
-      "series": "環大臺北自行車挑戰",
+      "race_key": "臺灣自行車登山王挑戰",
+      "series": "臺灣KOM登山王挑戰",
       "platform": "cyclist.org.tw",
       "years": [
-        2025
+        2022,
+        2023
       ],
-      "rows": 725
+      "rows": 785
     },
     {
       "race_key": "TIS崇越盃石羅佛自行車挑戰賽",
@@ -179,6 +223,16 @@
         2025
       ],
       "rows": 664
+    },
+    {
+      "race_key": "扶輪盃陽明山自行車登山王挑戰",
+      "series": "臺灣KOM登山王挑戰",
+      "platform": "cyclist.org.tw",
+      "years": [
+        2020,
+        2023
+      ],
+      "rows": 663
     },
     {
       "race_key": "96聯賽武嶺站挑戰組",
@@ -226,6 +280,19 @@
       "rows": 511
     },
     {
+      "race_key": "臺灣KOM登山王之路春季",
+      "series": "臺灣KOM登山王之路",
+      "platform": "cyclist.org.tw",
+      "years": [
+        2021,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "rows": 509
+    },
+    {
       "race_key": "陽明山王公路賽團隊計時賽挑戰",
       "series": "臺灣自行車聯賽(TCL)",
       "platform": "cyclist.org.tw",
@@ -251,6 +318,15 @@
         2025
       ],
       "rows": 438
+    },
+    {
+      "race_key": "扶輪盃大屯山自行車登山王",
+      "series": null,
+      "platform": "cyclist.org.tw",
+      "years": [
+        2022
+      ],
+      "rows": 436
     },
     {
       "race_key": "VWLAVanLife玩賽樂園｜350自行車挑戰",
@@ -290,17 +366,6 @@
       "rows": 331
     },
     {
-      "race_key": "臺灣KOM登山王之路春季",
-      "series": "臺灣KOM登山王之路",
-      "platform": "cyclist.org.tw",
-      "years": [
-        2024,
-        2025,
-        2026
-      ],
-      "rows": 327
-    },
-    {
       "race_key": "銅礦88經典自行車挑戰賽",
       "series": "銅礦88經典挑戰賽",
       "platform": "bravelog.tw",
@@ -338,6 +403,15 @@
       "rows": 278
     },
     {
+      "race_key": "花蓮太平洋自行車節",
+      "series": null,
+      "platform": "cyclist.org.tw",
+      "years": [
+        2019
+      ],
+      "rows": 241
+    },
+    {
       "race_key": "96聯賽台北站暨國手選拔積分賽",
       "series": "96聯賽",
       "platform": "bravelog.tw",
@@ -373,6 +447,15 @@
         2025
       ],
       "rows": 182
+    },
+    {
+      "race_key": "扶輪盃陽明山自行車登山王",
+      "series": null,
+      "platform": "cyclist.org.tw",
+      "years": [
+        2021
+      ],
+      "rows": 166
     },
     {
       "race_key": "年台灣登山大滿貫自行車系列賽–阿里山站",
@@ -465,6 +548,15 @@
       "rows": 78
     },
     {
+      "race_key": "TAIWANSUMMITSERIES陽明山北海岸",
+      "series": null,
+      "platform": "cyclist.org.tw",
+      "years": [
+        2023
+      ],
+      "rows": 51
+    },
+    {
       "race_key": "揪你123騎山看海遊花東~138K自由車公路挑戰賽",
       "series": null,
       "platform": "bravelog.tw",
@@ -481,6 +573,24 @@
         2025
       ],
       "rows": 19
+    },
+    {
+      "race_key": "全國俱樂部聯賽第4站宜蘭牛鬥公路賽",
+      "series": null,
+      "platform": "cyclist.org.tw",
+      "years": [
+        2015
+      ],
+      "rows": 15
+    },
+    {
+      "race_key": "全國俱樂部聯賽第3站淡海公路繞圈賽",
+      "series": null,
+      "platform": "cyclist.org.tw",
+      "years": [
+        2015
+      ],
+      "rows": 8
     }
   ]
 }

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Build browser-ready data files from the master public dataset.
 
-Reads  data/processed/master_2024_2026.public.json
+Reads  data/processed/master.public.json
 Writes web/public/data/{viz.json, races.json, race/<race_key>__<year>.json}
 """
 import json
@@ -10,7 +10,7 @@ import re
 from collections import defaultdict
 
 HERE = os.path.dirname(__file__)
-IN = os.path.join(HERE, "..", "data", "processed", "master_2024_2026.public.json")
+IN = os.path.join(HERE, "..", "data", "processed", "master.public.json")
 OUT = os.path.join(HERE, "..", "web", "public", "data")
 
 _DIST_RE = re.compile(r"(\d{2,3})\s*(?:公里|[KkＫ]\s*[Mm]?|公?里)")

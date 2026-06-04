@@ -2,7 +2,7 @@
 
 > 🌐 English: **[README.en.md](README.en.md)**
 
-收集、清洗、正規化台灣公路車賽事成績(2024–2026,可擴充至 2010+),做成資料庫 → 互動視覺化儀表板,最終以 Vercel 靜態網頁呈現。
+收集、清洗、正規化台灣公路車賽事成績(2015–2026),做成資料庫 → 互動視覺化儀表板,已部署為 Vercel 靜態網頁。
 
 ## 進度
 
@@ -13,11 +13,11 @@
 | **Phase 1a:cyclist.org.tw 管線(2024–26)** | ✅ **3,913 筆 / 12 場**(競技型,性別 83%+分齡 95%) |
 | **Phase 1b:Bravelog 管線(2024–26)** | ✅ **29,138 筆 / 45 場**(市民/挑戰型,廣覆蓋) |
 | 正規化 + 合併 + 驗證工具層 | ✅ `normalize.py` / `merge.py` / `validate.py` |
-| **★ 合併 master 資料集(2024–26)** | ✅ **33,051 筆 / 47 場 / 20 系列**,已去識別化 |
+| **★ 合併 master 資料集** | ✅ **40,414 筆 / 2015–2026 / 21 系列**,已去識別化 |
 | Phase 1d de-risk:cycling.org.tw | ✅ `cycorg-poc-findings.md`(含 UCI ID 發現) |
 | **Phase 2:互動視覺化儀表板(4 頁)** | ✅ `web/`(總覽/探索/賽事/傳奇爬坡;Astro+React+ECharts,Claude 風,RWD) |
-| 部署 Vercel | ⏳ 前置完成,待連結 GitHub→Vercel |
-| Phase 1c:歷史回填 2014–2023(cyclist 已支援 `--years`) | 待辦 |
+| **部署 Vercel** | ✅ 已上線(Root Directory=`web`,push 自動部署) |
+| **Phase 1c:歷史回填 2014–2023(cyclist)** | ✅ +7,363 筆(實得 2015、2018–2023) |
 | Phase 1d:cycling.org.tw 國家級源(1998–2026) | 待辦 |
 | Phase 3:選手歷年追蹤(UCI ID) | 待辦 |
 
@@ -40,7 +40,7 @@ scrapers/
   summarize.py         產生單一資料集統計摘要
   *_poc.py / *_inspect.py / *_probe.py / bravelog_parse.py   PoC/探勘一次性腳本(保留參考)
 data/processed/
-  master_2024_2026.public.json     ★ 去識別化合併資料(供前端)
+  master.public.json     ★ 去識別化合併資料(供前端)
   *_summary.json                   統計摘要
 web/                               前端 Astro 儀表板(見下)
 ```
@@ -60,7 +60,7 @@ python scrapers\bravelog_crawl.py                     # 2) 爬成績(可續跑;-
 
 # 合併 + 驗證
 python scrapers\merge.py                               # 合併所有來源 → master
-python scrapers\validate.py master_2024_2026.json      # 資料品質檢查
+python scrapers\validate.py master.json      # 資料品質檢查
 ```
 
 ## 前端儀表板(`web/`)
@@ -97,7 +97,6 @@ npm run build                           # 產出 web/dist(靜態)
 
 ## 下一步
 
-- 連結 GitHub → Vercel 完成上線(見「部署」)。
-- 歷史回填 2014–2023(`cyclist_crawl.py --years 2014-2023`)。
-- cycling.org.tw 國家級源(環台賽/全國錦標賽,含 **UCI ID**)。
-- Phase 3 選手歷年追蹤(以 UCI ID 串接,做選手頁)。
+- **cycling.org.tw 國家級源**(環台賽/全國錦標賽/國手選拔,含 **UCI ID**)。
+- **Phase 3 選手歷年追蹤**(以 UCI ID 串接,做選手頁)。
+- 儀表板增強:頁面互連、賽事/選手搜尋、賽名/組別正規化對照表、ECharts tree-shake、手機篩選抽屜、a11y、自訂網域。

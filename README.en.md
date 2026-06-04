@@ -2,7 +2,7 @@
 
 > 🌐 繁體中文:**[README.md](README.md)**
 
-Collect, clean, and normalize Taiwan road-cycling race results (2024–2026, extensible back to 2010+) into a unified dataset, then an interactive visualization dashboard, deployed as a static site on Vercel.
+Collect, clean, and normalize Taiwan road-cycling race results (2015–2026) into a unified dataset, then an interactive visualization dashboard, deployed as a static site on Vercel.
 
 ## Status
 
@@ -13,11 +13,11 @@ Collect, clean, and normalize Taiwan road-cycling race results (2024–2026, ext
 | **Phase 1a: cyclist.org.tw pipeline (2024–26)** | ✅ **3,913 rows / 12 races** (competitive; gender 83% + age-group 95%) |
 | **Phase 1b: Bravelog pipeline (2024–26)** | ✅ **29,138 rows / 45 races** (citizen/challenge; broad coverage) |
 | Normalization + merge + validation tooling | ✅ `normalize.py` / `merge.py` / `validate.py` |
-| **★ Merged master dataset (2024–26)** | ✅ **33,051 rows / 47 races / 20 series**, de-identified |
+| **★ Merged master dataset** | ✅ **40,414 rows / 2015–2026 / 21 series**, de-identified |
 | Phase 1d de-risk: cycling.org.tw | ✅ `cycorg-poc-findings.md` (UCI rider IDs found) |
 | **Phase 2: interactive dashboard (4 pages)** | ✅ `web/` (Overview / Explore / Race / Climbs; Astro+React+ECharts, Claude aesthetic, responsive) |
-| Vercel deployment | ⏳ Prep done — pending GitHub→Vercel connect |
-| Phase 1c: historical backfill 2014–2023 (cyclist supports `--years`) | TODO |
+| **Vercel deployment** | ✅ Live (Root Directory=`web`; auto-deploys on push) |
+| **Phase 1c: historical backfill 2014–2023 (cyclist)** | ✅ +7,363 rows (actual: 2015, 2018–2023) |
 | Phase 1d: cycling.org.tw national source (1998–2026) | TODO |
 | Phase 3: per-athlete multi-year tracking (UCI ID) | TODO |
 
@@ -40,7 +40,7 @@ scrapers/
   summarize.py         per-dataset summary stats
   *_poc.py / *_inspect.py / *_probe.py / bravelog_parse.py   one-off PoC/exploration scripts (kept for reference)
 data/processed/
-  master_2024_2026.public.json     ★ de-identified merged dataset (for frontend)
+  master.public.json     ★ de-identified merged dataset (for frontend)
   *_summary.json                   summary stats
 web/                               Astro frontend dashboard (see below)
 ```
@@ -60,7 +60,7 @@ python scrapers\bravelog_crawl.py                     # 2) crawl results (resuma
 
 # Merge + validate
 python scrapers\merge.py                               # merge all sources → master
-python scrapers\validate.py master_2024_2026.json      # data-quality report
+python scrapers\validate.py master.json      # data-quality report
 ```
 
 ## Frontend dashboard (`web/`)
@@ -97,7 +97,6 @@ npm run build                           # static output to web/dist
 
 ## Next steps
 
-- Connect GitHub → Vercel to go live (see Deployment).
-- Historical backfill 2014–2023 (`cyclist_crawl.py --years 2014-2023`).
-- cycling.org.tw national source (Tour de Taiwan / national championships, includes **UCI IDs**).
-- Phase 3 per-athlete tracking (join on UCI ID, build athlete pages).
+- **cycling.org.tw national source** (Tour de Taiwan / national championships / team selection, includes **UCI IDs**).
+- **Phase 3 per-athlete tracking** (join on UCI ID, build athlete pages).
+- Dashboard enhancements: cross-page links, race/athlete search, race/category normalization table, ECharts tree-shake, mobile filter drawer, a11y, custom domain.

@@ -4,7 +4,7 @@ Data-quality validation for a processed dataset. Read-only; prints a report and
 writes data/processed/_validation_<name>.json. Catches the failure modes recon
 flagged: duplicates, bad time parsing, rank inversions, missing fields, year drift.
 
-  python validate.py                                  # validates master_2024_2026.json
+  python validate.py                                  # validates master.json
   python validate.py cyclist_2024_2026.json
 """
 import json
@@ -119,4 +119,4 @@ def validate(name):
 
 
 if __name__ == "__main__":
-    validate(sys.argv[1] if len(sys.argv) > 1 else "master_2024_2026.json")
+    validate(sys.argv[1] if len(sys.argv) > 1 else "master.json")
