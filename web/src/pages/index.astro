@@ -1,23 +1,9 @@
 ---
 import Base from "../layouts/Base.astro";
-import DataSmoke from "../components/DataSmoke.tsx";
+import OverviewApp from "../components/overview/OverviewApp.tsx";
 ---
 <Base>
   <h1 class="font-display text-3xl">總覽</h1>
-  <p class="mt-2 text-muted">公路車賽事成績資料探索 · 2024–2026</p>
-  <div class="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
-    <div class="rounded-xl border border-border bg-surface p-4">
-      <div class="text-sm text-muted">成績筆數</div>
-      <div class="num text-3xl text-ink"><DataSmoke client:load /></div>
-    </div>
-    <div class="rounded-xl border border-border bg-surface p-4">
-      <div class="text-sm text-muted">賽事</div><div class="num text-3xl">47</div>
-    </div>
-    <div class="rounded-xl border border-border bg-surface p-4">
-      <div class="text-sm text-muted">系列</div><div class="num text-3xl">20</div>
-    </div>
-    <div class="rounded-xl border border-border bg-surface p-4">
-      <div class="text-sm text-muted">年份</div><div class="num text-3xl">2024–26</div>
-    </div>
-  </div>
+  <p class="mt-2 mb-6 text-muted">台灣公路車賽事成績資料探索 · 2024–2026</p>
+  <OverviewApp client:only="react" />
 </Base>
