@@ -1,16 +1,18 @@
 ---
 import "../styles/global.css";
-const { title = "台灣公路車賽事成績儀表板" } = Astro.props;
+const siteTitle = "台灣公路車賽事成績儀表板";
+const { title = siteTitle } = Astro.props;
 ---
 <html lang="zh-Hant">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="台灣公路車賽事成績資料探索與視覺化(2024–2026)" />
     <title>{title}</title>
   </head>
   <body class="bg-bg text-ink font-body">
     <header class="border-b border-border px-6 py-4">
-      <a href="/" class="font-display text-xl text-ink">台灣公路車賽事成績儀表板</a>
+      <a href="/" class="font-display text-xl text-ink">{siteTitle}</a>
       <nav class="mt-1 flex gap-4 text-sm text-muted">
         <a href="/">總覽</a><a href="/explore">探索</a>
         <a href="/race">賽事</a><a href="/climbs">傳奇爬坡</a>
