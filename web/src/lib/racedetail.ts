@@ -14,31 +14,20 @@ export function podium(rows: DetailRow[], n = 3): PodiumEntry[] {
     .map((r) => ({ rank: r.rank as number, name: r.name, team: r.team, t: r.t }));
 }
 
-export interface MainPodium { label: string | null; entries: PodiumEntry[]; }
-export function mainPodium(rows: DetailRow[], n = 3): MainPodium {
-  const g = new Map<string, DetailRow[]>();
-  for (const r of rows) {
-    const k = r.cat ?? r.label ?? "";
-    const a = g.get(k) || [];
-    a.push(r);
-    g.set(k, a);
-  }
-  const minTime = (arr: DetailRow[]) => {
-    let m = Infinity;
-    for (const r of arr) if (r.t != null && r.t < m) m = r.t;
-    return m;
-  };
-  let bestKey: string | null = null; let best: DetailRow[] = []; let bestMin = Infinity;
-  for (const [k, arr] of g) {
-    const mt = minTime(arr);
-    if (mt < bestMin) { bestMin = mt; best = arr; bestKey = k; }
-  }
-  const ranked = [...best]
-    .filter((r) => r.t != null)
+export function largestCategory(rows: DetailRow[]): string | null {
+  const counts = new Map<string, number>();
+  for (const r of rows) { if (!r.cat) continue; counts.set(r.cat, (counts.get(r.cat) || 0) + 1); }
+  let best: string | null = null; let n = -1;
+  for (const [c, k] of counts) if (k > n) { n = k; best = c; }
+  return best;
+}
+
+export function categoryPodium(rows: DetailRow[], cat: string, n = 3): PodiumEntry[] {
+  return rows
+    .filter((r) => r.cat === cat && r.t != null)
     .sort((a, b) => (a.t as number) - (b.t as number))
     .slice(0, n)
     .map((r, i) => ({ rank: i + 1, name: r.name, team: r.team, t: r.t }));
-  return { label: bestKey, entries: ranked };
 }
 
 export interface TeamStat { team: string; top: number; podium: number; }

@@ -1,15 +1,21 @@
-import { mainPodium } from "../../lib/racedetail";
+import { useMemo, useState } from "react";
+import { categoriesOf, largestCategory, categoryPodium } from "../../lib/racedetail";
 import { secondsToHMS } from "../../lib/format";
 import type { DetailRow } from "../../lib/types";
 
 const MEDAL = ["#D9A441", "#9FA6AD", "#B07A52"];
 
 export default function Podium({ rows }: { rows: DetailRow[] }) {
-  const { label, entries } = mainPodium(rows, 3);
-  if (!entries.length) return <p className="text-muted">無名次資料</p>;
+  const cats = useMemo(() => categoriesOf(rows), [rows]);
+  const [cat, setCat] = useState<string>(() => largestCategory(rows) ?? cats[0] ?? "");
+  const entries = useMemo(() => (cat ? categoryPodium(rows, cat, 3) : []), [rows, cat]);
+  if (!cats.length) return <p className="text-muted">無組別名次資料</p>;
   return (
     <div>
-      {label && <p className="mb-2 text-xs text-muted">{label}</p>}
+      <select className="mb-3 rounded-lg border border-border bg-surface px-3 py-2 text-sm text-ink"
+        value={cat} onChange={(e) => setCat(e.target.value)}>
+        {cats.map((c) => <option key={c} value={c}>{c}</option>)}
+      </select>
       <div className="flex flex-wrap gap-3">
         {entries.map((p, i) => (
           <div key={i} className="min-w-[140px] flex-1 rounded-xl border border-border bg-surface p-3">

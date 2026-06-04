@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { categoriesOf, podium, mainPodium, teamStrength, crossYear } from "./racedetail";
+import { categoriesOf, podium, largestCategory, categoryPodium, teamStrength, crossYear } from "./racedetail";
 import type { DetailRow } from "./types";
 
 function d(p: Partial<DetailRow>): DetailRow {
@@ -19,23 +19,23 @@ describe("podium", () => {
   });
 });
 
-describe("mainPodium", () => {
-  it("picks the group with the fastest winner, top-3 by time as 1-2-3", () => {
+describe("largestCategory", () => {
+  it("returns the category with the most rows (ignoring null)", () => {
+    const rows = [d({ cat: "A" }), d({ cat: "B" }), d({ cat: "B" }), d({ cat: null })];
+    expect(largestCategory(rows)).toBe("B");
+  });
+});
+
+describe("categoryPodium", () => {
+  it("top-3 of a category by time, positioned 1-2-3", () => {
     const rows = [
-      // big but slow group (挑戰)
-      d({ cat: "挑戰", rank: 1, name: "慢甲", t: 9000 }),
-      d({ cat: "挑戰", rank: 2, name: "慢乙", t: 9100 }),
-      d({ cat: "挑戰", rank: 3, name: "慢丙", t: 9200 }),
-      d({ cat: "挑戰", rank: 4, name: "慢丁", t: 9300 }),
-      // small but fast group (競賽) — has the fastest winner
-      d({ cat: "競賽", rank: 1, name: "快甲", t: 4000 }),
-      d({ cat: "競賽", rank: 5, name: "快乙", t: 4200 }),
-      d({ cat: "競賽", rank: 9, name: "快丙", t: 4400 }),
+      d({ cat: "M25", t: 1200, name: "丙" }), d({ cat: "M25", t: 1000, name: "甲" }),
+      d({ cat: "M25", t: 1100, name: "乙" }), d({ cat: "M25", t: 1300, name: "丁" }),
+      d({ cat: "其他", t: 500, name: "別組" }),
     ];
-    const mp = mainPodium(rows, 3);
-    expect(mp.label).toBe("競賽");
-    expect(mp.entries.map((e) => e.name)).toEqual(["快甲", "快乙", "快丙"]);
-    expect(mp.entries.map((e) => e.rank)).toEqual([1, 2, 3]);
+    const p = categoryPodium(rows, "M25", 3);
+    expect(p.map((e) => e.name)).toEqual(["甲", "乙", "丙"]);
+    expect(p.map((e) => e.rank)).toEqual([1, 2, 3]);
   });
 });
 
