@@ -9,10 +9,10 @@ function Select({ label, value, options, onChange }: {
   label: string; value: string; options: { v: string; t: string }[]; onChange: (v: string) => void;
 }) {
   return (
-    <label className="flex flex-col gap-1 text-sm">
+    <label className="flex min-w-0 flex-col gap-1 text-sm">
       <span className="text-muted">{label}</span>
       <select
-        className="rounded-lg border border-border bg-surface px-3 py-2 text-ink"
+        className="w-full max-w-[14rem] rounded-lg border border-border bg-surface px-3 py-2 text-ink"
         value={value}
         onChange={(e) => onChange(e.target.value)}
       >

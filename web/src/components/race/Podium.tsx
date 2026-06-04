@@ -12,7 +12,7 @@ export default function Podium({ rows }: { rows: DetailRow[] }) {
   if (!cats.length) return <p className="text-muted">無組別名次資料</p>;
   return (
     <div>
-      <select className="mb-3 rounded-lg border border-border bg-surface px-3 py-2 text-sm text-ink"
+      <select className="mb-3 max-w-[14rem] rounded-lg border border-border bg-surface px-3 py-2 text-sm text-ink"
         value={cat} onChange={(e) => setCat(e.target.value)}>
         {cats.map((c) => <option key={c} value={c}>{c}</option>)}
       </select>

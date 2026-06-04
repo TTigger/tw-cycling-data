@@ -21,7 +21,7 @@ export default function PercentileWidget({ rows }: { rows: DetailRow[] }) {
       <div className="flex flex-wrap items-end gap-3 text-sm">
         <label className="flex flex-col gap-1">
           <span className="text-muted">組別</span>
-          <select className="rounded-lg border border-border bg-surface px-3 py-2 text-ink"
+          <select className="max-w-[14rem] rounded-lg border border-border bg-surface px-3 py-2 text-ink"
             value={cat} onChange={(e) => setCat(e.target.value)}>
             <option value="">全部</option>
             {cats.map((c) => <option key={c} value={c}>{c}</option>)}
