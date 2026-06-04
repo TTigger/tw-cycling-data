@@ -20,19 +20,18 @@ describe("podium", () => {
 });
 
 describe("mainPodium", () => {
-  it("returns the top-3 of the largest result group, not cross-group #1s", () => {
+  it("returns the largest category group's top-3 by time, positioned 1-2-3", () => {
     const rows = [
-      // small group "國中" with a rank-1
-      d({ label: "國中總排名", cat: "U15", rank: 1, name: "少年甲" }),
-      // big group "公路賽" with ranks 1,2,3,4
-      d({ label: "公路賽總排名", cat: "M25", rank: 1, name: "甲" }),
-      d({ label: "公路賽總排名", cat: "M25", rank: 2, name: "乙" }),
-      d({ label: "公路賽總排名", cat: "M25", rank: 3, name: "丙" }),
-      d({ label: "公路賽總排名", cat: "M25", rank: 4, name: "丁" }),
+      d({ cat: "U15", rank: 1, name: "少年甲", t: 3000 }),               // small group
+      d({ cat: "M25", rank: 1, name: "甲", t: 1000 }),                    // big group, 4 riders
+      d({ cat: "M25", rank: 5, name: "乙", t: 1100 }),                    // note: rank not 1-2-3
+      d({ cat: "M25", rank: 9, name: "丙", t: 1200 }),
+      d({ cat: "M25", rank: 12, name: "丁", t: 1300 }),
     ];
     const mp = mainPodium(rows, 3);
-    expect(mp.label).toBe("公路賽總排名");
+    expect(mp.label).toBe("M25");
     expect(mp.entries.map((e) => e.name)).toEqual(["甲", "乙", "丙"]);
+    expect(mp.entries.map((e) => e.rank)).toEqual([1, 2, 3]); // positions, not raw ranks
   });
 });
 
