@@ -28,11 +28,11 @@ def extract_distance_km(category_raw, result_label, race_name):
 
 
 def avg_speed_kmh(distance_km, finish_seconds):
-    """km/h from distance + elapsed seconds. None if missing or implausible (>80km/h)."""
+    """km/h from distance + elapsed seconds. None if missing or implausible (>300km/h)."""
     if not distance_km or not finish_seconds or finish_seconds <= 0:
         return None
     spd = distance_km / (finish_seconds / 3600)
-    if spd > 80:
+    if spd > 300:
         return None
     return round(spd, 1)
 
