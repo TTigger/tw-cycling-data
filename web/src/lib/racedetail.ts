@@ -14,6 +14,20 @@ export function podium(rows: DetailRow[], n = 3): PodiumEntry[] {
     .map((r) => ({ rank: r.rank as number, name: r.name, team: r.team, t: r.t }));
 }
 
+export interface MainPodium { label: string | null; entries: PodiumEntry[]; }
+export function mainPodium(rows: DetailRow[], n = 3): MainPodium {
+  const g = new Map<string, DetailRow[]>();
+  for (const r of rows) {
+    const k = r.label ?? r.cat ?? "";
+    const a = g.get(k) || [];
+    a.push(r);
+    g.set(k, a);
+  }
+  let bestKey = ""; let best: DetailRow[] = [];
+  for (const [k, arr] of g) if (arr.length > best.length) { best = arr; bestKey = k; }
+  return { label: bestKey || null, entries: podium(best, n) };
+}
+
 export interface TeamStat { team: string; top: number; podium: number; }
 export function teamStrength(rows: DetailRow[], topN = 10, cutoff = 10): TeamStat[] {
   const g = new Map<string, { top: number; pod: number }>();

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { categoriesOf, podium, teamStrength, crossYear } from "./racedetail";
+import { categoriesOf, podium, mainPodium, teamStrength, crossYear } from "./racedetail";
 import type { DetailRow } from "./types";
 
 function d(p: Partial<DetailRow>): DetailRow {
@@ -16,6 +16,23 @@ describe("podium", () => {
   it("top 3 by rank", () => {
     const p = podium([d({ rank: 3, name: "丙" }), d({ rank: 1, name: "甲" }), d({ rank: 2, name: "乙" }), d({ rank: 4, name: "丁" })]);
     expect(p.map((x) => x.name)).toEqual(["甲", "乙", "丙"]);
+  });
+});
+
+describe("mainPodium", () => {
+  it("returns the top-3 of the largest result group, not cross-group #1s", () => {
+    const rows = [
+      // small group "國中" with a rank-1
+      d({ label: "國中總排名", cat: "U15", rank: 1, name: "少年甲" }),
+      // big group "公路賽" with ranks 1,2,3,4
+      d({ label: "公路賽總排名", cat: "M25", rank: 1, name: "甲" }),
+      d({ label: "公路賽總排名", cat: "M25", rank: 2, name: "乙" }),
+      d({ label: "公路賽總排名", cat: "M25", rank: 3, name: "丙" }),
+      d({ label: "公路賽總排名", cat: "M25", rank: 4, name: "丁" }),
+    ];
+    const mp = mainPodium(rows, 3);
+    expect(mp.label).toBe("公路賽總排名");
+    expect(mp.entries.map((e) => e.name)).toEqual(["甲", "乙", "丙"]);
   });
 });
 
