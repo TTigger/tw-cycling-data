@@ -11,15 +11,14 @@ Collect, clean, and normalize Taiwan road-cycling race results (2015–2026) int
 | Source reconnaissance (16-agent workflow) | ✅ `recon-report.md` / `recon-raw.json` |
 | Scrape feasibility PoC (cyclist + Bravelog) | ✅ `poc-findings.md` |
 | **Phase 1a: cyclist.org.tw pipeline (2024–26)** | ✅ **3,913 rows / 12 races** (competitive; gender 83% + age-group 95%) |
-| **Phase 1b: Bravelog pipeline (2024–26)** | ✅ **29,138 rows / 45 races** (citizen/challenge; broad coverage) |
-| Normalization + merge + validation tooling | ✅ `normalize.py` / `merge.py` / `validate.py` |
-| **★ Merged master dataset** | ✅ **40,414 rows / 2015–2026 / 21 series**, de-identified |
-| Phase 1d de-risk: cycling.org.tw | ✅ `cycorg-poc-findings.md` (UCI rider IDs found) |
+| **Phase 1b: Bravelog pipeline (2018–26)** | ✅ **44,850 rows / 61 races** (citizen/challenge; triathlons excluded) |
+| **Phase 1d: cycling.org.tw national source** | ✅ National road championship **203 rows (2025, with UCI IDs)**; old wide-table years deferred |
+| Normalization + merge + validation tooling | ✅ `normalize.py` / `merge.py` (year-agnostic, auto-discovers sources) / `validate.py` |
+| **★ Merged master dataset** | ✅ **56,329 rows / 2015–2026 / 72 races / 3 sources**, de-identified |
 | **Phase 2: interactive dashboard (4 pages)** | ✅ `web/` (Overview / Explore / Race / Climbs; Astro+React+ECharts, Claude aesthetic, responsive) |
 | **Vercel deployment** | ✅ Live (Root Directory=`web`; auto-deploys on push) |
-| **Phase 1c: historical backfill 2014–2023 (cyclist)** | ✅ +7,363 rows (actual: 2015, 2018–2023) |
-| Phase 1d: cycling.org.tw national source (1998–2026) | TODO |
-| Phase 3: per-athlete multi-year tracking (UCI ID) | TODO |
+| **Phase 1c: historical backfill (cyclist 2014–23 + Bravelog 2018–23)** | ✅ +7,363 + historical Bravelog |
+| Phase 3: per-athlete tracking (name-primary, UCI-assisted) | TODO (next) |
 
 ## Layout
 
