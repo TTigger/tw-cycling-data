@@ -49,12 +49,14 @@ export function boxByGroup(rows: { ag: string | null; t: number | null }[], minN
 
 export interface Spread { key: string; rk: string; y: number | null; winner: number; median: number; ratio: number; n: number; }
 export function raceSpread(
-  rows: { rk: string; y: number | null; t: number | null; rc: string | null }[],
+  rows: { rk: string; y: number | null; t: number | null; rc: string | null; s: string | null }[],
   minN = 10,
 ): Spread[] {
   const g = new Map<string, { rk: string; y: number | null; ts: number[] }>();
   for (const r of rows) {
-    if (r.t == null || r.rc === "認證") continue;
+    if (r.t == null) continue;
+    if (r.rc === "認證" || r.rc === "電輔車") continue;
+    if (r.s != null && /認證|雙塔|北高|四極/.test(r.s)) continue;
     const k = `${r.rk}__${r.y}`;
     const e = g.get(k) || { rk: r.rk, y: r.y, ts: [] };
     e.ts.push(r.t);

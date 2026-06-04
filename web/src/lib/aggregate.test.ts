@@ -44,8 +44,9 @@ describe("boxByGroup", () => {
 describe("raceSpread", () => {
   it("winner/median/ratio per race; excludes 認證 and small fields", () => {
     const rows = [
-      ...Array.from({ length: 10 }, (_, i) => ({ rk: "A", y: 2025, t: 100 + i * 10, rc: "競賽" })),
-      { rk: "B", y: 2025, t: 200, rc: "認證" },
+      ...Array.from({ length: 10 }, (_, i) => ({ rk: "A", y: 2025, t: 100 + i * 10, rc: "競賽", s: "96聯賽" })),
+      { rk: "B", y: 2025, t: 200, rc: "認證", s: null },
+      ...Array.from({ length: 10 }, (_, i) => ({ rk: "C", y: 2025, t: 200 + i * 10, rc: "未分類", s: "TBA 長途認證" })),
     ];
     const s = raceSpread(rows, 10);
     expect(s.length).toBe(1);
