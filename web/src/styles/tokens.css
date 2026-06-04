@@ -1,27 +1,13 @@
 /* Claude warm palette + fonts */
 /* Note: Google Fonts @import url() must come first in global.css before @import "tailwindcss" */
 
-:root {
-  --bg: #FAF9F5;
-  --surface: #FFFFFF;
-  --border: #E8E3D9;
-  --text: #1F1E1D;
-  --text-muted: #6B6760;
-  --accent: #D97757;
-  --series-blue: #5B7B8A;
-  --series-sage: #7C8C6B;
-  --font-display: "Fraunces", "Noto Serif TC", serif;
-  --font-body: "Hanken Grotesk", "Noto Sans TC", system-ui, sans-serif;
-  --font-mono: "Spline Sans Mono", ui-monospace, monospace;
-}
-html { background: var(--bg); color: var(--text); font-family: var(--font-body); }
-h1, h2, h3, .display { font-family: var(--font-display); }
-.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
-
-/* Tailwind v4 theme tokens — exposes custom design tokens as utility classes:
+/* Tailwind v4 theme tokens — single source of truth.
+   Exposes custom design tokens as utility classes:
    bg-bg, bg-surface, text-ink, text-muted, text-accent,
    border-border, text-series-blue, text-series-sage,
-   font-display, font-body, font-mono */
+   font-display, font-body, font-mono
+   Tailwind also emits each token as a CSS variable (e.g. --color-bg,
+   --color-ink, --font-body) which the bare-CSS rules below consume. */
 @theme {
   --color-bg: #FAF9F5;
   --color-surface: #FFFFFF;
@@ -36,3 +22,7 @@ h1, h2, h3, .display { font-family: var(--font-display); }
   --font-body: "Hanken Grotesk", "Noto Sans TC", system-ui, sans-serif;
   --font-mono: "Spline Sans Mono", ui-monospace, monospace;
 }
+
+html { background: var(--color-bg); color: var(--color-ink); font-family: var(--font-body); }
+h1, h2, h3, .display { font-family: var(--font-display); }
+.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
