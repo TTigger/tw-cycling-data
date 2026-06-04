@@ -1,0 +1,9 @@
+---
+import Base from "../layouts/Base.astro";
+import ExploreApp from "../components/explore/ExploreApp.tsx";
+---
+<Base title="探索 | 台灣公路車賽事成績儀表板">
+  <h1 class="font-display text-3xl">探索</h1>
+  <p class="mt-2 mb-6 text-muted">篩選年份、系列、賽事、組別、性別、分齡組,即時觀察成績分布與賽事特性。</p>
+  <ExploreApp client:only="react" />
+</Base>
