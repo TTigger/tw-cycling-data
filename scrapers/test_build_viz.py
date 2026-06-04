@@ -41,3 +41,45 @@ def test_slim_record():
     assert s["t"] == 7231 and s["rank"] == 1
     assert s["plat"] == "cyclist.org.tw"
     assert "name_raw" not in s and "splits" not in s
+
+def test_build_races_index():
+    records = [
+        # "alpha" spans 2024 + 2025 -> multi_year True; one row carries a team.
+        {"race_key": "alpha", "year": 2024, "race_name_canonical": "Alpha Race",
+         "series": "TCL", "team": "Team A"},
+        {"race_key": "alpha", "year": 2024, "race_name_canonical": "Alpha Race",
+         "series": "TCL", "team": None},
+        {"race_key": "alpha", "year": 2025, "race_name_canonical": "Alpha Race",
+         "series": "TCL", "team": None},
+        # "beta" single-year (2025), no team anywhere -> multi_year False, has_team False.
+        {"race_key": "beta", "year": 2025, "race_name_canonical": "Beta Race",
+         "series": "CTCA", "team": None},
+    ]
+    out = bv.build_races_index(records)
+
+    # One entry per (race_key, year): alpha/2024, alpha/2025, beta/2025.
+    keys = {(e["rk"], e["y"]) for e in out}
+    assert keys == {("alpha", 2024), ("alpha", 2025), ("beta", 2025)}
+    assert len(out) == 3
+
+    by_key = {(e["rk"], e["y"]): e for e in out}
+
+    # multi_year flag: alpha entries True (spans 2 years), beta False.
+    assert by_key[("alpha", 2024)]["multi_year"] is True
+    assert by_key[("alpha", 2025)]["multi_year"] is True
+    assert by_key[("beta", 2025)]["multi_year"] is False
+
+    # has_team propagates per (race_key, year): only alpha/2024 had a team row.
+    assert by_key[("alpha", 2024)]["has_team"] is True
+    assert by_key[("alpha", 2025)]["has_team"] is False
+    assert by_key[("beta", 2025)]["has_team"] is False
+
+    # Sorted by rows descending (alpha/2024 has 2 rows, others 1).
+    assert [e["rows"] for e in out] == sorted([e["rows"] for e in out], reverse=True)
+    assert out[0]["rows"] == 2 and (out[0]["rk"], out[0]["y"]) == ("alpha", 2024)
+
+    # Entries carry rk / y / rn / s.
+    for e in out:
+        assert set(("rk", "y", "rn", "s")).issubset(e.keys())
+    assert by_key[("alpha", 2024)]["rn"] == "Alpha Race"
+    assert by_key[("beta", 2025)]["s"] == "CTCA"
