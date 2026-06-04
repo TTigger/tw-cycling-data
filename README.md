@@ -11,15 +11,14 @@
 | 資料源偵查(16-agent 工作流) | ✅ `recon-report.md` / `recon-raw.json` |
 | 爬蟲可行性 PoC(cyclist + Bravelog) | ✅ `poc-findings.md` |
 | **Phase 1a:cyclist.org.tw 管線(2024–26)** | ✅ **3,913 筆 / 12 場**(競技型,性別 83%+分齡 95%) |
-| **Phase 1b:Bravelog 管線(2024–26)** | ✅ **29,138 筆 / 45 場**(市民/挑戰型,廣覆蓋) |
-| 正規化 + 合併 + 驗證工具層 | ✅ `normalize.py` / `merge.py` / `validate.py` |
-| **★ 合併 master 資料集** | ✅ **40,414 筆 / 2015–2026 / 21 系列**,已去識別化 |
-| Phase 1d de-risk:cycling.org.tw | ✅ `cycorg-poc-findings.md`(含 UCI ID 發現) |
+| **Phase 1b:Bravelog 管線(2018–26)** | ✅ **44,850 筆 / 61 場**(市民/挑戰型;已排除鐵人三項) |
+| **Phase 1d:cycling.org.tw 國家級源** | ✅ 全國公路錦標賽 **203 筆(2025,含 UCI ID)**;舊年份寬表格式擱置 |
+| 正規化 + 合併 + 驗證工具層 | ✅ `normalize.py` / `merge.py`(年份無關、自動納源) / `validate.py` |
+| **★ 合併 master 資料集** | ✅ **56,329 筆 / 2015–2026 / 72 場 / 3 來源**,已去識別化 |
 | **Phase 2:互動視覺化儀表板(4 頁)** | ✅ `web/`(總覽/探索/賽事/傳奇爬坡;Astro+React+ECharts,Claude 風,RWD) |
 | **部署 Vercel** | ✅ 已上線(Root Directory=`web`,push 自動部署) |
-| **Phase 1c:歷史回填 2014–2023(cyclist)** | ✅ +7,363 筆(實得 2015、2018–2023) |
-| Phase 1d:cycling.org.tw 國家級源(1998–2026) | 待辦 |
-| Phase 3:選手歷年追蹤(UCI ID) | 待辦 |
+| **Phase 1c:歷史回填(cyclist 2014–23 + Bravelog 2018–23)** | ✅ +7,363 + 歷史 Bravelog |
+| Phase 3:選手歷年追蹤(UCI 為輔、姓名為主) | 待辦(下一步) |
 
 ## 目錄
 

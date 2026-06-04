@@ -1,5 +1,211 @@
 [
   {
+    "uid": "2020082227",
+    "title": "109年桃園市長盃自由車錦標賽 - 公路賽",
+    "host": "109年桃園市長盃自由車錦標賽",
+    "city": null,
+    "tags": [],
+    "start_date": "2020-08-22 00:00:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2020082364",
+    "title": "109年桃園市長盃自由車錦標賽 - 越野繞圈",
+    "host": "109年桃園市長盃自由車錦標賽",
+    "city": null,
+    "tags": [],
+    "start_date": "2020-08-23 00:00:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2020092008",
+    "title": "2020自行車嘉年華系列~LIV DAY仲夏田野",
+    "host": "財團法人自行車新文化基金會",
+    "city": null,
+    "tags": [],
+    "start_date": "2020-09-20 00:00:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2021110601",
+    "title": "2021 大鵬灣Cruising300自行車系列活動",
+    "host": "台灣超級鐵人三項協會",
+    "city": "屏東縣",
+    "tags": [
+      "300km"
+    ],
+    "start_date": "2021-11-06 05:30:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2021111301",
+    "title": "2021 龍井單車騎福踩風行暨節能減碳宣導活動",
+    "host": "臺中龍井區公所",
+    "city": "臺中市",
+    "tags": [
+      "20km"
+    ],
+    "start_date": "2021-11-13 06:30:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2022051401",
+    "title": "彩虹四季運動觀光系列活動 - 環屏東自行車挑戰Day1",
+    "host": "屏東縣政府",
+    "city": "屏東縣",
+    "tags": [
+      "94km"
+    ],
+    "start_date": "2022-05-14 08:30:00",
+    "statusTag": "查成績",
+    "website": "https://bao-ming.com/eb/content/4682#23019",
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2022051501",
+    "title": "彩虹四季運動觀光系列活動 - 環屏東自行車挑戰Day2",
+    "host": "屏東縣政府",
+    "city": "屏東縣",
+    "tags": [
+      "150km"
+    ],
+    "start_date": "2022-05-15 05:00:00",
+    "statusTag": "查成績",
+    "website": "https://bao-ming.com/eb/content/4682#23019",
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2022091801",
+    "title": "2022 LIVDAY仲夏心騎天",
+    "host": "財團法人自行車新文化基金會",
+    "city": "臺中市",
+    "tags": [
+      "75km",
+      "45km"
+    ],
+    "start_date": "2022-09-18 06:00:00",
+    "statusTag": "查成績",
+    "website": "https://www.liv-cycling.com/tw/events/2022-livday/9345",
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2022120404",
+    "title": "2022 戀戀197",
+    "host": "臺東縣城鄉生活運動協會、臺東縣體育會自由車委員會",
+    "city": "臺東縣",
+    "tags": [
+      "130km elite",
+      "130km",
+      "100km"
+    ],
+    "start_date": "2022-12-04 05:50:00",
+    "statusTag": "查成績",
+    "website": "https://bao-ming.com/eb/content/5176#25070",
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2023040801",
+    "title": "2023 (第13屆) 美利達‧兆豐銀行 彰化經典百K",
+    "host": "中華民國健康運動銀行促進協會、驊采整合行銷股份有限公司",
+    "city": "彰化縣",
+    "tags": [
+      "112km"
+    ],
+    "start_date": "2023-04-08 06:00:00",
+    "statusTag": "查成績",
+    "website": "https://www.merida-bikes.com/zh-tw/news/detail/1177/2023%28%E7%AC%AC13%E5%B1%86%29+%E7%BE%8E%E5%88%A9%E9%81%94%E2%80%A7%E5%85%86%E8%B1%90%E9%8A%80%E8%A1%8C+%E5%BD%B0%E5%8C%96%E7%B6%93%E5%85%B8%E7%99%BEK",
+    "confidence": "maybe"
+  },
+  {
+    "uid": "2023050601",
+    "title": "2023 Marechal LAVA Tour de Pingtung 英友達環屏東自行車挑戰_第一日",
+    "host": "台灣耐力運動協會",
+    "city": "屏東縣",
+    "tags": [
+      "121km"
+    ],
+    "start_date": "2023-05-06 10:00:00",
+    "statusTag": "查成績",
+    "website": "https://www.ironmanstoretw.com/pages/lava-tour-de-pingtung",
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2023050702",
+    "title": "2023 Marechal LAVA Tour de Pingtung 英友達環屏東自行車挑戰_第二日",
+    "host": "台灣耐力運動協會",
+    "city": "屏東縣",
+    "tags": [
+      "150km"
+    ],
+    "start_date": "2023-05-07 06:30:00",
+    "statusTag": "查成績",
+    "website": "https://www.ironmanstoretw.com/pages/lava-tour-de-pingtung",
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2023052101",
+    "title": "2023 LIVDAY 初夏大山 - 平溪五分 挑戰活動",
+    "host": "LIV",
+    "city": "臺北市",
+    "tags": [
+      "62km",
+      "40km"
+    ],
+    "start_date": "2023-05-21 07:00:00",
+    "statusTag": "查成績",
+    "website": "https://www.liv-cycling.com/tw/events/2023-livday/9516",
+    "confidence": "maybe"
+  },
+  {
+    "uid": "2023062401",
+    "title": "2023 TIS崇越盃武嶺自行車挑戰賽",
+    "host": "TIS桃園市鐵人運動協會",
+    "city": "南投縣",
+    "tags": [
+      "55km"
+    ],
+    "start_date": "2023-06-24 04:55:00",
+    "statusTag": "查成績",
+    "website": "https://bao-ming.com/eb/content/5351#25845",
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2023091701",
+    "title": "2023 LIVDAY 仲夏田野 - 花都魚藤坪 挑戰活動",
+    "host": "財團法人自行車新文化基金會",
+    "city": "臺中市",
+    "tags": [],
+    "start_date": "2023-09-17 06:00:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2023120304",
+    "title": "2023 戀戀197",
+    "host": "臺東縣體育會自由車委員會",
+    "city": "臺東縣",
+    "tags": [
+      "130km",
+      "100km",
+      "Push Bike"
+    ],
+    "start_date": "2023-12-03 06:10:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
     "uid": "2024033103",
     "title": "2024年台灣登山大滿貫自行車系列賽_陽明山站",
     "host": "雪巴運動股份有限公司",
