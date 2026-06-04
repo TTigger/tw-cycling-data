@@ -1,0 +1,555 @@
+[
+  {
+    "uid": "2024033103",
+    "title": "2024年台灣登山大滿貫自行車系列賽_陽明山站",
+    "host": "雪巴運動股份有限公司",
+    "city": "臺北市",
+    "tags": [
+      "自行車"
+    ],
+    "start_date": "2024-03-31 05:50:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2024052601",
+    "title": "2024 LIVDAY 初夏大山_騎訪雙溪",
+    "host": "LIV",
+    "city": "臺北市",
+    "tags": [
+      "自行車"
+    ],
+    "start_date": "2024-05-26 06:30:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2024060801",
+    "title": "瘋系列環台賽-西部段",
+    "host": "台灣瘋系列自行車協會(MAD)",
+    "city": "新北市",
+    "tags": [],
+    "start_date": "2024-06-08 06:00:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2024061001",
+    "title": "瘋系列環台賽-東部段",
+    "host": "台灣瘋系列自行車協會(MAD)",
+    "city": "屏東縣",
+    "tags": [],
+    "start_date": "2024-06-10 06:00:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2024061101",
+    "title": "瘋系列環台賽-蘇花段",
+    "host": "台灣瘋系列自行車協會(MAD)",
+    "city": "花蓮縣",
+    "tags": [],
+    "start_date": "2024-06-11 08:00:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2024062301",
+    "title": "2024 崇越盃武嶺自行車挑戰賽",
+    "host": "桃園市鐵人運動協會",
+    "city": "南投縣",
+    "tags": [],
+    "start_date": "2024-06-24 05:00:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2024070701",
+    "title": "2024年台灣登山大滿貫自行車系列賽_太平山站",
+    "host": "雪巴運動股份有限公司",
+    "city": "宜蘭縣",
+    "tags": [
+      "自行車"
+    ],
+    "start_date": "2024-07-07 05:30:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2024080401",
+    "title": "2024 TIS崇越盃石羅佛自行車挑戰賽",
+    "host": "TIS桃園市鐵人運動協會",
+    "city": "桃園市",
+    "tags": [
+      "自行車"
+    ],
+    "start_date": "2024-08-04 05:30:00",
+    "statusTag": "查成績",
+    "website": "https://bao-ming.com/eb/content/5957#28212",
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2024082501",
+    "title": "2024年台灣登山大滿貫自行車系列賽 – 大雪山站",
+    "host": "雪巴運動股份有限公司",
+    "city": "臺中市",
+    "tags": [
+      "自行車"
+    ],
+    "start_date": "2024-08-24 05:30:00",
+    "statusTag": "查成績",
+    "website": "https://bao-ming.com/eb/content/6135#28896",
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2024090103",
+    "title": "2024 自行車嘉年華 - GIANT CUP / LIVDAY",
+    "host": "財團法人自行車新文化基金會",
+    "city": "臺中市",
+    "tags": [],
+    "start_date": "2024-09-01 06:30:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2024092202",
+    "title": "仙山單車挑戰賽 一輪盃3",
+    "host": "桃園市鐵人運動協會",
+    "city": "苗栗縣",
+    "tags": [
+      "26K",
+      "80K"
+    ],
+    "start_date": "2024-09-22 05:00:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2024101904",
+    "title": "113年桃園市運動會─市長盃自由車錦標賽 公路賽競賽",
+    "host": "桃園市政府體育局",
+    "city": "桃園市",
+    "tags": [],
+    "start_date": "2024-10-19 06:00:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2024113003",
+    "title": "L’Étape環法自行車挑戰賽-紐崔萊 • 日月潭站",
+    "host": "中華民國運動休閒推廣協會、BODY名衍行銷",
+    "city": "南投縣",
+    "tags": [
+      "104公里",
+      "29公里"
+    ],
+    "start_date": "2024-11-30 06:00:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2024120104",
+    "title": "2024戀戀197",
+    "host": "臺東縣城鄉生活運動協會",
+    "city": "臺東縣",
+    "tags": [
+      "130KM",
+      "100KM"
+    ],
+    "start_date": "2024-12-01 06:10:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "maybe"
+  },
+  {
+    "uid": "2024120704",
+    "title": "2024年台灣登山大滿貫自行車系列賽 – 阿里山站",
+    "host": "雪巴運動股份有限公司",
+    "city": "嘉義縣",
+    "tags": [],
+    "start_date": "2024-12-07 06:30:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2025030802",
+    "title": "2025 VW LAVanLife 玩賽樂園 落日飛車｜350自行車挑戰",
+    "host": "台灣耐力運動協會",
+    "city": "臺東縣",
+    "tags": [],
+    "start_date": "2025-03-08 06:30:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2025030903",
+    "title": "2025 VW LAVanLife 玩賽樂園｜350自行車挑戰",
+    "host": "台灣耐力運動協會",
+    "city": "臺東縣",
+    "tags": [],
+    "start_date": "2025-03-09 06:00:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2025032201",
+    "title": "2025年台灣登山大滿貫自行車系列賽 陽明山站",
+    "host": "社團法人台灣運動賽事推廣協會",
+    "city": "臺北市",
+    "tags": [
+      "144K",
+      "178K"
+    ],
+    "start_date": "2025-03-22 06:00:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2025033002",
+    "title": "【96CyclingRace競賽組】台北站",
+    "host": "台灣96自行車協會",
+    "city": "臺北市",
+    "tags": [],
+    "start_date": "2025-03-30 07:40:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2025033003",
+    "title": "【96Heroes挑戰組】台北站",
+    "host": "台灣96自行車協會",
+    "city": "臺北市",
+    "tags": [],
+    "start_date": "2025-03-30 06:00:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2025042701",
+    "title": "TIS石門環湖.羅馬公路.佛陀KOM 自行車經典賽",
+    "host": "桃園市鐵人運動協會",
+    "city": "桃園市",
+    "tags": [],
+    "start_date": "2025-04-27 05:30:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2025050401",
+    "title": "2025 銅礦88經典自行車挑戰賽",
+    "host": "臺東縣體育會自由車委員會",
+    "city": "臺東縣",
+    "tags": [],
+    "start_date": "2025-05-04 06:30:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2025051701",
+    "title": "Ciao! Wilier 2000 x Thermaltake Bicycle",
+    "host": "曜越科技股份有限公司、曜越單車、Wilier Triestina",
+    "city": "臺北市",
+    "tags": [],
+    "start_date": "2025-05-17 07:00:00",
+    "statusTag": "查成績",
+    "website": "https://event.ttbike185.com/wilier2000/",
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2025053001",
+    "title": "瘋系列第二屆環台賽-西部段",
+    "host": "台灣瘋系列自行車協會(MAD)",
+    "city": "新北市",
+    "tags": [],
+    "start_date": "2025-05-30 05:00:00",
+    "statusTag": "查成績",
+    "website": "https://mad.madbackclub.tw/",
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2025060101",
+    "title": "瘋系列第二屆環台賽-東部段",
+    "host": "台灣瘋系列自行車協會(MAD)",
+    "city": "屏東縣",
+    "tags": [],
+    "start_date": "2025-06-01 06:00:00",
+    "statusTag": "查成績",
+    "website": "https://mad.madbackclub.tw/",
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2025060201",
+    "title": "瘋系列第二屆環台賽-蘇花段",
+    "host": "台灣瘋系列自行車協會(MAD)",
+    "city": "花蓮縣",
+    "tags": [],
+    "start_date": "2025-06-02 06:00:00",
+    "statusTag": "查成績",
+    "website": "https://mad.madbackclub.tw/",
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2025061401",
+    "title": "2025年台灣登山大滿貫自行車系列賽-太平山站",
+    "host": "社團法人台灣運動賽事推廣協會",
+    "city": "宜蘭縣",
+    "tags": [],
+    "start_date": "2025-06-14 05:30:00",
+    "statusTag": "查成績",
+    "website": "https://bao-ming.com/eb/content/6500#30367",
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2025062202",
+    "title": "2025 左營單車 挑戰百里快樂行",
+    "host": "高雄市政府運動發展局",
+    "city": "高雄市",
+    "tags": [],
+    "start_date": "2025-06-22 05:00:00",
+    "statusTag": "查成績",
+    "website": "https://bao-ming.com/eb/content/6464#30285",
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2025062301",
+    "title": "2025 TIS崇越盃武嶺自行車挑戰賽(六月場次)",
+    "host": "桃園市鐵人運動協會",
+    "city": "南投縣",
+    "tags": [],
+    "start_date": "2025-06-23 05:00:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2025070601",
+    "title": "【96Heroes挑戰組】桃竹站",
+    "host": "台灣96自行車協會",
+    "city": "桃園市",
+    "tags": [],
+    "start_date": "2025-07-06 06:30:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2025070602",
+    "title": "【96CyclingRace】 桃竹站暨中華民國114年自由車國手選拔賽積分賽 競賽組 及 巿民競賽組",
+    "host": "台灣96自行車協會",
+    "city": "桃園市",
+    "tags": [],
+    "start_date": "2025-07-06 06:00:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2025090101",
+    "title": "2025 TIS崇越盃武嶺自行車挑戰賽(九月場次)",
+    "host": "TIS桃園市鐵人運動協會",
+    "city": "南投縣",
+    "tags": [],
+    "start_date": "2025-09-01 05:00:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2025090801",
+    "title": "2025 96聯賽武嶺站-競賽組及巿民競賽組",
+    "host": "台灣96 自行車協會",
+    "city": "南投縣",
+    "tags": [],
+    "start_date": "2025-09-08 05:00:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2025090802",
+    "title": "2025 96聯賽武嶺站-挑戰組",
+    "host": "台灣96 自行車協會",
+    "city": "南投縣",
+    "tags": [],
+    "start_date": "2025-09-08 05:00:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2025091303",
+    "title": "2025年台灣登山大滿貫自行車系列賽 –大雪山站",
+    "host": "社團法人台灣運動賽事推廣協會",
+    "city": "臺中市",
+    "tags": [],
+    "start_date": "2025-09-13 05:00:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2025092102",
+    "title": "2025自行車嘉年華 - GIANT CUP / LIVDAY",
+    "host": "LAVA",
+    "city": "臺中市",
+    "tags": [],
+    "start_date": "2025-09-21 05:00:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2025092103",
+    "title": "2025自行車嘉年華 - GIANT CUP / LIVDAY",
+    "host": "LAVA",
+    "city": "臺中市",
+    "tags": [],
+    "start_date": "2025-09-21 05:00:00",
+    "statusTag": "已結束",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2025101802",
+    "title": "2025L’Étape環法自行車挑戰賽-紐崔萊 • 日月潭站",
+    "host": "中華民國運動休閒推廣協會",
+    "city": "南投縣",
+    "tags": [],
+    "start_date": "2025-10-18 05:00:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2025110701",
+    "title": "2025TBA北高360/雙塔520/四極602自行車認證",
+    "host": "中華民國自行車協會",
+    "city": "新北市",
+    "tags": [],
+    "start_date": "2025-11-07 23:00:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2025112303",
+    "title": "揪你123、騎山看海遊花東~138K自由車公路挑戰賽",
+    "host": "中華民國自由車協會",
+    "city": "臺東縣",
+    "tags": [],
+    "start_date": "2025-11-23 06:00:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2026030102",
+    "title": "2026 屏東四重溪溫泉自行車挑戰賽",
+    "host": "屏東縣政府",
+    "city": "屏東縣",
+    "tags": [
+      "80KM",
+      "40KM"
+    ],
+    "start_date": "2026-03-01 07:00:00",
+    "statusTag": "查成績",
+    "website": "https://bao-ming.com/eb/content/6749#31787",
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2026031403",
+    "title": "2026 LAVA 玩賽樂園 350自行車挑戰 Day1",
+    "host": "台灣耐力運動協會",
+    "city": "花蓮縣",
+    "tags": [],
+    "start_date": "2026-03-14 06:00:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2026031503",
+    "title": "2026 LAVA 玩賽樂園 350自行車挑戰 Day2",
+    "host": "台灣耐力運動協會",
+    "city": "臺東縣",
+    "tags": [],
+    "start_date": "2026-03-15 06:00:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2026051002",
+    "title": "96聯賽台北站暨國手選拔積分賽",
+    "host": "台灣96自行車協會",
+    "city": "臺北市",
+    "tags": [],
+    "start_date": "2026-05-10 07:00:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2026053101",
+    "title": "115年桃園市運動會-市長盃自由車錦標賽暨國手積分賽",
+    "host": "桃園市政府體育局",
+    "city": "桃園市",
+    "tags": [],
+    "start_date": "2026-05-31 05:00:00",
+    "statusTag": "查成績",
+    "website": "https://bao-ming.com/eb/content/6927#32557",
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2026053102",
+    "title": "115年桃園市運動會-市長盃自由車錦標賽暨國手積分賽 分齡組",
+    "host": "桃園市政府體育局",
+    "city": "桃園市",
+    "tags": [],
+    "start_date": "2026-05-31 05:05:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2026060301",
+    "title": "2026 鵬灣騎行—世界自行車日",
+    "host": "交通部觀光署大鵬灣國家風景區管理處",
+    "city": "屏東縣",
+    "tags": [],
+    "start_date": "2026-06-03 15:30:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2026060702",
+    "title": "2026 銅礦88經典自行車挑戰賽",
+    "host": "臺東縣體育會自由車委員會",
+    "city": "臺東縣",
+    "tags": [],
+    "start_date": "2026-06-07 06:00:00",
+    "statusTag": "未開始",
+    "website": null,
+    "confidence": "cycling"
+  }
+]

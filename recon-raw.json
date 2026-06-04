@@ -1,0 +1,2343 @@
+{
+  "registrationSites": [
+    {
+      "siteName": "伊貝特報名網 (Ebao-ming / E-Better Registration)",
+      "url": "https://bao-ming.com/eb/index",
+      "accessible": true,
+      "description": "台灣大型運動賽事「報名 + 晶片計時」平台，由伊貝特資訊（E-Better Information Services，自有計時品牌 e-better.com.tw）營運。承辦路跑、鐵人、超馬與大量自行車賽事的線上報名、晶片計時與即時成績。",
+      "listsCyclingRaces": true,
+      "coverageYears": "首頁可見 2025-2027 即將/開放報名場次；content 內容頁 ID 可回溯至 5132 / 5960（113年=2024）一帶與更早，故報名歷史約涵蓋 2020 前後至 2026。會員區宣稱可查「歷史報名/歷史成績」。競賽型公路賽成績外包至 cyclist.org.tw，其成績列表目前僅見回溯到 2025。",
+      "exampleRaces": [
+        {
+          "name": "2026 太平山王 公路賽 & 團隊計時賽 (Taipingshan KOM & TTT)",
+          "date": "2026-05-09",
+          "location": "宜蘭太平山國家森林遊樂區（長埤湖→見晴步道，約45K，最高1972m）",
+          "type": "公路賽 + 團隊計時賽（登山型）",
+          "url": "https://bao-ming.com/eb/content/6888",
+          "awardedCategories": [
+            "競賽組/菁英",
+            "分齡組(各年齡組)",
+            "國中組",
+            "團隊計時賽(5人取第4名成績)",
+            "挑戰組"
+          ]
+        },
+        {
+          "name": "Yangmingshan National Park TTT & Race 2026 陽明山王 公路賽.團隊計時賽",
+          "date": "2026 (臺灣自行車聯賽場次)",
+          "location": "陽明山國家公園",
+          "type": "公路賽 + 團隊計時賽",
+          "url": "https://bao-ming.com/eb/content/6850",
+          "awardedCategories": [
+            "菁英/競賽組",
+            "分齡組",
+            "團隊計時賽"
+          ]
+        },
+        {
+          "name": "2026 TIS 崇越盃武嶺自行車挑戰賽 (六月場次)",
+          "date": "2026-06-15",
+          "location": "南投 / 武嶺 (公路最高點 3275m)",
+          "type": "登山賽 (爬坡挑戰)",
+          "url": "https://bao-ming.com/eb/content/6837",
+          "awardedCategories": [
+            "菁英組(超過4小時判未完賽)",
+            "挑戰組(依大會時間計時)",
+            "分齡組"
+          ]
+        },
+        {
+          "name": "East Taiwan Road Race & TTT 2026 環花東國際自行車賽",
+          "date": "2026-04-10",
+          "location": "花蓮/台東 花東縱谷 (多日多站)",
+          "type": "公路賽 + 團隊計時賽 (stage race)",
+          "url": "https://bao-ming.com/eb/index",
+          "awardedCategories": [
+            "菁英/競賽組",
+            "分齡組",
+            "團隊"
+          ]
+        },
+        {
+          "name": "SKY HUNTER 鳳梨山繞圈賽",
+          "date": "2026-09-25",
+          "location": "台灣 (繞圈賽場)",
+          "type": "繞圈賽 (criterium)",
+          "url": "https://bao-ming.com/eb/index",
+          "awardedCategories": [
+            "菁英組",
+            "市民/業餘組",
+            "分齡組"
+          ]
+        },
+        {
+          "name": "115年全國自由車揪你123公路挑戰賽 / 114年全國自由車公路錦標賽暨選拔賽",
+          "date": "2026-11-01",
+          "location": "全國錦標賽場地",
+          "type": "公路賽 (錦標賽/選拔賽)",
+          "url": "https://bao-ming.com/eb/content/6591",
+          "awardedCategories": [
+            "菁英組",
+            "青年/少年組",
+            "分齡組",
+            "女子組"
+          ]
+        }
+      ],
+      "resultsPublishing": {
+        "method": "external-platform",
+        "format": "pdf",
+        "externalPlatforms": [
+          "臺灣自行車聯賽 Taiwan Cyclist League (cyclist.org.tw)",
+          "伊貝特/E-Better 自有即時成績+證明下載 (e-better.com.tw)",
+          "Bravelog 運動趣 (bravelog.tw, 部分賽事)"
+        ],
+        "sampleResultUrl": "https://www.cyclist.org.tw/results_txt.asp?pno=139"
+      },
+      "scrapeFeasibility": "混合。bao-ming.com 首頁(/eb/index)為靜態 server-rendered HTML(~300KB, jQuery + 少量 Vue)，可直接 curl 取得，內含所有賽事標題、日期、/eb/content/{id} 連結 — 易爬。但個別賽事頁 /eb/content/{id} 有反爬：以非瀏覽器 UA 請求會收到 HTTP 302 + Refresh:0;url=/eb/index(配 ebs session cookie 仍被導回首頁)，需真實瀏覽器(Playwright/Chrome headless 帶 cookie/JS)才能取得內文。ASP.NET (ARR/X-WebFarm) 後端，未發現公開 JSON API。競賽成績不在本站，而在 cyclist.org.tw(classic ASP, results_list.asp/results_txt.asp?pno=)以 PDF 下載 — 需先抓 list 頁解析 pno 再下載 PDF 解析，無結構化 API。會員歷史成績需登入。",
+      "additionalSitesFound": [
+        "https://e-better.com.tw/",
+        "https://www.cyclist.org.tw/results_list.asp?pno=13",
+        "https://www.cyclist.org.tw/results_txt.asp?pno=139",
+        "https://www.cyclist.org.tw/results_txt.asp?pno=135",
+        "https://www.bravelog.tw/",
+        "https://bao-ming.com/eb/member",
+        "https://www.bao-ming.com/eb/service",
+        "https://www.facebook.com/EBBaoming/"
+      ],
+      "notes": "平台定位：伊貝特=「報名+晶片計時」綜合平台，不是成績資料庫本身。公路車涵蓋極廣：公路賽(太平山王/陽明山王)、團隊計時賽TTT、登山賽(武嶺TIS崇越盃/玉山塔塔加/太平山)、繞圈賽(鳳梨山SKY HUNTER)、長距離認證(北高360/雙塔520/四極620)、L'Étape環法日月潭站、環花東國際賽、全國自由車錦標賽/選拔賽等。頒獎組別典型為 菁英/競賽組、分齡組(各年齡層)、團隊計時(5人取第4名)、挑戰組、國中/青少年組、女子組。\\n\\n成績歸屬關鍵：競賽型(臺灣自行車聯賽 TCL 系列)的公路賽/TTT 成績由 cyclist.org.tw 以 PDF 公布(總排名+分組排名各一檔)，非伊貝特站內；range 目前列表回溯到 2025(更早年份 pno 仍可直連)。一般計時型賽事(路跑/挑戰活動)則用伊貝特自有即時成績+完賽證明下載(會員區)，部分串接 Bravelog。\\n\\n爬蟲建議：(1)/eb/index 直接 curl 取賽事清單與 content id；(2)content 詳情頁須 headless browser 帶 cookie 繞過 302/Refresh 反爬；(3)競賽成績改爬 cyclist.org.tw 的 results_list.asp?pno=13 → 解析各賽事 results_txt.asp?pno=NNN → 抓 .pdf 連結再做 PDF 表格解析。無官方 JSON API；會員歷史成績需登入。客服 02-2951-6969 / 02-29516969。"
+    },
+    {
+      "siteName": "中華民國自行車騎士協會 Taiwan Cyclist Federation (TCF)",
+      "url": "https://www.cyclist.org.tw/eventnew.asp",
+      "accessible": true,
+      "listsCyclingRaces": true,
+      "description": "中華民國自行車騎士協會 (Taiwan Cyclist Federation, 成立於1999年) 的官方活動/賽事網站，採古典 ASP (.asp) 架構於 Microsoft-IIS 上。它同時是台灣最知名公路車登山賽「臺灣自行車登山王挑戰 (Taiwan KOM)」的主辦單位網站，列出旗下系列賽事並提供成績紀錄。",
+      "coverageYears": "2014-2026（成績紀錄最早可回溯到 2014 全國俱樂部聯賽；活動列表為當前賽季）",
+      "exampleRaces": [
+        {
+          "name": "臺灣自行車登山王挑戰 Taiwan KOM Challenge (公路爬坡，太魯閣→武嶺)",
+          "type": "登山賽 (KOM/爬坡公路賽)",
+          "date": "2025 (年度旗艦賽，每年10月底)",
+          "location": "花蓮太魯閣至武嶺 (海拔3275m)",
+          "awardedCategories": [
+            "菁英組",
+            "挑戰組",
+            "分齡組",
+            "女子組"
+          ],
+          "url": "http://www.cyclist.org.tw/results_list.asp?pno=1"
+        },
+        {
+          "name": "2015 全國俱樂部聯賽-第5站 宜蘭思源埡口公路賽",
+          "type": "公路賽",
+          "date": "2015",
+          "location": "宜蘭思源埡口",
+          "awardedCategories": [
+            "菁英組",
+            "市民組",
+            "分齡組",
+            "男子總排前六名",
+            "女子總排前六名",
+            "團體排名"
+          ],
+          "url": "http://www.cyclist.org.tw/upfile/resultPDF/17/2015全國俱樂部聯賽-第5站宜蘭思源埡口公路賽_各分組排名.pdf"
+        },
+        {
+          "name": "2015 全國俱樂部聯賽-第1站 台南四草個人計時賽",
+          "type": "計時賽 (個人計時)",
+          "date": "2015",
+          "location": "台南四草",
+          "awardedCategories": [
+            "各分組排名",
+            "團體排名",
+            "菁英組",
+            "市民組"
+          ],
+          "url": "http://www.cyclist.org.tw/upfile/resultPDF/12/2015全國俱樂部聯賽-第1站台南四草個人計時賽_總排名.pdf"
+        },
+        {
+          "name": "2015 全國俱樂部聯賽-第3站 淡海公路繞圈賽",
+          "type": "繞圈賽 (公路繞圈)",
+          "date": "2015",
+          "location": "新北淡海",
+          "awardedCategories": [
+            "總排名",
+            "各分組"
+          ],
+          "url": "http://www.cyclist.org.tw/upfile/resultPDF/15/2015全國俱樂部聯賽-第3站淡海公路繞圈賽_總排名.pdf"
+        },
+        {
+          "name": "太平山王公路賽 & 團隊計時賽 (Taipingshan King Road Race & TTT)",
+          "type": "公路賽 + 團隊計時賽 (TTT)",
+          "date": "2025-09 / 2026",
+          "location": "宜蘭太平山",
+          "awardedCategories": [
+            "菁英組",
+            "市民組",
+            "分齡組",
+            "團體"
+          ],
+          "url": "http://www.cyclist.org.tw/upfile/resultPDF/153/25921171226.pdf"
+        },
+        {
+          "name": "花蓮太平洋盃公路賽 / 花東國際自行車賽 (Hualien Pacific Cup / Huadong Intl Race)",
+          "type": "公路賽 (繞圈/分站)",
+          "date": "2025-11-14",
+          "location": "花蓮",
+          "awardedCategories": [
+            "菁英組",
+            "市民組",
+            "分齡組"
+          ],
+          "url": "http://www.cyclist.org.tw/results_list.asp?pno=13"
+        }
+      ],
+      "resultsPublishing": {
+        "method": "same-site",
+        "format": "pdf",
+        "sampleResultUrl": "http://www.cyclist.org.tw/upfile/resultPDF/17/2015全國俱樂部聯賽-第5站宜蘭思源埡口公路賽_各分組排名.pdf",
+        "externalPlatforms": []
+      },
+      "scrapeFeasibility": "容易爬。靜態伺服器端渲染的 ASP HTML（Microsoft-IIS/8.5, ASP.NET），無 JS 渲染、無需登入、無 captcha。成績列表頁採固定 URL 樣式 results_list.asp?pno=N (pno=1 KOM登山王, pno=2 俱樂部聯賽, pno=13 臺灣自行車聯賽 等)，HTML 內直接含 <a> 連結指向 PDF。成績 PDF 為直接可下載的靜態檔案，路徑樣式 /upfile/resultPDF/{eventId}/{file}.pdf，回傳 200 + Content-Type: application/pdf（已實測 198KB 檔案下載成功）。無公開 JSON API；資料須由 HTML 抓 PDF 連結後再對 PDF 做表格解析 (PDF 多為文字/表格，可用 pdfplumber 類工具)。注意：HTTP 會 301/JS 轉址到 HTTPS。組別資訊部分嵌在 PDF 檔名（如 _各分組排名、菁英團體總排名、市民團體總排名），部分需開 PDF 內文。",
+      "additionalSitesFound": [
+        "http://www.cyclist.org.tw/results.asp",
+        "http://www.cyclist.org.tw/results_list.asp?pno=1",
+        "http://www.cyclist.org.tw/results_list.asp?pno=2",
+        "http://www.cyclist.org.tw/results_list.asp?pno=13",
+        "https://www.taiwankom.org/",
+        "https://www.cyclist.org.tw/news.asp"
+      ],
+      "notes": "這是「中華民國自行車騎士協會 (TCF)」官網，非主辦自由車競技聯盟的「中華民國自由車協會 cycling.org.tw」(兩者常被混淆)。報名外包給 bao-ming.com，但「成績完全自己發佈在同站」，未外包給 Bravelog/運動筆記。成績格式為 PDF 下載（不是 Excel、不是網頁表格、不是 API）。成績入口 results.asp 分10類：KOM登山王(pno=1)、俱樂部聯賽(pno=2)、登山王之路(pno=3)、環大臺北(pno=4)、TCF系列(pno=7)、燈塔極點慢旅(pno=9)、花東海灣盃(pno=10)、花蓮太平洋盃(pno=11)、TAIWAN SUMMIT SERIES(pno=12)、臺灣自行車聯賽(pno=13)。賽事型態涵蓋公路賽、個人計時賽、團隊計時賽(TTT)、公路繞圈賽、登山賽(武嶺KOM)。頒獎組別常見：菁英組、挑戰組、競賽組、市民組、分齡組、男子/女子組、團體排名。歷史成績最早回溯到 2014年(俱樂部聯賽)，2015年資料完整含計時/繞圈/公路/登山各站。爬蟲建議：先抓 10 個 pno 列表頁的 PDF 連結，再下載 PDF 解析；組別在檔名與內文皆有。"
+    },
+    {
+      "siteName": "96好動客 (96Sporter)",
+      "url": "https://www.96sporter.com/",
+      "accessible": true,
+      "listsCyclingRaces": true,
+      "description": "96好動客是台灣專營自行車/單車賽事的線上報名平台，由「96自轉車聯賽 (96聯賽 / 96CyclingRace)」主辦方營運，幾乎全部活動都是公路車/登山自行車賽。網站本身負責賽事介紹與報名收費，計時成績則外包給 Bravelog 運動趣公布。",
+      "coverageYears": "報名平台官網主要只顯示當前/即將舉行賽季 (2025-2026)，無站內歷史成績存檔；96聯賽系列本身可回溯約 2015-2018 年起 (前身含 NeverStop 武嶺系列)，但可線上查詢的成績主要集中在 Bravelog 上的近年場次 (約 2024-2026)。",
+      "exampleRaces": [
+        {
+          "name": "2026 96聯賽 武嶺站｜競賽組",
+          "date": "2026-09-07",
+          "location": "南投 地理中心碑→霧社→清境→翠峰→昆陽→武嶺停車場 (約53km/爬升2800m，終點海拔3275m)",
+          "type": "登山賽/爬坡賽 (Hill Climb)",
+          "url": "https://www.96sporter.com/event_detail123.htm",
+          "awardedCategories": [
+            "男子U15",
+            "男子青年",
+            "男子U23",
+            "男子M30",
+            "男子M40",
+            "男子菁英",
+            "女子青年",
+            "女子U23",
+            "女子菁英",
+            "冠軍橘衫",
+            "衝刺王藍衫",
+            "登山王紅點衫",
+            "新人王白衫(U23)"
+          ]
+        },
+        {
+          "name": "2026 96聯賽 武嶺站｜巿民競賽組",
+          "date": "2026-09-07",
+          "location": "南投 武嶺",
+          "type": "登山賽/爬坡賽",
+          "url": "https://www.96sporter.com/event_detail124.htm",
+          "awardedCategories": [
+            "市民競賽組分齡 M15/M20/M25/M30/M35/M40/M45/M50/M55/M60",
+            "女子分齡 W15/W20/W25/W30/W35/W40/W45/W50"
+          ]
+        },
+        {
+          "name": "2026 96 HEROES 中華賓士・武嶺站 (挑戰組)",
+          "date": "2026",
+          "location": "南投 武嶺",
+          "type": "登山挑戰賽 (非競速完騎)",
+          "url": "https://www.96sporter.com/event_detail121.htm",
+          "awardedCategories": [
+            "挑戰組(完賽)"
+          ]
+        },
+        {
+          "name": "96聯賽 苗栗站｜南庄山水悠遊行慢城爬坡賽",
+          "date": "2026",
+          "location": "苗栗 南庄",
+          "type": "爬坡賽/登山賽",
+          "url": "https://www.96sporter.com/event_detail127.htm",
+          "awardedCategories": [
+            "競賽組(年齡分組)",
+            "菁英組"
+          ]
+        },
+        {
+          "name": "2026 96聯賽 台北站｜競賽組",
+          "date": "2026",
+          "location": "台北",
+          "type": "公路賽/繞圈賽 (平地站)",
+          "url": "https://www.96sporter.com/event_detail125.htm",
+          "awardedCategories": [
+            "菁英組",
+            "年齡分組",
+            "市民競賽組"
+          ]
+        },
+        {
+          "name": "2025 96聯賽武嶺站-競賽組及巿民競賽組 (上一賽季實例，成績已公布)",
+          "date": "2025-09-08",
+          "location": "南投 武嶺",
+          "type": "登山賽",
+          "url": "https://www.bravelog.tw/contest/rank/2025090801",
+          "awardedCategories": [
+            "男子菁英/分齡 M15-M60",
+            "女子菁英/分齡 W15-W50"
+          ]
+        }
+      ],
+      "resultsPublishing": {
+        "method": "external-platform",
+        "format": "web-table",
+        "externalPlatforms": [
+          "Bravelog 運動趣 (bravelog.tw)"
+        ],
+        "sampleResultUrl": "https://www.bravelog.tw/contest/rank/2025090801"
+      },
+      "scrapeFeasibility": "兩段式。(1) 報名/賽事資料 96sporter.com：傳統靜態 .htm CMS 頁面 (event.htm 清單 + event_detailNNN.htm 詳情)，純靜態 HTML，無需登入即可抓取賽事名稱/日期/地點/組別；報名動作才需登入。URL 為流水號 event_detailNNN.htm，易於列舉爬取。下載檔僅為家長同意書 DOCX，無 Excel/PDF 成績檔。(2) 真正的計時成績在外包平台 Bravelog (bravelog.tw/contest/rank/{contestId})，為 JS 渲染的網頁表格 (組別下拉切換)，HTML 初始無資料，需用無頭瀏覽器或攔截其後端 JSON/API。contestId 採日期編碼 (如 2025090801)，可推斷列舉。建議：96sporter 用一般靜態抓取列出賽事與 Bravelog contestId 對應，成績抓取則用 Playwright/Chrome DevTools 渲染或找出 Bravelog 的 JSON 端點。",
+      "additionalSitesFound": [
+        "https://www.96sporter.com/event.htm",
+        "https://www.96sporter.com/player_range.htm",
+        "https://www.bravelog.tw/contest/2025090801",
+        "https://www.bravelog.tw/contest/rank/2025090802",
+        "https://www.bravelog.tw/calendar",
+        "https://www.96sporter.com.tw/",
+        "https://www.96cycling.com/",
+        "https://www.facebook.com/96sporter/",
+        "https://bhuntr.com/tw/competitions/nb1w3ixo1rdoenivsv"
+      ],
+      "notes": "平台定位非常聚焦：96好動客幾乎只辦/列自行車賽，核心是「96聯賽 (96CyclingRace)」年度系列賽，賽制仿 UCI、總獎金約 NT$103萬，含平地站(公路/繞圈,如台北站)、丘陵站、登山站(武嶺/苗栗南庄爬坡)。組別分兩大類：競賽組(菁英+年齡分組 U15/青年/U23/M30/M40，女子青年/U23/菁英) 與 市民競賽組(分齡 M15-M60 / W15-W50)；另有 96Heroes 挑戰組(完騎不計速)。頒獎除名次外另設四色戰衣積分:冠軍橘衫、衝刺王藍衫、登山王紅點衫、新人王白衫(限男U23)。\\n\\n關鍵發現:成績「不在」96sporter 站內公布，官網英雄榜/player_range 僅做積分總榜與『站成績下載查詢』入口，實際逐站計時成績外包給 Bravelog 運動趣 (bravelog.tw)。實例:2025 武嶺站競賽組+市民組 https://www.bravelog.tw/contest/rank/2025090801 、挑戰組 https://www.bravelog.tw/contest/rank/2025090802 。Bravelog 成績為 JS 渲染網頁表格(欄位:名次/姓名/號碼布/組別/完賽時間)，未見公開 Excel/PDF/CSV 下載連結。\\n\\n歷史回溯:96sporter 官網不保留往年賽事詳情(舊頁多導向 96sporter.com.tw 子域如 event_detail102.htm=2025序幕站天母)。96聯賽系列與前身武嶺活動(NeverStop 永不放棄)可追溯至約 2015-2020 年代，但可線上查的結構化成績主要是 Bravelog 上近 1-2 賽季。媒體報導(cyclingtime.com)有賽事紀錄可佐證更早年份。獎金獵人(bhuntr.com)亦有轉貼部分賽事報名頁。建議爬蟲分兩源處理:賽事/報名 = 96sporter 靜態抓取;成績 = Bravelog 用無頭瀏覽器或其 JSON 後端。"
+    },
+    {
+      "siteName": "筆記報名 (iRunner / 運動筆記報名)",
+      "url": "https://irunner.biji.co/",
+      "accessible": true,
+      "listsCyclingRaces": true,
+      "description": "台灣賽事報名 + 晶片計時 + 即時成績查詢平台，隸屬 H2U 永悅健康（運動筆記集團），2016 年成立。以路跑/馬拉松為主，但設有自行車分類並承辦多場公路車、登山車、滑步車/BMX 與自行車活動的報名與計時。",
+      "coverageYears": "約 2016–2026（平台 2016 年 1 月成立；/track 即時成績清單預設只顯示當季近期賽事，舊賽事頁面仍可由賽事代碼/網址回溯）",
+      "resultsPublishing": {
+        "method": "same-site",
+        "format": "web-table",
+        "externalPlatforms": [],
+        "sampleResultUrl": "https://irunner.biji.co/track/1522/record?rs=%E9%99%B3&page=1"
+      },
+      "scrapeFeasibility": "易爬。成績頁為伺服器端渲染的靜態 HTML（非 JS 後載、非 JSON API）。我實測搜尋「陳」後跳轉 /track/1522/record?rs=陳&page=1，整份結果列表（名次/號碼/姓名/時間/組別）直接內嵌在 HTML，沒有任何 /api XHR 取資料；分頁用 ?page=N。無需登入、無 captcha、無明顯反爬。唯一限制：成績查詢需帶關鍵字 rs=（姓名/隊名/號碼），沒有空白「列出全部」入口，所以全量抓取要靠姓氏字典(陳林黃…)輪詢或 record/{流水號} 號碼枚舉。個人成績頁 /track/{eventId}/record/{bib} 亦為靜態 HTML。賽事入口由賽事代碼(/track/1522)或活動別名(/2025XYMG)組成，可枚舉。頁面另含 GA/Facebook/Woopra 追蹤(與資料無關)。",
+      "exampleRaces": [
+        {
+          "name": "2025 第七屆經典新玉門關 x EDWONDER 公路自行車聯名賽",
+          "date": "2025-11-23",
+          "location": "台南市龍崎區（文衡殿出發，78km 單圈、約700m 爬升）",
+          "type": "公路賽（含個人計時 ITT）",
+          "awardedCategories": [
+            "菁英組(男/女)",
+            "市民組分齡(男 M20–M60、女 W20–W60)",
+            "電輔車組"
+          ],
+          "url": "https://irunner.biji.co/2025XYMG?page=3764"
+        },
+        {
+          "name": "2026 淡江大橋通車自行車活動",
+          "date": "2026-04-19",
+          "location": "新北市（淡江大橋）",
+          "type": "自行車活動/挑戰賽",
+          "awardedCategories": [
+            "50K環山挑戰組．男",
+            "50K環山挑戰組．女"
+          ],
+          "url": "https://irunner.biji.co/track/1522"
+        },
+        {
+          "name": "2026 世界自行車日-環大苗栗",
+          "date": "2026-06-06",
+          "location": "苗栗",
+          "type": "自行車活動",
+          "awardedCategories": [],
+          "url": "https://irunner.biji.co/track"
+        },
+        {
+          "name": "2026 國際自由車環台公路大賽 - 全民單車嘉年華 Push Bike滑步車暨 BMX小輪車全國賽",
+          "date": "2026-03-15",
+          "location": "台北市 總統府前凱達格蘭大道",
+          "type": "滑步車/BMX 繞圈全國賽（搭配環台公路大賽）",
+          "awardedCategories": [
+            "滑步車分齡(幼幼~6歲共4組)",
+            "小輪車BMX(4–10歲2組)",
+            "各組前3名頒獎"
+          ],
+          "url": "https://irunner.biji.co/2026tourdeTaiwanPushbike"
+        },
+        {
+          "name": "2026 Dan Cup - Taiwan MTB Enduro",
+          "date": "2026",
+          "location": "台灣（登山車 Enduro）",
+          "type": "登山車賽",
+          "awardedCategories": [],
+          "url": "https://irunner.biji.co/"
+        },
+        {
+          "name": "2023 瑟飛斯盃登山車賽",
+          "date": "2023",
+          "location": "台灣",
+          "type": "登山車賽",
+          "awardedCategories": [],
+          "url": "https://irunner.biji.co/SeviceCup2023"
+        }
+      ],
+      "additionalSitesFound": [
+        "https://irunner.biji.co/track",
+        "https://running.biji.co/",
+        "https://cycling.biji.co/",
+        "https://irunner.biji.co/irunner/chip",
+        "https://irunner.biji.co/2025XYMG?page=3764",
+        "https://irunner.biji.co/track/1522/record/000025"
+      ],
+      "notes": "1) 平台確認可存取，為 H2U/運動筆記旗下「筆記報名 iRunner」，提供報名 + 自家 iRunner 晶片計時 + 即時成績查詢 + 電子證書。2) 確有公路車/自行車賽事：公路賽(經典新玉門關，有菁英組/市民分齡組/電輔車組並頒獎)、自行車挑戰活動(淡江大橋 50K環山組)、登山車賽(瑟飛斯盃、Dan Cup MTB Enduro)、繞圈/滑步車BMX全國賽(環台公路大賽周邊)；武嶺類純爬坡公路賽在本平台未直接看到主辦頁(武嶺登山王多由他方主辦)。3) 成績「同站公布」，由 iRunner 自家晶片計時產生，不是外包給 Bravelog；運動筆記只是同集團的內容/社群站(running.biji.co、cycling.biji.co)。4) 成績格式為網頁表格(名次/號碼布/姓名/淨時間/組別+隊名)，個人頁有電子證書；未見 Excel/PDF 公開下載或公開 JSON API，但因頁面是伺服器端靜態 HTML，可直接以 HTTP GET 解析。5) 爬蟲門檻低：靜態 HTML、免登入、可用 ?rs= 與 ?page= 參數化抓取；全量抓取需靠姓氏字典或號碼枚舉。實測成績頁範例：https://irunner.biji.co/track/1522/record?rs=陳&page=1 (2026淡江大橋通車自行車活動, 2026/04/19, 50K環山挑戰組)。"
+    },
+    {
+      "siteName": "TWB 台灣自行車協會 (Taiwan Bike Association)",
+      "url": "https://www.twbike.org/",
+      "accessible": true,
+      "listsCyclingRaces": true,
+      "description": "台中的「台灣自行車協會」官方網站，主辦長距離單車「認證/挑戰」活動(非競速錦標賽)，如雙塔520、北高360、西三塔600、東四極730等。同時提供線上報名、活動公告與晶片完騎成績查詢。注意：武嶺登山賽/繞圈賽/公路錦標賽不在此站，屬中華民國自由車協會(cycling.org.tw)與NeverStop(neverstop.org.tw)。",
+      "coverageYears": "頁面可查詢成績約 2023-2026；活動/影像紀錄回溯至 2015-2017，網站版權標示 ©2012 起",
+      "resultsPublishing": {
+        "method": "same-site",
+        "format": "web-table",
+        "sampleResultUrl": "https://www.twbike.org/news/?act=data&id=371",
+        "externalPlatforms": []
+      },
+      "scrapeFeasibility": "靜態伺服器渲染 HTML(PHP，gpulse.com CMS，customer_id=1804)，URL 規律 /{news,activity,register}/index.php?act=data&id=N，無 JS 框架、無公開 JSON API。瀏覽活動/成績不需登入(報名才需 email+密碼+驗證碼登入)。可直接 GET 抓取，但兩個陷阱：(1) SSL 憑證鏈不完整(未送中繼憑證)，標準 client 會 'unable to verify first certificate'，需 curl -k / 關閉驗證；(2) 頁面混用 Big5/UTF-8，需正確解碼。成績為「輸入晶片號碼」逐筆 POST 查詢的網頁表單，無批次匯出/下載，無法一次抓全部名次(需已知晶片號或暴力列舉)。整體：靜態好爬，但成績資料以單筆查詢設計，不利大量擷取。",
+      "exampleRaces": [
+        {
+          "name": "第13屆 雙塔520 (菜鳥組/學長組)",
+          "date": "2026-11-06",
+          "location": "富貴角燈塔→鵝鑾鼻燈塔 (北至南520km)",
+          "type": "長距離認證挑戰(非競賽)",
+          "url": "https://www.twbike.org/register/?act=login&id=405&types=activity",
+          "awardedCategories": [
+            "菜鳥組",
+            "學長組"
+          ]
+        },
+        {
+          "name": "第13屆 北高360 (學長組/菜鳥組)",
+          "date": "2026-11-06",
+          "location": "台北→高雄 360km",
+          "type": "長距離認證挑戰",
+          "url": "https://www.twbike.org/activity/?ptype=0",
+          "awardedCategories": [
+            "學長組",
+            "菜鳥組"
+          ]
+        },
+        {
+          "name": "第1屆 東四極730",
+          "date": "2027-01-16",
+          "location": "富貴角→蘇花→台東→鵝鑾鼻→國聖燈塔 730km",
+          "type": "長距離認證挑戰(晶片計時)",
+          "url": "https://www.twbike.org/activity/",
+          "awardedCategories": [
+            "一般紀念衫組(QA)",
+            "經典短車衣組(QC)",
+            "短車衣背心組(QV)",
+            "接力組"
+          ]
+        },
+        {
+          "name": "第5屆 東三塔550 / 第5屆 東雙塔470",
+          "date": "2027-01-16",
+          "location": "東部 楓林橋/福隆→鵝鑾鼻",
+          "type": "長距離認證挑戰",
+          "url": "https://www.twbike.org/activity/?ptype=0",
+          "awardedCategories": [
+            "菜鳥認證",
+            "學長認證",
+            "鑽石認證",
+            "接力組"
+          ]
+        },
+        {
+          "name": "第1屆 四極點620",
+          "date": "2026-11-06",
+          "location": "台灣四極點環線 620km",
+          "type": "長距離認證挑戰",
+          "url": "https://www.twbike.org/register/",
+          "awardedCategories": []
+        },
+        {
+          "name": "2025 西三塔600 / 雙塔520 / 北高360 (成績頁)",
+          "date": "2025-11",
+          "location": "西部縱貫",
+          "type": "長距離認證挑戰(晶片完騎成績查詢)",
+          "url": "https://www.twbike.org/news/?act=data&id=371",
+          "awardedCategories": [
+            "西三600",
+            "雙塔520",
+            "北高360"
+          ]
+        }
+      ],
+      "additionalSitesFound": [
+        "https://www.twbike.org/news/?act=data&id=379 (2026 東三塔/東雙塔成績)",
+        "https://www.twbike.org/news/?act=data&id=347 (已下架/404，2024西三/雙塔/北高)",
+        "https://www.twbike.org/news/?act=data&id=372 (2023 雙塔520成績)",
+        "https://www.twbike.org/news/?act=data&id=361 (2023 西三塔600成績)",
+        "https://www.twbike.org/activity/?ptype=0 (活動公告列表)",
+        "https://cycling.org.tw/ (中華民國自由車協會-才是公路/登山/繞圈競技錦標賽與歷屆成績下載)",
+        "http://www.neverstop.org.tw/ (NeverStop 武嶺/繞圈挑戰賽)",
+        "https://www.bravelog.tw/calendar (Bravelog 賽事成績平台，TWB此類認證活動未使用)"
+      ],
+      "notes": "關鍵釐清：TWB(twbike.org)主辦的是「長距離單車認證/挑戰活動」而非競速賽事，因此沒有菁英組/市民組/分齡組這類「頒獎名次組別」；其「組別」是菜鳥組/學長組/鑽石/接力等認證等級，全員只要在關門時間內以晶片完騎即發完賽證書/獎牌/獎盃，無名次排名。若你要找的是公路賽/計時賽/武嶺登山賽/繞圈賽(有菁英/分齡頒獎)，正確來源是中華民國自由車協會 cycling.org.tw(有歷屆成績下載專區)與 NeverStop neverstop.org.tw，而非本站。\\n\\n平台技術：gpulse.com 提供的 PHP CMS(customer_id=1804)，伺服器端渲染靜態 HTML，混 Big5/UTF-8。SSL 憑證鏈不完整(WebFetch/標準瀏覽器外的 client 會憑證驗證失敗，需 curl -k)。\\n\\n成績發佈：同站，網頁上的「輸入晶片號碼」單筆查詢表單(POST)，非 Excel/PDF 下載、非外包 Bravelog/運動筆記。實際成績頁範例 https://www.twbike.org/news/?act=data&id=371 (2025)、id=379 (2026)。\\n\\n歷史回溯：可查詢之成績頁約 2023 起(id=361/372)；活動影像紀錄到 2015-2017;網站 ©2012。\\n\\n爬蟲：靜態頁易抓(GET id 列舉)，但成績為逐筆晶片查詢設計，無批次匯出，難以一次取得全部完賽名單；報名頁需會員登入(email/密碼/驗證碼)。"
+    },
+    {
+      "siteName": "中華民國自行車協會 (Chinese Taipei Cycling Association / Taiwan Bike）",
+      "url": "https://taiwanbike.org/",
+      "accessible": true,
+      "description": "中華民國自行車協會官方網站，採用 Joomla CMS（URL 形如 /index.php/數字-...，含 /component/ 元件）。主要辦理「認證型」長途騎乘與挑戰活動（雙塔、北高、四極、武嶺/中央山脈、西濱），以及線上報名與成績公告，並非以競技排名為主的賽事平台。",
+      "listsCyclingRaces": true,
+      "coverageYears": "2010-2026",
+      "exampleRaces": [
+        {
+          "name": "第15屆超越巔峰-中央山脈極致挑戰",
+          "date": "2026-06-28",
+          "location": "宜蘭礁溪山泉大飯店 → 阿里山（370km/爬升7720m，3天）",
+          "type": "登山挑戰賽（非競賽，無計時、不列名次）",
+          "url": "https://taiwanbike.org/index.php/696-2025-0628-1",
+          "awardedCategories": [
+            "完成者完賽紀念獎座",
+            "完成5屆以上星級獎",
+            "無菁英/分齡競賽組別"
+          ]
+        },
+        {
+          "name": "2025平溪經典賽",
+          "date": "2025-09-21",
+          "location": "新北市深坑區深坑慈聖宮廣場",
+          "type": "公路挑戰賽（掠嶺組80K/藍鵲組60K，RFID僅供個人參考、不計名次）",
+          "url": "https://taiwanbike.org/index.php/674-2025-0921-1",
+          "awardedCategories": [
+            "掠嶺組(80K)",
+            "藍鵲組(60K)",
+            "僅完賽獎牌/證書，無頒獎名次"
+          ]
+        },
+        {
+          "name": "2026雙主場-輪霸西濱200K/100K",
+          "date": "2026-03-15",
+          "location": "台北主場 / 苗栗主場（西濱公路）",
+          "type": "公路長距離挑戰賽（雙主場）",
+          "url": "https://taiwanbike.org/index.php/679-2026-0315-0",
+          "awardedCategories": [
+            "200K組",
+            "100K組"
+          ]
+        },
+        {
+          "name": "北宜公路經典挑戰賽（第三屆，2012）",
+          "date": "2012-06-17",
+          "location": "北宜公路",
+          "type": "公路計時挑戰賽（早期為實際計時成績）",
+          "url": "https://taiwanbike.org/images/downloads_files/2012-06-17.xls",
+          "awardedCategories": [
+            "依成績Excel分組排名（早期賽事有計時名次）"
+          ]
+        },
+        {
+          "name": "五指山自行車大賽&挑戰101騎跡",
+          "date": "2010-04-11",
+          "location": "五指山",
+          "type": "登山公路賽（2010，有計時成績檔）",
+          "url": "https://taiwanbike.org/images/20100411-1.xls",
+          "awardedCategories": [
+            "依成績表分組"
+          ]
+        },
+        {
+          "name": "貓空掠嶺自行車挑戰活動",
+          "date": "2010-01-17",
+          "location": "台北貓空",
+          "type": "登山挑戰賽（最早可查成績）",
+          "url": "https://taiwanbike.org/images/20100117performance.xls",
+          "awardedCategories": [
+            "依成績Excel分組"
+          ]
+        }
+      ],
+      "resultsPublishing": {
+        "method": "same-site",
+        "format": "excel-download",
+        "sampleResultUrl": "https://taiwanbike.org/images/downloads_files/0725-results.xls",
+        "externalPlatforms": [
+          "Google Sheets（近年認證活動成績表）",
+          "bao-ming.com 報名/成績查詢系統（如輪霸西濱 eb/content/6778）",
+          "Bravelog（完賽證書）",
+          "OneDrive/Google Drive 連結"
+        ]
+      },
+      "scrapeFeasibility": "靜態 HTML（Joomla）為主，極易爬：成績多為協會自託管的 .xls 直連檔（已驗證 HTTP 200, application/vnd.ms-excel，例如 0725-results.xls=429KB、20100117performance.xls=181KB），可直接下載解析。成績總表頁 /index.php/2009-07-18-17-11-16 以 HTML 列出各年連結。無需登入、無 captcha。注意：近年成績外連 Google Sheets（需用 export?format=xlsx 抓取），以及 bao-ming.com 報名/成績平台會回傳 403 阻擋機器人（需瀏覽器或 header 偽裝）。無公開 API。",
+      "additionalSitesFound": [
+        "https://www.bao-ming.com/eb/content/6778",
+        "https://cycling.org.tw/",
+        "https://www.cyclist.org.tw/eventnew.asp",
+        "https://www.tourdetaiwan.org.tw/",
+        "https://taiwanbike.org/index.php/2009-07-18-17-11-16",
+        "https://taiwanbike.org/index.php/2009-01-20-17-17-03"
+      ],
+      "notes": "重要判讀：taiwanbike.org 雖名為「自行車協會」，但其活動性質以「認證/長途挑戰騎乘」為主（雙塔520、北高360、四極620、武嶺中央山脈、西濱），多數明文「無競賽性質、不計名次」，RFID僅供個人參考——因此並非典型菁英組/分齡組頒獎的公路競賽平台。真正有計時名次的是2010-2014年早期賽事（北宜公路經典挑戰賽、五指山大賽、羅馬公路縱橫挑戰賽、大屯山挑戰賽），成績以分組Excel公布。成績回溯最早到2010-01-17（貓空掠嶺）。成績發布方式混合：早期同站 .xls 直連檔（最易爬）、近年改用 Google Sheets，部分外包 bao-ming.com 報名系統與 Bravelog 證書。若要做純競技公路賽（菁英/分齡頒獎）資料，建議改看 cycling.org.tw（中華民國自由車協會，正式競技賽事）或 cyclist.org.tw（騎士協會，含太平山KOM等）與 tourdetaiwan.org.tw（環台賽）。CMS=Joomla，靜態頁，整體爬蟲門檻低。"
+    },
+    {
+      "siteName": "雪巴運動 Sherpa Sports（雪巴運動股份有限公司）",
+      "url": "https://sherpa-sports.co/",
+      "accessible": true,
+      "listsCyclingRaces": true,
+      "description": "台灣2023年成立的耐力運動賽事主辦/賽事品牌公司（非通用報名平台），自家官網僅推自家旗艦自行車系列賽「台灣登山大滿貫自行車挑戰賽 Peaks of Taiwan Grand Cycling Tour」。專注高山登山型公路自行車賽（一年四場、橫跨四季的高山路段）。實際報名外包給伊貝特報名網(bao-ming.com)，成績外包給 Bravelog 運動趣。",
+      "coverageYears": "2024-2026（自家「台灣登山大滿貫」系列賽最早為2024年；其相關武嶺賽事在Bravelog可回溯到2023年。官網本身只顯示當前與近期賽季）",
+      "exampleRaces": [
+        {
+          "name": "2025台灣登山大滿貫自行車系列賽 陽明山站",
+          "type": "登山賽/公路長距離挑戰賽",
+          "date": "2025",
+          "location": "台北 陽明山",
+          "url": "https://sherpa-sports.co/contest/1/13",
+          "awardedCategories": [
+            "經典挑戰組144KM",
+            "進階/接力組178KM",
+            "終極組178KM",
+            "年齡分組(年齡分組可篩選)"
+          ]
+        },
+        {
+          "name": "2025台灣登山大滿貫自行車系列賽 太平山站",
+          "type": "登山賽/公路長距離挑戰賽",
+          "date": "2025-06-14",
+          "location": "宜蘭縣大同鄉泰雅路四段35號（太平山）",
+          "url": "https://sherpa-sports.co/contest/1/14",
+          "awardedCategories": [
+            "經典組164KM",
+            "進階/接力組203KM",
+            "終極組203KM"
+          ]
+        },
+        {
+          "name": "2025年台灣登山大滿貫自行車系列賽 大雪山站",
+          "type": "登山賽/公路長距離挑戰賽",
+          "date": "2025-09-13",
+          "location": "台中 大雪山",
+          "url": "https://www.bravelog.tw/contest/2025091303",
+          "awardedCategories": [
+            "經典挑戰組162KM",
+            "經典挑戰電輔車組162KM",
+            "進階挑戰組230KM",
+            "進階接力一般組230KM",
+            "進階接力混合組230KM",
+            "終極挑戰組230KM",
+            "年齡分組"
+          ]
+        },
+        {
+          "name": "2024年台灣登山大滿貫自行車系列賽 大雪山站",
+          "type": "登山賽/公路長距離挑戰賽",
+          "date": "2024-08-24",
+          "location": "台中 大雪山",
+          "url": "https://www.bravelog.tw/contest/2024082501",
+          "awardedCategories": [
+            "挑戰組145-214KM（爬升4600-5300m）多組距離分組"
+          ]
+        },
+        {
+          "name": "2025年台灣登山大滿貫自行車系列賽 阿里山站",
+          "type": "登山賽/公路長距離挑戰賽",
+          "date": "2025",
+          "location": "嘉義 阿里山",
+          "url": "https://bao-ming.com/eb/content/6764",
+          "awardedCategories": [
+            "經典組",
+            "進階/接力組",
+            "終極組"
+          ]
+        },
+        {
+          "name": "2026年台灣登山大滿貫自行車系列賽 陽明山站",
+          "type": "登山賽/公路長距離挑戰賽",
+          "date": "2026",
+          "location": "台北 陽明山",
+          "url": "https://bao-ming.com/eb/content/6853",
+          "awardedCategories": [
+            "經典組",
+            "進階/接力組",
+            "終極組"
+          ]
+        }
+      ],
+      "resultsPublishing": {
+        "method": "external-platform",
+        "format": "web-table",
+        "externalPlatforms": [
+          "Bravelog 運動趣 (bravelog.tw)"
+        ],
+        "sampleResultUrl": "https://www.bravelog.tw/contest/rank/2025091303"
+      },
+      "scrapeFeasibility": "官網 sherpa-sports.co：列表頁(/contest/1, /news)主要為靜態HTML可抓；但個別賽事詳情頁(/contest/1/14 等)部分內容由JavaScript渲染，WebFetch只能取到片段，建議用 headless browser(Playwright)抓詳情。無公開API、無需登入、無captcha。成績不在自家站，而在 Bravelog (bravelog.tw/contest/rank/{contestId})，成績排名為網頁表格、含多個組別tab與年齡分組篩選，看似靜態HTML可抓（每場一個數字型 contestId，如2025091303、2025032201、2024082501），但組別切換可能觸發JS/XHR，建議攔截其XHR/JSON端點較穩。報名資料在伊貝特 bao-ming.com/eb/content/{id}（會出現302轉址，需跟隨redirect）。",
+      "additionalSitesFound": [
+        "https://www.bravelog.tw/contest/rank/2025032201",
+        "https://www.bravelog.tw/contest/rank/2025091303",
+        "https://www.bravelog.tw/contest/2024082501",
+        "https://www.bravelog.tw/calendar",
+        "https://bao-ming.com/eb/content/6764",
+        "https://bao-ming.com/eb/content/6853",
+        "https://www.bravelog.tw/contest/rank/2024062301",
+        "https://www.bravelog.tw/contest/rank/2023062401",
+        "https://sherpa-sports.co/news",
+        "https://sherpa-sports.co/contest/1"
+      ],
+      "notes": "1) 平台性質：雪巴運動是「賽事主辦/品牌方」，不是像伊貝特/96好動客那種通用第三方報名平台。官網只列自家賽事，幾乎就是單一系列「台灣登山大滿貫自行車挑戰賽」(/contest/1)，分多站(陽明山/太平山/阿里山/大雪山等)。\n2) 賽事類型：全部是高山「登山型長距離公路挑戰賽」(爬升4200-5300m、162-230KM)，不是繞圈賽/計時賽；偏挑戰賽性質。注意官網本身未列「武嶺站」，但雪巴與崇越盃武嶺賽事生態相關，Bravelog上有2023/2024武嶺成績。\n3) 組別：官網是以「距離/挑戰等級」分組(經典/進階/終極/接力)，菁英vs市民的傳統分法不明顯；但Bravelog成績頁有「年齡分組(年齡分組)」可篩選，因此有分齡頒獎。電輔車(電輔車組)亦獨立成組。\n4) 歷史回溯：自家系列賽最早2024(大雪山站2024-08-24)，2025一整季多站，2026已開放報名(陽明山站)。再往前(2023)主要是武嶺賽事在Bravelog。範圍內無2010-2022資料。\n5) 成績公布：100%外包給 Bravelog 運動趣，URL樣式 https://www.bravelog.tw/contest/rank/{8碼數字ID}，為即時/正式成績網頁表格(欄位：名次/姓名/號碼牌/組別/年齡分組/完賽時間)，無Excel/PDF下載鈕。報名外包伊貝特 bao-ming.com。\n6) 數位完賽認證另與 Pathfinder Series 合作(ensage.tours)。"
+    },
+    {
+      "siteName": "其他台灣自行車/公路車賽事報名與成績平台（伊貝特/騎士協會/96好動客/筆記/TWB/中華民國自行車協會/雪巴 以外）",
+      "url": "https://www.ctrun.com.tw/",
+      "accessible": true,
+      "listsCyclingRaces": true,
+      "resultsPublishing": {
+        "method": "external-platform",
+        "format": "web-table",
+        "externalPlatforms": [
+          "MYLAPS BibTag (晶片計時硬體)",
+          "ATSport 運計科技 (atsport.com.tw 成績查詢)",
+          "ctrun.com.tw 自帶 QRcode 成績頁"
+        ],
+        "sampleResultUrl": "https://atsport.com.tw/score/109"
+      },
+      "scrapeFeasibility": "混合。全統 ctrun.com.tw 與 EventPal 為傳統 server-render ASP/Java 表單站，活動列表多為靜態 HTML，可直接抓 (ctrun 用 ?EventMain_ID= 數字參數，可枚舉)。成績多以「掃號碼布 QRcode 連到 web table」呈現，少數導到 ATSport。ATSport (atsport.com.tw) 用 /race/{id}、/score/{id}、/search?q= 的可枚舉 RESTful 路徑，成績為 HTML 表格 (含分頁 ?p=)，理論上易爬，但本環境 curl/WebFetch 連線逾時 (ECONNREFUSED/EXIT=28)，疑似擋非台灣 IP 或有 bot 防護，須用台灣 IP 或瀏覽器自動化。中華民國自由車協會 cycling.org.tw 為 WordPress，成績是 PDF/Excel 附件下載，須二次解析檔案。EventPal 首頁 JS 重導較多，活動細節頁可抓。",
+      "coverageYears": "cycling.org.tw 歷屆成績 1998-2026；ctrun/EventPal/ATSport 約 2010-2026（多為近年）；timedia 時代騎輪節為當季",
+      "description": "這是一組「已知七大平台以外」的台灣自行車賽事報名/成績系統盤點：以 全統運動報名網(ctrun.com.tw) 為代表的綜合運動報名站，加上 EventPal活動咖、ATSport運計科技(計時+成績)、中華民國自由車協會(國家級,Tour de Taiwan/全國公路錦標賽)、CT Yeh公路車基地(資訊/訓練) 與 時代社群(時代騎輪節)。多數公路車大型賽事(KOM登山王、環花東、太平山)其實仍走伊貝特+騎士協會，美利達盃走筆記報名;這些是補充性的其他通路。",
+      "exampleRaces": [
+        {
+          "name": "2025 輪轉台灣百K單車挑戰賽 - 台中站",
+          "date": "2025-06-08",
+          "location": "台中市清水區梧棲漁港",
+          "type": "公路挑戰賽 (100K/50K)",
+          "url": "https://www.ctrun.com.tw/Activity?EventMain_ID=203",
+          "awardedCategories": [
+            "100K分齡組(18-80歲)",
+            "50K組(16-80歲)"
+          ]
+        },
+        {
+          "name": "2025 輪轉台灣百K單車挑戰賽 - 彰化站",
+          "date": "2025",
+          "location": "彰化",
+          "type": "公路挑戰賽",
+          "url": "https://www.ctrun.com.tw/Activity?EventMain_ID=254",
+          "awardedCategories": [
+            "100K",
+            "50K"
+          ]
+        },
+        {
+          "name": "2026 蘭陽百K自行車挑戰賽",
+          "date": "2026",
+          "location": "宜蘭 蘭陽平原",
+          "type": "公路挑戰賽 (100K)",
+          "url": "https://www.eventpal.com.tw/url/lanyang100cycling",
+          "awardedCategories": [
+            "百K挑戰組"
+          ]
+        },
+        {
+          "name": "2026 時代騎輪節",
+          "date": "2026",
+          "location": "台灣(時代社群主辦)",
+          "type": "自行車騎遊/挑戰 (限時6h45m完騎,上限5000人)",
+          "url": "https://timedia.tw/wheelsridefestival/",
+          "awardedCategories": [
+            "完騎挑戰組"
+          ]
+        },
+        {
+          "name": "2023 CHALLENGE TAIWAN (含自行車分項,ATSport計時)",
+          "date": "2023",
+          "location": "台東活水湖",
+          "type": "鐵人三項含公路車段/計時",
+          "url": "https://atsport.com.tw/race/151",
+          "awardedCategories": [
+            "菁英組M20",
+            "菁英組M30",
+            "分齡組"
+          ]
+        },
+        {
+          "name": "114年全國自由車公路錦標賽暨選拔賽",
+          "date": "2025",
+          "location": "台灣(中華民國自由車協會主辦)",
+          "type": "公路賽/個人計時賽",
+          "url": "https://cycling.org.tw/下載區/",
+          "awardedCategories": [
+            "菁英組",
+            "青年組",
+            "國手選拔積分"
+          ]
+        }
+      ],
+      "additionalSitesFound": [
+        "https://www.ctrun.com.tw/ (全統運動報名網 — 報名+MYLAPS晶片計時+QRcode成績)",
+        "https://www.eventpal.com.tw/ (活動咖 EventPal — 綜合運動報名,含自行車百K挑戰)",
+        "https://atsport.com.tw/ (ATSport 運計科技 — RFID計時與成績查詢,/race/{id}、/score/{id}、/search?q= 路徑;本環境連線被擋)",
+        "https://cycling.org.tw/ (中華民國自由車協會 — 國家級,Tour de Taiwan環台賽、全國公路錦標賽;成績PDF/Excel,archive自1998)",
+        "https://ctyeh.com/cycling-events (CT Yeh 公路車基地 — 賽事行事曆/訓練分析,非報名)",
+        "https://timedia.tw/wheelsridefestival/ (時代社群 時代騎輪節)",
+        "https://taiwanbike.tw/ (臺灣騎跡 全國自行車單一總入口網 — 政府彙整活動資訊入口,非報名)",
+        "https://www.neverstop.org.tw/ (NeverStop永不放棄系列 — 台北市自由車協會主辦活動站)",
+        "https://www.tourdetaiwan.org.tw/ (國際自由車環台公路大賽官網)"
+      ],
+      "notes": "關鍵發現:(1) 任務點名的多數「大型公路車賽」其實未用新平台 — KOM臺灣自行車登山王(taiwankom.org) 與 環花東 East Taiwan Road Race & TTT 皆由中華民國自行車騎士協會主辦,報名走伊貝特 bao-ming.com、成績走 cyclist.org.tw(已知);太平山自行車賽亦在 bao-ming.com;美利達盃&單車嘉年華 走筆記報名 irunner.biji.co(已知)。這些都落在你已知清單內。(2) 真正「其他」的新平台是 全統運動報名網 ctrun.com.tw(報名+MYLAPS BibTag晶片計時,成績用號碼布QRcode連 web table)與 活動咖 EventPal(綜合運動報名)。(3) ATSport 運計科技 是獨立的計時/成績供應商,常見於鐵人三項(CHALLENGE TAIWAN、普悠瑪)及部分含公路車分項賽事,成績為可枚舉 /race/{id} HTML 表格;但本環境兩次 WebFetch 得 ECONNREFUSED、curl EXIT=28(逾時),研判擋非台灣IP或bot,需台灣IP/瀏覽器自動化才能實抓。(4) 國家級賽事(環台 Tour de Taiwan、全國公路錦標賽)由中華民國自由車協會 cycling.org.tw 發布,成績是 WordPress 上的 PDF/Excel 附件,須下載再解析。(5) 「戴勝益」應為任務誤植,未找到以該名命名之自行車賽報名系統;疑似指 CT Yeh(葉政彥/公路車基地)或時代騎輪節,兩者皆已列出。爬蟲建議:ctrun(?EventMain_ID 枚舉)與 cycling.org.tw(PDF) 最穩定可離線抓;ATSport 資料最結構化但需在地IP。"
+    },
+    {
+      "siteName": "樂活報名網 (LohasNet)",
+      "url": "https://lohasnet.tw/",
+      "accessible": true,
+      "listsCyclingRaces": true,
+      "description": "樂活資訊(2012成立)經營的線上報名+晶片計時+成績公布一條龍平台。主打路跑/馬拉松晶片計時，但同時承辦多場大型自行車活動的報名與計時(報名站 signup.lohasnet.tw，成績站 timing.lohasnet.tw)。是台灣公路車賽事圈中除伊貝特/騎士協會/96好動客/筆記報名之外，一個明顯獨立的「其他」平台。",
+      "coverageYears": "2012-2026 (報名與成績皆含近年；成績站可查歷年活動)",
+      "resultsPublishing": {
+        "method": "same-site",
+        "format": "web-table",
+        "sampleResultUrl": "https://timing.lohasnet.tw/score/lohas",
+        "externalPlatforms": []
+      },
+      "scrapeFeasibility": "成績站 timing.lohasnet.tw/score/lohas 為動態查詢介面，首頁 302 轉址且內容多由 JS/查詢表單載入，WebFetch 僅取得標頭、看不到賽事清單，屬偏 JS-rendered/需互動(選賽事→分組→查詢)。報名頁 lohasnet.tw 為靜態活動頁可直接抓活動名稱/日期，但成績明細需模擬查詢或找後端 API。無登入牆、未見 captcha。建議用 Playwright/Chrome DevTools 驅動成績查詢並攔截 XHR 取 JSON。",
+      "exampleRaces": [
+        {
+          "name": "2026 萬眾騎BIKE (台中六媽祖宮自行車活動)",
+          "type": "自行車挑戰/騎乘活動(非競速，含晶片計時)",
+          "date": "2026",
+          "location": "台中",
+          "url": "https://signup.lohasnet.tw/signup/4172",
+          "awardedCategories": [
+            "完騎/距離分組"
+          ]
+        },
+        {
+          "name": "2025 萬眾騎BIKE",
+          "type": "自行車騎乘活動(晶片計時)",
+          "date": "2025-03-22",
+          "location": "台中",
+          "url": "https://lohasnet.tw/Folkbiking2025/",
+          "awardedCategories": [
+            "距離分組"
+          ]
+        }
+      ],
+      "additionalSitesFound": [
+        "https://www.eventpal.com.tw/FOAS/actions/IndexNew.action",
+        "https://sports.eventpal.com.tw",
+        "https://www.ctrun.com.tw/",
+        "https://accounter.ctrun.com.tw/RSIS/Announce/main",
+        "https://taiwanbike.tw/",
+        "https://ctyeh.com/cycling-events",
+        "https://www.je22.cc/",
+        "https://timing.lohasnet.tw/score/lohas",
+        "https://signup.lohasnet.tw/fontpage/Score"
+      ],
+      "notes": "使用者已知清單之外，本輪實際找到的「其他」平台共三個明確的報名/成績系統，外加兩個非報名性質的聚合/官方入口，以及一個品牌型賽事日曆。\n\n(1) 樂活報名網 LohasNet (本結構化主答) — 報名 signup.lohasnet.tw、成績 timing.lohasnet.tw，承辦萬眾騎BIKE等自行車活動，成績以網頁表格呈現並可下載電子證書。\n\n(2) 活動咖 EventPal (eventpal.com.tw / sports.eventpal.com.tw) — 全方位運動報名平台，確有自行車賽(例:2026 蘭陽百K自行車挑戰賽)。成績格式本輪未能直接觀察(運動咖子站回 502),需再驗證;偏 JS 動態站。\n\n(3) 全統運動報名網 CTRUN (ctrun.com.tw，1994成立的全統運動用品) — ASP.NET 站(.aspx),有自行車活動如「2026 輪轉台灣百K單車挑戰賽-台中站」(EventMain_ID=293,2026-05-31,高美濕地,45K/103K,專業晶片計時,非競速)。成績查詢系統在 accounter.ctrun.com.tw/RSIS/Announce/main。\n\n非報名性質但相關:\n- 臺灣騎跡 taiwanbike.tw — 交通部官方「全國自行車單一總入口網」,彙整自行車節/世界自行車日活動,非報名/成績系統。\n- ctyeh.com — 公路車訓練/功率分析資源站附賽事行事曆(2026目前無資料),非報名平台。\n- je22.cc — 自行車服飾品牌,僅做2025賽事日曆「目錄」,連到 96sporter.com / bao-ming.com 等外部報名,本身非平台。\n\n大型賽事實際使用的系統(交叉確認):\n- 美利達盃 & 單車嘉年華 (Merida Cup) → 用「筆記報名」biji.co (irunner.biji.co/Meridacarnival2025)。非競速,僅提供計時成績與排名供自我激勵。\n- 環花東國際自行車賽 (Tour of East Taiwan, TTT) → 「伊貝特報名網」bao-ming.com (eb/content/6841),成績/電子證書於騎士協會官網 cyclist.org.tw 下載。\n- 臺灣自行車登山王挑戰 / 武嶺 KOM 及 KOM登山王之路春/夏季、太平山KOM&TTT → 自有官網 taiwankom.org 報名,成績以「成績公告」貼文(總排名/分組排名/電子證書)於 taiwankom.org news 與騎士協會 cyclist.org.tw/results_list.asp 公布(results_list.asp 直接 .asp 回 404,須帶參數)。\n- 萬眾騎BIKE → 樂活報名網。\n- 捷安特相關騎乘多走 96好動客 / 各自官網。\n\n結論:本輪「其他平台」最值得納入的是樂活報名網、活動咖EventPal、全統運動報名網CTRUN 三家;其餘為官方入口或品牌目錄。je22.cc 與 ctyeh.com 不算報名平台。"
+    }
+  ],
+  "resultsSites": [
+    {
+      "siteName": "Bravelog 運動趣",
+      "url": "https://www.bravelog.tw/",
+      "accessible": true,
+      "listsCyclingRaces": true,
+      "description": "台灣耐力運動賽事成績與訓練整合平台,自述涵蓋全台約 80% 路跑/自行車/鐵人三項賽事,提供即時賽況追蹤、完賽預測、成績查詢與電子完賽證書。自行車類涵蓋公路車挑戰賽、繞圈賽、登山/長程挑戰等。",
+      "coverageYears": "至少 2025-2026 可直接瀏覽;賽事列表 /calendar 含歷年場次,實際回溯年限受 JS 載入限制未能在靜態抓取中確認(平台運作數年,推測可回溯數年但無公開封存頁證據)。",
+      "exampleRaces": [
+        {
+          "name": "2025 VW LAVanLife 玩賽樂園 落日飛車｜350自行車挑戰",
+          "date": "2025-03-08",
+          "location": "台東縣",
+          "type": "公路賽/長程挑戰賽",
+          "url": "https://www.bravelog.tw/contest/rank/2025030802",
+          "awardedCategories": [
+            "350兩日組-第一日180公里",
+            "落日飛車組90公里",
+            "不分組"
+          ]
+        },
+        {
+          "name": "2025 L'Étape 環法自行車挑戰賽 - 紐崔萊・日月潭站",
+          "date": "2025-10-18",
+          "location": "南投縣",
+          "type": "公路賽",
+          "url": "https://www.bravelog.tw/contest/rank/2025101802",
+          "awardedCategories": [
+            "104公里挑戰組-男子組",
+            "104公里挑戰組-女子組",
+            "29公里經典組-男子組",
+            "29公里經典組-女子組"
+          ]
+        },
+        {
+          "name": "銅礦88經典自行車挑戰賽",
+          "date": "unknown",
+          "location": "台灣",
+          "type": "公路賽/登山挑戰賽",
+          "url": "https://www.bravelog.tw/calendar"
+        }
+      ],
+      "resultsPublishing": {
+        "method": "same-site",
+        "format": "web-table",
+        "sampleResultUrl": "https://www.bravelog.tw/contest/rank/2025030802",
+        "externalPlatforms": []
+      },
+      "scrapeFeasibility": "易爬:傳統 jQuery 伺服器端渲染(非 SPA),成績資料直接內嵌於 /contest/rank/{id} 的初始 HTML。無需 JS 即可解析。無公開 JSON API(唯一 XHR 為 /athlete/update,POST,屬即時追蹤而非成績清單)、無 CSV/Excel 下載。分頁與分組過濾皆走同一 rank URL 的查詢字串/表單,GET 即可取得。注意:頁面載入 Google reCAPTCHA(invisible,用於登入,不擋成績瀏覽),建議加 User-Agent 與限速禮貌爬取。",
+      "additionalSitesFound": [
+        "https://www.bravelog.tw/calendar",
+        "https://www.bravelog.tw/contest/2025101802",
+        "https://www.bravelog.tw/athlete/1340/002312",
+        "https://www.bravelog.tw/leader/2026032802",
+        "https://dor.bravelog.tw/"
+      ],
+      "notes": "資料取得機制(已實測確認):\n1) 成績清單頁 URL 規律:/contest/rank/{contestId},contestId 為日期序號制 YYYYMMDD+2碼流水(例 2025030802 = 2025-03-08 第02場;2025101802 = L'Étape 日月潭)。對應賽事資訊頁為 /contest/{contestId}。\n2) 分頁=伺服器端,以查詢字串 ?page=N(實測 ?page=2 回傳不同選手)。頁數來自 #pagination 元素 data-total(該場 350自行車賽=26 頁,每頁約 20 筆),data-url 指回同一 rank URL。\n3) 分組/距離過濾:頁面有兩個 select 表單欄位 — name=raceId(子賽事/距離組別,數值 ID,例 1340=350兩日組-第一日180公里、1341=落日飛車組90公里)與 name=group(年齡分組,例 不分組)。組合 raceId/group/page 即可遍歷全部組別與頁面。\n4) 成績清單欄位(rank 頁,div 版面非 table,選擇器 .list-single-main-item_content):選手姓名、號碼布(bib,例 002312)、組別/距離(category)、年齡分組(age group,例 不分組)、完賽時間(time HH:MM:SS,即名次依列序)。性別/配速/晶片時間不在清單頁。\n5) 選手明細頁 URL 規律:/athlete/{raceId}/{bib}(例 /athlete/1340/002312),含更完整欄位:個人成績 Net Time(晶片/淨時間)、總排名 Overall Ranking、性別排名 Gender Ranking、分組排名 Div Ranking、分段時間 splits(出發/抵達時間戳,例 06:30:03→11:54:59)、平均速率 平均速度(代替配速)。部分排名欄位於未認領/即時狀態顯示為「—」。\n6) 欄位對照總表:名次=有(依完賽時間排序+明細頁 Overall/Gender/Div Ranking);組別=有(raceId);年齡/分齡=有(group 欄位);性別=有(以男子組/女子組組別呈現,L'Étape 場已確認);完成時間=有;配速=以平均速率/平均速度呈現(自行車為 km/h,例 34);號碼布=有(bib);晶片時間=有(明細頁 Net Time + 分段時間戳);槍聲/Gun time=未明確分列(自行車賽多以晶片/淨時間為主)。\n7) 結論:全程靜態 HTML 可爬,建議流程:抓 /contest/rank/{id} → 解析 raceId/group 下拉與 data-total → 迴圈 raceId × group × page 抓清單 → 需要晶片時間/排名/配速時再抓 /athlete/{raceId}/{bib} 明細頁。賽事清單(找全部 contestId)需處理 /calendar,但該頁為 JS 動態載入,靜態抓不到事件,須用瀏覽器自動化或從各 contestId 規律枚舉/由搜尋引擎收集。"
+    },
+    {
+      "siteName": "BraveLog 運動趣",
+      "url": "https://www.bravelog.tw/",
+      "accessible": true,
+      "listsCyclingRaces": true,
+      "description": "台灣最大的耐力運動賽事成績／即時追蹤平台，自稱整合台灣約八成路跑、單車、鐵人三項賽事。提供報名、晶片計時、即時領先排行榜（LIVE）、完賽成績與電子證書。自行車賽（公路挑戰、登山賽、市運自由車錦標賽等）大量外包給它做成績公布。",
+      "coverageYears": "約 2018-2026（持續累積歷史成績庫，可用選手姓名跨賽事搜尋）",
+      "resultsPublishing": {
+        "method": "same-site",
+        "format": "web-table",
+        "sampleResultUrl": "https://www.bravelog.tw/contest/rank/2025030802",
+        "externalPlatforms": []
+      },
+      "scrapeFeasibility": "JS-rendered SPA。首頁與 /calendar 賽事清單為 JavaScript 動態載入，靜態 HTML 抓不到事件；成績排名頁 /contest/rank/{eventId} 也是前端渲染。可行做法：用 headless browser（Playwright），或逆向其後端 JSON API（成績/排行榜由 XHR 取得，eventId 形如 2025030802 = 日期+序號，可枚舉）。無公開下載按鈕、無 Excel/CSV 匯出，純網頁表格；組別以下拉切換（例：350兩日組/落日飛車90公里）。有防呆但未見登入或 captcha 阻擋。",
+      "exampleRaces": [
+        {
+          "name": "2025 VW LAVanLife 玩賽樂園｜落日飛車 350自行車挑戰",
+          "date": "2025-03-08",
+          "location": "台灣",
+          "type": "公路賽/挑戰賽",
+          "url": "https://www.bravelog.tw/contest/rank/2025030802",
+          "awardedCategories": [
+            "350兩日組(第一日180K)",
+            "落日飛車組90公里",
+            "年齡分組(部分不分組)"
+          ]
+        },
+        {
+          "name": "115年桃園市運動會-市長盃自由車錦標賽暨國手積分賽",
+          "date": "2026-05-31",
+          "location": "桃園",
+          "type": "公路賽/積分賽",
+          "url": "https://www.bravelog.tw/",
+          "awardedCategories": [
+            "菁英/競賽組",
+            "分齡組"
+          ]
+        },
+        {
+          "name": "2026 鵬灣騎行—世界自行車日",
+          "date": "2026-06-03",
+          "location": "屏東 大鵬灣",
+          "type": "挑戰賽",
+          "url": "https://www.bravelog.tw/",
+          "awardedCategories": [
+            "市民組"
+          ]
+        },
+        {
+          "name": "2025 L'Étape 環法自行車挑戰賽-日月潭站",
+          "date": "2025-10-18",
+          "location": "南投 日月潭",
+          "type": "公路挑戰賽",
+          "url": "https://www.bravelog.tw/contest/2025101802",
+          "awardedCategories": [
+            "分齡組",
+            "市民組"
+          ]
+        },
+        {
+          "name": "2026 銅礦88經典自行車挑戰賽",
+          "date": "2026-06-07",
+          "location": "台灣",
+          "type": "公路挑戰賽",
+          "url": "https://www.bravelog.tw/",
+          "awardedCategories": [
+            "市民組"
+          ]
+        }
+      ],
+      "additionalSitesFound": [
+        "https://www.cyclist.org.tw/results.asp — 中華民國自行車騎士協會(TCF) 官方成績庫，PDF 下載，2020-2025 歷史檔，含登山王/環花東/百K/天王賽等",
+        "https://www.cyclist.org.tw/results_list.asp?pno=7 — TCF Cycling Series 成績清單，PDF (upfile/resultPDF/.../*.pdf)，分總排名/分組(競賽組/挑戰組)",
+        "https://www.96sporter.com/ — 96好動客(96聯賽 96CyclingRace) 報名平台，自架英雄榜/積分榜 player_rank.htm，各站成績下載；分菁英組/市民組/分齡組(U15/青年/U23/M30/M40)",
+        "https://record.17run.com.tw/ — 瀚世比運動行銷(17run) 晶片計時即時成績(iBodyGo系統)，可依號碼布查詢+證書下載，主要路跑但也接自行車/二三鐵",
+        "https://irunner.biji.co/track — 運動筆記 biji iRunner 即時成績查詢平台 /track/{id}，依號碼布查詢+網頁表格，少量自行車賽(如環大苗栗世界自行車日)",
+        "https://www.taiwankom.org/ — 台灣自行車登山王挑戰(KOM)官網",
+        "https://www.tourdetaiwan.org.tw/ — 國際自由車環台公路大賽 Tour de Taiwan(UCI賽事)",
+        "https://timedia.tw/wheelsridefestival/ — 時代騎輪節(晶片貼紙計時)",
+        "https://taiwanbike.tw/ — 臺灣騎跡 全國自行車單一總入口網(活動資訊匯整)"
+      ],
+      "notes": "台灣自行車賽成績外包樣態分三類：(1) 第三方成績/計時平台 — BraveLog 是龍頭，最常見於市民/挑戰型公路賽與市運自由車賽，純網頁表格、JS-rendered、需 headless 或逆向 API，無 Excel 匯出但有完整跨賽事歷史庫可用選手名搜尋。biji iRunner、瀚世比17run(record.17run.com.tw, iBodyGo晶片計時) 為次要平台，皆依號碼布查詢的網頁表格、可下載證書、JS互動。(2) 賽會/協會自架成績庫 — 中華民國自行車騎士協會(TCF, cyclist.org.tw) 是最好爬的目標：results_list.asp?pno=N 列表 + 直接 PDF 下載連結(upfile/resultPDF/{folder}/{timestamp}.pdf)，2020-2025 歷史檔齊全，靜態 ASP 頁面、無 JS、無登入，PDF 內含總排名與分組(競賽組/挑戰組/分齡)。96好動客(96聯賽)為自架報名+英雄榜積分榜，菁英/市民/分齡組齊全，部分站成績以外連(reurl)提供下載。(3) 大型 UCI/官方賽(環台賽 Tour de Taiwan、登山王 KOM)有獨立官網成績。爬蟲建議：要結構化歷史成績→優先 TCF PDF(易抓、可解析表格)；要市民賽即時/廣覆蓋→ BraveLog 但需處理 JS 與反向 API。資料格式總結：BraveLog/biji/17run=網頁表格(無Excel)，TCF/部分賽會=PDF，96聯賽=網頁+外連下載。未觀察到公開 REST API 文件，但 BraveLog 排行榜明顯由前端 XHR 取 JSON，值得用瀏覽器 DevTools 逆向。"
+    },
+    {
+      "siteName": "台灣自行車賽事「成績公布/查詢」平台彙整（多平台調查）",
+      "url": "https://www.bravelog.tw/",
+      "accessible": true,
+      "listsCyclingRaces": true,
+      "description": "台灣自行車賽事成績多由「晶片計時/成績系統商」外包製作並公布。最主流的成績匯整平台是 Bravelog 運動趣（號稱整合全台約 80% 耐力運動賽事，含公路車/自行車），其次為 iRunner（運動筆記/H2U 旗下即時成績）、iBodyGo（恆碩資訊，瀚世比 17run 等計時商使用的成績發布後端，URL 形如 EventGrade.aspx?n=ID）。協會型賽事（中華民國自由車協會 cycling.org.tw、中華民國自行車協會 taiwanbike.org）則自架，直接掛 PDF/Excel/Google Sheets 檔。",
+      "resultsPublishing": {
+        "method": "external-platform",
+        "format": "mixed: web-table (Bravelog/iRunner/iBodyGo JS-rendered) + excel-download/google-sheets/pdf (協會自架)",
+        "externalPlatforms": [
+          "Bravelog 運動趣",
+          "iRunner (運動筆記/H2U)",
+          "iBodyGo 恆碩資訊",
+          "瀚世比 17run (計時商, 用 iBodyGo 發布)"
+        ],
+        "sampleResultUrl": "https://www.bravelog.tw/leader/2026011101"
+      },
+      "scrapeFeasibility": "分平台不同：(1) Bravelog 成績頁 /leader/{id} 與 /contest/{id} 為 JS 渲染，靜態 HTML 只有模板與「點擊查看分段成績」字樣，需 headless browser 或逆向其後端 XHR JSON；無公開匯出鈕。(2) iRunner /track/{id} 同為 JS 動態載入。(3) iBodyGo EventGrade.aspx?n={id} 對自動抓取回 404（疑似 UA/Session 阻擋的 ASP.NET 站），瀏覽器可見名次/晶片時間/組別表格，需模擬瀏覽器。(4) 最易爬：cycling.org.tw 與 taiwanbike.org 為靜態 HTML 連結直掛 PDF/xls/Google Sheets，可直接下載解析（已實測 cycling.org.tw PDF 連結回傳真實 1.2MB PDF）。未發現公開且有文件的 REST API；無 captcha，但 iBodyGo 有 bot 阻擋；建議實作前先查各站 /robots.txt。",
+      "coverageYears": "cycling.org.tw 歷屆成績 1998–2026；taiwanbike.org 約 2010–2026；Bravelog/iRunner 主要為近期至當季賽事（會員制個人歷史成績牆）",
+      "additionalSitesFound": [
+        "https://lb-frontend.bravelog.tw/calendar (Bravelog 賽事列表, 可篩自行車)",
+        "https://irunner.biji.co/track (iRunner 即時成績, 運動筆記/H2U)",
+        "https://www.ibodygo.com.tw/EventGrade.aspx?n=1340 (iBodyGo 成績頁範例, 自動抓取被擋)",
+        "https://17run.com.tw/serviceitems/timekeeping/ (瀚世比晶片計時, 成績外包給 iBodyGo)",
+        "https://cycling.org.tw/下載區/ (中華民國自由車協會 歷屆成績 PDF/Excel)",
+        "https://taiwanbike.org/index.php/2009-07-18-17-11-16 (中華民國自行車協會 活動成績查詢, Excel/Google Sheets/PDF)",
+        "https://www.96sporter.com/event.htm (96好動客/96聯賽 報名+英雄榜)",
+        "https://www.cyclist.org.tw/eventnew.asp (自行車騎士協會 登山王/西進武嶺, 有成績紀錄區)",
+        "https://bao-ming.com/eb/content/6389 (伊貝特報名網, iBodyGo 同體系, TIS崇越盃武嶺)",
+        "https://www.tourdetaiwan.org.tw/ (國際自由車環台公路大賽 官網)",
+        "https://www.runningquotient.com/ (RQ跑力, 數據分析非成績發布, 可排除)"
+      ],
+      "exampleRaces": [
+        {
+          "name": "2026 銅礦88經典自行車挑戰賽 (Copper Mine 88 Classic)",
+          "type": "公路賽/挑戰賽",
+          "date": "2026-06-07",
+          "location": "台灣",
+          "url": "https://www.bravelog.tw/",
+          "awardedCategories": [
+            "分齡組",
+            "市民組"
+          ]
+        },
+        {
+          "name": "115桃園市運動會-市長盃公路自行車錦標賽",
+          "type": "公路賽",
+          "date": "2026-05-31",
+          "location": "桃園",
+          "url": "https://www.bravelog.tw/",
+          "awardedCategories": [
+            "菁英組",
+            "分齡組"
+          ]
+        },
+        {
+          "name": "2026 96聯賽 武嶺站 (96 HEROES 中華賓士・武嶺站)",
+          "type": "登山賽/爬坡賽",
+          "date": "2026",
+          "location": "南投武嶺",
+          "url": "https://www.96sporter.com/event.htm",
+          "awardedCategories": [
+            "菁英組",
+            "市民組",
+            "分齡組"
+          ]
+        },
+        {
+          "name": "2025 TIS崇越盃武嶺自行車挑戰賽",
+          "type": "登山賽/爬坡賽",
+          "date": "2025-06",
+          "location": "南投武嶺",
+          "url": "https://bao-ming.com/eb/content/6347",
+          "awardedCategories": [
+            "分齡組",
+            "菁英組"
+          ]
+        },
+        {
+          "name": "115年全國中等學校暨國小自由車公路錦標賽",
+          "type": "公路賽",
+          "date": "2026",
+          "location": "全國",
+          "url": "https://cycling.org.tw/wp-content/uploads/2026/02/115年全國中等學校暨國小自由車公路錦標賽成績完整.pdf",
+          "awardedCategories": [
+            "公路個人賽",
+            "公路團體賽",
+            "分齡/分級組"
+          ]
+        },
+        {
+          "name": "2025 環大苗栗107K挑戰 / 群山平溪經典挑戰",
+          "type": "挑戰賽/公路賽",
+          "date": "2025",
+          "location": "苗栗/平溪",
+          "url": "https://taiwanbike.org/index.php/2009-07-18-17-11-16",
+          "awardedCategories": [
+            "80K組",
+            "60K組",
+            "完騎認證"
+          ]
+        }
+      ],
+      "notes": "調查結論：台灣自行車賽「成績外包」生態分三層。(A) 晶片計時/成績系統商：最主流的對外成績匯整是 Bravelog 運動趣（整合約80%耐力賽事，含公路車）；iRunner（運動筆記 H2U）為另一即時成績；iBodyGo（恆碩資訊）是多家計時商（如瀚世比 17run）實際發布成績的後端，URL 形如 EventGrade.aspx?n=ID；伊貝特 bao-ming.com 為其報名同體系。(B) 協會自架：中華民國自由車協會 cycling.org.tw「歷屆成績下載」區 1998–2026 直掛 PDF/Excel/zip（全國公路/場地/登山車錦標賽，已實測可下載真實 PDF）；中華民國自行車協會 taiwanbike.org 用 Excel(.xls 舊)+Google Sheets(新)+PDF。(C) 商業系列賽自家榜：96聯賽(96sporter 英雄榜)、自行車騎士協會 cyclist.org.tw(登山王/西進武嶺 成績紀錄區)。\n\n爬蟲建議：要結構化成績資料，最佳切入點是 (1) cycling.org.tw / taiwanbike.org 的靜態檔案連結（直接下載 PDF/Excel/Google Sheets 解析，coverage 最長、最穩定）；(2) Bravelog 與 iRunner 需 headless browser 或逆向其 XHR JSON API（成績頁 /leader/{id}、/track/{id} 皆 JS 渲染，靜態 HTML 取不到表格）；(3) iBodyGo EventGrade.aspx 對純 HTTP fetch 回 404，需模擬瀏覽器標頭/Session。未發現任一平台提供公開、有文件的 REST API；無 captcha 但 iBodyGo 有 bot 阻擋。RQ跑力(RunningQuotient)為訓練數據分析平台，非成績發布來源，已排除。"
+    }
+  ],
+  "blogCalendars": [
+    {
+      "sourceName": "單車時代 CYCLINGTIME（年度國內賽事一覽整理文）+ 交叉比對：RACE ON 自行車活動行事曆、自行車騎士協會、Betery 部落格、飛天拜客 Boost Biker、KAVULUNGAN klcycling",
+      "url": "https://cyclingtime.com/tw/documents/10673.html",
+      "accessible": true,
+      "racesByYear": [
+        {
+          "year": "2021",
+          "raceName": "陽明山王登山賽",
+          "date": "2021/03/06",
+          "location": "陽明山",
+          "type": "登山賽",
+          "organizer": "自行車騎士協會"
+        },
+        {
+          "year": "2021",
+          "raceName": "臺灣KOM登山王之路（春季）",
+          "date": "2021/03/19",
+          "location": "花蓮太魯閣-武嶺",
+          "type": "登山賽",
+          "organizer": "自行車騎士協會"
+        },
+        {
+          "year": "2021",
+          "raceName": "輪耀台灣公路系列賽-新玉門關",
+          "date": "2021/03/13",
+          "location": "台南",
+          "type": "公路賽",
+          "organizer": "輪耀台灣 / 台南在地車隊"
+        },
+        {
+          "year": "2021",
+          "raceName": "輪耀台灣公路系列賽-南化水庫繞圈賽",
+          "date": "2021/03/14",
+          "location": "台南南化",
+          "type": "繞圈賽",
+          "organizer": "輪耀台灣"
+        },
+        {
+          "year": "2021",
+          "raceName": "輪耀台灣公路系列賽-175咖啡公路",
+          "date": "2021/09/25（延期後）",
+          "location": "台南",
+          "type": "公路賽",
+          "organizer": "輪耀台灣"
+        },
+        {
+          "year": "2021",
+          "raceName": "輪耀台灣公路系列賽-崁頭山登山賽",
+          "date": "2021/11/13",
+          "location": "台南東山",
+          "type": "登山賽",
+          "organizer": "輪耀台灣"
+        },
+        {
+          "year": "2021",
+          "raceName": "DIRTY FORMOSA CHALLENGE（礫石公路賽）",
+          "date": "2021/03/21",
+          "location": "埔里-福壽山農場 林道 103km",
+          "type": "公路賽（gravel）",
+          "organizer": "Dirty Formosa"
+        },
+        {
+          "year": "2021",
+          "raceName": "96聯賽-塔塔加探索",
+          "date": "2021/04/11",
+          "location": "塔塔加",
+          "type": "公路賽",
+          "organizer": "96好動客 96聯賽"
+        },
+        {
+          "year": "2021",
+          "raceName": "96聯賽-桃園市長盃",
+          "date": "2021/04/25",
+          "location": "桃園",
+          "type": "公路賽/繞圈賽",
+          "organizer": "96聯賽"
+        },
+        {
+          "year": "2021",
+          "raceName": "96聯賽-武嶺挑戰",
+          "date": "2021/09/12（延期後）",
+          "location": "武嶺",
+          "type": "登山賽",
+          "organizer": "96聯賽"
+        },
+        {
+          "year": "2021",
+          "raceName": "96聯賽-彰化總決賽",
+          "date": "2021/10/31",
+          "location": "彰化",
+          "type": "公路賽",
+          "organizer": "96聯賽"
+        },
+        {
+          "year": "2021",
+          "raceName": "三冠王挑戰（Triple Crown Challenge）",
+          "date": "2021/04/25",
+          "location": "台灣",
+          "type": "登山賽",
+          "organizer": "-"
+        },
+        {
+          "year": "2021",
+          "raceName": "獨攀太平山王",
+          "date": "2021/05/01",
+          "location": "宜蘭太平山",
+          "type": "登山賽",
+          "organizer": "-"
+        },
+        {
+          "year": "2021",
+          "raceName": "臺灣KOM登山王之路（夏季）",
+          "date": "2021/09/06（延期後）",
+          "location": "花蓮太魯閣-武嶺",
+          "type": "登山賽",
+          "organizer": "自行車騎士協會"
+        },
+        {
+          "year": "2021",
+          "raceName": "建大盃武嶺盃",
+          "date": "2021/取消",
+          "location": "武嶺",
+          "type": "登山賽",
+          "organizer": "建大 / 自行車騎士協會"
+        },
+        {
+          "year": "2021",
+          "raceName": "臺灣KOM登山王挑戰（Taiwan KOM Challenge）",
+          "date": "2021/10/29",
+          "location": "花蓮太魯閣-武嶺 105km",
+          "type": "登山賽",
+          "organizer": "自行車騎士協會"
+        },
+        {
+          "year": "2021",
+          "raceName": "環花東自行車賽",
+          "date": "2021/04/17-18",
+          "location": "花蓮-台東（兩日各約170km）",
+          "type": "公路賽（多日）",
+          "organizer": "-（環花東 第21屆）"
+        },
+        {
+          "year": "2021",
+          "raceName": "環大台北自行車挑戰",
+          "date": "2021/09/06",
+          "location": "大台北",
+          "type": "公路賽/挑戰",
+          "organizer": "自行車騎士協會"
+        },
+        {
+          "year": "2021",
+          "raceName": "時代騎輪節（Cycling Time Wheel Festival）",
+          "date": "2021/12/05",
+          "location": "台中 103km",
+          "type": "挑戰賽",
+          "organizer": "單車時代 CYCLINGTIME"
+        },
+        {
+          "year": "2021",
+          "raceName": "戀戀197",
+          "date": "2021/12/05（自7/25延期）",
+          "location": "台東197縣道",
+          "type": "挑戰賽",
+          "organizer": "-"
+        },
+        {
+          "year": "2024",
+          "raceName": "陽明山王公路賽＆團隊計時賽（臺灣自行車聯賽開春站）",
+          "date": "2024春季",
+          "location": "陽明山",
+          "type": "公路賽/計時賽",
+          "organizer": "自行車騎士協會（臺灣自行車聯賽）"
+        },
+        {
+          "year": "2024",
+          "raceName": "環花東公路賽（二日）",
+          "date": "2024/04",
+          "location": "花蓮-台東 全台最長距離二日賽",
+          "type": "公路賽（多日）",
+          "organizer": "臺灣自行車聯賽"
+        },
+        {
+          "year": "2024",
+          "raceName": "太平山王登山賽",
+          "date": "2024/05",
+          "location": "宜蘭太平山",
+          "type": "登山賽",
+          "organizer": "臺灣自行車聯賽"
+        },
+        {
+          "year": "2024",
+          "raceName": "雲林湖山繞圈賽",
+          "date": "2024/05",
+          "location": "雲林湖山",
+          "type": "繞圈賽",
+          "organizer": "臺灣自行車聯賽"
+        },
+        {
+          "year": "2024",
+          "raceName": "花蓮太平洋盃公路賽（年度決戰）",
+          "date": "2024/10",
+          "location": "花蓮",
+          "type": "公路賽",
+          "organizer": "臺灣自行車聯賽"
+        },
+        {
+          "year": "2024",
+          "raceName": "美利達盃單車嘉年華",
+          "date": "2024/12/14",
+          "location": "日月潭（85km / 29km）",
+          "type": "挑戰賽",
+          "organizer": "美利達 MERIDA"
+        },
+        {
+          "year": "2024",
+          "raceName": "國際自由車環台公路大賽（Tour de Taiwan）",
+          "date": "2024/03",
+          "location": "全台多賽段",
+          "type": "公路賽（UCI 多日）",
+          "organizer": "中華民國自由車協會"
+        },
+        {
+          "year": "2026",
+          "raceName": "太平山王公路賽＆團隊計時賽",
+          "date": "2026/05/09",
+          "location": "宜蘭太平山",
+          "type": "公路賽/計時賽",
+          "organizer": "自行車騎士協會"
+        },
+        {
+          "year": "2026",
+          "raceName": "白馬山戰隊百K挑戰（第2屆）",
+          "date": "2026/05/09",
+          "location": "-",
+          "type": "挑戰賽",
+          "organizer": "-"
+        },
+        {
+          "year": "2026",
+          "raceName": "96聯賽-城市繞圈賽 台北站",
+          "date": "2026/05/10",
+          "location": "台北",
+          "type": "繞圈賽",
+          "organizer": "96聯賽"
+        },
+        {
+          "year": "2026",
+          "raceName": "瘋神掌 100K",
+          "date": "2026/05/23",
+          "location": "-",
+          "type": "挑戰賽",
+          "organizer": "-"
+        },
+        {
+          "year": "2026",
+          "raceName": "台灣登山大滿貫系列賽-太平山站（53K/159K/203K）",
+          "date": "2026/05/30",
+          "location": "宜蘭太平山",
+          "type": "登山賽",
+          "organizer": "-"
+        },
+        {
+          "year": "2026",
+          "raceName": "輪轉台灣百K單車挑戰賽-台中場（103K/45K）",
+          "date": "2026/05/31",
+          "location": "台中",
+          "type": "挑戰賽",
+          "organizer": "-"
+        },
+        {
+          "year": "2026",
+          "raceName": "世界自行車日-菱波騎遊 12.5K",
+          "date": "2026/06/03",
+          "location": "台南",
+          "type": "騎遊",
+          "organizer": "自行車騎士協會"
+        },
+        {
+          "year": "2026",
+          "raceName": "世界自行車日-北海岸雙灣騎遊",
+          "date": "2026/06/03",
+          "location": "新北",
+          "type": "騎遊",
+          "organizer": "自行車騎士協會"
+        },
+        {
+          "year": "2026",
+          "raceName": "建大盃夏季KOM 塔塔加 58K",
+          "date": "2026/06/12",
+          "location": "塔塔加",
+          "type": "登山賽",
+          "organizer": "建大 / 自行車騎士協會"
+        },
+        {
+          "year": "2026",
+          "raceName": "96聯賽-武嶺站",
+          "date": "2026/09/07",
+          "location": "武嶺",
+          "type": "登山賽",
+          "organizer": "96聯賽"
+        },
+        {
+          "year": "2026",
+          "raceName": "環大台北自行車挑戰",
+          "date": "2026/09/12",
+          "location": "大台北",
+          "type": "公路賽/挑戰",
+          "organizer": "自行車騎士協會"
+        },
+        {
+          "year": "2026",
+          "raceName": "蘭陽100K挑戰（100K/38K）",
+          "date": "2026/09/20",
+          "location": "宜蘭蘭陽",
+          "type": "挑戰賽",
+          "organizer": "-"
+        },
+        {
+          "year": "2026",
+          "raceName": "L'Étape Tour de France Challenge-日月潭站（103K/28K）",
+          "date": "2026/10/03",
+          "location": "日月潭",
+          "type": "公路賽/挑戰",
+          "organizer": "L'Étape by Tour de France"
+        },
+        {
+          "year": "2026",
+          "raceName": "2026 時代騎輪節 101K",
+          "date": "2026/10/04",
+          "location": "台中",
+          "type": "挑戰賽",
+          "organizer": "單車時代 CYCLINGTIME"
+        },
+        {
+          "year": "2026",
+          "raceName": "96聯賽-苗栗 仙山賽",
+          "date": "2026/10/18",
+          "location": "苗栗仙山",
+          "type": "登山賽",
+          "organizer": "96聯賽"
+        },
+        {
+          "year": "2026",
+          "raceName": "臺灣KOM登山王挑戰（Taiwan KOM Challenge）",
+          "date": "2026/10/30-11/02",
+          "location": "花蓮太魯閣-武嶺",
+          "type": "登山賽",
+          "organizer": "自行車騎士協會"
+        },
+        {
+          "year": "2026",
+          "raceName": "96聯賽-台東 全國公路錦標賽選拔",
+          "date": "2026/11/01",
+          "location": "台東",
+          "type": "公路賽",
+          "organizer": "96聯賽"
+        },
+        {
+          "year": "2026",
+          "raceName": "花蓮太平洋盃公路賽＆團隊計時賽",
+          "date": "2026/12/04-05",
+          "location": "花蓮",
+          "type": "公路賽/計時賽",
+          "organizer": "臺灣自行車聯賽"
+        },
+        {
+          "year": "2026",
+          "raceName": "臺灣KOM登山王之路-春季",
+          "date": "2026/03/30",
+          "location": "花蓮太魯閣-武嶺",
+          "type": "登山賽",
+          "organizer": "自行車騎士協會"
+        },
+        {
+          "year": "2026",
+          "raceName": "南投旅遊百K挑戰",
+          "date": "2026/07/25",
+          "location": "南投",
+          "type": "挑戰賽",
+          "organizer": "自行車騎士協會"
+        },
+        {
+          "year": "2022",
+          "raceName": "戀戀197 冬競",
+          "date": "2022/12/04",
+          "location": "台東197縣道",
+          "type": "挑戰賽",
+          "organizer": "-（KAVULUNGAN klcycling 2022賽曆所列）"
+        }
+      ],
+      "otherCompilationUrls": [
+        "https://blog.betery.com.tw/2024-cycling-calendar/",
+        "https://www.raceon.com.tw/zh-TW/blogs/news/143647",
+        "https://www.boostbiker.com/2022_cyclingeventlist/",
+        "https://www.klcycling.com/2022-taiwan-cycling-racing-%E8%87%AA%E8%A1%8C%E8%BB%8A%E8%B3%BD%E4%BA%8B/",
+        "https://cyclingtime.com/tw/documents/cat/races.html",
+        "https://www.cyclist.org.tw/eventnew.asp",
+        "https://www.96sporter.com/event.htm",
+        "https://ctyeh.com/cycling-events",
+        "https://cycling.biji.co/index.php?q=competition",
+        "https://www.je22.cc/en/blogs/news/2025-taiwan-cycling-plan",
+        "https://www.cyclist.org.tw/event_txt.asp?pno=282",
+        "https://www.flca.tw/calendar.php"
+      ],
+      "notes": "爬蟲交叉驗證用重點整理：\n\n【最佳「逐年賽曆整理文」來源】\n1. 單車時代 CYCLINGTIME「YYYY國內自行車活動、賽事一覽」系列 — 2021 年版已實際抓取成功（https://cyclingtime.com/tw/documents/10673.html），內含完整的公路賽/登山賽/繞圈賽/環賽/三鐵分類清單與日期，是最理想的逐年比對母表。此站為文章型 HTML，WebFetch 可正常解析。其餘年份（2020/2022/2023）推測也有對應編號文章（documents/NNNNN.html），但站內分類頁 races.html 只回傳當前 2026 文章，需以站內搜尋或 Google「site:cyclingtime.com 國內自行車活動 賽事一覽 YYYY」逐年定位文章編號。\n2. RACE ON 鋭速「自行車 2026 活動行事曆」（https://www.raceon.com.tw/zh-TW/blogs/news/143647）— 抓取成功，逐月列出 2026 全年賽事含距離分組，資料截至 2026/05/18、明確逐月表格，非常適合做 2026 母表。注意：同一 URL 直接 WebFetch 內文 OK，但根網域 raceon.com.tw 對部分文章回 403。\n3. Betery 好能自修室「2024 台灣自行車、三鐵賽事活動行事曆」（https://blog.betery.com.tw/2024-cycling-calendar/）— 即使用者提示的整理文，但 WebFetch 回 HTTP 403（有反爬/WAF），firecrawl CLI 需 API key 未設定。建議改用瀏覽器型工具（playwright/chrome-devtools）帶 UA 抓取，URL slug 形式為 /YYYY-cycling-calendar/ 可推測有 2023/2025 版。\n4. 飛天拜客 Boost Biker「2022單車賽事」（https://www.boostbiker.com/2022_cyclingeventlist/）與 KAVULUNGAN klcycling「台灣自行車活動賽事列表」（2022，導覽列也指向 2025）— 兩者皆為逐月圖文賽曆，但都是 JS/lazy-load 圖片渲染，WebFetch 只拿到 placeholder（僅抓到「12/04 戀戀197 冬競」一筆），需用瀏覽器渲染工具抓取。\n\n【協會/平台型（適合抓「實際辦過」清單而非整理文）】\n- 自行車騎士協會 eventnew.asp / event_txt.asp?pno=NNN — ASP 動態頁，eventnew.asp 只顯示當前 2026 報名中賽事，無 2010-2025 歷史；但 event_txt.asp?pno= 各 pno 是單一賽事詳情，可枚舉。臺灣自行車聯賽（Taiwan Cyclist League）年度固定架構：陽明山王(春)→環花東(4月,二日,全台最長)→太平山王/雲林湖山繞圈(5月)→花蓮太平洋盃(年末決戰)。\n- 中華民國自由車協會 cycling.org.tw「歷屆成績下載」與 category/domestic_events/road_race/ — 官方歷屆公路賽成績，最適合做歷史交叉驗證母源（未在本次抓取，建議列為下一步）。\n- 96好動客 96sporter.com/event.htm 為報名平台（即用戶要比對的目標之一）；cycling.biji.co（自行車筆記）competition 頁為賽事資料庫；ATSport atsport.com.tw 為成績平台。\n- 樂活自行車協會 flca.tw/calendar.php 有 calendar 結構（未抓）。\n\n【觀察到的命名不一致風險（給比對用）】\n- 「臺灣KOM登山王挑戰」(KOM Challenge, 10月正賽) vs「臺灣KOM登山王之路」(春/夏季 KOM, 練習/分齡賽) 是不同賽事，易混淆。\n- 「環花東」每年屆數遞增（2021=第21屆），名稱可能帶屆數或年份前綴。\n- 96聯賽各分站站名每年變動（塔塔加/桃園/武嶺/彰化/台北/苗栗仙山/台東），需以「96聯賽-地點」正規化。\n- 賽事常因疫情/天候延期（2021 多場延期），同一賽事可能出現原訂日與實際日兩種日期。\n\n【結論】最可靠的逐年整理母表 = 單車時代 CYCLINGTIME 年度一覽（文章型、可抓）。圖文型部落格（Betery/Boost Biker/klcycling）資訊好但需瀏覽器渲染工具突破反爬/lazy-load。協會官網適合補「實際成績」歷史層。本次 2010-2019 區間未找到單一整理文，建議以 cycling.org.tw 歷屆成績下載逐年補齊。"
+    },
+    {
+      "sourceName": "ensage 隨享單車旅遊（Ensage Tours Blog）— 「2026 自行車 & 三鐵 活動賽事行事曆」",
+      "url": "https://blog.ensage.tours/blogs/cycling-event-calendar-2026/",
+      "accessible": true,
+      "racesByYear": [
+        {
+          "year": "2026",
+          "raceName": "陽明山王 公路賽暨團隊計時賽",
+          "date": "3/7",
+          "location": "陽明山",
+          "type": "公路賽/計時賽",
+          "organizer": "中華民國自行車騎士協會"
+        },
+        {
+          "year": "2026",
+          "raceName": "環花東國際自行車大賽",
+          "date": "4/10",
+          "location": "花蓮/台東",
+          "type": "公路賽",
+          "organizer": "中華民國自行車騎士協會"
+        },
+        {
+          "year": "2026",
+          "raceName": "第16屆 兆豐銀行‧美利達彰化經典百K",
+          "date": "4/11",
+          "location": "彰化",
+          "type": "公路賽/百K挑戰",
+          "organizer": "美利達 Merida"
+        },
+        {
+          "year": "2026",
+          "raceName": "King of Taipingshan 太平山王 公路賽暨團隊計時賽",
+          "date": "5/9",
+          "location": "宜蘭 太平山",
+          "type": "公路賽/計時賽",
+          "organizer": "中華民國自行車騎士協會"
+        },
+        {
+          "year": "2026",
+          "raceName": "崇越盃武嶺自行車挑戰賽（夏季）",
+          "date": "6/15",
+          "location": "南投 武嶺",
+          "type": "登山賽",
+          "organizer": "TIS崇越盃"
+        },
+        {
+          "year": "2026",
+          "raceName": "秋季崇越盃武嶺自行車挑戰賽",
+          "date": "9/14",
+          "location": "南投 武嶺",
+          "type": "登山賽",
+          "organizer": "TIS崇越盃"
+        },
+        {
+          "year": "2026",
+          "raceName": "永不放棄-挑戰巔峰武嶺",
+          "date": "6/27",
+          "location": "南投 武嶺",
+          "type": "登山賽",
+          "organizer": "NeverStop 永不放棄"
+        },
+        {
+          "year": "2026",
+          "raceName": "玉山塔塔加自行車挑戰賽",
+          "date": "4/25",
+          "location": "南投/嘉義 塔塔加",
+          "type": "登山賽",
+          "organizer": "TIS崇越盃"
+        },
+        {
+          "year": "2026",
+          "raceName": "挑戰【經典】陽金P字山道",
+          "date": "1/11",
+          "location": "陽明山 陽金公路",
+          "type": "登山賽",
+          "organizer": "NeverStop 永不放棄"
+        },
+        {
+          "year": "2026",
+          "raceName": "第4屆 東三塔550 / 東雙塔470",
+          "date": "1/17",
+          "location": "東台灣",
+          "type": "挑戰賽",
+          "organizer": "TWB 台灣自行車協會"
+        },
+        {
+          "year": "2026",
+          "raceName": "梅山36彎自行車挑戰賽",
+          "date": "2/1",
+          "location": "嘉義 梅山",
+          "type": "登山賽/挑戰賽",
+          "organizer": ""
+        },
+        {
+          "year": "2026",
+          "raceName": "彰化騎福",
+          "date": "3/1",
+          "location": "彰化",
+          "type": "公路賽",
+          "organizer": "TWB 台灣自行車協會"
+        },
+        {
+          "year": "2026",
+          "raceName": "屏東四重溪溫泉自行車挑戰賽",
+          "date": "3/1",
+          "location": "屏東",
+          "type": "挑戰賽",
+          "organizer": "屏東縣政府"
+        },
+        {
+          "year": "2026",
+          "raceName": "北高挑戰行 / 北高360",
+          "date": "3/7（北高挑戰行）, 11/6（北高360）",
+          "location": "台北至高雄",
+          "type": "挑戰賽",
+          "organizer": "NeverStop / TWB"
+        },
+        {
+          "year": "2026",
+          "raceName": "第16屆雙主場輪霸西濱挑戰",
+          "date": "3/15",
+          "location": "西濱",
+          "type": "挑戰賽",
+          "organizer": "TBA中華民國自行車協會"
+        },
+        {
+          "year": "2026",
+          "raceName": "八卦山傳奇100K限時挑戰賽",
+          "date": "3/28",
+          "location": "彰化 八卦山",
+          "type": "百K挑戰賽",
+          "organizer": "瘋系列"
+        },
+        {
+          "year": "2026",
+          "raceName": "谷關雪見硬漢200K限時挑戰賽",
+          "date": "4/25",
+          "location": "台中 谷關/雪見",
+          "type": "挑戰賽",
+          "organizer": "瘋系列"
+        },
+        {
+          "year": "2026",
+          "raceName": "中央山脈極致挑戰（挑戰台灣屋脊-超越巔峰，第15屆）",
+          "date": "6/28",
+          "location": "中央山脈",
+          "type": "登山賽/極致挑戰",
+          "organizer": "TBA中華民國自行車協會"
+        },
+        {
+          "year": "2026",
+          "raceName": "瘋系列第三屆環台賽",
+          "date": "6/18",
+          "location": "環台",
+          "type": "公路賽/環島賽",
+          "organizer": "瘋系列"
+        },
+        {
+          "year": "2026",
+          "raceName": "四極點挑戰620 / 四極點620超級認證",
+          "date": "11/6, 11/13",
+          "location": "台灣四極點",
+          "type": "挑戰賽/認證",
+          "organizer": "TWB / TBA"
+        },
+        {
+          "year": "2026",
+          "raceName": "雙塔挑戰 / 雙塔520極限認證",
+          "date": "11/6, 11/14",
+          "location": "富貴角-鵝鑾鼻燈塔",
+          "type": "挑戰賽/認證",
+          "organizer": "TWB / TBA"
+        },
+        {
+          "year": "2026",
+          "raceName": "雪巴大滿貫系列（陽明山/太平山/大雪山/大雪山/阿里山等站）",
+          "date": "3/21, 5/30, 8/24, 12/12 等",
+          "location": "全台各登山路線",
+          "type": "登山賽",
+          "organizer": "雪巴大滿貫"
+        },
+        {
+          "year": "2026",
+          "raceName": "紫南宮一騎來發財環縣自行車 99.9K",
+          "date": "6/7",
+          "location": "南投",
+          "type": "百K挑戰賽",
+          "organizer": "NeverStop"
+        },
+        {
+          "year": "2026",
+          "raceName": "一日桃南雙城自行車挑戰賽",
+          "date": "10/31",
+          "location": "桃園至台南",
+          "type": "挑戰賽",
+          "organizer": "TIS崇越盃"
+        },
+        {
+          "year": "2025",
+          "raceName": "（文中另附 2025 完整賽曆，含 美利達彰化經典百K 4/12、崇越盃武嶺 6/23、L'Étape by Tour de France 10/18 等）",
+          "date": "全年（另表）",
+          "location": "全台",
+          "type": "公路賽/登山賽/計時賽",
+          "organizer": "多主辦"
+        },
+        {
+          "year": "2024",
+          "raceName": "（文中另附 2024 完整賽曆，與 Betery 2024 行事曆內容重疊）",
+          "date": "全年（另表）",
+          "location": "全台",
+          "type": "公路賽/登山賽/計時賽",
+          "organizer": "多主辦"
+        }
+      ],
+      "otherCompilationUrls": [
+        "https://www.je22.cc/en/blogs/news/2025-taiwan-cycling-plan",
+        "https://blog.betery.com.tw/2024-cycling-calendar/",
+        "https://www.raceon.com.tw/zh-TW/blogs/news/143647",
+        "https://ctyeh.com/cycling-events",
+        "https://www.cyclist.org.tw/eventnew.asp",
+        "https://www.cyclist.org.tw/event_txt.asp?pno=309",
+        "https://www.cyclist.org.tw/event_txt.asp?pno=282",
+        "https://taiwanbike.tw/en/about/event/",
+        "https://www.96sporter.com/event.htm"
+      ],
+      "notes": "主要來源（已成功抓取並完整解析）：ensage 隨享單車旅遊部落格的「2026 自行車 & 三鐵 活動賽事行事曆」。資料格式為 HTML 表格（欄位：日期 | 主辦/系列 | 賽事名稱(含報名連結) | 導覽備註），約 40 場國內賽事，另含日本國際賽（富士、乘鞍、佐渡）與部分鐵人三項，頁面標示「持續更新」，並在文中嵌入 2024、2025 兩份完整年度賽曆（含交叉年連結），是很適合做爬蟲交叉驗證的「整年賽程表」整理文。報名連結多指向 bao-ming.com、biji.co(筆記報名)、ensage.tours、96sporter 等平台——可直接拿來比對各報名平台爬到的賽事名稱。\n\n其他已驗證的整理文 / 來源：\n1) je22.cc「2025 Taiwan Cycling Racing Activity / 2025 台灣自行車賽事行事曆」(https://www.je22.cc/en/blogs/news/2025-taiwan-cycling-plan) — 已成功抓取。格式為「按月份(1~12月)列表」，每筆=日期(星期) | 賽事名稱 | 報名/官網連結，約 50+ 場；頁尾有連到「2026 台灣自行車賽事行事曆」，具逐年連結。內含 美利達彰化經典百K(4/12)、崇越盃武嶺(6/23)、L'Étape by Tour de France(10/18) 等。第二強的整理文。\n2) Betery 好能自修室「2024 台灣自行車、三鐵賽事活動行事曆」(https://blog.betery.com.tw/2024-cycling-calendar/) — 確認存在且為 2024 專屬年度賽曆 blog，內文確含 武嶺/KOM/登山王/環花東/彰化經典/繞圈 等關鍵字。但 WebFetch 回 403、curl 時好時壞(一次 200 一次 403)，且為 WordPress div/JS 渲染、無 <table> 標籤，無法穩定機器解析。建議用瀏覽器型抓取(Playwright/Firecrawl)再取。\n3) RACE ON 銳速運動醫學「自行車 2026 活動行事曆」(https://www.raceon.com.tw/zh-TW/blogs/news/143647) — 媒體/專欄型整理文(未逐筆抓取，列為候選)。\n4) ctyeh.com「運動賽事/活動-自行車・路跑・鐵人三項」(https://ctyeh.com/cycling-events) — 看似多年度聚合站(可選年份/日曆檢視)，但為 JS 前端渲染，WebFetch 取不到資料(顯示「2026 年沒有賽事資料」)。需 JS 渲染抓取。\n\n官方/平台型來源(非部落格，但可作權威交叉比對基準)：\n- 自行車騎士協會 臺灣自行車聯賽 cyclist.org.tw：已抓到官方逐年賽程。2025 聯賽=陽明山王(3/22)、春季KOM(3/31)、環花東三日(4/11-13)、夏季KOM(6/30)、太平山王(9/20)、花蓮太平洋盃(11/15)、桃園繞圈賽(12/6)。另有 2024(pno=282)、2026(pno=353) 各年頁面，URL 用 pno 參數逐年切換，非常適合爬蟲逐年抓官方基準表。\n- 臺灣騎跡 taiwanbike.tw(全國單一入口)、96好動客 96sporter.com、TWB twbike.org、NeverStop neverstop.org.tw、Tour de Taiwan tourdetaiwan.org.tw(環台公路大賽官網)。\n\n涵蓋年份觀察：找到的逐年整理文集中在 2024-2026；2010~2023 沒有單篇「整年賽程表」部落格被命中。歷史年份(2010~2023)建議改用官方逐年頁面(cyclist.org.tw event_txt.asp?pno=、Tour de Taiwan 歷屆、美利達彰化經典百K 各屆=第14屆2024/第13屆2023…可由「第N屆」回推年份)做交叉驗證。\n\n重複出現、跨來源一致的核心賽事(可當交叉驗證錨點)：環花東國際自行車大賽(每年4月)、臺灣KOM登山王挑戰、陽明山王、太平山王、花蓮太平洋盃、春/夏/秋季KOM、兆豐銀行‧美利達彰化經典百K、崇越盃武嶺自行車挑戰賽、桃園航空城繞圈賽、Tour de Taiwan 國際環台。名稱不一致風險點：「美利達彰化經典百K」有冠名先後差異(美利達‧兆豐 vs 兆豐‧美利達)與屆數；「武嶺」賽事有崇越盃 vs NeverStop 兩主辦不同活動；KOM 有官方登山王 vs 各季 KOM 公路賽之別——爬蟲比對時需注意。"
+    },
+    {
+      "sourceName": "Betery 好能自修室 (全越運動事業) — 台灣自行車/三鐵賽事活動行事曆 (年度賽曆系列)",
+      "url": "https://blog.betery.com.tw/2024-cycling-calendar/",
+      "accessible": true,
+      "racesByYear": [
+        {
+          "year": "2024",
+          "raceName": "NS 陽金P字山道挑戰 (75K)",
+          "date": "2024-01-07",
+          "location": "台北 陽金公路",
+          "organizer": "NeverStop (運嶼)",
+          "type": "登山賽/挑戰賽"
+        },
+        {
+          "year": "2024",
+          "raceName": "高雄美濃山城自行車挑戰賽 (79K)",
+          "date": "2024-01-14",
+          "location": "高雄美濃",
+          "organizer": "",
+          "type": "公路賽/挑戰賽"
+        },
+        {
+          "year": "2024",
+          "raceName": "LIVDAY 冬之湯旅175咖啡公路 (挑戰72K/運動55K)",
+          "date": "2024-01-14",
+          "location": "嘉義/台南 175咖啡公路",
+          "organizer": "LIV",
+          "type": "公路賽/挑戰賽"
+        },
+        {
+          "year": "2024",
+          "raceName": "2024蘇花公路-無敵海景 (123K)",
+          "date": "2024-01-21",
+          "location": "宜蘭/花蓮 蘇花公路",
+          "organizer": "",
+          "type": "公路賽/挑戰賽"
+        },
+        {
+          "year": "2024",
+          "raceName": "梅山36彎自行車挑戰賽 (72K)",
+          "date": "2024-02-04",
+          "location": "嘉義梅山",
+          "organizer": "",
+          "type": "登山賽/挑戰賽"
+        },
+        {
+          "year": "2024",
+          "raceName": "東三塔550 (550K)",
+          "date": "2024-02-24",
+          "location": "環島/三塔",
+          "organizer": "TBA 台灣自行車協會",
+          "type": "超長途挑戰賽"
+        },
+        {
+          "year": "2024",
+          "raceName": "東雙塔470 (470K)",
+          "date": "2024-02-24",
+          "location": "富貴角-鵝鑾鼻",
+          "organizer": "TBA 台灣自行車協會",
+          "type": "超長途挑戰賽"
+        },
+        {
+          "year": "2024",
+          "raceName": "NeverStop永不放棄-北高挑戰行 (367.6K)",
+          "date": "2024-02-24",
+          "location": "台北-高雄",
+          "organizer": "NeverStop",
+          "type": "超長途挑戰賽"
+        },
+        {
+          "year": "2024",
+          "raceName": "太平山王公路賽",
+          "date": "2024-03-02",
+          "location": "宜蘭太平山",
+          "organizer": "",
+          "type": "公路賽"
+        },
+        {
+          "year": "2024",
+          "raceName": "輪霸西濱 (200K/100K)",
+          "date": "2024-03-10",
+          "location": "西濱公路",
+          "organizer": "",
+          "type": "公路賽/挑戰賽"
+        },
+        {
+          "year": "2024",
+          "raceName": "臺灣KOM登山王之路-春季",
+          "date": "2024-03-11",
+          "location": "花蓮 太魯閣-武嶺",
+          "organizer": "中華民國自行車騎士協會",
+          "type": "登山賽"
+        },
+        {
+          "year": "2024",
+          "raceName": "萬眾騎BIKE (96K)",
+          "date": "2024-03-16",
+          "location": "",
+          "organizer": "",
+          "type": "公路賽/挑戰賽"
+        },
+        {
+          "year": "2024",
+          "raceName": "96聯賽 台中站",
+          "date": "2024-03-17",
+          "location": "台中",
+          "organizer": "96自転車",
+          "type": "公路賽/繞圈賽"
+        },
+        {
+          "year": "2024",
+          "raceName": "2024 XTERRA 山地自行車 (30K)",
+          "date": "2024-03-23",
+          "location": "",
+          "organizer": "XTERRA",
+          "type": "登山車賽 (MTB)"
+        },
+        {
+          "year": "2024",
+          "raceName": "113年青年盃繞圈賽",
+          "date": "2024-03-23",
+          "location": "",
+          "organizer": "中華民國自由車協會",
+          "type": "繞圈賽"
+        },
+        {
+          "year": "2024",
+          "raceName": "拜訪台中 (105K, 停辦)",
+          "date": "2024-03-24",
+          "location": "台中",
+          "organizer": "",
+          "type": "公路賽/挑戰賽 (停辦)"
+        },
+        {
+          "year": "2024",
+          "raceName": "兆豐銀行・美利達彰化經典百K (107K)",
+          "date": "2024-03-24",
+          "location": "彰化",
+          "organizer": "美利達 MERIDA",
+          "type": "公路賽/挑戰賽"
+        },
+        {
+          "year": "2024",
+          "raceName": "環花東365挑戰",
+          "date": "2024-04-13",
+          "location": "花蓮/台東",
+          "organizer": "",
+          "type": "公路賽/超長途挑戰賽"
+        },
+        {
+          "year": "2024",
+          "raceName": "Gravel Fundo Stage 1 台南玉井站",
+          "date": "2024-04-14",
+          "location": "台南玉井",
+          "organizer": "",
+          "type": "碎石/gravel"
+        },
+        {
+          "year": "2024",
+          "raceName": "苗栗魅力風海岸線-綠光海風單車騎旅",
+          "date": "2024-04-28",
+          "location": "苗栗",
+          "organizer": "",
+          "type": "騎旅/活動"
+        },
+        {
+          "year": "2024",
+          "raceName": "太平山王公路賽 (第二場)",
+          "date": "2024-05-04",
+          "location": "宜蘭太平山",
+          "organizer": "",
+          "type": "公路賽"
+        },
+        {
+          "year": "2024",
+          "raceName": "2024 群山-平溪經典挑戰",
+          "date": "2024-05-05",
+          "location": "新北平溪",
+          "organizer": "",
+          "type": "登山賽/挑戰賽"
+        },
+        {
+          "year": "2024",
+          "raceName": "桃園市長盃登山車賽 (暫定)",
+          "date": "2024-05-18",
+          "location": "桃園",
+          "organizer": "桃園市",
+          "type": "登山車賽 (MTB)"
+        },
+        {
+          "year": "2024",
+          "raceName": "NS 塔塔加探索新中橫 (71.3K)",
+          "date": "2024-05-19",
+          "location": "新中橫 塔塔加",
+          "organizer": "NeverStop",
+          "type": "登山賽/挑戰賽"
+        },
+        {
+          "year": "2024",
+          "raceName": "建大武嶺盃 (57K)",
+          "date": "2024-05-20",
+          "location": "武嶺",
+          "organizer": "建大 KENDA",
+          "type": "登山賽"
+        },
+        {
+          "year": "2024",
+          "raceName": "NeverStop 紫南宮一騎來發財 環縣自行車 (99.9K)",
+          "date": "2024-06-02",
+          "location": "南投",
+          "organizer": "NeverStop",
+          "type": "公路賽/挑戰賽"
+        },
+        {
+          "year": "2024",
+          "raceName": "2024 96Heroes 台北站",
+          "date": "2024-06-16",
+          "location": "台北",
+          "organizer": "96自転車",
+          "type": "繞圈賽/公路賽"
+        },
+        {
+          "year": "2024",
+          "raceName": "臺灣KOM登山王之路-夏季",
+          "date": "2024-06-21",
+          "location": "花蓮 太魯閣-武嶺",
+          "organizer": "中華民國自行車騎士協會",
+          "type": "登山賽"
+        },
+        {
+          "year": "2024",
+          "raceName": "2024 Dan Cup",
+          "date": "2024-06-23",
+          "location": "",
+          "organizer": "",
+          "type": "公路賽"
+        },
+        {
+          "year": "2024",
+          "raceName": "2024 TIS崇越盃武嶺自行車挑戰賽 (55K)",
+          "date": "2024-06-24",
+          "location": "武嶺",
+          "organizer": "崇越 TIS",
+          "type": "登山賽"
+        },
+        {
+          "year": "2021",
+          "raceName": "時代騎輪節 (103K)",
+          "date": "2021-12-05",
+          "location": "台中",
+          "organizer": "單車時代 CyclingTime",
+          "type": "挑戰賽"
+        },
+        {
+          "year": "2021",
+          "raceName": "輪耀台灣公路系列賽 S1 新玉門關",
+          "date": "2021-03-13",
+          "location": "台南",
+          "organizer": "RIDEAWAY",
+          "type": "公路賽"
+        },
+        {
+          "year": "2021",
+          "raceName": "輪耀台灣公路系列賽 S2 環南化水庫",
+          "date": "2021-03-14",
+          "location": "台南",
+          "organizer": "RIDEAWAY",
+          "type": "公路賽"
+        },
+        {
+          "year": "2021",
+          "raceName": "輪耀台灣公路系列賽 S4 崁頭山登山賽",
+          "date": "2021-11-13",
+          "location": "台南",
+          "organizer": "RIDEAWAY",
+          "type": "登山賽"
+        },
+        {
+          "year": "2021",
+          "raceName": "96聯賽 R2 桃園市長盃",
+          "date": "2021-04-25",
+          "location": "桃園",
+          "organizer": "96自転車",
+          "type": "公路賽"
+        },
+        {
+          "year": "2021",
+          "raceName": "Taiwan KOM Challenge 臺灣登山王挑戰",
+          "date": "2021-10-29",
+          "location": "花蓮 太魯閣-武嶺",
+          "organizer": "中華民國自行車騎士協會",
+          "type": "登山賽"
+        },
+        {
+          "year": "2021",
+          "raceName": "花東縱谷國際自行車大賽 (環花東, 每日170K)",
+          "date": "2021-04-17",
+          "location": "花蓮-台東",
+          "organizer": "中華民國自行車騎士協會",
+          "type": "公路賽 (多日)"
+        },
+        {
+          "year": "2023",
+          "raceName": "八通關盃-玉長公路自行車挑戰賽 (40K/24K)",
+          "date": "2023-08-26",
+          "location": "花蓮玉里 玉長公路",
+          "organizer": "花蓮縣玉里體育會",
+          "type": "公路賽/挑戰賽"
+        },
+        {
+          "year": "2023",
+          "raceName": "極慢遊-最南端鵝鑾鼻燈塔自行車 (37K/42K/77K)",
+          "date": "2023-09-10",
+          "location": "屏東",
+          "organizer": "",
+          "type": "公路賽/挑戰賽"
+        },
+        {
+          "year": "2023",
+          "raceName": "澎湖跳島101K自行車活動",
+          "date": "2023-09-17",
+          "location": "澎湖",
+          "organizer": "",
+          "type": "公路賽/挑戰賽"
+        },
+        {
+          "year": "2023",
+          "raceName": "亞太盃國際自行車交流挑戰 (350K)",
+          "date": "2023-10-21",
+          "location": "花蓮",
+          "organizer": "",
+          "type": "公路賽/超長途"
+        },
+        {
+          "year": "2023",
+          "raceName": "TBA 雙塔520KM自行車活動",
+          "date": "2023-11-18",
+          "location": "新北石門-墾丁鵝鑾鼻",
+          "organizer": "TBA 中華民國自行車協會",
+          "type": "超長途挑戰賽"
+        }
+      ],
+      "notes": "目標達成度：找到多個「逐年/整年賽程表」型整理文，已實際 fetch 並逐筆抽出賽事。以下為各來源、可用性與資料格式。\n\n== 已驗證可用的「年度賽曆」整理文 (適合交叉驗證) ==\n1) Betery 好能自修室 (本物件主來源) — https://blog.betery.com.tw/2024-cycling-calendar/ 。標題「2024 台灣自行車、三鐵賽事活動行事曆」。格式：HTML 依「月份 > 自行車賽事 / 鐵人賽事」分段，每筆為「日期｜賽名：里程 + 活動官網/報名連結 + (已截止/停辦)」純文字，無表格、無結構化欄位，需自行 parse 日期與賽名。重要限制：實測該頁 cleaned text 僅約 3878 字，內容只到「六月」(June) 為止，7-12 月未刊出(可能未更新/已下架後半段)；本物件已收錄完整 1-6 月。WebFetch 對此站回 403，但帶瀏覽器 User-Agent 的 curl 可正常取得。此站為系列文：導覽列另有「2026臺灣馬拉松、三鐵、自行車與其他賽事彙整表」(https://blog.betery.com.tw/2026%e8%87%ba%e7%81%a3%e9%a6%ac%e6%8b%89%e6%9d%be%e8%88%87%e5%85%b6%e4%bb%96%e8%b3%bd%e4%ba%8b%e6%95%b4%e7%90%86/) 與「2025 台灣路跑馬拉松」頁。注意此站把自行車+鐵人混在一起，需用「自行車賽事」小標過濾。\n\n2) 單車時代 CyclingTime — https://cyclingtime.com/tw/documents/10673.html 「2021國內自行車活動、賽事一覽」。可用 (WebFetch 成功)。是少數有清楚分類(公路系列賽/96聯賽/登山王賽事/大環賽/鐵人/其他)的整理文，含主辦(RIDEAWAY、96自転車、騎士協會等)與「移期/停辦」註記，對驗證很有用。races 分類頁 https://cyclingtime.com/tw/documents/cat/races.html 可找其它年份報導。本物件已收錄其 2021 主要場次。\n\n3) Bone Collection (Bone 骨頭) 部落格 — https://www.bonecollection.com/blog/item/3421 「2023下半年自行車賽事與展覽整理」。WebFetch 回 403，但 curl(瀏覽器 UA)可取得。格式：依月份條列，每筆有賽名/日期/地點/主辦/路線里程描述(英文版資訊較完整)。僅涵蓋 2023 下半年(7-11月)，且混入國際車展(巴黎 PRO DAYS 等)。本物件已收錄其台灣場次。\n\n4) RACE ON 鋭速運動醫學 — https://www.raceon.com.tw/zh-TW/blogs/news/143647 「自行車 2026 活動行事曆」。curl 可取得。格式：依月份條列「日期｜賽名：里程／報名連結」，資訊截至 2026-05-18，含 2026 多場(太平山王公路賽&團隊計時賽 5/9、96聯賽城市繞圈賽台北站 5/10、輪轉台灣百K、建大盃夏季KOM塔塔加、TIS崇越盃武嶺、瘋系列環台賽、桃園航空城繞圈賽/個人/團隊計時賽 8/1 等)。是 2025-2026 最新賽曆良好來源，含計時賽/繞圈賽類型標註。\n\n5) 七號公園自行車 7park — https://7park.com.tw/全國熱門公路車賽事時間表/ 「全國熱門公路車賽事時間表」。標題符合需求(常態性熱門公路車賽時間表)，但實測 WebFetch ECONNREFUSED、curl 亦不穩，未能取得內文，建議改用瀏覽器(Playwright/Chrome MCP)再抓。\n\n== 其它候選 (報名/官方平台，非部落格整理文，但可當權威清單) ==\n- 96好動客 報名平台 https://www.96sporter.com/event.htm (96聯賽系列主場)\n- 自行車騎士協會 活動賽事 https://www.cyclist.org.tw/eventnew.asp (KOM、登山王、環花東主辦方)\n- 臺灣騎跡 全國自行車單一總入口網 https://taiwanbike.tw/en/about/event/\n- 中華民國自由車協會 歷屆成績下載 https://cycling.org.tw/下載區/ (繞圈賽/計時賽/錦標賽官方成績，最適合交叉比對名稱)\n- CT Yeh 公路車基地 賽事日曆 https://ctyeh.com/cycling-events — 是依年份篩選的「賽事日曆」(JS 動態載入)，WebFetch 只拿到「2026 年沒有賽事資料」空殼，屬 JS-only，需瀏覽器自動化才能逐年抓。\n- 單車誌 Cycling Update 活動列表 https://www.cycling-update.info/race/event-list\n\n== 重要缺口 (給爬蟲團隊的提醒) ==\n- 2010~2016 早期年份：此類「部落格年度懶人包」幾乎都從 2018 年後才大量出現；2010-2017 沒有找到逐年整理文。早期賽事建議改抓官方歷屆成績(中華民國自由車協會 cycling.org.tw 歷屆成績下載、騎士協會 KOM 歷屆)與環台賽 tourdetaiwan.org.tw 來回填，部落格整理文不可靠。\n- 這類整理文常把「自行車賽 + 鐵人三項 + 國際車展」混列，且以里程/挑戰組為主、缺乏統一的賽事類型欄位(公路賽/計時賽/登山賽/繞圈賽多需從賽名推斷)；交叉驗證時請以「賽名關鍵字 + 日期 + 地點」做模糊比對，名稱在不同站常不同(例：武嶺挑戰=TIS崇越盃武嶺=建大武嶺盃，為不同主辦的不同賽事，勿合併)。\n- 無任何來源提供乾淨的 CSV/JSON；全部是 HTML 內文，需自行 parse。boostbiker.com (飛天拜客「2022單車賽事」) 原文已失效，網域現為停放頁(僅顯示「资源和信息」),無法取得。",
+      "otherCompilationUrls": [
+        "https://cyclingtime.com/tw/documents/10673.html",
+        "https://cyclingtime.com/tw/documents/cat/races.html",
+        "https://www.bonecollection.com/blog/item/3421",
+        "https://www.bonecollection.com/en/blog/item/3421-bicycle-races-2023",
+        "https://www.raceon.com.tw/zh-TW/blogs/news/143647",
+        "https://blog.betery.com.tw/2026%e8%87%ba%e7%81%a3%e9%a6%ac%e6%8b%89%e6%9d%be%e8%88%87%e5%85%b6%e4%bb%96%e8%b3%bd%e4%ba%8b%e6%95%b4%e7%90%86/",
+        "https://7park.com.tw/%E5%85%A8%E5%9C%8B%E7%86%B1%E9%96%80%E5%85%AC%E8%B7%AF%E8%BB%8A%E8%B3%BD%E4%BA%8B%E6%99%82%E9%96%93%E8%A1%A8/",
+        "https://ctyeh.com/cycling-events",
+        "https://www.96sporter.com/event.htm",
+        "https://www.cyclist.org.tw/eventnew.asp",
+        "https://cycling.org.tw/",
+        "https://www.cycling-update.info/race/event-list",
+        "https://taiwanbike.tw/en/about/event/"
+      ]
+    }
+  ],
+  "synthesis": {
+    "summary": "台灣公路車賽事資料生態可分三層:(A)報名平台、(B)成績平台、(C)主辦/協會自架。核心結論:報名與成績「分離外包」是常態,報名集中在伊貝特 bao-ming.com(承辦最多大型賽:太平山王/陽明山王/環花東/崇越盃武嶺/L'Étape等),但同一賽事的成績往往落在別處——競賽型(臺灣自行車聯賽TCL系列:陽明山王/太平山王/環花東/花蓮太平洋盃)成績由中華民國自行車騎士協會 cyclist.org.tw 以PDF公布(同站、靜態ASP、最易爬、回溯至2014);市民/挑戰型(96聯賽、雪巴大滿貫、L'Étape、銅礦88、落日飛車350)成績幾乎全部外包 Bravelog 運動趣(自稱涵蓋全台約80%耐力賽,網頁表格,有跨賽事歷史庫);筆記報名 irunner.biji.co 為同站靜態HTML成績(經典新玉門關等),易爬但需姓名/號碼查詢;認證型長途活動(雙塔520/北高360/四極620/中央山脈/西濱)由 TWB twbike.org 與中華民國自行車協會 taiwanbike.org 主辦,「無名次、僅完賽認證」,前者逐筆晶片查詢、後者早期.xls直連檔最易爬;國家級競技(環台 Tour de Taiwan、全國公路錦標賽)由中華民國自由車協會 cycling.org.tw 發布PDF/Excel,回溯最久(1998-2026)。次要計時商:iBodyGo(瀚世比17run後端,有bot阻擋)、ATSport(結構化但擋非台灣IP)、樂活LohasNet、全統CTRUN、EventPal。\n\n成績格式總覽:cyclist.org.tw / cycling.org.tw / taiwanbike.org = PDF/Excel(需檔案解析,但靜態好抓);Bravelog / irunner / 樂活 = 網頁表格(Bravelog 兩份偵查結果對「是否需JS」判讀不一致——一份說 /contest/rank 初始HTML即含資料可靜態抓,一份說SPA需headless,實作前須以瀏覽器DevTools實測確認,並注意 /calendar 確為JS動態載入需瀏覽器枚舉 contestId);無任一平台提供有文件的公開REST API。\n\n【交叉驗證 crossValidation】以部落格賽曆(CYCLINGTIME 2021、ensage 2026、Betery 2024、je22 2025、RACE ON 2026)為母表比對平台抓取結果:(1)平台可能漏抓/未涵蓋的賽事——「輪耀台灣公路系列賽(新玉門關/南化水庫繞圈/175咖啡/崁頭山,主辦RIDEAWAY)」、「Dirty Formosa / Gravel Fundo 礫石公路賽」、「XTERRA / Dan Cup / 瑟飛斯盃登山車MTB」、「戀戀197」、「蘇花無敵海景123K」、「梅山36彎」、「八通關玉長公路」、「澎湖跳島101K」、「八卦山傳奇/谷關雪見硬漢(瘋系列)」、「美濃山城」、「LIVDAY 175咖啡」等在地小型/車隊自辦賽,多無對應到七大報名平台,屬高漏抓風險(可能走車隊FB或臨時頁)。(2)名稱不一致需正規化——「武嶺」至少三個不同主辦的不同賽事不可合併:TIS崇越盃武嶺 vs 建大武嶺盃/夏季KOM塔塔加 vs NeverStop永不放棄武嶺 vs 96聯賽武嶺站;「KOM」兩類易混:臺灣KOM登山王挑戰(10月正賽)vs 臺灣KOM登山王之路(春/夏季);「環花東」帶屆數(2021=第21屆)且別名「花東縱谷國際自行車大賽/East Taiwan Road Race & TTT/環花東365」;「美利達彰化經典百K」冠名順序變動(美利達‧兆豐 vs 兆豐‧美利達)+屆數;「96聯賽」分站站名逐年變(塔塔加/桃園/武嶺/彰化/台北/苗栗仙山/台東)需正規化為「96聯賽-地點」;日期有原訂日vs延期日兩版(2021疫情多場延期)。",
+    "registrationSites": [
+      {
+        "name": "伊貝特報名網 (bao-ming.com / E-Better)",
+        "url": "https://bao-ming.com/eb/index",
+        "coverageYears": "約2020-2027",
+        "resultsMethod": "外包(competition型→cyclist.org.tw PDF;計時型→E-Better自有/Bravelog)",
+        "format": "外站PDF/網頁表格",
+        "feasibility": "中。/eb/index 首頁靜態可curl取賽事清單+content id;但 /eb/content/{id} 詳情頁有反爬(非瀏覽器UA回302+Refresh導回首頁),需headless瀏覽器;無公開API",
+        "note": "承辦最多大型公路賽:太平山王/陽明山王/環花東/崇越盃武嶺/L'Étape/全國錦標賽"
+      },
+      {
+        "name": "中華民國自行車騎士協會 TCF (cyclist.org.tw)",
+        "url": "https://www.cyclist.org.tw/eventnew.asp",
+        "coverageYears": "2014-2026",
+        "resultsMethod": "same-site 同站發布",
+        "format": "PDF (/upfile/resultPDF/{id}/*.pdf)",
+        "feasibility": "高(最易爬)。靜態ASP/IIS,無JS、無登入、無captcha;results_list.asp?pno=1..13 列表直接含PDF連結;HTTP會301轉HTTPS",
+        "note": "報名外包bao-ming,成績完全自架;10個pno分類(KOM/俱樂部聯賽/臺灣自行車聯賽等)"
+      },
+      {
+        "name": "96好動客 (96sporter / 96聯賽)",
+        "url": "https://www.96sporter.com/",
+        "coverageYears": "報名2025-2026;成績(Bravelog)約2024-2026",
+        "resultsMethod": "外包 Bravelog",
+        "format": "網頁表格",
+        "feasibility": "兩段式。賽事/組別頁 event_detailNNN.htm 純靜態流水號可枚舉;成績在 bravelog.tw/contest/rank/{contestId}(日期碼)需處理JS/組別下拉",
+        "note": "聚焦自行車;四色戰衣積分;競賽組+市民競賽組分齡完整"
+      },
+      {
+        "name": "筆記報名 iRunner (irunner.biji.co)",
+        "url": "https://irunner.biji.co/",
+        "coverageYears": "2016-2026",
+        "resultsMethod": "same-site 同站(iRunner晶片計時)",
+        "format": "網頁表格(伺服器端靜態HTML)",
+        "feasibility": "高。成績頁靜態HTML、無登入無captcha;限制:成績需帶 rs=(姓名/號碼)查詢無'列出全部'入口,全量需姓氏字典或號碼枚舉;/track/{id} 可枚舉",
+        "note": "經典新玉門關(菁英/市民分齡/電輔車組)、淡江大橋、瑟飛斯盃MTB;美利達盃也走此站"
+      },
+      {
+        "name": "TWB 台灣自行車協會 (twbike.org)",
+        "url": "https://www.twbike.org/",
+        "coverageYears": "成績約2023-2026;活動回溯2015",
+        "resultsMethod": "same-site 逐筆晶片查詢",
+        "format": "網頁表格(單筆POST查詢)",
+        "feasibility": "中低。靜態PHP易GET但成績為輸入晶片號逐筆查詢、無批次匯出;SSL中繼憑證不全需curl -k;Big5/UTF-8混用",
+        "note": "認證型長途:雙塔520/北高360/四極620/東四極730;無名次只有完賽認證(菜鳥/學長/鑽石組)"
+      },
+      {
+        "name": "中華民國自行車協會 TBA (taiwanbike.org)",
+        "url": "https://taiwanbike.org/",
+        "coverageYears": "2010-2026",
+        "resultsMethod": "same-site + Google Sheets/外連",
+        "format": "excel-download(.xls直連)+Google Sheets+PDF",
+        "feasibility": "高(早期.xls最易爬)。Joomla靜態,成績多為自託管.xls直連檔(已驗證HTTP200);近年改Google Sheets需export?format=xlsx;部分外連bao-ming(403擋bot)",
+        "note": "認證/長途挑戰為主多無名次;2010-2014早期賽事有計時名次.xls;最早回溯2010-01-17"
+      },
+      {
+        "name": "雪巴運動 Sherpa (sherpa-sports.co)",
+        "url": "https://sherpa-sports.co/",
+        "coverageYears": "2024-2026(Bravelog武嶺回溯2023)",
+        "resultsMethod": "外包 Bravelog;報名外包 bao-ming",
+        "format": "網頁表格",
+        "feasibility": "中。官網列表頁靜態,詳情頁部分JS需headless;成績100%在 bravelog.tw/contest/rank/{id}",
+        "note": "單一系列'台灣登山大滿貫'多站(陽明山/太平山/大雪山/阿里山);距離分組(經典/進階/終極/接力)+年齡分組+電輔車組"
+      },
+      {
+        "name": "樂活報名網 LohasNet",
+        "url": "https://lohasnet.tw/",
+        "coverageYears": "2012-2026",
+        "resultsMethod": "same-site (timing.lohasnet.tw)",
+        "format": "網頁表格",
+        "feasibility": "中。報名頁靜態;成績站302轉址+JS查詢表單,需Playwright攔XHR",
+        "note": "萬眾騎BIKE等;非競速含晶片計時"
+      },
+      {
+        "name": "全統運動報名網 CTRUN",
+        "url": "https://www.ctrun.com.tw/",
+        "coverageYears": "約2010-2026",
+        "resultsMethod": "QRcode→web table / 部分ATSport",
+        "format": "網頁表格",
+        "feasibility": "中。ASP.NET活動列表靜態 ?EventMain_ID= 可枚舉;成績在 accounter.ctrun.com.tw",
+        "note": "輪轉台灣百K單車挑戰賽;MYLAPS BibTag計時;非競速"
+      },
+      {
+        "name": "活動咖 EventPal",
+        "url": "https://www.eventpal.com.tw/",
+        "coverageYears": "約2010-2026",
+        "resultsMethod": "待驗證(偏JS動態)",
+        "format": "未確認",
+        "feasibility": "低-中。首頁JS重導,子站曾回502,需再驗證",
+        "note": "蘭陽百K自行車挑戰賽等綜合報名"
+      },
+      {
+        "name": "中華民國自由車協會 (cycling.org.tw)",
+        "url": "https://cycling.org.tw/",
+        "coverageYears": "1998-2026(回溯最久)",
+        "resultsMethod": "same-site 歷屆成績下載區",
+        "format": "PDF/Excel/zip",
+        "feasibility": "高。WordPress靜態連結直掛檔案(已實測下載真實1.2MB PDF),須二次解析",
+        "note": "國家級競技權威源:環台Tour de Taiwan、全國公路/場地/登山車錦標賽、青年盃繞圈賽、國手選拔"
+      }
+    ],
+    "resultsSites": [
+      {
+        "name": "Bravelog 運動趣",
+        "url": "https://www.bravelog.tw/",
+        "coverageYears": "約2018-2026(跨賽事歷史庫,可選手名搜尋)",
+        "format": "網頁表格(無Excel/CSV/PDF匯出)",
+        "feasibility": "中(判讀有衝突,須實測)。成績頁 /contest/rank/{contestId}:一份偵查實測初始HTML即內含成績可靜態抓(分頁?page=N、子賽事raceId、分組group三參數遍歷;明細頁 /athlete/{raceId}/{bib} 有淨時間/總排/性別排/分組排/分段/均速);另一份判為SPA需headless。共識:/calendar 為JS動態載入,枚舉contestId需瀏覽器或搜尋引擎",
+        "fieldsAvailable": "名次/姓名/號碼布/組別/距離/年齡分組/完賽時間;明細頁另有晶片淨時間/分段時間戳/平均速率(km/h)/性別排名",
+        "note": "市民/挑戰型賽事成績龍頭(96聯賽/雪巴大滿貫/L'Étape/落日飛車350/銅礦88/市運自由車);reCAPTCHA僅用於登入不擋瀏覽"
+      },
+      {
+        "name": "中華民國自行車騎士協會 TCF (cyclist.org.tw)",
+        "url": "https://www.cyclist.org.tw/results.asp",
+        "coverageYears": "2014-2026",
+        "format": "PDF(總排名+分組排名各一檔)",
+        "feasibility": "高。靜態ASP,results_list.asp?pno=1..13 含PDF直連,Content-Type application/pdf已實測;組別部分在檔名部分在內文,需pdfplumber表格解析",
+        "fieldsAvailable": "名次/姓名/組別(菁英/市民/挑戰/分齡/團體)/時間;依PDF內容",
+        "note": "競賽型公路賽/TTT結構化歷史成績最佳目標"
+      },
+      {
+        "name": "中華民國自由車協會 (cycling.org.tw 下載區)",
+        "url": "https://cycling.org.tw/下載區/",
+        "coverageYears": "1998-2026",
+        "format": "PDF/Excel/zip",
+        "feasibility": "高。WordPress靜態檔案連結直下載",
+        "fieldsAvailable": "名次/姓名/組別(菁英/青年/分齡/個人/團體)/時間;國手選拔積分",
+        "note": "國家級錦標賽/環台賽,回溯最久最權威,適合歷史交叉驗證母源"
+      },
+      {
+        "name": "筆記報名 iRunner (irunner.biji.co/track)",
+        "url": "https://irunner.biji.co/track",
+        "coverageYears": "2016-2026",
+        "format": "網頁表格(伺服器端靜態HTML)",
+        "feasibility": "高。靜態免登入;但需 ?rs= 關鍵字查詢,全量靠姓氏字典/號碼枚舉",
+        "fieldsAvailable": "名次/號碼布/姓名/淨時間/組別+隊名;個人頁有電子證書",
+        "note": "少量自行車賽(經典新玉門關/淡江大橋/環大苗栗世界自行車日)"
+      },
+      {
+        "name": "中華民國自行車協會 TBA (taiwanbike.org)",
+        "url": "https://taiwanbike.org/index.php/2009-07-18-17-11-16",
+        "coverageYears": "2010-2026",
+        "format": ".xls直連(早期)+Google Sheets(近年)+PDF",
+        "feasibility": "高(早期.xls最易爬,已驗證HTTP200);近年Google Sheets需export?format=xlsx",
+        "fieldsAvailable": "早期賽事有分組Excel計時名次;近年認證活動多無名次",
+        "note": "2010-2014早期北宜/五指山/貓空有名次;之後轉認證型無排名"
+      },
+      {
+        "name": "iBodyGo 恆碩資訊 (瀚世比17run後端)",
+        "url": "https://www.ibodygo.com.tw/EventGrade.aspx?n={id}",
+        "coverageYears": "近年",
+        "format": "網頁表格",
+        "feasibility": "低。ASP.NET站,純HTTP fetch回404(UA/Session阻擋),需模擬瀏覽器標頭/Session",
+        "fieldsAvailable": "名次/晶片時間/組別",
+        "note": "17run計時商實際發布後端"
+      },
+      {
+        "name": "ATSport 運計科技",
+        "url": "https://atsport.com.tw/",
+        "coverageYears": "約2010-2026",
+        "format": "網頁表格(/race/{id}、/score/{id}、/search?q=,分頁?p=)",
+        "feasibility": "低(資料最結構化但連線被擋)。本環境curl/WebFetch ECONNREFUSED/timeout,疑擋非台灣IP或bot,需台灣IP/瀏覽器自動化",
+        "fieldsAvailable": "名次/分齡/菁英組;RESTful可枚舉路徑",
+        "note": "常見於鐵人三項含公路車分項(CHALLENGE TAIWAN)"
+      },
+      {
+        "name": "樂活成績站 (timing.lohasnet.tw)",
+        "url": "https://timing.lohasnet.tw/score/lohas",
+        "coverageYears": "2012-2026",
+        "format": "網頁表格",
+        "feasibility": "中。動態查詢介面302轉址+JS表單,需Playwright攔XHR",
+        "fieldsAvailable": "名次/分組/完賽時間+電子證書",
+        "note": "萬眾騎BIKE等"
+      }
+    ],
+    "recommendedSources": [
+      "1. 中華民國自行車騎士協會 cyclist.org.tw — 最高優先。完整度高(臺灣自行車聯賽全系列:陽明山王/太平山王/環花東/花蓮太平洋盃+KOM登山王)、可爬性最佳(靜態ASP、results_list.asp?pno=1..13 列表直含PDF連結、無JS/登入/captcha、已實測PDF下載成功)、年份2014-2026。唯一成本:PDF需pdfplumber表格解析、組別部分在檔名部分在內文。",
+      "2. 中華民國自由車協會 cycling.org.tw 下載區 — 歷史回溯最久(1998-2026),國家級競技權威(環台Tour de Taiwan、全國公路/場地/登山車錦標賽、國手選拔)。WordPress靜態檔案直連、已實測下載真實PDF。最適合做歷史交叉驗證母源與'實際辦過'清單回填2010-2017缺口。",
+      "3. Bravelog 運動趣 — 廣覆蓋市民/挑戰型賽事(96聯賽/雪巴大滿貫/L'Étape/落日飛車/銅礦88/市運自由車,自稱全台80%),有跨賽事可搜尋歷史庫,欄位最豐富(明細頁含晶片淨時間/分段/均速/多維排名)。但須先用瀏覽器DevTools實測確認 /contest/rank 究竟靜態可抓或需headless(兩份偵查判讀衝突),/calendar 確需瀏覽器枚舉contestId。建議列為市民賽主力源但排在協會PDF之後。",
+      "4. 筆記報名 irunner.biji.co — 同站靜態HTML、免登入、易解析,涵蓋經典新玉門關等。可作為Bravelog覆蓋不到的賽事補充;限制是需姓名/號碼查詢無全量入口。",
+      "5. taiwanbike.org(早期.xls) + bao-ming.com(賽事清單) — taiwanbike早期.xls直連適合補2010-2014歷史名次;bao-ming /eb/index 靜態適合做'賽事-平台'對照與發現contentid,但詳情頁需headless且成績不在站內。",
+      "6. (暫緩)ATSport / iBodyGo / EventPal — 資料結構化或量大,但有IP/bot阻擋與JS動態問題,PoC階段不建議優先,待主力源穩定後再評估。"
+    ],
+    "proposedSchema": [
+      "race_id (正規化賽事系列ID,跨年穩定,如 'taipingshan-king')",
+      "race_name_raw (來源原始賽名,保留)",
+      "race_name_canonical (正規化賽名)",
+      "series (所屬系列:臺灣自行車聯賽TCL / 96聯賽 / 雪巴大滿貫 / KOM / 認證活動 等)",
+      "edition (屆數,如第21屆;可由賽名抽出)",
+      "year",
+      "date_scheduled (原訂日)",
+      "date_actual (實際日,處理延期)",
+      "race_type (公路賽/個人計時賽ITT/團隊計時賽TTT/繞圈賽criterium/登山賽爬坡/MTB登山車/gravel礫石/挑戰賽/認證騎乘/騎遊)",
+      "is_competitive (布林:有名次競賽 vs 僅完賽認證)",
+      "region / county (地區:宜蘭/南投/花蓮…)",
+      "location_detail (路線描述如 太魯閣→武嶺)",
+      "distance_km",
+      "elevation_gain_m",
+      "stage (分站/賽段,如環花東第一日180K)",
+      "sub_race_id (來源子賽事/距離組ID,如Bravelog raceId)",
+      "category_raw (原始組別字串)",
+      "category_canonical (正規化:菁英/競賽 vs 市民 vs 挑戰 vs 分齡 vs 團體 vs 電輔車 vs 認證等級)",
+      "age_group (分齡組 M30/W40/U23/U15…)",
+      "age (實際年齡,常缺)",
+      "gender (男/女;部分需由組別反推)",
+      "athlete_id (跨賽事選手識別,姓名+號碼或平台會員ID;去識別化後用hash)",
+      "athlete_name_raw (原始姓名,需去識別化處理)",
+      "team / club (隊名)",
+      "bib (號碼布)",
+      "rank_overall (總排名)",
+      "rank_gender (性別排名)",
+      "rank_division (分組/分齡排名)",
+      "finish_time (完賽/大會時間 gun time)",
+      "chip_time / net_time (晶片淨時間)",
+      "splits (分段時間戳,JSON)",
+      "avg_speed_kmh (平均速率,代替配速)",
+      "pace (配速,路跑兼容欄位)",
+      "dnf_status (完賽/未完賽/關門/取消)",
+      "source_platform (cyclist/cycling/bravelog/irunner/taiwanbike…)",
+      "source_url",
+      "source_format (pdf/excel/web-table/google-sheet)",
+      "scrape_method (static/headless/file-download)",
+      "scraped_at",
+      "confidence / needs_review (交叉驗證信心旗標)"
+    ],
+    "risks": [
+      "法遵/個資(PDPA):成績含可識別個人(真實姓名+隊名+號碼+成績),屬個資法蒐集/處理/利用範疇。雖為公開成績,二次彙整成可搜尋資料庫/做選手歷年追蹤有'目的外利用'與'特定目的'爭議;產品上線前建議姓名去識別化(遮罩/hash/僅顯示姓氏)、提供當事人下架機制、評估是否需告知或取得同意,並區分'競技公開成績'與'個人會員歷史'(後者需登入、不可爬)。",
+      "反爬蟲/技術阻擋:bao-ming.com /eb/content/{id} 302+Refresh反爬需headless;iBodyGo EventGrade.aspx純fetch回404(UA/Session阻擋);ATSport擋非台灣IP(ECONNREFUSED/timeout)需在地IP或代理;Bravelog/樂活/EventPal JS渲染需Playwright;taiwanbike SSL中繼憑證不全需-k;Bravelog有invisible reCAPTCHA(目前不擋瀏覽但風險)。各站須先查 /robots.txt 並限速禮貌爬取,避免被封。",
+      "資料品質-賽事名稱不一致:同賽多名(環花東=花東縱谷國際=East Taiwan Road Race&TTT=環花東365;美利達彰化經典百K冠名順序+屆數變動)需正規化;不同賽誤合併風險高(三個'武嶺'分屬TIS崇越盃/建大/NeverStop/96聯賽為四個不同賽事;KOM登山王挑戰 vs KOM登山王之路春夏季為不同賽)。",
+      "資料品質-組別命名不一致:菁英/競賽/精英;市民/巿民競賽;分齡M30 vs M30-39 vs 30-34;96聯賽四色戰衣積分、雪巴距離分組(經典/進階/終極/接力)、認證等級(菜鳥/學長/鑽石)與傳統菁英/分齡無法直接對映,需建組別對照表。",
+      "資料品質-缺欄位:多數PDF/網頁表格缺'年齡'(僅分齡組)、缺性別(需由男子組/女子組反推)、缺晶片時間(僅大會時間);認證型活動(TWB/TBA)根本無名次,不可當競賽成績混入。",
+      "歷史缺口:2010-2017幾乎無單篇部落格整年賽曆,早期僅能靠 cycling.org.tw 歷屆成績 / taiwanbike早期.xls / 環台歷屆回填,且早期檔案格式雜亂(Big5編碼、掃描PDF可能無文字層)。",
+      "漏抓風險(交叉驗證發現):在地車隊/小型自辦賽(輪耀台灣RIDEAWAY系列、Dirty Formosa/Gravel Fundo礫石賽、瘋系列八卦山/谷關雪見、戀戀197、蘇花無敵海景、梅山36彎、八通關玉長、澎湖跳島、美濃山城、瑟飛斯盃/Dan Cup/XTERRA MTB)多不走七大平台,報名/成績散落FB或臨時頁,平台爬取會系統性遺漏,需以部落格賽曆當缺口偵測清單。",
+      "Bravelog爬法不確定性:兩份偵查對 /contest/rank 是否需JS判讀相反,直接照其一實作可能取不到資料或過度使用瀏覽器資源;且Bravelog無公開API、無匯出鈕,逆向XHR有隨時改版風險。",
+      "PDF解析品質:cyclist/cycling的成績PDF多為表格,pdfplumber可解但組別資訊散在檔名與內文兩處,跨年版面不一致,需逐年校正解析規則。"
+    ],
+    "nextSteps": [
+      "1. PoC優先做兩源:(a) cyclist.org.tw — 寫靜態爬蟲抓 results_list.asp?pno=1..13 列表→收集所有PDF連結→pdfplumber解析1-2個賽事(如太平山王、KOM)驗證欄位抽取(名次/姓名/組別/時間);(b) Bravelog — 先用Chrome DevTools/Playwright實測 1 個 /contest/rank/{id}(如2025101802 L'Étape)確認是否靜態可抓、攔截XHR找JSON端點,並測 raceId×group×page 遍歷與 /athlete/{raceId}/{bib} 明細。",
+      "2. 解決Bravelog判讀衝突:以實測結論二選一(靜態requests vs headless),並記錄 contestId 日期碼規律(YYYYMMDD+2碼)作枚舉策略;/calendar 用瀏覽器或搜尋引擎收集已知contestId清單。",
+      "3. 建立兩張對照表:賽事正規化表(race_name_raw→canonical + series + edition,以部落格賽曆核心錨點賽事為種子)、組別正規化表(category_raw→canonical,含菁英/市民/分齡/團體/電輔車/認證等級對映)。",
+      "4. 用部落格賽曆(CYCLINGTIME 2021、ensage 2026、Betery 2024、je22 2025、RACE ON 2026)建立'應存在賽事'母表→與平台抓到的賽事做模糊比對(賽名關鍵字+日期+地點)→輸出'平台漏抓清單',決定是否補爬車隊FB/臨時頁。",
+      "5. 法遵設計先行:確立去識別化策略(顯示層僅姓氏或hash)、資料保留/下架政策、區分公開競賽成績與需登入的個人歷史;查各目標站 robots.txt 與使用條款,設定禮貌爬取速率與快取避免重複請求。",
+      "6. 決定產品形態再定資料深度:若做'選手歷年成績追蹤'需穩定 athlete_id(姓名+號碼跨賽事匹配,品質風險高);若做'賽事資料庫/賽曆'則賽事層欄位即足、個資風險較低。建議先以賽事+成績只讀資料庫起步,選手追蹤列為第二階段並先解個資與身分匹配問題。",
+      "7. 歷史回填規劃:2014-2026以 cyclist.org.tw 為主;1998-2013以 cycling.org.tw 下載區 + taiwanbike早期.xls + 環台歷屆補齊,並標記早期資料confidence較低。"
+    ]
+  }
+}
