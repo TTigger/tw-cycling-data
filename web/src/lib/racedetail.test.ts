@@ -20,18 +20,22 @@ describe("podium", () => {
 });
 
 describe("mainPodium", () => {
-  it("returns the largest category group's top-3 by time, positioned 1-2-3", () => {
+  it("picks the group with the fastest winner, top-3 by time as 1-2-3", () => {
     const rows = [
-      d({ cat: "U15", rank: 1, name: "少年甲", t: 3000 }),               // small group
-      d({ cat: "M25", rank: 1, name: "甲", t: 1000 }),                    // big group, 4 riders
-      d({ cat: "M25", rank: 5, name: "乙", t: 1100 }),                    // note: rank not 1-2-3
-      d({ cat: "M25", rank: 9, name: "丙", t: 1200 }),
-      d({ cat: "M25", rank: 12, name: "丁", t: 1300 }),
+      // big but slow group (挑戰)
+      d({ cat: "挑戰", rank: 1, name: "慢甲", t: 9000 }),
+      d({ cat: "挑戰", rank: 2, name: "慢乙", t: 9100 }),
+      d({ cat: "挑戰", rank: 3, name: "慢丙", t: 9200 }),
+      d({ cat: "挑戰", rank: 4, name: "慢丁", t: 9300 }),
+      // small but fast group (競賽) — has the fastest winner
+      d({ cat: "競賽", rank: 1, name: "快甲", t: 4000 }),
+      d({ cat: "競賽", rank: 5, name: "快乙", t: 4200 }),
+      d({ cat: "競賽", rank: 9, name: "快丙", t: 4400 }),
     ];
     const mp = mainPodium(rows, 3);
-    expect(mp.label).toBe("M25");
-    expect(mp.entries.map((e) => e.name)).toEqual(["甲", "乙", "丙"]);
-    expect(mp.entries.map((e) => e.rank)).toEqual([1, 2, 3]); // positions, not raw ranks
+    expect(mp.label).toBe("競賽");
+    expect(mp.entries.map((e) => e.name)).toEqual(["快甲", "快乙", "快丙"]);
+    expect(mp.entries.map((e) => e.rank)).toEqual([1, 2, 3]);
   });
 });
 
