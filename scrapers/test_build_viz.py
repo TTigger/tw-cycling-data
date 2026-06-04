@@ -83,3 +83,12 @@ def test_build_races_index():
         assert set(("rk", "y", "rn", "s")).issubset(e.keys())
     assert by_key[("alpha", 2024)]["rn"] == "Alpha Race"
     assert by_key[("beta", 2025)]["s"] == "CTCA"
+
+    assert all("file" in e for e in out)
+    assert out[0]["file"] == bv.race_file_name(out[0]["rk"], out[0]["y"])
+
+
+def test_race_file_name():
+    assert bv.race_file_name("taipingshan", 2026) == "taipingshan__2026"
+    assert bv.race_file_name("【96】台北", 2025) == "96-台北__2025"
+    assert bv.race_file_name("a/b c", 2024) == "a-b-c__2024"

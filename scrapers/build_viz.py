@@ -81,8 +81,15 @@ def build_races_index(records):
     for (rk, y), a in agg.items():
         out.append({"rk": rk, "y": y, "rn": meta[rk]["rn"], "s": meta[rk]["s"],
                     "rows": a["rows"], "multi_year": len([x for x in years[rk] if x]) > 1,
-                    "has_team": a["team"]})
+                    "has_team": a["team"], "file": race_file_name(rk, y)})
     return sorted(out, key=lambda x: (-(x["rows"]), str(x["rk"])))
+
+
+def race_file_name(rk, year):
+    """Stable per-race-year filename stem; shared by main() and the races index
+    so the frontend never recomputes the sanitization."""
+    safe = re.sub(r"[^0-9A-Za-z一-鿿]+", "-", str(rk)).strip("-")
+    return f"{safe}__{year}"
 
 
 def detail_record(rec):
@@ -106,8 +113,7 @@ def main():
         json.dump(idx, f, ensure_ascii=False, separators=(",", ":"))
     groups = defaultdict(list)
     for r in records:
-        safe = re.sub(r"[^0-9A-Za-z一-鿿]+", "-", str(r.get("race_key"))).strip("-")
-        groups[f"{safe}__{r.get('year')}"].append(r)
+        groups[race_file_name(r.get("race_key"), r.get("year"))].append(r)
     for fname, rows in groups.items():
         rows = sorted([detail_record(x) for x in rows],
                       key=lambda x: (x["rank"] is None, x["rank"] or 0))
