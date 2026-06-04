@@ -8,7 +8,7 @@ export interface SlimRecord {
 }
 export interface RaceIndex {
   rk: string; y: number | null; rn: string; s: string | null;
-  rows: number; multi_year: boolean; has_team: boolean;
+  rows: number; multi_year: boolean; has_team: boolean; file: string;
 }
 export interface DetailRow {
   rank: number | null; bib: string | null; name: string | null;
