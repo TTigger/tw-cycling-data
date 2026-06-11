@@ -10,6 +10,7 @@ discovery problem from "enumerate every results page" to "diff against a calenda
 Output: data/processed/_discover/missing_races.json  (+ printed report)
 Add new calendars to CALENDARS as they're found (keep SOURCES.md in sync).
 """
+import html
 import json
 import os
 import re
@@ -34,6 +35,8 @@ os.makedirs(OUT_DIR, exist_ok=True)
 CALENDARS = [
     {"id": "raceon2026", "name": "RACE ON 2026 自行車行事曆",
      "url": "https://www.raceon.com.tw/zh-TW/blogs/news/143647", "parser": "raceon"},
+    {"id": "biji2025", "name": "運動筆記 自行車賽事行事曆",
+     "url": "https://running.biji.co/index.php?q=news&act=info&id=112100", "parser": "biji"},
 ]
 
 _TAGS = re.compile(r"<[^>]+>")
@@ -68,7 +71,27 @@ def parse_raceon(html):
     return out
 
 
-PARSERS = {"raceon": parse_raceon}
+def parse_biji(html_doc):
+    """運動筆記 article: race lines are 'M.D｜<name>：<dist>' but HTML-entity
+    encoded (｜ = &#65372;). Decode entities, then line-extract by date｜name."""
+    text = html.unescape(re.sub(r"<br\s*/?>", "\n", html_doc, flags=re.I))
+    text = re.sub(r"<[^>]+>", "\n", text)
+    out = []
+    for ln in text.splitlines():
+        t = ln.strip()
+        if not re.match(r"\d{1,2}[.／/]\d{1,2}\s*[｜|]", t):
+            continue
+        after = re.split(r"[｜|]", t, maxsplit=1)
+        if len(after) < 2:
+            continue
+        name = re.split(r"[：:／/]", after[1], maxsplit=1)[0].strip()
+        name = re.sub(r"&\w+;|報名連結", "", name).strip()
+        if len(name) >= 4:
+            out.append(name)
+    return out
+
+
+PARSERS = {"raceon": parse_raceon, "biji": parse_biji}
 
 
 def core(name):

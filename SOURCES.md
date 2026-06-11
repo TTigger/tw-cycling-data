@@ -3,7 +3,7 @@
 > 本檔是**活的登錄表**:每次新增來源、發現新阻擋、或解開某個卡點,都要回來更新。
 > 最後更新:2026-06-11
 
-主資料集 master:**83,103 筆 / 2009–2026 / 115 場 / 4 來源**(海外賽另計)。
+主資料集 master:**83,226 筆 / 2009–2026 / 116 場 / 4 來源**(海外賽另計)。
 
 ---
 
@@ -15,6 +15,7 @@
 | **bravelog.tw**<br>(運動趣) | 市民/挑戰賽龍頭(96聯賽/雪巴大滿貫/L'Étape/落日飛車/銅礦88/LIVDAY) | `/search` JSON API 探索 → server-rendered rank 頁分頁 | 2018–2026 | `bravelog_calendar.py` + `bravelog_crawl.py` | 46,553 |
 | **tsu.com.tw**<br>(台灣自行車聯盟) | 縣長盃繞圈、越野/gravel、NeverStop武嶺、96系列、大專/地方賽;**含 TCU 選手 ID** | 靜態 HTML(UTF-8),表頭對映;`/race?y=` 年份×分頁 → `/race/result` | 2009–2025 | `tsu_crawl.py` | 24,925 |
 | **cycling.org.tw**<br>(自由車協會) | 國家級:全國公路錦標賽/國手選拔(**含 UCI ID**)+ 2013 舊寬表 | 新制 PDF + 舊 .xls 寬表→長表 reshape | 2013, 2025 | `cycling_crawl.py` + `cycling_oldroad.py` | 349 |
+| **cyclist.org.tw 臺灣自行車聯賽**<br>(子來源:`results_txt.asp` 聯賽頁) | TCL 各站個人計時賽 ITT(桃園繞圈賽等)。聯賽成績走 `results_list.asp?pno=13` → `results_txt.asp?pno=N` 落地頁 → 成績公告 PDF,主 `cyclist_crawl` 抓不到 | landing 頁 → 成績公告 PDF | 2025 | `cyclist_league.py` | 345(ITT) |
 | **runnet.jp**<br>(海外,獨立別集) | 日本 Mt.富士ヒルクライム等(**不進台灣 master**) | JS/SPA(Next.js);headless 渲染 + 頁內 fetch 受保護 JSON API | 2026 | `overseas_runnet.py` | 8,724 |
 
 > 合併工具:`merge.py`(年份無關、自動納源、跨源去重)。海外賽存 `web/public/data/overseas/`,不進 merge。
@@ -43,13 +44,19 @@
 
 不靠人工列舉:從**公開行事曆**反推「應存在的賽事」母表,再與 master 比對找缺口。
 
-| 行事曆 | 用途 |
+| 行事曆 | 狀態 |
 |---|---|
-| **RACE ON 行事曆**(raceon.com.tw) | 年度自行車賽曆(可列舉) |
-| 部落格賽曆(CYCLINGTIME / ensage / Betery / je22) | 跨來源交叉驗證 |
-| 各平台 event list(bravelog `/search`、tsu `/race`、cyclist 列表) | 平台自身賽事清單 |
+| **RACE ON 行事曆**(raceon.com.tw) | ✅ `discover.py` 已接(`parser=raceon`,`<li>` 結構) |
+| **運動筆記 自行車行事曆**(running.biji.co) | ✅ `discover.py` 已接(`parser=biji`,需 HTML entity 解碼) |
+| 單車誌 cycling-update.info / CYCLINGTIME | ⏳ JS/文章式,待 headless 或專屬 parser |
+| 各平台 event list(bravelog `/search`、tsu `/race`) | 平台自身清單(已是來源,gap 分析意義較小) |
 
-→ 詳見 `scrapers/discover.py`(缺漏分析:行事曆 → 正規化 → 比對 master → 缺漏清單 + 推測來源)。
+→ `scrapers/discover.py`:行事曆 → 正規化(core=race_key 去年份/季節/距離/屆)→ fuzzy-diff master → 缺漏清單 + 推測來源。**目前 2 個行事曆 → 找出 22 場缺漏**(環大苗栗/桃園航空城繞圈賽✅已補/瘋系列數場/Gravel Fundo/白毛山/雲林梅好騎跡…),輸出 `data/processed/_discover/missing_races.json`。
+
+### 已知但尚待處理(從 discover 追出的)
+- **臺灣自行車聯賽 TTT(團隊計時賽)/ 公路繞圈分組**:在 cyclist.org.tw 聯賽 PDF 內,但**團隊式版面**`cyclist_league.py` 目前解析會亂(隊名被當選手名)→ 需寫專屬 TTT/繞圈 parser。
+- **瘋系列(中雙塔/縮時環島300K/911/無眠夜騎/白毛山)**:成績多在**主辦自家頁或 FB**,無統一平台 → 逐場找頁或 OCR。
+- **tsu.com.tw 2026**:已重爬,但 2026 賽事尚無成績公告(0 筆),賽季進行中再回來補。
 
 ---
 
