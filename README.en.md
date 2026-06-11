@@ -2,7 +2,13 @@
 
 > 🌐 繁體中文:**[README.md](README.md)** ｜ 📋 Data-source registry (scraped / blocked / discovery): **[SOURCES.md](SOURCES.md)**
 
-Collect, clean, and normalize Taiwan road-cycling race results (2015–2026) into a unified dataset, then an interactive visualization dashboard, deployed as a static site on Vercel.
+Collect, clean, and normalize Taiwan road-cycling race results (2009–2026) into a unified dataset, then an interactive visualization dashboard, deployed as a static site on Vercel.
+
+## What this is & who it's for (Why)
+
+Taiwan's cycling results are **scattered across 4+ platforms** and mostly only queryable race-by-race — there's no single place to compare across races or follow a rider's career. This project aggregates, de-identifies and normalizes those public results into a **free, open, interactive** explorer — currently the **only** unified, analyzable view of Taiwan road-cycling results (**83,301 rows / 116 races / 2009–2026**, plus an overseas collection).
+
+Seven pages: **Overview** (the scene at a glance) · **Explore** (filter & analyze distributions) · **Race** (leaderboard + "what % did you beat" percentile + race search) · **Athletes** (15,301 trackable riders: career history, progression, climber-vs-rouleur radar, head-to-head rivals) · **Climbs** (VAM climbing index + cross-race Climbing King) · **Insights** (peak-age curve, breakout stars, race star-ratings, result converter, geographic hotspots) · **Overseas** (kept separate). The point: turn "scattered, query-only" results into a **searchable, career-trackable, comparable** community resource. PDPA-safe (masked names only). Coverage is disclosed honestly in **[SOURCES.md](SOURCES.md)**.
 
 ## Status
 
