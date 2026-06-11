@@ -39,7 +39,9 @@ scrapers/
   merge.py             ★ merge all sources → master dataset (applies normalize, cross-source dedup)
   validate.py          data-quality checks (dupes / times / rank inversions / coverage / year drift)
   build_viz.py         ★ master.public → frontend data files (viz/races/race; pytest-tested)
-  build_athletes.py    ★ master → athlete-tracking data (athletes index + athlete/<id>; name-primary grouping, homonym confidence flag; pytest-tested)
+  build_athletes.py    ★ master → athlete-tracking data (athletes index + athlete/<id>: identity grouping, homonym flag, climb_vam, trait radar, head-to-head rivals; pytest-tested)
+  build_insights.py    ★ master → insights.json (peak-age curve / breakout / race ratings / region hotspots; pytest-tested)
+  race_type.py         race discipline classifier (climb/crit/tt/road; pytest-tested)
   summarize.py         per-dataset summary stats
   *_poc.py / *_inspect.py / *_probe.py / bravelog_parse.py   one-off PoC/exploration scripts (kept for reference)
 data/processed/
@@ -68,11 +70,16 @@ python scrapers\validate.py master.json      # data-quality report
 
 ## Frontend dashboard (`web/`)
 
-Astro + React islands + Tailwind v4 + ECharts, "Claude" warm aesthetic. Five pages: `/` (Overview), `/explore` (Explore), `/race` (Race detail), `/athletes` (Athlete tracking), `/climbs` (Legendary climbs + **VAM climbing index**: single-race VAM leaderboard + cross-race "Climbing King" board + estimated W/kg, from a curated `climb_profiles.json` elevation table).
+Astro + React islands + Tailwind v4 + ECharts, "Claude" warm aesthetic. Six pages:
+- `/` (Overview), `/explore` (Explore), `/race` (Race detail)
+- `/athletes` (Athlete tracking + **climber-vs-rouleur radar** + **head-to-head rivals**)
+- `/climbs` (Legendary climbs + **VAM climbing index**: single-race leaderboard + cross-race "Climbing King" + estimated W/kg, from a curated `climb_profiles.json`)
+- `/insights` (peak-age curve, breakout stars, race star-ratings, result converter, region hotspots)
 
 ```powershell
 python scrapers\build_viz.py            # master.public → web/public/data/{viz,races,race/*}.json
-python scrapers\build_athletes.py       # master → web/public/data/{athletes.json, athlete/<id>.json}
+python scrapers\build_athletes.py       # master → athletes/athlete/<id>/climb_vam.json (incl. radar + rivals)
+python scrapers\build_insights.py       # master → insights.json (age curve / breakout / ratings / geo)
 cd web
 npm install
 npm run dev                             # dev server at http://localhost:4321
