@@ -31,13 +31,13 @@ def test_slim_record():
         "race_key": "taipingshan", "race_name_canonical": "太平山王 公路賽",
         "year": 2026, "date": "2026-05-09", "series": "臺灣自行車聯賽(TCL)",
         "race_class": "競賽", "category_raw": "M25", "gender": "M",
-        "age_group": "25", "finish_seconds": 7231.4, "rank_overall": 1,
+        "age_group": "25", "age_band": "19-29", "finish_seconds": 7231.4, "rank_overall": 1,
         "result_label": "總排名", "source_platform": "cyclist.org.tw", "region": None,
     }
     s = bv.slim_record(rec)
     assert s["rk"] == "taipingshan"
     assert s["y"] == 2026 and s["mon"] == 5
-    assert s["g"] == "M" and s["ag"] == "25"
+    assert s["g"] == "M" and s["ag"] == "19-29"  # emits normalized band, not raw
     assert s["t"] == 7231 and s["rank"] == 1
     assert s["plat"] == "cyclist.org.tw"
     assert "name_raw" not in s and "splits" not in s

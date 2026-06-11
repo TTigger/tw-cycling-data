@@ -94,7 +94,8 @@ npm run build                           # static output to web/dist
 - **Bravelog**: contests discovered via the `/search` JSON API → server-rendered rank pages parsed with pagination (no JS/headless needed).
 - **gender=None ≈ 16%** is mostly legitimate (U13–U15 youth / challenge / e-bike groups aren't gender-coded; many Bravelog citizen races are ungrouped).
 - **PDPA**: only `*.public.json` (no `name_raw`) is published; the UI shows masked names; the site footer states sources and a takedown note.
-- **race_key / category** use conservative normalization; a curated race/category mapping table is still a refinement TODO (the three different "武嶺" races must not be merged; KOM Challenge ≠ KOM-no-michi).
+- **Age-group normalization**: raw `age_group` mixes two schemes across sources (5-year-start codes 20/25/30… and explicit ranges 24-35/40-49); `normalize.age_band()` unifies them into coarse decade bands (`U19/19-29/30-39/40-49/50-59/60+/MASTER`) for the explore filter + boxplot, while the raw `age_group` is kept on each result.
+- **race_key / race-class** use conservative normalization; a curated race-name mapping table is still a refinement TODO (the three different "武嶺" races must not be merged; KOM Challenge ≠ KOM-no-michi).
 
 ## Athlete identity resolution (Phase 3)
 

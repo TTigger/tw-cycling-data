@@ -3,7 +3,8 @@
 Cross-source normalization tables (recon-flagged Phase-1 task):
   - race_class():  the awarded-group bucket (競賽/市民/挑戰/青少年/團體/電輔車/認證)
   - series_of():   group races into series for analysis (96聯賽 / 登山大滿貫 / 臺灣自行車聯賽 …)
-  - enrich():      add race_class + series to a unified record (in place)
+  - age_band():    coarse decade band unifying the heterogeneous raw age_group
+  - enrich():      add race_class + series + age_band to a unified record (in place)
 
 These are CURATED keyword tables built from the real 2024-26 race/category values.
 IMPORTANT (recon): distinct races must NOT be merged — the three "武嶺" races
@@ -76,8 +77,45 @@ def series_of(race_name):
     return None
 
 
+_AGE_INT = re.compile(r"\d+")
+
+
+def age_band(age_group):
+    """Unify the heterogeneous raw age_group into one coarse decade band for
+    cross-source analysis (the raw age_group is preserved separately). Schemes
+    seen across sources: 5-year-start codes (20/25/30…), explicit ranges
+    (24-35/40-49/19-23…), youth (U13-U15 / 15 / 16), MASTER, and parse junk
+    ('4-1'). Bucketed by lower-bound age. Returns one of
+    U19 / 19-29 / 30-39 / 40-49 / 50-59 / 60+ / MASTER, else None."""
+    if not age_group:
+        return None
+    s = str(age_group).strip().upper()
+    if s == "MASTER":
+        return "MASTER"
+    if s.startswith("U"):
+        return "U19"
+    m = _AGE_INT.search(s)
+    if not m:
+        return None
+    n = int(m.group())
+    if n < 13:          # implausible as an age band -> parse junk (e.g. '4-1')
+        return None
+    if n <= 18:
+        return "U19"
+    if n <= 29:
+        return "19-29"
+    if n <= 39:
+        return "30-39"
+    if n <= 49:
+        return "40-49"
+    if n <= 59:
+        return "50-59"
+    return "60+"
+
+
 def enrich(rec):
-    """Add race_class + series to a unified record (mutates and returns it)."""
+    """Add race_class + series + age_band to a unified record (mutates and returns it)."""
     rec["race_class"] = race_class(rec.get("result_label"), rec.get("category_raw"))
     rec["series"] = series_of(rec.get("race_name_raw") or rec.get("race_name_canonical"))
+    rec["age_band"] = age_band(rec.get("age_group"))
     return rec

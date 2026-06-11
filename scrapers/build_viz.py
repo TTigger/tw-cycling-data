@@ -58,7 +58,10 @@ def slim_record(rec):
         "rk": rec.get("race_key"),
         "y": rec.get("year"), "mon": month_of(rec.get("date")),
         "s": rec.get("series"), "rc": rec.get("race_class"),
-        "cat": rec.get("category_raw"), "g": rec.get("gender"), "ag": rec.get("age_group"),
+        "cat": rec.get("category_raw"), "g": rec.get("gender"),
+        # normalized decade band (U19/19-29/.../60+/MASTER) for clean filter +
+        # boxplot grouping; raw age_group is kept in the per-race detail rows.
+        "ag": rec.get("age_band"),
         "t": int(t) if t is not None else None, "rank": rec.get("rank_overall"),
         "dist": dist, "spd": avg_speed_kmh(dist, t),
         "plat": rec.get("source_platform"), "reg": rec.get("region"),
