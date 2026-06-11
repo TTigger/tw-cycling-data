@@ -1,6 +1,6 @@
-import ReactECharts from "echarts-for-react";
+import ReactEChartsCore from "echarts-for-react/lib/core";
 import type { EChartsOption } from "echarts";
-import { CLAUDE_THEME } from "../../lib/echarts-theme";
+import { echarts, CLAUDE_THEME } from "../../lib/echarts-theme";
 
 interface Props {
   option: EChartsOption;
@@ -10,7 +10,8 @@ interface Props {
 
 export default function EChart({ option, height = 320, onEvents }: Props) {
   return (
-    <ReactECharts
+    <ReactEChartsCore
+      echarts={echarts}
       option={option}
       theme={CLAUDE_THEME}
       notMerge
