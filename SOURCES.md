@@ -30,7 +30,7 @@
 | **iBodyGo** | UA / Session 阻擋 | 帶完整 headers + cookie jar |
 | **ATSport** | 封鎖非台灣 IP | 台灣 IP 代理 / 在台節點 |
 | **樂活成績站** | JS 動態渲染 | Playwright headless |
-| **irunner.biji.co**<br>(筆記報名) | JS 查詢式、**無「列出全部」入口**;自行車多為 DIY 營隊/MTB | 找背後 XHR 端點;或 seed 名單逐筆查 |
+| **irunner.biji.co**<br>(筆記報名) | **逐筆查(競賽編號 or 姓名)**、無「列出全部」端點;結果走 csrf+session 的 AJAX,頁面重(廣告/FB widget)→ 瀏覽器擷取 XHR 常 timeout。已知端點 `/track/{id}/results|record|group`,但 search 參數未破。理論可破:headless + **依常見姓氏(陳/林/黃…)或 bib 列舉** 拼回全場(每查一批),但 per-query 慢、ROI 低(多為跑步) | headless + 姓氏/bib 列舉(未完成,新玉門關為例) |
 | **ctrun**<br>(全統) | 成績查詢需**會員登入**;且多為認證型無名次 | headless 帶登入 cookie;以「認證型」型別收 |
 | **runnet.jp** | JS/SPA + JSON API **受保護**(Python 直連被擋/500) | ✅ 已解:headless 在已登入分頁內 `fetch` API |
 | **sportsnet.org.tw** | 純跑步(路跑協會),**非自行車** | 不適用(不對題) |
