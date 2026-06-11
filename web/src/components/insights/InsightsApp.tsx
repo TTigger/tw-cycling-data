@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import "../../lib/echarts-theme";
-import { loadInsights } from "../../lib/data-load";
-import type { Insights } from "../../lib/types";
+import { loadInsights, loadRaces } from "../../lib/data-load";
+import type { Insights, RaceIndex } from "../../lib/types";
 import AgeCurve from "./AgeCurve";
 import Breakout from "./Breakout";
 import RaceRatings from "./RaceRatings";
+import ResultConverter from "./ResultConverter";
 
 function Card({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
   return (
@@ -18,10 +19,12 @@ function Card({ title, hint, children }: { title: string; hint?: string; childre
 
 export default function InsightsApp() {
   const [ins, setIns] = useState<Insights | null>(null);
+  const [races, setRaces] = useState<RaceIndex[]>([]);
   const [err, setErr] = useState<string | null>(null);
 
   useEffect(() => {
     loadInsights().then(setIns).catch((e) => setErr(String(e)));
+    loadRaces().then(setRaces).catch(() => {});
   }, []);
 
   if (err) return <p className="text-accent">資料載入失敗:{err}</p>;
@@ -38,6 +41,11 @@ export default function InsightsApp() {
       <Card title="⭐ 賽事星等" hint="規模 × 屆數 × 場域深度的綜合競爭力評分">
         <RaceRatings ratings={ins.ratings} />
       </Card>
+      {races.length > 0 && (
+        <Card title="🔄 成績換算器" hint="你在某場的名次,換算到另一場大約第幾名">
+          <ResultConverter races={races} />
+        </Card>
+      )}
     </div>
   );
 }
