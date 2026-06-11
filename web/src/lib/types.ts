@@ -67,6 +67,15 @@ export interface OverseasRow {
   bib: string | null; name_masked: string | null; team: string | null;
   finish_time: string | null; finish_seconds: number | null;
 }
+
+export interface CoverageGap { race: string; calendar: string; guess_source: string; }
+export interface Coverage {
+  summary: {
+    rows: number; races: number; by_source: Record<string, number>;
+    y0: number; y1: number; overseas: number; calendars: string[];
+  };
+  gaps: CoverageGap[];
+}
 export interface Insights {
   age_curve: AgeCurvePoint[];
   breakout: BreakoutEntry[];

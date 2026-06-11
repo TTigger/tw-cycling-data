@@ -1,4 +1,4 @@
-import type { SlimRecord, RaceIndex, DetailRow, AthleteIndexEntry, AthleteDetail, ClimbProfile, ClimbVamEntry, Insights, OverseasRaceMeta, OverseasRow } from "./types";
+import type { SlimRecord, RaceIndex, DetailRow, AthleteIndexEntry, AthleteDetail, ClimbProfile, ClimbVamEntry, Insights, OverseasRaceMeta, OverseasRow, Coverage } from "./types";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
@@ -50,5 +50,10 @@ export async function loadOverseasIndex(): Promise<OverseasRaceMeta[]> {
 export async function loadOverseasRace(file: string): Promise<OverseasRow[]> {
   const r = await fetch(`${base}/data/overseas/${file}.json`);
   if (!r.ok) throw new Error(`overseas ${file} ${r.status}`);
+  return r.json();
+}
+export async function loadCoverage(): Promise<Coverage> {
+  const r = await fetch(`${base}/data/coverage.json`);
+  if (!r.ok) throw new Error(`coverage.json ${r.status}`);
   return r.json();
 }
