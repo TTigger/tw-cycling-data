@@ -94,7 +94,8 @@ npm run build                           # 產出 web/dist(靜態)
 - **Bravelog**:`/search` JSON API 探索 contest → server-rendered rank 頁分頁解析(無需 JS)。
 - **gender=None ≈ 16%** 多為正常(U13–U15/挑戰組/電輔車 資料源未編碼性別);Bravelog 多市民賽不分組。
 - **PDPA**:公開輸出僅用 `*.public.json`(無 `name_raw`)、顯示遮罩姓名;網站頁尾標註來源與下架說明。
-- **race_key / 組別** 為保守正規化;正式對照表仍待精修(三個「武嶺」不可合併、KOM 挑戰≠登山王之路)。
+- **分齡組正規化**:原始 `age_group` 跨源混用兩套制度(5 歲制 20/25/30… 與範圍式 24-35/40-49),`normalize.age_band()` 統一為十年制粗分級(`U19/19-29/30-39/40-49/50-59/60+/MASTER`)供探索頁篩選與箱形圖;原始 `age_group` 保留於各場成績。
+- **race_key / 組別類型** 為保守正規化;賽名對照表仍待精修(三個「武嶺」不可合併、KOM 挑戰≠登山王之路)。
 
 ## 選手追蹤的身分識別(Phase 3)
 
