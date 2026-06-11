@@ -1,4 +1,4 @@
-import type { SlimRecord, RaceIndex, DetailRow, AthleteIndexEntry, AthleteDetail } from "./types";
+import type { SlimRecord, RaceIndex, DetailRow, AthleteIndexEntry, AthleteDetail, ClimbProfile, ClimbVamEntry } from "./types";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
@@ -25,5 +25,15 @@ export async function loadAthletes(): Promise<AthleteIndexEntry[]> {
 export async function loadAthlete(id: string): Promise<AthleteDetail> {
   const r = await fetch(`${base}/data/athlete/${id}.json`);
   if (!r.ok) throw new Error(`athlete ${id} ${r.status}`);
+  return r.json();
+}
+export async function loadClimbProfiles(): Promise<ClimbProfile[]> {
+  const r = await fetch(`${base}/data/climb_profiles.json`);
+  if (!r.ok) throw new Error(`climb_profiles.json ${r.status}`);
+  return r.json();
+}
+export async function loadClimbVam(): Promise<ClimbVamEntry[]> {
+  const r = await fetch(`${base}/data/climb_vam.json`);
+  if (!r.ok) throw new Error(`climb_vam.json ${r.status}`);
   return r.json();
 }
