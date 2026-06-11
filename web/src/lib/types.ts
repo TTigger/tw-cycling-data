@@ -29,9 +29,10 @@ export interface AthleteHistoryRow {
   rank: number | null; t: number | null; label: string | null;
   d: string | null; field: number | null;
 }
+export interface AthleteTrait { pct: number; n: number; }
 export interface AthleteDetail {
   id: string; nm: string; conf: Confidence; has_uci: boolean; has_rider: boolean;
-  teams: string[]; history: AthleteHistoryRow[];
+  teams: string[]; traits: Record<string, AthleteTrait>; history: AthleteHistoryRow[];
 }
 export interface ClimbProfile {
   race_key: string; name: string;

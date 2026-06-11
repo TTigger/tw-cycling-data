@@ -43,7 +43,7 @@ describe("searchAthletes", () => {
 describe("careerSummary", () => {
   it("aggregates wins / podiums / best rank / years", () => {
     const d: AthleteDetail = {
-      id: "x", nm: "王○明", conf: "high", has_uci: false, has_rider: false, teams: ["A隊"],
+      id: "x", nm: "王○明", conf: "high", has_uci: false, has_rider: false, teams: ["A隊"], traits: {},
       history: [h({ y: 2023, rank: 1 }), h({ y: 2024, rank: 2 }), h({ y: 2024, rank: 8 })],
     };
     const s = careerSummary(d);
