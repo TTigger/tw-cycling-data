@@ -45,6 +45,25 @@ def test_confidence():
     assert ba.confidence(is_anchored=False, distinct_teams=3, name_len=2) == "low"
 
 
+def test_head_to_head_record():
+    recs = []
+
+    def add(name, tsu, rk, rank):
+        recs.append({"name_raw": name, "name_masked": None, "tsu_rider_id": tsu,
+                     "uci_id": None, "race_key": rk, "year": 2024, "rank_overall": rank,
+                     "gender": "M", "finish_seconds": 3600.0 + rank})
+    # 甲 beats 乙 in r1, r2; 乙 beats 甲 in r3
+    for rk, (ra, rb) in {"r1": (1, 2), "r2": (1, 2), "r3": (2, 1)}.items():
+        add("甲", "TCU-a", rk, ra)
+        add("乙", "TCU-b", rk, rb)
+    aid_a, aid_b = ba.athlete_id("t:TCU-a"), ba.athlete_id("t:TCU-b")
+    details = {aid_a: {"nm": "甲"}, aid_b: {"nm": "乙"}}
+    out = ba.build_head_to_head(recs, details, min_results=2, min_meets=2)
+    assert out[aid_a][0]["nm"] == "乙"
+    assert out[aid_a][0]["w"] == 2 and out[aid_a][0]["l"] == 1 and out[aid_a][0]["meets"] == 3
+    assert out[aid_b][0]["w"] == 1 and out[aid_b][0]["l"] == 2  # mirror
+
+
 def test_traits_per_discipline():
     fs = {("climbR", 2024): 100, ("roadR", 2024): 100}
     recs = [

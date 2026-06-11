@@ -68,6 +68,26 @@ export default function AthleteProfile({ d, onBack }: { d: AthleteDetail; onBack
         <AthleteRadar traits={d.traits} />
       </section>
 
+      {d.rivals && d.rivals.length > 0 && (
+        <section className="rounded-xl border border-border bg-surface p-4">
+          <h2 className="font-display text-lg text-ink">⚔️ 交手戰績(宿敵)</h2>
+          <p className="mb-2 text-xs text-muted">最常同場較勁的對手與勝負(同場名次較前者勝)。</p>
+          <div className="flex flex-wrap gap-2">
+            {d.rivals.map((r) => {
+              const lead = r.w > r.l ? "text-emerald-600" : r.w < r.l ? "text-accent" : "text-muted";
+              return (
+                <a key={r.id} href={`${base}/athletes?id=${r.id}`}
+                  className="rounded-lg border border-border bg-bg px-3 py-2 text-sm hover:border-accent">
+                  <span className="text-ink">{r.nm}</span>
+                  <span className={`ml-2 num ${lead}`}>{r.w}–{r.l}</span>
+                  <span className="ml-1 text-xs text-muted">/ {r.meets} 場</span>
+                </a>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
       <section className="rounded-xl border border-border bg-surface p-4">
         <h2 className="font-display text-lg text-ink">歷年成績</h2>
         <div className="mt-2 overflow-x-auto">
