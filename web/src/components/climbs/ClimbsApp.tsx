@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import "../../lib/echarts-theme";
-import { loadRaces, loadRaceDetail } from "../../lib/data-load";
+import { loadRaces, loadRaceDetail, loadClimbProfiles, loadClimbVam } from "../../lib/data-load";
 import { climbRaces } from "../../lib/climbs";
-import type { RaceIndex, DetailRow } from "../../lib/types";
+import type { RaceIndex, DetailRow, ClimbProfile, ClimbVamEntry } from "../../lib/types";
+import VamLeaderboard from "./VamLeaderboard";
+import ClimbKingBoard from "./ClimbKingBoard";
+import VamMethodology from "./VamMethodology";
 import PercentileWidget from "../race/PercentileWidget";
 import RaceTimeHistogram from "../race/RaceTimeHistogram";
 import Podium from "../race/Podium";
@@ -23,6 +26,8 @@ export default function ClimbsApp() {
   const [sel, setSel] = useState<RaceIndex | null>(null);
   const [detail, setDetail] = useState<DetailRow[] | null>(null);
   const [err, setErr] = useState<string | null>(null);
+  const [profiles, setProfiles] = useState<Record<string, ClimbProfile>>({});
+  const [vamRows, setVamRows] = useState<ClimbVamEntry[]>([]);
 
   useEffect(() => {
     loadRaces().then((rs) => {
@@ -33,6 +38,8 @@ export default function ClimbsApp() {
       const m = cl.find((r) => r.rk === rk && String(r.y) === y) ?? cl[0];
       if (m) pick(m, false);
     }).catch((e) => setErr(String(e)));
+    loadClimbProfiles().then((ps) => setProfiles(Object.fromEntries(ps.map((p) => [p.race_key, p])))).catch(() => {});
+    loadClimbVam().then(setVamRows).catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -63,6 +70,11 @@ export default function ClimbsApp() {
           <h1 className="font-display text-2xl text-ink">{sel.y} {sel.rn}</h1>
           {!detail ? <p className="text-muted">載入成績…</p> : (
             <div className="space-y-6">
+              {sel && profiles[sel.rk] && (
+                <Card title="爬坡指數 VAM 排行" hint="垂直爬升速度(公尺/小時),跨賽可比">
+                  <VamLeaderboard rows={detail} profile={profiles[sel.rk]} />
+                </Card>
+              )}
               <Card title="你贏過多少%" hint="輸入你的爬坡完賽時間,看落在所有完賽者的前幾%">
                 <PercentileWidget rows={detail} />
               </Card>
@@ -75,6 +87,12 @@ export default function ClimbsApp() {
           )}
         </>
       )}
+      {vamRows.length > 0 && (
+        <Card title="🏔 跨賽爬坡王" hint="每位選手在所有有路線數據的爬坡賽中的最佳 VAM">
+          <ClimbKingBoard entries={vamRows} />
+        </Card>
+      )}
+      <Card title="方法論"><VamMethodology /></Card>
     </div>
   );
 }
