@@ -14,8 +14,9 @@ Collect, clean, and normalize Taiwan road-cycling race results (2015–2026) int
 | **Phase 1b: Bravelog pipeline (2018–26)** | ✅ **44,850 rows / 61 races** (citizen/challenge; triathlons excluded) |
 | **Phase 1d: cycling.org.tw national source** | ✅ National road championship **203 rows (2025, with UCI IDs)**; old wide-table years deferred |
 | **Phase 1e: tsu.com.tw results platform** | ✅ **24,925 rows / 2009–2025** (county criteriums/gravel/NeverStop Wuling/96 series; carries **TCU rider IDs**, fills the deepest history) |
+| **Phase 1f: cycling.org.tw old wide-table backfill** | ✅ `cycling_oldroad.py` recovers the 2013 national road championship **146 rows** (wide→long reshape; other years are 404) |
 | Normalization + merge + validation tooling | ✅ `normalize.py` / `merge.py` (year-agnostic, auto-discovers sources, cross-source dedup) / `validate.py` |
-| **★ Merged master dataset** | ✅ **80,904 rows / 2009–2026 / 143 races / 4 sources**, de-identified |
+| **★ Merged master dataset** | ✅ **83,103 rows / 2009–2026 / 115 races / 4 sources**, de-identified |
 | **Phase 2: interactive dashboard (4 pages)** | ✅ `web/` (Overview / Explore / Race / Climbs; Astro+React+ECharts, Claude aesthetic, responsive) |
 | **Vercel deployment** | ✅ Live (Root Directory=`web`; auto-deploys on push) |
 | **Phase 1c: historical backfill (cyclist 2014–23 + Bravelog 2018–23)** | ✅ +7,363 + historical Bravelog |

@@ -59,6 +59,19 @@
     "confidence": "cycling"
   },
   {
+    "uid": "2022050101",
+    "title": "2022 LIVDAY初夏大山 - 風中劍2.0挑戰活動",
+    "host": "LIV",
+    "city": "臺北市",
+    "tags": [
+      "38km"
+    ],
+    "start_date": "2022-05-01 06:00:00",
+    "statusTag": "查成績",
+    "website": "https://www.liv-cycling.com/tw/news/2022-livday-2-0/26771",
+    "confidence": "cycling"
+  },
+  {
     "uid": "2022051401",
     "title": "彩虹四季運動觀光系列活動 - 環屏東自行車挑戰Day1",
     "host": "屏東縣政府",
@@ -114,6 +127,19 @@
     "confidence": "cycling"
   },
   {
+    "uid": "2022121103",
+    "title": "2022 LIVDAY冬之湯旅－關子嶺挑戰",
+    "host": "LIV",
+    "city": "臺南市",
+    "tags": [
+      "52km"
+    ],
+    "start_date": "2022-12-11 06:20:00",
+    "statusTag": "查成績",
+    "website": "https://www.liv-cycling.com/tw/events/2022-livday/9398",
+    "confidence": "cycling"
+  },
+  {
     "uid": "2023040801",
     "title": "2023 (第13屆) 美利達‧兆豐銀行 彰化經典百K",
     "host": "中華民國健康運動銀行促進協會、驊采整合行銷股份有限公司",
@@ -164,7 +190,7 @@
     "start_date": "2023-05-21 07:00:00",
     "statusTag": "查成績",
     "website": "https://www.liv-cycling.com/tw/events/2023-livday/9516",
-    "confidence": "maybe"
+    "confidence": "cycling"
   },
   {
     "uid": "2023062401",
@@ -201,6 +227,17 @@
       "Push Bike"
     ],
     "start_date": "2023-12-03 06:10:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2024011401",
+    "title": "2024 LIVDAY 冬之湯旅_175咖啡公路 挑戰活動",
+    "host": "LIV",
+    "city": "臺南市",
+    "tags": [],
+    "start_date": "2024-01-14 06:30:00",
     "statusTag": "查成績",
     "website": null,
     "confidence": "cycling"
@@ -351,6 +388,20 @@
     "confidence": "cycling"
   },
   {
+    "uid": "2024102601",
+    "title": "2024南庄山水悠遊行-悠遊騎慢城",
+    "host": "苗栗縣政府、參山國家風景區管理處、南庄鄉公所、獅潭鄉公所、南庄鄉代表會、南庄鄉農會、獅潭鄉農會",
+    "city": "苗栗縣",
+    "tags": [
+      "21km",
+      "31km"
+    ],
+    "start_date": "2024-10-26 06:30:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
     "uid": "2024113003",
     "title": "L’Étape環法自行車挑戰賽-紐崔萊 • 日月潭站",
     "host": "中華民國運動休閒推廣協會、BODY名衍行銷",
@@ -385,6 +436,17 @@
     "city": "嘉義縣",
     "tags": [],
     "start_date": "2024-12-07 06:30:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2025011203",
+    "title": "2025 LIVDAY 冬之湯旅 - 175咖啡公路 挑戰活動",
+    "host": "Liv",
+    "city": "臺南市",
+    "tags": [],
+    "start_date": "2025-01-12 06:30:00",
     "statusTag": "查成績",
     "website": null,
     "confidence": "cycling"
@@ -478,6 +540,17 @@
     "start_date": "2025-05-17 07:00:00",
     "statusTag": "查成績",
     "website": "https://event.ttbike185.com/wilier2000/",
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2025052501",
+    "title": "2025 LIVDAY 初夏大山 - 102寂寞公路 挑戰活動",
+    "host": "Liv",
+    "city": "臺北市",
+    "tags": [],
+    "start_date": "2025-05-25 06:00:00",
+    "statusTag": "查成績",
+    "website": "https://www.liv-cycling.com/tw/events/2025-livday-102/9968",
     "confidence": "cycling"
   },
   {
@@ -754,7 +827,7 @@
     "city": "臺東縣",
     "tags": [],
     "start_date": "2026-06-07 06:00:00",
-    "statusTag": "未開始",
+    "statusTag": "查成績",
     "website": null,
     "confidence": "cycling"
   }

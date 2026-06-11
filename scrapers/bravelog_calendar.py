@@ -26,7 +26,8 @@ os.makedirs(OUT, exist_ok=True)
 CYCLING = re.compile(
     r"自行車|單車|公路車|鐵馬|武嶺|KOM|登山王|繞圈賽?|環花東|環台|環島|"
     r"落日飛車|銅礦|96聯賽|96\s|雪巴|大滿貫|Étape|L['’]?Etape|經典賽|盃自行車|"
-    r"自由車|bike|cycling", re.I)
+    r"自由車|bike|cycling|"
+    r"咖啡公路|寂寞公路|LIVDAY|悠遊騎", re.I)  # LIVDAY/咖啡公路 challenge-ride series
 # triathlon / running — exclude even if a cycling word appears
 EXCLUDE = re.compile(
     r"鐵人|三項|IRON\s?MAN|IRONMAN|IRONKIDS|小鐵人|duathlon|swimrun|路跑|馬拉松|"
