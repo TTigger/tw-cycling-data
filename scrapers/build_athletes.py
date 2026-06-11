@@ -202,6 +202,8 @@ def build_climb_vam(records, profiles):
             groups[k].append(r)
     out = []
     for gk, recs in groups.items():
+        if len(recs) < MIN_RESULTS:
+            continue
         best = None
         for r in recs:
             prof = profiles.get(r.get("race_key"))
