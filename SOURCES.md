@@ -48,10 +48,11 @@
 |---|---|
 | **RACE ON 行事曆**(raceon.com.tw) | ✅ `discover.py` 已接(`parser=raceon`,`<li>` 結構) |
 | **運動筆記 自行車行事曆**(running.biji.co) | ✅ `discover.py` 已接(`parser=biji`,需 HTML entity 解碼) |
-| 單車誌 cycling-update.info / CYCLINGTIME | ❌ 文章/內容式(非結構化賽曆),headless 也只抓到導覽列+舊環法文章 → 不適合當 gap 種子 |
-| 各平台 event list(bravelog `/search`、tsu `/race`) | 平台自身清單(已是來源,gap 分析意義較小) |
+| **ensage 2026 自行車&三鐵行事曆**(blog.ensage.tours) | ✅ `discover.py` 已接(`parser=ensage`,`<tr>` 表格 132 筆;濾掉三鐵/跑步 + ensage 自家保母車/接駁/海外旅遊產品) |
+| 96好動客 / 伊貝特 / Phomi / biji competition | ❌ JS 動態 或 自行車稀少(伊貝特 index 30 場僅 1 自行車)→ 不適合靜態列舉 |
+| 單車誌 / CYCLINGTIME / ctyeh | ❌ 文章/內容式或 JS,非結構化賽曆 |
 
-→ `scrapers/discover.py`:行事曆 → 正規化(core=race_key 去年份/季節/距離/屆)→ fuzzy-diff master → 缺漏清單 + 推測來源。**目前 2 個行事曆 → 找出 22 場缺漏**(環大苗栗/桃園航空城繞圈賽✅已補/瘋系列數場/Gravel Fundo/白毛山/雲林梅好騎跡…),輸出 `data/processed/_discover/missing_races.json`。
+→ `scrapers/discover.py`:行事曆 → 正規化(core=race_key 去年份/季節/距離/屆)→ fuzzy-diff master → 缺漏清單 + 推測來源。**目前 3 個行事曆 → 找出 53 場缺漏**(瘋系列 八卦山傳奇/谷關雪見硬漢/中雙塔/白毛山·TWB 東三塔550/東雙塔470/彰化騎福·TBA 西濱挑戰·萬眾騎BIKE·梅山36彎·Gravel Fundo…),輸出 `data/processed/_discover/missing_races.json`。多為主辦自家頁/FB,屬 OCR 或逐場索取範疇。
 
 ### 已知但尚待處理(從 discover 追出的)
 - ✅ **臺灣自行車聯賽 TTT(團隊計時賽)已收**(`parse_ttt`:依車隊分組、把隊名次與「取第4名時間」傳遞給全隊成員,strip 國籍碼)——819 列。_積分排名/累計總排名_ 為衍生排名仍不收(非完賽列)。
