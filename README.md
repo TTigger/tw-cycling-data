@@ -14,8 +14,9 @@
 | **Phase 1b:Bravelog 管線(2018–26)** | ✅ **44,850 筆 / 61 場**(市民/挑戰型;已排除鐵人三項) |
 | **Phase 1d:cycling.org.tw 國家級源** | ✅ 全國公路錦標賽 **203 筆(2025,含 UCI ID)**;舊年份寬表格式擱置 |
 | **Phase 1e:tsu.com.tw 賽事成績平台** | ✅ **24,925 筆 / 2009–2025**(縣長盃繞圈/越野/NeverStop武嶺/96系列;含 **TCU 選手 ID**,補最深歷史) |
+| **Phase 1f:cycling.org.tw 舊寬表回填** | ✅ `cycling_oldroad.py` 救回 2013 全國公路錦標賽 **146 筆**(寬表→長表 reshape;其餘年份檔已 404) |
 | 正規化 + 合併 + 驗證工具層 | ✅ `normalize.py` / `merge.py`(年份無關、自動納源、跨源去重) / `validate.py` |
-| **★ 合併 master 資料集** | ✅ **80,904 筆 / 2009–2026 / 143 場 / 4 來源**,已去識別化 |
+| **★ 合併 master 資料集** | ✅ **83,103 筆 / 2009–2026 / 115 場 / 4 來源**,已去識別化 |
 | **Phase 2:互動視覺化儀表板(4 頁)** | ✅ `web/`(總覽/探索/賽事/傳奇爬坡;Astro+React+ECharts,Claude 風,RWD) |
 | **部署 Vercel** | ✅ 已上線(Root Directory=`web`,push 自動部署) |
 | **Phase 1c:歷史回填(cyclist 2014–23 + Bravelog 2018–23)** | ✅ +7,363 + 歷史 Bravelog |
