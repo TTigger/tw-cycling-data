@@ -1,53 +1,60 @@
 {
-  "total_records": 56329,
+  "total_records": 80904,
   "by_platform": {
-    "bravelog.tw": 44850,
+    "bravelog.tw": 44500,
     "cycling.org.tw": 203,
+    "tsu.com.tw": 24925,
     "cyclist.org.tw": 11276
   },
   "by_year": {
-    "2015": 23,
-    "2018": 2,
-    "2019": 241,
-    "2020": 1626,
+    "2009": 1062,
+    "2011": 1045,
+    "2012": 1092,
+    "2013": 1507,
+    "2015": 1424,
+    "2016": 698,
+    "2017": 947,
+    "2018": 1124,
+    "2019": 1229,
+    "2020": 2763,
     "2021": 639,
-    "2022": 6430,
-    "2023": 14114,
-    "2024": 10671,
-    "2025": 19231,
-    "2026": 3352
+    "2022": 7148,
+    "2023": 15273,
+    "2024": 21883,
+    "2025": 19719,
+    "2026": 3351
   },
   "by_gender": {
-    "null": 34893,
-    "F": 3210,
-    "M": 18226
+    "null": 55615,
+    "F": 4949,
+    "M": 20340
   },
   "by_race_class": {
-    "未分類": 17314,
-    "女子": 121,
-    "挑戰": 17363,
-    "競賽": 6501,
-    "電輔車": 510,
+    "未分類": 39049,
+    "女子": 303,
+    "挑戰": 17497,
+    "競賽": 6500,
+    "電輔車": 165,
     "市民經典": 5061,
-    "分齡": 8908,
-    "青少年": 526,
+    "分齡": 10356,
+    "青少年": 1948,
     "團體計時": 25
   },
   "by_series": {
-    "TIS崇越盃系列": 8068,
-    "null": 7896,
+    "null": 25767,
+    "96聯賽": 9457,
+    "TIS崇越盃系列": 7722,
     "捷安特自行車嘉年華": 6703,
-    "戀戀197": 6548,
+    "戀戀197": 6547,
     "TBA 長途認證": 4501,
     "環大臺北自行車挑戰": 3520,
-    "L'Étape 環法日月潭": 3249,
-    "96聯賽": 2403,
-    "LAVA 落日飛車350": 2189,
+    "L'Étape 環法日月潭": 3248,
+    "LAVA 落日飛車350": 2188,
     "臺灣KOM登山王之路": 1643,
     "花蓮太平洋盃": 1551,
     "臺灣KOM登山王挑戰": 1448,
     "臺灣自行車聯賽(TCL)": 1287,
-    "台灣登山大滿貫(雪巴)": 966,
+    "台灣登山大滿貫(雪巴)": 965,
     "仙山單車挑戰賽": 955,
     "環花東國際自行車賽": 832,
     "屏東四重溪自行車挑戰賽": 819,
@@ -57,8 +64,26 @@
     "臺灣KOM太平洋經典賽": 78,
     "世界自行車日": 32
   },
-  "distinct_races": 72,
+  "distinct_races": 109,
   "races": [
+    {
+      "race_key": "建大武嶺盃",
+      "series": null,
+      "platform": "tsu.com.tw",
+      "years": [
+        2009,
+        2011,
+        2012,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2022
+      ],
+      "rows": 10210
+    },
     {
       "race_key": "戀戀197",
       "series": "戀戀197",
@@ -68,7 +93,7 @@
         2023,
         2024
       ],
-      "rows": 6548
+      "rows": 6547
     },
     {
       "race_key": "第13屆美利達‧兆豐銀行彰化經典百K",
@@ -108,7 +133,7 @@
         2024,
         2025
       ],
-      "rows": 3249
+      "rows": 3248
     },
     {
       "race_key": "自行車嘉年華GIANTCUPLIVDAY",
@@ -121,13 +146,22 @@
       "rows": 2697
     },
     {
+      "race_key": "年NeverStop永不放棄紫南宮一騎來發財環縣自行車999K",
+      "series": null,
+      "platform": "tsu.com.tw",
+      "years": [
+        2024
+      ],
+      "rows": 2664
+    },
+    {
       "race_key": "TIS崇越盃武嶺自行車挑戰賽六月場次",
       "series": "TIS崇越盃系列",
       "platform": "bravelog.tw",
       "years": [
         2025
       ],
-      "rows": 2103
+      "rows": 2101
     },
     {
       "race_key": "崇越盃武嶺自行車挑戰賽",
@@ -139,13 +173,31 @@
       "rows": 1809
     },
     {
+      "race_key": "第五屆武嶺盃「鐵馬高峰會」國際自行車大賽",
+      "series": null,
+      "platform": "tsu.com.tw",
+      "years": [
+        2013
+      ],
+      "rows": 1507
+    },
+    {
       "race_key": "TIS崇越盃武嶺自行車挑戰賽九月場次",
       "series": "TIS崇越盃系列",
       "platform": "bravelog.tw",
       "years": [
         2025
       ],
-      "rows": 1697
+      "rows": 1353
+    },
+    {
+      "race_key": "NeverStop永不放棄挑戰巔峰－武嶺",
+      "series": null,
+      "platform": "tsu.com.tw",
+      "years": [
+        2024
+      ],
+      "rows": 1341
     },
     {
       "race_key": "TIS崇越盃武嶺自行車挑戰賽",
@@ -155,6 +207,15 @@
         2023
       ],
       "rows": 1194
+    },
+    {
+      "race_key": "【96聯賽第二站】NeverStop永不放棄塔塔加探索新中橫自行車活動",
+      "series": "96聯賽",
+      "platform": "tsu.com.tw",
+      "years": [
+        2024
+      ],
+      "rows": 1142
     },
     {
       "race_key": "臺灣KOM登山王之路夏季",
@@ -207,6 +268,15 @@
       "rows": 859
     },
     {
+      "race_key": "96Heroes桃園站",
+      "series": "96聯賽",
+      "platform": "tsu.com.tw",
+      "years": [
+        2024
+      ],
+      "rows": 858
+    },
+    {
       "race_key": "環花東國際自行車賽",
       "series": "環花東國際自行車賽",
       "platform": "cyclist.org.tw",
@@ -235,6 +305,15 @@
       "rows": 809
     },
     {
+      "race_key": "96Heroes台北站",
+      "series": "96聯賽",
+      "platform": "tsu.com.tw",
+      "years": [
+        2024
+      ],
+      "rows": 796
+    },
+    {
       "race_key": "太平山王公路賽團隊計時賽挑戰",
       "series": "臺灣自行車聯賽(TCL)",
       "platform": "cyclist.org.tw",
@@ -253,6 +332,15 @@
         2023
       ],
       "rows": 785
+    },
+    {
+      "race_key": "96Heroes新竹站",
+      "series": "96聯賽",
+      "platform": "tsu.com.tw",
+      "years": [
+        2024
+      ],
+      "rows": 704
     },
     {
       "race_key": "TIS崇越盃石羅佛自行車挑戰賽",
@@ -329,6 +417,24 @@
       "rows": 578
     },
     {
+      "race_key": "96Heroes彰化站",
+      "series": "96聯賽",
+      "platform": "tsu.com.tw",
+      "years": [
+        2024
+      ],
+      "rows": 552
+    },
+    {
+      "race_key": "96Heroes台中站",
+      "series": "96聯賽",
+      "platform": "tsu.com.tw",
+      "years": [
+        2024
+      ],
+      "rows": 549
+    },
+    {
       "race_key": "【96Heroes挑戰組】桃竹站",
       "series": "96聯賽",
       "platform": "bravelog.tw",
@@ -396,6 +502,24 @@
       "rows": 431
     },
     {
+      "race_key": "96聯賽第四站「從心出發挑戰巔峰」",
+      "series": "96聯賽",
+      "platform": "tsu.com.tw",
+      "years": [
+        2023
+      ],
+      "rows": 414
+    },
+    {
+      "race_key": "【96聯賽第五站】「從心出發挑戰巔峰」",
+      "series": "96聯賽",
+      "platform": "tsu.com.tw",
+      "years": [
+        2024
+      ],
+      "rows": 398
+    },
+    {
       "race_key": "左營單車挑戰百里快樂行",
       "series": null,
       "platform": "bravelog.tw",
@@ -414,6 +538,15 @@
       "rows": 383
     },
     {
+      "race_key": "96聯賽第三站NeverStop永不放棄塔塔加",
+      "series": "96聯賽",
+      "platform": "tsu.com.tw",
+      "years": [
+        2023
+      ],
+      "rows": 372
+    },
+    {
       "race_key": "【96CyclingRace】桃竹站暨中華民國114年自由車國手選拔賽積分賽競賽組及市民競賽組",
       "series": "96聯賽",
       "platform": "bravelog.tw",
@@ -421,6 +554,15 @@
         2025
       ],
       "rows": 352
+    },
+    {
+      "race_key": "第14屆建大輪胎武嶺盃自行車大會師",
+      "series": null,
+      "platform": "tsu.com.tw",
+      "years": [
+        2024
+      ],
+      "rows": 349
     },
     {
       "race_key": "MarechalLAVATourdePingtung英友達環屏東自行車挑戰第一日",
@@ -458,7 +600,16 @@
         2024,
         2025
       ],
-      "rows": 308
+      "rows": 307
+    },
+    {
+      "race_key": "第六屆FTL車隊邀請賽『梅南橋計時賽』",
+      "series": null,
+      "platform": "tsu.com.tw",
+      "years": [
+        2024
+      ],
+      "rows": 302
     },
     {
       "race_key": "LAVA玩賽樂園350自行車挑戰Day2",
@@ -467,7 +618,7 @@
       "years": [
         2026
       ],
-      "rows": 284
+      "rows": 283
     },
     {
       "race_key": "MarechalLAVATourdePingtung英友達環屏東自行車挑戰第二日",
@@ -486,6 +637,16 @@
         2026
       ],
       "rows": 278
+    },
+    {
+      "race_key": "136檢定",
+      "series": null,
+      "platform": "tsu.com.tw",
+      "years": [
+        2023,
+        2024
+      ],
+      "rows": 275
     },
     {
       "race_key": "花蓮太平洋自行車節",
@@ -515,6 +676,24 @@
       "rows": 225
     },
     {
+      "race_key": "秋季TCU台中城市繞圈賽",
+      "series": null,
+      "platform": "tsu.com.tw",
+      "years": [
+        2025
+      ],
+      "rows": 210
+    },
+    {
+      "race_key": "【96聯賽第六站】96CyclingRace彰化站",
+      "series": "96聯賽",
+      "platform": "tsu.com.tw",
+      "years": [
+        2024
+      ],
+      "rows": 208
+    },
+    {
       "race_key": "114年全國自由車公路錦標賽暨選拔賽成績總表",
       "series": null,
       "platform": "cycling.org.tw",
@@ -529,6 +708,15 @@
       "platform": "bravelog.tw",
       "years": [
         2026
+      ],
+      "rows": 199
+    },
+    {
+      "race_key": "【96聯賽】96CyclingRace台中站",
+      "series": "96聯賽",
+      "platform": "tsu.com.tw",
+      "years": [
+        2024
       ],
       "rows": 199
     },
@@ -561,6 +749,24 @@
       "rows": 177
     },
     {
+      "race_key": "【96聯賽第三站】96CyclingRace台北天母站",
+      "series": "96聯賽",
+      "platform": "tsu.com.tw",
+      "years": [
+        2024
+      ],
+      "rows": 176
+    },
+    {
+      "race_key": "南投國王盃x三發武林大會中寮爬坡計時檢定賽",
+      "series": null,
+      "platform": "tsu.com.tw",
+      "years": [
+        2024
+      ],
+      "rows": 167
+    },
+    {
       "race_key": "扶輪盃陽明山自行車登山王",
       "series": null,
       "platform": "cyclist.org.tw",
@@ -568,6 +774,15 @@
         2021
       ],
       "rows": 166
+    },
+    {
+      "race_key": "冬季TCU台中城市繞圈賽",
+      "series": null,
+      "platform": "tsu.com.tw",
+      "years": [
+        2024
+      ],
+      "rows": 148
     },
     {
       "race_key": "年台灣登山大滿貫自行車系列賽–阿里山站",
@@ -579,6 +794,15 @@
       "rows": 145
     },
     {
+      "race_key": "【96聯賽第四站】96CyclingRace桃園站",
+      "series": "96聯賽",
+      "platform": "tsu.com.tw",
+      "years": [
+        2024
+      ],
+      "rows": 144
+    },
+    {
       "race_key": "115年桃園市運動會市長盃自由車錦標賽暨國手積分賽",
       "series": "自由車錦標賽/選拔",
       "platform": "bravelog.tw",
@@ -586,6 +810,24 @@
         2026
       ],
       "rows": 139
+    },
+    {
+      "race_key": "第六屆FTL車隊邀請賽『石壁爬坡賽』",
+      "series": null,
+      "platform": "tsu.com.tw",
+      "years": [
+        2024
+      ],
+      "rows": 136
+    },
+    {
+      "race_key": "【96CyclingRace市民競賽組】桃竹站",
+      "series": "96聯賽",
+      "platform": "tsu.com.tw",
+      "years": [
+        2025
+      ],
+      "rows": 128
     },
     {
       "race_key": "瘋系列第二屆環台賽西部段",
@@ -624,6 +866,24 @@
       "rows": 120
     },
     {
+      "race_key": "96聯賽收官站彰化繞圈賽",
+      "series": "96聯賽",
+      "platform": "tsu.com.tw",
+      "years": [
+        2023
+      ],
+      "rows": 120
+    },
+    {
+      "race_key": "【96聯賽收官站】96CyclingRace新竹站",
+      "series": "96聯賽",
+      "platform": "tsu.com.tw",
+      "years": [
+        2024
+      ],
+      "rows": 120
+    },
+    {
       "race_key": "113年桃園市運動會─市長盃自由車錦標賽公路賽競賽",
       "series": "自由車錦標賽/選拔",
       "platform": "bravelog.tw",
@@ -642,6 +902,15 @@
       "rows": 113
     },
     {
+      "race_key": "頂成ZIPP盃府城GravelCriterium",
+      "series": null,
+      "platform": "tsu.com.tw",
+      "years": [
+        2025
+      ],
+      "rows": 113
+    },
+    {
       "race_key": "瘋系列環台賽蘇花段",
       "series": "瘋系列環台賽",
       "platform": "bravelog.tw",
@@ -649,6 +918,24 @@
         2024
       ],
       "rows": 110
+    },
+    {
+      "race_key": "【96聯賽第四站】96CyclingRace武嶺",
+      "series": "96聯賽",
+      "platform": "tsu.com.tw",
+      "years": [
+        2025
+      ],
+      "rows": 109
+    },
+    {
+      "race_key": "春季TCU台中城市繞圈賽",
+      "series": null,
+      "platform": "tsu.com.tw",
+      "years": [
+        2025
+      ],
+      "rows": 104
     },
     {
       "race_key": "瘋系列環台賽東部段",
@@ -660,6 +947,24 @@
       "rows": 102
     },
     {
+      "race_key": "TCU台中城市繞圈檢定男子組NoviceOpenMen",
+      "series": null,
+      "platform": "tsu.com.tw",
+      "years": [
+        2024
+      ],
+      "rows": 101
+    },
+    {
+      "race_key": "TCU三發國王盃中寮KOM單車挑戰賽",
+      "series": null,
+      "platform": "tsu.com.tw",
+      "years": [
+        2025
+      ],
+      "rows": 96
+    },
+    {
       "race_key": "臺灣KOM太平洋經典賽",
       "series": "臺灣KOM太平洋經典賽",
       "platform": "cyclist.org.tw",
@@ -667,6 +972,33 @@
         2025
       ],
       "rows": 78
+    },
+    {
+      "race_key": "年第4季136檢定",
+      "series": null,
+      "platform": "tsu.com.tw",
+      "years": [
+        2023
+      ],
+      "rows": 66
+    },
+    {
+      "race_key": "96CyclingRace競賽組】桃竹站",
+      "series": "96聯賽",
+      "platform": "tsu.com.tw",
+      "years": [
+        2025
+      ],
+      "rows": 65
+    },
+    {
+      "race_key": "TCU台中城市繞圈賽競賽組Racing",
+      "series": null,
+      "platform": "tsu.com.tw",
+      "years": [
+        2024
+      ],
+      "rows": 56
     },
     {
       "race_key": "TAIWANSUMMITSERIES陽明山北海岸",
@@ -714,6 +1046,15 @@
       "rows": 19
     },
     {
+      "race_key": "TCU台中城市繞圈檢定女子組NoviceOpenWomen",
+      "series": null,
+      "platform": "tsu.com.tw",
+      "years": [
+        2024
+      ],
+      "rows": 16
+    },
+    {
       "race_key": "全國俱樂部聯賽第4站宜蘭牛鬥公路賽",
       "series": null,
       "platform": "cyclist.org.tw",
@@ -721,6 +1062,15 @@
         2015
       ],
       "rows": 15
+    },
+    {
+      "race_key": "秋季TCU台中城市繞圈賽Y12組別",
+      "series": null,
+      "platform": "tsu.com.tw",
+      "years": [
+        2025
+      ],
+      "rows": 10
     },
     {
       "race_key": "全國俱樂部聯賽第3站淡海公路繞圈賽",

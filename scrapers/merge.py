@@ -51,6 +51,23 @@ def main():
     records = [r for r in records if r.get("finish_seconds") is None or r["finish_seconds"] > 0]
     if before - len(records):
         print(f"  dropped {before - len(records)} zero-time (DNF/未計時) rows")
+
+    # cross-source exact-duplicate dedup: the same rider+year+finish-second
+    # showing up in two platforms (e.g. a 96 race on both Bravelog and tsu).
+    # Keeps the first-loaded source; tolerant to ms vs whole-second precision.
+    before = len(records)
+    seen, deduped = set(), []
+    for r in records:
+        fs = r.get("finish_seconds")
+        k = (r.get("year"), r.get("name_raw"), int(fs) if fs else None)
+        if r.get("name_raw") and fs and k in seen:
+            continue
+        if r.get("name_raw") and fs:
+            seen.add(k)
+        deduped.append(r)
+    records = deduped
+    if before - len(records):
+        print(f"  dropped {before - len(records)} cross-source exact-duplicate rows")
     for r in records:
         normalize.enrich(r)
         # Re-mask at merge time so the de-identification policy is applied here,

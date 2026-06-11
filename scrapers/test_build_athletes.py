@@ -4,10 +4,10 @@ sys.path.insert(0, os.path.dirname(__file__))
 import build_athletes as ba
 
 
-def _rec(name, uci=None, team=None, year=2024, rk="alpha", rn="Alpha", rank=1,
+def _rec(name, uci=None, tsu=None, team=None, year=2024, rk="alpha", rn="Alpha", rank=1,
          t=3600.0, cat="M30", g="M", ag="30", label="總排名", date=None):
-    return {"name_raw": name, "name_masked": None, "uci_id": uci, "team": team,
-            "year": year, "race_key": rk, "race_name_canonical": rn,
+    return {"name_raw": name, "name_masked": None, "uci_id": uci, "tsu_rider_id": tsu,
+            "team": team, "year": year, "race_key": rk, "race_name_canonical": rn,
             "rank_overall": rank, "finish_seconds": t, "category_raw": cat,
             "gender": g, "age_group": ag, "result_label": label,
             "date": date or f"{year}-05-01"}
@@ -37,12 +37,23 @@ def test_group_key_distinct_names_separate():
 
 
 def test_confidence():
-    assert ba.confidence(is_uci=True, distinct_teams=9, name_len=2) == "high"
-    assert ba.confidence(is_uci=False, distinct_teams=1, name_len=3) == "high"
-    assert ba.confidence(is_uci=False, distinct_teams=3, name_len=3) == "med"
-    assert ba.confidence(is_uci=False, distinct_teams=6, name_len=3) == "low"
+    assert ba.confidence(is_anchored=True, distinct_teams=9, name_len=2) == "high"
+    assert ba.confidence(is_anchored=False, distinct_teams=1, name_len=3) == "high"
+    assert ba.confidence(is_anchored=False, distinct_teams=3, name_len=3) == "med"
+    assert ba.confidence(is_anchored=False, distinct_teams=6, name_len=3) == "low"
     # short common name with several teams is downgraded
-    assert ba.confidence(is_uci=False, distinct_teams=3, name_len=2) == "low"
+    assert ba.confidence(is_anchored=False, distinct_teams=3, name_len=2) == "low"
+
+
+def test_tsu_rider_id_anchors_over_name():
+    # same tsu rider id across two different masked-name spellings -> one athlete
+    recs = [_rec("王大明", tsu="TCU-abc", year=2023, rk="r1", rank=3),
+            _rec("王大铭", tsu="TCU-abc", year=2024, rk="r2", rank=1)]
+    gk = ba.build_group_keys(recs)
+    assert gk[0] == gk[1] and gk[0] == "t:TCU-abc"
+    index, details = ba.build_athletes(recs)
+    assert len(index) == 1 and index[0]["rid"] is True
+    assert details[index[0]["id"]]["has_rider"] is True
 
 
 def test_build_athletes_filters_singletons():

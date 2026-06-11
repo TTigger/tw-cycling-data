@@ -13,12 +13,13 @@
 | **Phase 1a:cyclist.org.tw 管線(2024–26)** | ✅ **3,913 筆 / 12 場**(競技型,性別 83%+分齡 95%) |
 | **Phase 1b:Bravelog 管線(2018–26)** | ✅ **44,850 筆 / 61 場**(市民/挑戰型;已排除鐵人三項) |
 | **Phase 1d:cycling.org.tw 國家級源** | ✅ 全國公路錦標賽 **203 筆(2025,含 UCI ID)**;舊年份寬表格式擱置 |
-| 正規化 + 合併 + 驗證工具層 | ✅ `normalize.py` / `merge.py`(年份無關、自動納源) / `validate.py` |
-| **★ 合併 master 資料集** | ✅ **56,329 筆 / 2015–2026 / 72 場 / 3 來源**,已去識別化 |
+| **Phase 1e:tsu.com.tw 賽事成績平台** | ✅ **24,925 筆 / 2009–2025**(縣長盃繞圈/越野/NeverStop武嶺/96系列;含 **TCU 選手 ID**,補最深歷史) |
+| 正規化 + 合併 + 驗證工具層 | ✅ `normalize.py` / `merge.py`(年份無關、自動納源、跨源去重) / `validate.py` |
+| **★ 合併 master 資料集** | ✅ **80,904 筆 / 2009–2026 / 143 場 / 4 來源**,已去識別化 |
 | **Phase 2:互動視覺化儀表板(4 頁)** | ✅ `web/`(總覽/探索/賽事/傳奇爬坡;Astro+React+ECharts,Claude 風,RWD) |
 | **部署 Vercel** | ✅ 已上線(Root Directory=`web`,push 自動部署) |
 | **Phase 1c:歷史回填(cyclist 2014–23 + Bravelog 2018–23)** | ✅ +7,363 + 歷史 Bravelog |
-| **Phase 3:選手歷年追蹤(姓名為主、車隊+UCI 為輔)** | ✅ `/athletes` **11,205 位可追蹤選手**(≥2 場);進步軌跡+歷年成績+同名信心標記 |
+| **Phase 3:選手歷年追蹤(TCU/UCI ID 為錨、姓名為輔)** | ✅ `/athletes` **15,301 位可追蹤選手**(≥2 場);進步軌跡+歷年成績+同名信心標記;650 位以 TCU ID、101 位以 UCI 串接 |
 
 ## 目錄
 
@@ -33,7 +34,9 @@ scrapers/
   cyclist_crawl.py     ★ 正式爬蟲 cyclist.org.tw(支援 --years 歷史回填、--out)
   bravelog_calendar.py ★ Bravelog contestId 探索(/search API)+ 自行車賽分類
   bravelog_crawl.py    ★ 正式爬蟲 Bravelog(contest→raceId子賽事→分頁,per-contest 快取)
-  merge.py             ★ 合併所有來源 → master 資料集(套用 normalize)
+  cycling_crawl.py     ★ 正式爬蟲 cycling.org.tw 國家級 PDF 成績冊(含 UCI ID)
+  tsu_crawl.py         ★ 正式爬蟲 tsu.com.tw(/race?y= 年份×分頁 → /race/result 表頭對映;含 TCU 選手 ID)
+  merge.py             ★ 合併所有來源 → master 資料集(套用 normalize、跨源去重)
   validate.py          資料品質驗證(重複/時間/名次倒置/覆蓋率/年份漂移)
   build_viz.py         ★ master.public → 前端資料檔(viz/races/race;含 pytest)
   build_athletes.py    ★ master → 選手追蹤資料(athletes 索引 + athlete/<id>;姓名為主歸併、同名信心標記;含 pytest)
@@ -86,7 +89,7 @@ npm run build                           # 產出 web/dist(靜態)
 
 ## 統一資料欄位(每筆 = 一位選手在一場賽事的成績)
 
-`source_platform` `source_url` `source_format` ｜ `race_name_raw` `race_name_canonical` `race_key`(去重鍵)`year` `date` `race_type` `region` ｜ `result_label` `category_raw`(原始組別)`gender`(M/F/None)`age_group`(`24-35`/`U15`/`MASTER`…)｜ `rank_overall` `bib` ｜ `name_raw`(內部)`name_masked`(`李○○`,PDPA)`nationality` `team` ｜ `finish_time` `finish_seconds` `splits` ｜ `scraped_at`
+`source_platform` `source_url` `source_format` ｜ `race_name_raw` `race_name_canonical` `race_key`(去重鍵)`year` `date` `race_type` `region` ｜ `result_label` `category_raw`(原始組別)`gender`(M/F/None)`age_group`(`24-35`/`U15`/`MASTER`…)`age_band`(十年制粗分級)｜ `rank_overall` `bib` `uci_id` `tsu_rider_id`(選手身分錨)｜ `name_raw`(內部)`name_masked`(`李○明`,保留首尾,PDPA)`nationality` `team` ｜ `finish_time` `finish_seconds` `splits` ｜ `scraped_at`
 
 ## 重點與限制
 
@@ -99,8 +102,8 @@ npm run build                           # 產出 web/dist(靜態)
 
 ## 選手追蹤的身分識別(Phase 3)
 
-- **以 `name_raw` 為主鍵**串接整段生涯(車隊逐年變動,硬用車隊當複合鍵會把換隊選手拆散)。
-- **UCI ID 為強錨點**:姓名唯一對應到一個 UCI ID 時,合併其 UCI 與非 UCI 成績,並標 high 信心。
+- **穩定選手 ID 為強錨點**:tsu 的 `tsu_rider_id`(TCU-…)與 cycling 的 `uci_id`,姓名唯一對應到一個 ID 時即合併其全部成績並標 high 信心——這讓換隊/跨年的生涯能正確歸併(例:一位 2013–2026、跨 8 隊的女將靠 TCU ID 正確合為一人)。
+- **無 ID 者以 `name_raw` 為主鍵**串接生涯(車隊逐年變動,硬用車隊當複合鍵會把換隊選手拆散)。
 - **同名信心標記**:跨多支車隊、或同一身分出現 M+F 性別不一致 → 標 `low`(高同名風險),UI 加註提醒。
 - **PDPA**:輸出僅含遮罩姓名(`林○宇`,保留首尾)、加鹽不可逆 `athlete_id`、`has_uci` 布林;不公開 `name_raw` 與原始 UCI ID。索引僅 ≥2 場的可追蹤選手;每位歷程檔點擊才載入。
 

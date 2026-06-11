@@ -65,7 +65,7 @@ export default function AthletesApp() {
             </div>
             <div className="mt-1 text-xs text-muted">
               {a.y0}–{a.y1} · {a.n} 場 · {a.nr} 賽事{a.best ? ` · 最佳第 ${a.best}` : ""}
-              {a.uci && " · UCI"}
+              {a.rid && " · TCU"}{a.uci && " · UCI"}
             </div>
           </button>
         ))}

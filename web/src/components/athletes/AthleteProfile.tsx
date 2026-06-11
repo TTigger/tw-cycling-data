@@ -31,7 +31,7 @@ export default function AthleteProfile({ d, onBack }: { d: AthleteDetail; onBack
             {s.y0}–{s.y1} · {s.teams.length ? s.teams.join("、") : "無車隊紀錄"}
           </p>
           <span className={`mt-2 inline-block rounded-full border px-2 py-0.5 text-xs ${CONF_STYLE[d.conf]}`}>
-            {CONF_LABEL[d.conf]}{d.has_uci && " · UCI 串接"}
+            {CONF_LABEL[d.conf]}{d.has_rider && " · TCU ID 串接"}{d.has_uci && " · UCI 串接"}
           </span>
         </div>
         <button className="shrink-0 rounded-lg border border-border px-3 py-2 text-sm text-muted hover:text-accent"

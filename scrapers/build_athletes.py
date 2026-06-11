@@ -42,24 +42,33 @@ def athlete_id(group_key):
 
 
 def build_group_keys(records):
-    """Assign each record a grouping key, anchoring on UCI ID where a name ties
-    to exactly one UCI ID. Returns a list parallel to `records`."""
-    # name_raw -> set of UCI ids ever seen with it
-    name_ucis = defaultdict(set)
+    """Assign each record a grouping key, anchoring on a stable rider id where a
+    name ties to exactly one. Two id sources: tsu.com.tw rider ids (t:, broadest)
+    and UCI ids (u:); a bare name falls back to n:. Returns a list parallel to
+    `records`."""
+    # name_raw -> set of ids ever seen with it, per id type
+    name_tsus, name_ucis = defaultdict(set), defaultdict(set)
     for r in records:
-        nm, uci = r.get("name_raw"), r.get("uci_id")
-        if nm and uci:
-            name_ucis[nm].add(str(uci))
-    # a name unambiguously anchored to one UCI id
-    name_anchor = {nm: next(iter(s)) for nm, s in name_ucis.items() if len(s) == 1}
+        nm = r.get("name_raw")
+        if nm and r.get("tsu_rider_id"):
+            name_tsus[nm].add(str(r["tsu_rider_id"]))
+        if nm and r.get("uci_id"):
+            name_ucis[nm].add(str(r["uci_id"]))
+    # a name unambiguously anchored to one id
+    tsu_anchor = {nm: next(iter(s)) for nm, s in name_tsus.items() if len(s) == 1}
+    uci_anchor = {nm: next(iter(s)) for nm, s in name_ucis.items() if len(s) == 1}
 
     keys = []
     for r in records:
-        nm, uci = r.get("name_raw"), r.get("uci_id")
-        if uci:
+        nm, uci, tsu = r.get("name_raw"), r.get("uci_id"), r.get("tsu_rider_id")
+        if tsu:
+            keys.append(f"t:{tsu}")
+        elif uci:
             keys.append(f"u:{uci}")
-        elif nm in name_anchor:
-            keys.append(f"u:{name_anchor[nm]}")
+        elif nm in tsu_anchor:
+            keys.append(f"t:{tsu_anchor[nm]}")
+        elif nm in uci_anchor:
+            keys.append(f"u:{uci_anchor[nm]}")
         elif nm:
             keys.append(f"n:{nm}")
         else:
@@ -67,16 +76,17 @@ def build_group_keys(records):
     return keys
 
 
-def confidence(is_uci, distinct_teams, name_len, mixed_gender=False):
+def confidence(is_anchored, distinct_teams, name_len, mixed_gender=False):
     """high / med / low identity confidence.
-    UCI-anchored -> high. A single identity that races as BOTH M and F is almost
-    certainly two people sharing a name -> low. Otherwise team spread is the
-    homonym signal, and very short (<=2 char) names collide more so they
-    downgrade one extra level. (Most bravelog citizen rows carry no team, so the
-    team signal is weak there — gender mixing catches some of those collisions.)"""
-    if mixed_gender:
+    Anchored to a stable rider id (tsu/UCI) -> high. A single identity that races
+    as BOTH M and F is almost certainly two people sharing a name -> low.
+    Otherwise team spread is the homonym signal, and very short (<=2 char) names
+    collide more so they downgrade one extra level. (Most bravelog citizen rows
+    carry no team, so the team signal is weak there — gender mixing catches some
+    of those collisions.)"""
+    if mixed_gender and not is_anchored:
         return "low"
-    if is_uci:
+    if is_anchored:
         return "high"
     level = "high"
     if distinct_teams >= 5:
@@ -117,7 +127,9 @@ def build_athletes(records):
         if len(recs) < MIN_RESULTS:
             continue
         aid = athlete_id(gk)
+        is_tsu = gk.startswith("t:")
         is_uci = gk.startswith("u:")
+        is_anchored = is_tsu or is_uci
         # representative masked name: most common masked form in the group
         masked = Counter(r.get("name_masked") or common.mask_name(r.get("name_raw"))
                          for r in recs).most_common(1)[0][0]
@@ -127,7 +139,7 @@ def build_athletes(records):
         races = {r.get("race_key") for r in recs}
         name_len = len([c for c in (recs[0].get("name_raw") or "") if not c.isspace()])
         genders = {r.get("gender") for r in recs if r.get("gender") in ("M", "F")}
-        conf = confidence(is_uci, len(distinct_teams), name_len,
+        conf = confidence(is_anchored, len(distinct_teams), name_len,
                           mixed_gender=len(genders) > 1)
         ranks = [r.get("rank_overall") for r in recs if r.get("rank_overall")]
 
@@ -136,7 +148,8 @@ def build_athletes(records):
              for r in recs),
             key=lambda h: (h["y"] or 0, h["d"] or "", h["rank"] or 9999))
         details[aid] = {
-            "id": aid, "nm": masked, "conf": conf, "has_uci": is_uci,
+            "id": aid, "nm": masked, "conf": conf,
+            "has_uci": is_uci, "has_rider": is_tsu,
             "teams": distinct_teams, "history": hist,
         }
         index.append({
@@ -146,7 +159,7 @@ def build_athletes(records):
             "ny": len(years), "nr": len(races),
             "y0": years[0] if years else None, "y1": years[-1] if years else None,
             "best": min(ranks) if ranks else None,
-            "conf": conf, "uci": is_uci,
+            "conf": conf, "uci": is_uci, "rid": is_tsu,
         })
     # most-tracked athletes first
     index.sort(key=lambda a: (-a["n"], -a["ny"], str(a["id"])))
