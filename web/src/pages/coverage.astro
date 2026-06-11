@@ -1,0 +1,9 @@
+---
+import Base from "../layouts/Base.astro";
+import CoverageApp from "../components/coverage/CoverageApp.tsx";
+---
+<Base title="資料涵蓋 | 台灣公路車賽事成績儀表板">
+  <h1 class="font-display text-3xl">資料涵蓋與缺漏</h1>
+  <p class="mt-2 mb-6 text-muted">誠實揭露本站收錄了哪些賽事、已知還缺哪些(及為什麼),並開放車友一起補資料。有公開成績系統的競技賽事大多已收齊;長尾在地賽要靠社群。</p>
+  <CoverageApp client:only="react" />
+</Base>

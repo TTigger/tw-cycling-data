@@ -29,6 +29,7 @@ H = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0 Safar
      "Accept-Language": "zh-TW"}
 MASTER = os.path.join(os.path.dirname(__file__), "..", "data", "processed", "master.public.json")
 OUT_DIR = os.path.join(os.path.dirname(__file__), "..", "data", "processed", "_discover")
+WEB_DIR = os.path.join(os.path.dirname(__file__), "..", "web", "public", "data")
 os.makedirs(OUT_DIR, exist_ok=True)
 
 # Public calendars to mine (listable). Each: id, name, url, parser key.
@@ -192,6 +193,25 @@ def main():
     for m in all_missing:
         print(f"  ✗ {m['race'][:40]:<40} → {m['guess_source']}")
     print(f"\n  -> {os.path.relpath(out)}")
+
+    # Deploy-ready coverage transparency file for the /coverage page.
+    from collections import Counter
+    years = [r["year"] for r in recs if r.get("year")]
+    ov_path = os.path.join(WEB_DIR, "overseas", "runnet_383993.json")
+    overseas = len(json.load(open(ov_path, encoding="utf-8"))) if os.path.exists(ov_path) else 0
+    coverage = {
+        "summary": {
+            "rows": len(recs),
+            "races": len({r["race_key"] for r in recs if r.get("race_key")}),
+            "by_source": dict(Counter(r["source_platform"] for r in recs).most_common()),
+            "y0": min(years), "y1": max(years), "overseas": overseas,
+            "calendars": [c["name"] for c in CALENDARS],
+        },
+        "gaps": all_missing,
+    }
+    cov = os.path.join(WEB_DIR, "coverage.json")
+    json.dump(coverage, open(cov, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
+    print(f"  -> {os.path.relpath(cov)} (deploy)")
 
 
 if __name__ == "__main__":
