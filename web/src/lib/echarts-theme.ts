@@ -2,7 +2,7 @@
 // across the dashboard, instead of the ~1.1MB full barrel. Importing this module
 // (for side-effect or via EChart) registers them and the "claude" theme once.
 import * as echarts from "echarts/core";
-import { LineChart, BarChart, ScatterChart, BoxplotChart, HeatmapChart } from "echarts/charts";
+import { LineChart, BarChart, ScatterChart, BoxplotChart, HeatmapChart, RadarChart } from "echarts/charts";
 import {
   GridComponent, TooltipComponent, LegendComponent, TitleComponent,
   VisualMapComponent, AxisPointerComponent,
@@ -10,8 +10,8 @@ import {
 import { CanvasRenderer } from "echarts/renderers";
 
 echarts.use([
-  // series used: line, bar, scatter, boxplot, heatmap
-  LineChart, BarChart, ScatterChart, BoxplotChart, HeatmapChart,
+  // series used: line, bar, scatter, boxplot, heatmap, radar
+  LineChart, BarChart, ScatterChart, BoxplotChart, HeatmapChart, RadarChart,
   // option blocks used: grid, tooltip, legend, title, visualMap, axisPointer
   GridComponent, TooltipComponent, LegendComponent, TitleComponent,
   VisualMapComponent, AxisPointerComponent,

@@ -45,6 +45,23 @@ def test_confidence():
     assert ba.confidence(is_anchored=False, distinct_teams=3, name_len=2) == "low"
 
 
+def test_traits_per_discipline():
+    fs = {("climbR", 2024): 100, ("roadR", 2024): 100}
+    recs = [
+        {"race_key": "climbR", "race_name_canonical": "武嶺盃", "year": 2024,
+         "rank_overall": 5, "category_raw": None},     # climb, pct 95
+        {"race_key": "climbR", "race_name_canonical": "武嶺盃", "year": 2024,
+         "rank_overall": 15, "category_raw": None},    # climb, pct 85
+        {"race_key": "roadR", "race_name_canonical": "戀戀197", "year": 2024,
+         "rank_overall": 60, "category_raw": None},    # road, pct 40
+        {"race_key": "roadR", "race_name_canonical": "戀戀197", "year": 2024,
+         "rank_overall": 80, "category_raw": None},    # road, pct 20 -> only 1? need 2
+    ]
+    tr = ba._traits(recs, fs)
+    assert tr["climb"]["pct"] == 90.0 and tr["climb"]["n"] == 2   # median(95,85)
+    assert tr["road"]["pct"] == 30.0 and tr["road"]["n"] == 2     # median(40,20)
+
+
 def test_tsu_rider_id_anchors_over_name():
     # same tsu rider id across two different masked-name spellings -> one athlete
     recs = [_rec("王大明", tsu="TCU-abc", year=2023, rk="r1", rank=3),

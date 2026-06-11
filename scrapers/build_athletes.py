@@ -22,9 +22,11 @@ athlete id, and a has_uci boolean — never name_raw or the raw UCI ID.
 import hashlib
 import json
 import os
+import statistics
 from collections import Counter, defaultdict
 
 import common
+from race_type import classify as race_type
 
 HERE = os.path.dirname(__file__)
 IN = os.path.join(HERE, "..", "data", "processed", "master.json")
@@ -136,6 +138,22 @@ def _history_row(r, field=None):
             "d": r.get("date"), "field": field}
 
 
+def _traits(recs, field_sizes):
+    """Per-discipline median in-field percentile for one athlete — the radar of
+    climber (爬坡) vs rouleur (繞圈/公路) strength. Only types with >=2 results."""
+    by_type = defaultdict(list)
+    for r in recs:
+        rank = r.get("rank_overall")
+        f = field_sizes.get((r.get("race_key"), r.get("year")))
+        if not rank or not f or f < 1 or rank > f:
+            continue
+        t = race_type(r.get("race_name_canonical") or r.get("race_name_raw"),
+                      r.get("category_raw"))
+        by_type[t].append((f - rank) / f * 100)
+    return {t: {"pct": round(statistics.median(v), 1), "n": len(v)}
+            for t, v in by_type.items() if len(v) >= 2}
+
+
 def build_athletes(records):
     """Return (index, details): index is the athlete list (>=2 results),
     details maps id -> per-athlete detail dict. Both fully de-identified."""
@@ -176,7 +194,8 @@ def build_athletes(records):
         details[aid] = {
             "id": aid, "nm": masked, "conf": conf,
             "has_uci": is_uci, "has_rider": is_tsu,
-            "teams": distinct_teams, "history": hist,
+            "teams": distinct_teams, "traits": _traits(recs, field_sizes),
+            "history": hist,
         }
         index.append({
             # Kept lean: shipped to every /athletes visit for client-side search.

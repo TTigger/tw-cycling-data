@@ -2,6 +2,7 @@ import { careerSummary, percentileInField, CONF_LABEL } from "../../lib/athletes
 import { secondsToHMS } from "../../lib/format";
 import type { AthleteDetail } from "../../lib/types";
 import AthleteProgression from "./AthleteProgression";
+import AthleteRadar from "./AthleteRadar";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
@@ -59,6 +60,12 @@ export default function AthleteProfile({ d, onBack }: { d: AthleteDetail; onBack
         <h2 className="font-display text-lg text-ink">進步軌跡</h2>
         <p className="mb-2 text-xs text-muted">每年最佳「同場贏過 % 」(名次/該場人數),跨賽事可比;長條為當年出賽場次。</p>
         <AthleteProgression history={d.history} />
+      </section>
+
+      <section className="rounded-xl border border-border bg-surface p-4">
+        <h2 className="font-display text-lg text-ink">專長雷達(爬坡 vs 平路)</h2>
+        <p className="mb-2 text-xs text-muted">各賽事類型的相對表現,看出選手是爬坡型還是平路型。</p>
+        <AthleteRadar traits={d.traits} />
       </section>
 
       <section className="rounded-xl border border-border bg-surface p-4">
