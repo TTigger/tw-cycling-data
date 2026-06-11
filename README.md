@@ -36,6 +36,7 @@ scrapers/
   bravelog_calendar.py ★ Bravelog contestId 探索(/search API)+ 自行車賽分類
   bravelog_crawl.py    ★ 正式爬蟲 Bravelog(contest→raceId子賽事→分頁,per-contest 快取)
   cycling_crawl.py     ★ 正式爬蟲 cycling.org.tw 國家級 PDF 成績冊(含 UCI ID)
+  cyclist_league.py    ★ 臺灣自行車聯賽 ITT(cyclist.org.tw results_txt 落地頁 → 成績公告 PDF;桃園繞圈賽等)
   tsu_crawl.py         ★ 正式爬蟲 tsu.com.tw(/race?y= 年份×分頁 → /race/result 表頭對映;含 TCU 選手 ID)
   merge.py             ★ 合併所有來源 → master 資料集(套用 normalize、跨源去重)
   validate.py          資料品質驗證(重複/時間/名次倒置/覆蓋率/年份漂移)
