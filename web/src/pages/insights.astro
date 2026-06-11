@@ -1,0 +1,9 @@
+---
+import Base from "../layouts/Base.astro";
+import InsightsApp from "../components/insights/InsightsApp.tsx";
+---
+<Base title="洞察 | 台灣公路車賽事成績儀表板">
+  <h1 class="font-display text-3xl">數據洞察</h1>
+  <p class="mt-2 mb-6 text-muted">從整體資料挖出的趨勢與冷知識:年齡與表現、突破之星、賽事星等等。皆為跨賽事正規化的探索性觀察。</p>
+  <InsightsApp client:only="react" />
+</Base>

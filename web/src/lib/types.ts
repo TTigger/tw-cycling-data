@@ -42,3 +42,10 @@ export interface ClimbVamEntry {
   id: string; nm: string; best_vam: number; best_wkg: number | null;
   climb: string; y: number | null; conf: "high" | "est"; g: "M" | "F" | null;
 }
+
+export interface AgeCurvePoint {
+  band: string; g: "M" | "F" | "all"; n: number; p25: number; p50: number; p75: number;
+}
+export interface Insights {
+  age_curve: AgeCurvePoint[];
+}
