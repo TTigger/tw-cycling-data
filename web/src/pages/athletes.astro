@@ -1,0 +1,9 @@
+---
+import Base from "../layouts/Base.astro";
+import AthletesApp from "../components/athletes/AthletesApp.tsx";
+---
+<Base title="選手 | 台灣公路車賽事成績儀表板">
+  <h1 class="font-display text-3xl">選手追蹤</h1>
+  <p class="mt-2 mb-6 text-muted">搜尋一位選手,查看歷年成績、進步軌跡與出賽足跡。姓名已去識別化,身分以姓名+車隊(UCI 為輔)推斷,可能含同名,僅供參考。</p>
+  <AthletesApp client:only="react" />
+</Base>

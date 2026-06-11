@@ -17,6 +17,7 @@ import sys
 from collections import Counter, defaultdict
 
 sys.path.insert(0, os.path.dirname(__file__))
+import common  # noqa: E402
 import normalize  # noqa: E402
 
 sys.stdout.reconfigure(encoding="utf-8")
@@ -52,6 +53,10 @@ def main():
         print(f"  dropped {before - len(records)} zero-time (DNF/未計時) rows")
     for r in records:
         normalize.enrich(r)
+        # Re-mask at merge time so the de-identification policy is applied here,
+        # not frozen at crawl time (lets us change mask_name without re-crawling).
+        if r.get("name_raw"):
+            r["name_masked"] = common.mask_name(r["name_raw"])
 
     full = os.path.join(OUT, "master.json")
     json.dump(records, open(full, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
