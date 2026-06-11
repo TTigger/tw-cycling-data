@@ -18,6 +18,7 @@ import re
 import ssl
 import sys
 import urllib.request
+from collections import Counter
 
 import pdfplumber
 
@@ -135,6 +136,70 @@ def parse_pdf(path, race_name, year):
     return rows
 
 
+def parse_ttt(path, race_name, year):
+    """團隊計時賽 (team time trial). Layout has NO 組別:
+      [排名] 編號 姓名 車隊 出發 終點 完成時間 取第4名時間
+    Most riders show no rank — only each team's counting rider carries the GC
+    rank. The official team result is 取第4名時間 (last token), shared by the
+    whole team. We group riders by team, propagate the team's rank + team time
+    to all its members, and emit one record per rider."""
+    rows = []
+    try:
+        pdf = pdfplumber.open(path)
+    except Exception as e:
+        print(f"   ! open error {os.path.basename(path)}: {e}")
+        return []
+    with pdf:
+        for page in pdf.pages:
+            lines = (page.extract_text() or "").splitlines()
+            if not any("取第" in ln and "完成時間" in ln for ln in lines):
+                continue                              # not a TTT-race page (skip 積分排名)
+            for ln in lines:
+                toks = ln.strip().split()
+                if len(toks) < 5 or not toks[0].isdigit():
+                    continue
+                times = [i for i, t in enumerate(toks) if TIME.fullmatch(t)]
+                if not times:
+                    continue
+                if toks[1].isdigit():                 # rank present: 排名 編號 …
+                    rank, bib, i = int(toks[0]), toks[1], 2
+                else:                                  # no rank: 編號 …
+                    rank, bib, i = None, toks[0], 1
+                if i >= times[0]:
+                    continue
+                name = toks[i]
+                team = " ".join(toks[i + 1:times[0]]).strip()
+                team = re.sub(r"^[A-Z]{3}\s+", "", team) or None   # strip 國籍 code (TWN/JPN…)
+                if not name or not re.search(r"[一-鿿A-Za-z]", name):
+                    continue
+                rows.append({"rank": rank, "bib": bib, "name": name,
+                             "team": team, "time": toks[times[-1]]})
+    teams = {}
+    for r in rows:
+        teams.setdefault(r["team"], []).append(r)
+    out = []
+    for team, members in teams.items():
+        trank = next((m["rank"] for m in members if m["rank"] is not None), None)
+        ttime = Counter(m["time"] for m in members).most_common(1)[0][0]
+        for m in members:
+            out.append(common.make_record(
+                source_platform="cyclist.org.tw", source_url=path, source_format="pdf",
+                race_name_raw=f"{year} {race_name}", year=year, race_type="road",
+                result_label="團隊計時賽", category_raw=None, gender=None,
+                rank_overall=trank, bib=m["bib"], name_raw=m["name"], team=team,
+                finish_time=ttime, finish_seconds=common.time_to_seconds(ttime),
+                scraped_at="2026-06-11"))
+    return out
+
+
+def is_ttt(path):
+    try:
+        with pdfplumber.open(path) as pdf:
+            return "取第" in (pdf.pages[0].extract_text() or "")
+    except Exception:
+        return False
+
+
 def main():
     pages = landing_pages()
     print(f"league landing pages: {len(pages)}")
@@ -142,23 +207,27 @@ def main():
     for pno, title, pdfs in pages:
         year = int((ROC.search(title) or ROC.search(" ".join(pdfs)) or [None, 0])[1]) or None
         n0 = len(records)
+        name = re.sub(r"^20\d{2}", "", title).strip()
         for href in pdfs:
             path = download(href)
-            if path:
-                records.extend(parse_pdf(path, re.sub(r"^20\d{2}", "", title).strip(), year))
+            if not path:
+                continue
+            records.extend(parse_ttt(path, name, year) if is_ttt(path)
+                           else parse_pdf(path, name, year))
         print(f"  pno={pno} {title[:30]:<30} pdfs={len(pdfs)} rows={len(records) - n0}")
     # Avoid double-counting: the road 公路賽 PDFs duplicate existing 環花東/
-    # 陽明山王/太平山王/KOM data. Keep only genuinely-new individual results:
-    #  - 個人計時賽 (ITT): a time-trial format we don't otherwise have
-    #  - 桃園繞圈賽: an entirely new race (its ITT + 繞圈各分組 results)
-    # TTT-race + 積分/累計 standings are already dropped (no 組別 token).
+    # 陽明山王/太平山王/KOM data. Keep only genuinely-new results:
+    #  - 個人計時賽 (ITT) + 團隊計時賽 (TTT): time-trial formats we don't otherwise
+    #    have (unique short/team times — no overlap with mass-start road results)
+    #  - 桃園繞圈賽: an entirely new race (its ITT/TTT + 繞圈各分組 results)
+    # The road 公路賽 rows and 積分/累計 standings are dropped.
     records = [r for r in records
                if r.get("result_label") != "累計總排名"          # derived sum — would double-count
-               and (r.get("result_label") == "個人計時賽" or "桃園繞圈" in (r.get("race_name_raw") or ""))]
+               and (r.get("result_label") in ("個人計時賽", "團隊計時賽")
+                    or "桃園繞圈" in (r.get("race_name_raw") or ""))]
     out = os.path.join(OUT_DIR, "cycling_league.json")
     json.dump(records, open(out, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
-    from collections import Counter
-    print(f"\n=== records={len(records)} (個人計時賽 ITT only) ===")
+    print(f"\n=== records={len(records)} (ITT + TTT + 桃園繞圈) ===")
     print(f"  years: {dict(Counter(r['year'] for r in records))}")
     print(f"  labels: {dict(Counter(r['result_label'] for r in records))}")
     print(f"  -> {os.path.relpath(out)}")
