@@ -33,3 +33,12 @@ export interface AthleteDetail {
   id: string; nm: string; conf: Confidence; has_uci: boolean; has_rider: boolean;
   teams: string[]; history: AthleteHistoryRow[];
 }
+export interface ClimbProfile {
+  race_key: string; name: string;
+  dist_km: number; elev_m: number; grade: number;  // grade = elev_m/(dist_km*1000)*100
+  conf: "high" | "est"; src: string;
+}
+export interface ClimbVamEntry {
+  id: string; nm: string; best_vam: number; best_wkg: number | null;
+  climb: string; y: number | null; conf: "high" | "est"; g: "M" | "F" | null;
+}
