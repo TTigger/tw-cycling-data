@@ -57,8 +57,10 @@ export interface RaceRating {
   race_key: string; name: string; score: number; stars: number;
   med_field: number; editions: number; regular_pct: number; years: number[];
 }
+export interface GeoRegion { region: string; races: number; rows: number; }
 export interface Insights {
   age_curve: AgeCurvePoint[];
   breakout: BreakoutEntry[];
   ratings: RaceRating[];
+  geo: GeoRegion[];
 }

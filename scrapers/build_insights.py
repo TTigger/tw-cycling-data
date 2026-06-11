@@ -139,6 +139,63 @@ def build_breakout(records, min_per_year=2, min_jump=15.0, top=40):
     return out[:top]
 
 
+import re  # noqa: E402
+
+# race-name → county (first match wins; ordered roughly north→south). Landmarks
+# map to the county they sit in; explicit county names take priority via ordering.
+REGION_KW = [
+    (r"臺北|台北|天母|陽明山|大屯山|北海岸|擎天崗", "臺北"),
+    (r"新北|淡海|平溪|雙溪", "新北"),
+    (r"桃園|中壢|龍潭", "桃園"),
+    (r"新竹|竹站", "新竹"),
+    (r"苗栗|仙山", "苗栗"),
+    (r"臺中|台中|大雪山", "臺中"),
+    (r"彰化|八卦山", "彰化"),
+    (r"南投|武嶺|日月潭|中寮|埔里|魚池", "南投"),
+    (r"雲林|石壁|古坑", "雲林"),
+    (r"嘉義|阿里山|塔塔加", "嘉義"),
+    (r"臺南|台南", "臺南"),
+    (r"高雄", "高雄"),
+    (r"屏東|四重溪", "屏東"),
+    (r"宜蘭|太平山|牛鬥", "宜蘭"),
+    (r"花蓮|太平洋|登山王|太魯閣|花東", "花蓮"),
+    (r"臺東|台東", "臺東"),
+    (r"澎湖", "澎湖"),
+    (r"金門|金沙", "金門"),
+]
+_REGION_RE = [(re.compile(p), c) for p, c in REGION_KW]
+
+
+def race_region(name, region_field=None):
+    """Derive a county from the race name (preferred, uniform) else the region
+    field. None if neither resolves."""
+    n = name or ""
+    county = None
+    for rx, c in _REGION_RE:
+        if rx.search(n):
+            county = c
+            break
+    county = county or region_field
+    if not county:
+        return None
+    return re.sub(r"[縣市]$", "", county.strip()) or None   # 臺東縣/臺中市 -> 臺東/臺中
+
+
+def build_geo(records):
+    """Per-county race count + 人次 (finisher-entries), a geographic hotspot view."""
+    agg = defaultdict(lambda: {"races": set(), "rows": 0})
+    for r in records:
+        county = race_region(r.get("race_name_canonical"), r.get("region"))
+        if not county:
+            continue
+        d = agg[county]
+        d["races"].add(r.get("race_key"))
+        d["rows"] += 1
+    out = [{"region": c, "races": len(d["races"]), "rows": d["rows"]} for c, d in agg.items()]
+    out.sort(key=lambda x: -x["rows"])
+    return out
+
+
 def build_ratings(records):
     """A transparent per-race competitiveness rating from three signals:
       - scale: median finishers per edition (log-scaled)
@@ -197,6 +254,7 @@ def main():
         "age_curve": build_age_curve(records),
         "breakout": build_breakout(records),
         "ratings": build_ratings(records),
+        "geo": build_geo(records),
     }
     with open(os.path.join(OUT, "insights.json"), "w", encoding="utf-8") as f:
         json.dump(insights, f, ensure_ascii=False, separators=(",", ":"))

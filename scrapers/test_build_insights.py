@@ -93,3 +93,20 @@ def test_build_ratings_scores_and_stars():
     assert big["years"] == [2022, 2023, 2024]
 
 
+def test_race_region_and_geo():
+    assert bi.race_region("建大武嶺盃") == "南投"
+    assert bi.race_region("臺灣KOM登山王之路-春季") == "花蓮"
+    assert bi.race_region("扶輪盃陽明山自行車登山王") == "臺北"  # 陽明山 wins (listed first)
+    assert bi.race_region("彰化經典百K") == "彰化"
+    assert bi.race_region("某神秘賽", "高雄") == "高雄"  # falls back to region field
+    assert bi.race_region("無線索賽") is None
+    recs = [
+        {"race_name_canonical": "建大武嶺盃", "race_key": "a", "region": None},
+        {"race_name_canonical": "建大武嶺盃", "race_key": "a", "region": None},
+        {"race_name_canonical": "彰化經典百K", "race_key": "b", "region": None},
+    ]
+    geo = bi.build_geo(recs)
+    nantou = next(g for g in geo if g["region"] == "南投")
+    assert nantou["rows"] == 2 and nantou["races"] == 1
+
+
