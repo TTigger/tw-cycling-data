@@ -1,10 +1,10 @@
 {
-  "total_records": 83301,
+  "total_records": 84091,
   "by_platform": {
     "bravelog.tw": 46553,
-    "cyclist.org.tw": 11474,
+    "cyclist.org.tw": 12265,
     "cycling.org.tw": 349,
-    "tsu.com.tw": 24925
+    "tsu.com.tw": 24924
   },
   "by_year": {
     "2009": 1062,
@@ -21,27 +21,27 @@
     "2022": 7863,
     "2023": 15273,
     "2024": 22393,
-    "2025": 20745,
-    "2026": 3351
+    "2025": 21153,
+    "2026": 3733
   },
   "by_gender": {
-    "null": 57737,
+    "null": 58527,
     "F": 5037,
     "M": 20527
   },
   "by_race_class": {
-    "未分類": 39376,
+    "未分類": 39367,
     "女子": 354,
     "挑戰": 19318,
     "競賽": 6500,
     "電輔車": 165,
     "市民經典": 5061,
+    "團體計時": 826,
     "分齡": 10485,
-    "青少年": 2017,
-    "團體計時": 25
+    "青少年": 2015
   },
   "by_series": {
-    "null": 26111,
+    "null": 26211,
     "96聯賽": 9457,
     "捷安特自行車嘉年華": 8756,
     "TIS崇越盃系列": 7722,
@@ -50,13 +50,13 @@
     "環大臺北自行車挑戰": 3520,
     "L'Étape 環法日月潭": 3248,
     "LAVA 落日飛車350": 2188,
+    "花蓮太平洋盃": 1667,
     "臺灣KOM登山王之路": 1643,
-    "花蓮太平洋盃": 1551,
+    "臺灣自行車聯賽(TCL)": 1613,
     "臺灣KOM登山王挑戰": 1448,
-    "臺灣自行車聯賽(TCL)": 1287,
+    "環花東國際自行車賽": 1080,
     "台灣登山大滿貫(雪巴)": 965,
     "仙山單車挑戰賽": 955,
-    "環花東國際自行車賽": 832,
     "屏東四重溪自行車挑戰賽": 819,
     "瘋系列環台賽": 696,
     "自由車錦標賽/選拔": 623,
@@ -230,6 +230,16 @@
       "rows": 1134
     },
     {
+      "race_key": "環花東國際自行車賽",
+      "series": "環花東國際自行車賽",
+      "platform": "cyclist.org.tw",
+      "years": [
+        2025,
+        2026
+      ],
+      "rows": 1080
+    },
+    {
       "race_key": "LIVDAY仲夏田野花都魚藤坪挑戰活動",
       "series": "捷安特自行車嘉年華",
       "platform": "bravelog.tw",
@@ -246,6 +256,16 @@
         2024
       ],
       "rows": 955
+    },
+    {
+      "race_key": "太平山王公路賽團隊計時賽挑戰",
+      "series": "臺灣自行車聯賽(TCL)",
+      "platform": "cyclist.org.tw",
+      "years": [
+        2025,
+        2026
+      ],
+      "rows": 948
     },
     {
       "race_key": "LIVDAY冬之湯旅175咖啡公路挑戰活動",
@@ -287,16 +307,6 @@
       "rows": 858
     },
     {
-      "race_key": "環花東國際自行車賽",
-      "series": "環花東國際自行車賽",
-      "platform": "cyclist.org.tw",
-      "years": [
-        2025,
-        2026
-      ],
-      "rows": 832
-    },
-    {
       "race_key": "屏東四重溪溫泉自行車挑戰賽",
       "series": "屏東四重溪自行車挑戰賽",
       "platform": "bravelog.tw",
@@ -324,16 +334,6 @@
       "rows": 796
     },
     {
-      "race_key": "太平山王公路賽團隊計時賽挑戰",
-      "series": "臺灣自行車聯賽(TCL)",
-      "platform": "cyclist.org.tw",
-      "years": [
-        2025,
-        2026
-      ],
-      "rows": 792
-    },
-    {
       "race_key": "臺灣自行車登山王挑戰",
       "series": "臺灣KOM登山王挑戰",
       "platform": "cyclist.org.tw",
@@ -342,6 +342,16 @@
         2023
       ],
       "rows": 785
+    },
+    {
+      "race_key": "花蓮太平洋盃公路賽團隊計時賽挑戰",
+      "series": "花蓮太平洋盃",
+      "platform": "cyclist.org.tw",
+      "years": [
+        2024,
+        2025
+      ],
+      "rows": 780
     },
     {
       "race_key": "96Heroes新竹站",
@@ -362,21 +372,20 @@
       "rows": 687
     },
     {
+      "race_key": "陽明山王公路賽團隊計時賽挑戰",
+      "series": "臺灣自行車聯賽(TCL)",
+      "platform": "cyclist.org.tw",
+      "years": [
+        2026
+      ],
+      "rows": 665
+    },
+    {
       "race_key": "LIVDAY初夏大山平溪五分挑戰活動",
       "series": "捷安特自行車嘉年華",
       "platform": "bravelog.tw",
       "years": [
         2023
-      ],
-      "rows": 664
-    },
-    {
-      "race_key": "花蓮太平洋盃公路賽團隊計時賽挑戰",
-      "series": "花蓮太平洋盃",
-      "platform": "cyclist.org.tw",
-      "years": [
-        2024,
-        2025
       ],
       "rows": 664
     },
@@ -465,15 +474,6 @@
         2026
       ],
       "rows": 509
-    },
-    {
-      "race_key": "陽明山王公路賽團隊計時賽挑戰",
-      "series": "臺灣自行車聯賽(TCL)",
-      "platform": "cyclist.org.tw",
-      "years": [
-        2026
-      ],
-      "rows": 495
     },
     {
       "race_key": "96聯賽武嶺站競賽組及市民競賽組",
@@ -649,6 +649,15 @@
       "rows": 302
     },
     {
+      "race_key": "桃園繞圈賽",
+      "series": null,
+      "platform": "cyclist.org.tw",
+      "years": [
+        2025
+      ],
+      "rows": 299
+    },
+    {
       "race_key": "LAVA玩賽樂園350自行車挑戰Day2",
       "series": "LAVA 落日飛車350",
       "platform": "bravelog.tw",
@@ -756,15 +765,6 @@
         2024
       ],
       "rows": 199
-    },
-    {
-      "race_key": "桃園繞圈賽",
-      "series": null,
-      "platform": "cyclist.org.tw",
-      "years": [
-        2025
-      ],
-      "rows": 198
     },
     {
       "race_key": "【96Heroes挑戰組】台北站",
@@ -1017,7 +1017,7 @@
       "years": [
         2025
       ],
-      "rows": 96
+      "rows": 95
     },
     {
       "race_key": "臺灣KOM太平洋經典賽",
