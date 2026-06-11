@@ -87,3 +87,26 @@ def test_history_sorted_and_deidentified():
     assert years == sorted(years)  # chronological
     assert all("name" not in h for h in d["history"])
     assert d["has_uci"] is False
+
+
+def test_vam_helpers():
+    assert ba._vam(3275, 3600 * 4) == 819
+    assert ba._vam(2900, 0) is None
+    assert ba._wkg(1500, 5) == 6.0
+    assert ba._plausible(1200) and not ba._plausible(50) and not ba._plausible(5000)
+
+
+def test_build_climb_vam_best_per_athlete():
+    profiles = {"climbA": {"name": "Climb A", "elev_m": 3000, "grade": 6.0, "conf": "high"}}
+    # one athlete, two climbA results: faster time -> higher VAM is the one kept
+    recs = [
+        _rec("王大明", tsu="TCU-x", rk="climbA", year=2023, t=3600 * 3),   # 1000 VAM
+        _rec("王大明", tsu="TCU-x", rk="climbA", year=2024, t=3600 * 2.5), # 1200 VAM (best)
+        _rec("王大明", tsu="TCU-x", rk="other", year=2024, t=3600),         # not a climb
+    ]
+    rows = ba.build_climb_vam(recs, profiles)
+    assert len(rows) == 1
+    e = rows[0]
+    assert e["best_vam"] == 1200 and e["y"] == 2024 and e["climb"] == "Climb A"
+    assert e["conf"] == "high" and e["g"] == "M" and e["best_wkg"] is not None
+    assert "id" in e and e["nm"] == "王○明"  # de-identified
