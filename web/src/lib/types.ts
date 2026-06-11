@@ -30,9 +30,11 @@ export interface AthleteHistoryRow {
   d: string | null; field: number | null;
 }
 export interface AthleteTrait { pct: number; n: number; }
+export interface RivalEntry { id: string; nm: string; w: number; l: number; meets: number; }
 export interface AthleteDetail {
   id: string; nm: string; conf: Confidence; has_uci: boolean; has_rider: boolean;
-  teams: string[]; traits: Record<string, AthleteTrait>; history: AthleteHistoryRow[];
+  teams: string[]; traits: Record<string, AthleteTrait>;
+  rivals?: RivalEntry[]; history: AthleteHistoryRow[];
 }
 export interface ClimbProfile {
   race_key: string; name: string;

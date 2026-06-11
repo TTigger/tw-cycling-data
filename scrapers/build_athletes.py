@@ -244,10 +244,65 @@ def build_climb_vam(records, profiles):
     return out
 
 
+def build_head_to_head(records, details, min_results=6, min_meets=3, top_rivals=6):
+    """Each athlete's top head-to-head rivals: opponents they've met in the same
+    race-year >=min_meets times, with the win/loss split (lower rank = win).
+    Bounded to 'active' athletes (>=min_results) to keep the pairwise pass cheap.
+    Returns {athlete_id: [{id, nm, w, l, meets}, ...]}."""
+    keys = build_group_keys(records)
+    by_athlete = defaultdict(list)
+    for k, r in zip(keys, records):
+        if k in ("n:", "u:", "t:") or not r.get("rank_overall"):
+            continue
+        by_athlete[k].append((r.get("race_key"), r.get("year"), r["rank_overall"]))
+    active = {k for k, v in by_athlete.items() if len(v) >= min_results}
+    ry = defaultdict(list)                       # (race_key, year) -> [(key, rank)]
+    for k in active:
+        for rk, y, rank in by_athlete[k]:
+            ry[(rk, y)].append((k, rank))
+    h2h = defaultdict(lambda: [0, 0])            # (a<b) -> [a_wins, meets]
+    for lst in ry.values():
+        for i in range(len(lst)):
+            ai, ari = lst[i]
+            for j in range(i + 1, len(lst)):
+                bi, bri = lst[j]
+                if ari == bri:
+                    continue                     # tie / same row guard
+                pair = (ai, bi) if ai < bi else (bi, ai)
+                e = h2h[pair]
+                e[1] += 1
+                winner = ai if ari < bri else bi
+                if winner == pair[0]:
+                    e[0] += 1
+    rivals = defaultdict(list)
+    for (a, b), (awins, meets) in h2h.items():
+        if meets < min_meets:
+            continue
+        rivals[a].append((b, awins, meets))
+        rivals[b].append((a, meets - awins, meets))
+    out = {}
+    for k, lst in rivals.items():
+        aid = athlete_id(k)
+        if aid not in details:
+            continue
+        lst.sort(key=lambda x: -x[2])
+        rows = []
+        for b, w, m in lst[:top_rivals]:
+            bid = athlete_id(b)
+            if bid in details:
+                rows.append({"id": bid, "nm": details[bid]["nm"], "w": w, "l": m - w, "meets": m})
+        if rows:
+            out[aid] = rows
+    return out
+
+
 def main():
     with open(IN, encoding="utf-8") as f:
         records = json.load(f)
     index, details = build_athletes(records)
+    rivals = build_head_to_head(records, details)
+    for aid, rows in rivals.items():
+        details[aid]["rivals"] = rows
     os.makedirs(os.path.join(OUT, "athlete"), exist_ok=True)
     with open(os.path.join(OUT, "athletes.json"), "w", encoding="utf-8") as f:
         json.dump(index, f, ensure_ascii=False, separators=(",", ":"))
