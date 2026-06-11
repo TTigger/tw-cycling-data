@@ -34,6 +34,32 @@ OUT = os.path.join(HERE, "..", "web", "public", "data")
 _SALT = "twcd-athlete-v1"
 MIN_RESULTS = 2  # singletons aren't "trackable" — excluded from the index
 
+PROFILES_PATH = os.path.join(OUT, "climb_profiles.json")
+VAM_MIN, VAM_MAX = 100, 3000
+
+
+def _vam(elev_m, seconds):
+    if not elev_m or not seconds or seconds <= 0:
+        return None
+    return round(elev_m / (seconds / 3600))
+
+
+def _wkg(vam_value, grade_pct):
+    if vam_value is None or not grade_pct:
+        return None
+    return round(vam_value / (100 * (2 + grade_pct / 10)), 1)
+
+
+def _plausible(v):
+    return v is not None and VAM_MIN <= v <= VAM_MAX
+
+
+def load_profiles():
+    if not os.path.exists(PROFILES_PATH):
+        return {}
+    with open(PROFILES_PATH, encoding="utf-8") as f:
+        return {p["race_key"]: p for p in json.load(f)}
+
 
 def athlete_id(group_key):
     """Stable, salted, non-reversible 10-hex id for a group key (u:<uci> / n:<name>)."""
@@ -166,6 +192,37 @@ def build_athletes(records):
     return index, details
 
 
+def build_climb_vam(records, profiles):
+    """Best VAM per athlete across profiled climb races. Uses the same identity
+    grouping as build_athletes (tsu/UCI/name)."""
+    keys = build_group_keys(records)
+    groups = defaultdict(list)
+    for k, r in zip(keys, records):
+        if k not in ("n:", "u:", "t:"):
+            groups[k].append(r)
+    out = []
+    for gk, recs in groups.items():
+        best = None
+        for r in recs:
+            prof = profiles.get(r.get("race_key"))
+            if not prof:
+                continue
+            v = _vam(prof["elev_m"], r.get("finish_seconds"))
+            if not _plausible(v):
+                continue
+            if best is None or v > best["best_vam"]:
+                best = {"best_vam": v, "best_wkg": _wkg(v, prof.get("grade")),
+                        "climb": prof["name"], "y": r.get("year"),
+                        "conf": prof.get("conf"), "g": r.get("gender")}
+        if best is None:
+            continue
+        masked = Counter(r.get("name_masked") or common.mask_name(r.get("name_raw"))
+                         for r in recs).most_common(1)[0][0]
+        out.append({"id": athlete_id(gk), "nm": masked, **best})
+    out.sort(key=lambda e: -e["best_vam"])
+    return out
+
+
 def main():
     with open(IN, encoding="utf-8") as f:
         records = json.load(f)
@@ -179,6 +236,11 @@ def main():
     conf = Counter(a["conf"] for a in index)
     print(f"athletes={len(index)} (of trackable) detailFiles={len(details)} "
           f"conf={dict(conf)} -> {os.path.relpath(OUT)}")
+    profiles = load_profiles()
+    climb_vam = build_climb_vam(records, profiles)
+    with open(os.path.join(OUT, "climb_vam.json"), "w", encoding="utf-8") as f:
+        json.dump(climb_vam, f, ensure_ascii=False, separators=(",", ":"))
+    print(f"climb_vam={len(climb_vam)} (across {len(profiles)} profiled climbs)")
 
 
 if __name__ == "__main__":
