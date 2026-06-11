@@ -36,14 +36,17 @@ def quantile(sorted_vals, q):
 
 
 def field_sizes(records):
-    """Finishers per (race_key, year) — the denominator for in-field percentile."""
+    """Classified finishers per (race_key, year) — the denominator for in-field
+    percentile. Counts every row with a rank (not just timed ones, since some
+    finishers have a placing but no recorded finish_seconds)."""
     return Counter((r.get("race_key"), r.get("year")) for r in records
-                   if r.get("finish_seconds"))
+                   if r.get("rank_overall"))
 
 
 def in_field_pct(rank, field):
-    """% of the field beaten = (field - rank) / field * 100. None if invalid."""
-    if not rank or not field or field < 1 or rank < 1:
+    """% of the field beaten = (field - rank) / field * 100. None if invalid or
+    inconsistent (rank beyond the counted field — a data gap, not a real result)."""
+    if not rank or not field or field < 1 or rank < 1 or rank > field:
         return None
     return (field - rank) / field * 100
 
@@ -80,11 +83,67 @@ def build_age_curve(records):
     return out
 
 
+def _median(vals):
+    s = sorted(vals)
+    return quantile(s, 0.5)
+
+
+def _masked(recs):
+    return Counter(r.get("name_masked") or common.mask_name(r.get("name_raw"))
+                   for r in recs).most_common(1)[0][0]
+
+
+def _mode_gender(recs):
+    gs = Counter(r.get("gender") for r in recs if r.get("gender") in ("M", "F"))
+    return gs.most_common(1)[0][0] if gs else None
+
+
+def build_breakout(records, min_per_year=2, min_jump=15.0, top=40):
+    """Biggest year-over-year improvement in median in-field percentile per
+    athlete (a 'breakout' season). Each year needs >=min_per_year results so the
+    yearly median is stable; only jumps >=min_jump percentile points are kept.
+    Uses the same TCU/UCI/name identity grouping as the athlete pages."""
+    fields = field_sizes(records)
+    keys = build_group_keys(records)
+    groups = defaultdict(list)
+    for k, r in zip(keys, records):
+        if k not in ("n:", "u:", "t:"):
+            groups[k].append(r)
+    out = []
+    for gk, recs in groups.items():
+        if len(recs) < MIN_RESULTS:
+            continue
+        by_year = defaultdict(list)
+        for r in recs:
+            pct = in_field_pct(r.get("rank_overall"),
+                               fields.get((r.get("race_key"), r.get("year"))))
+            if pct is not None and r.get("year"):
+                by_year[r["year"]].append(pct)
+        yr_med = {y: _median(v) for y, v in by_year.items() if len(v) >= min_per_year}
+        years = sorted(yr_med)
+        if len(years) < 2:
+            continue
+        best = None
+        for a, b in zip(years, years[1:]):           # consecutive racing years
+            jump = yr_med[b] - yr_med[a]
+            if best is None or jump > best["jump"]:
+                best = {"from_y": a, "to_y": b,
+                        "from_pct": round(yr_med[a], 1), "to_pct": round(yr_med[b], 1),
+                        "jump": round(jump, 1)}
+        if best is None or best["jump"] < min_jump:
+            continue
+        out.append({"id": athlete_id(gk), "nm": _masked(recs),
+                    "g": _mode_gender(recs), "anchored": gk[0] in ("t", "u"), **best})
+    out.sort(key=lambda e: -e["jump"])
+    return out[:top]
+
+
 def main():
     with open(IN, encoding="utf-8") as f:
         records = json.load(f)
     insights = {
         "age_curve": build_age_curve(records),
+        "breakout": build_breakout(records),
     }
     with open(os.path.join(OUT, "insights.json"), "w", encoding="utf-8") as f:
         json.dump(insights, f, ensure_ascii=False, separators=(",", ":"))

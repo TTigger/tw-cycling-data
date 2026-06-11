@@ -46,6 +46,11 @@ export interface ClimbVamEntry {
 export interface AgeCurvePoint {
   band: string; g: "M" | "F" | "all"; n: number; p25: number; p50: number; p75: number;
 }
+export interface BreakoutEntry {
+  id: string; nm: string; g: "M" | "F" | null; anchored: boolean;
+  from_y: number; to_y: number; from_pct: number; to_pct: number; jump: number;
+}
 export interface Insights {
   age_curve: AgeCurvePoint[];
+  breakout: BreakoutEntry[];
 }
