@@ -69,3 +69,27 @@ def test_build_breakout_finds_year_jump():
     assert e["jump"] > 40 and e["nm"] == "王○明" and e["anchored"] is True
     assert "name_raw" not in e
 
+
+def test_build_ratings_scores_and_stars():
+    recs = []
+    # bigRace: 40 finishers across 3 years, many regulars -> high score
+    for y in (2022, 2023, 2024):
+        for i in range(1, 41):
+            nm = f"常客{i}" if i <= 30 else f"路人{i}{y}"
+            recs.append({"name_raw": nm, "name_masked": None, "race_key": "bigRace",
+                         "race_name_canonical": "Big Race", "year": y, "rank_overall": i,
+                         "gender": "M", "finish_seconds": 3600.0 + i})
+    # the 30 常客 also race two other events -> become "regulars" (>=3 race_keys)
+    for rk in ("other1", "other2"):
+        for i in range(1, 31):
+            recs.append({"name_raw": f"常客{i}", "name_masked": None, "race_key": rk,
+                         "race_name_canonical": rk, "year": 2024, "rank_overall": i,
+                         "gender": "M", "finish_seconds": 3600.0 + i})
+    out = bi.build_ratings(recs)
+    big = next(r for r in out if r["race_key"] == "bigRace")
+    assert big["med_field"] == 40 and big["editions"] == 3
+    assert big["regular_pct"] == 75.0   # 30 of 40
+    assert 1 <= big["stars"] <= 5 and big["score"] > 0
+    assert big["years"] == [2022, 2023, 2024]
+
+
