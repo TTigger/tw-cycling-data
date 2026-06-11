@@ -37,7 +37,13 @@ CALENDARS = [
      "url": "https://www.raceon.com.tw/zh-TW/blogs/news/143647", "parser": "raceon"},
     {"id": "biji2025", "name": "運動筆記 自行車賽事行事曆",
      "url": "https://running.biji.co/index.php?q=news&act=info&id=112100", "parser": "biji"},
+    {"id": "ensage2026", "name": "ensage 2026 自行車&三鐵行事曆",
+     "url": "https://blog.ensage.tours/blogs/cycling-event-calendar-2026/", "parser": "ensage"},
 ]
+
+# triathlon / running — drop even if a date matches (ensage is cycling+tri mixed)
+TRI_RUN = re.compile(r"鐵人|三項|馬拉松|路跑|超馬|超級馬拉松|游泳|越野跑|健行|健走|"
+                     r"IRON|Triathlon|swimrun|duathlon|TRI\b", re.I)
 
 _TAGS = re.compile(r"<[^>]+>")
 _DATE = re.compile(r"^\d{1,2}[/.．]\d{1,2}")
@@ -91,7 +97,31 @@ def parse_biji(html_doc):
     return out
 
 
-PARSERS = {"raceon": parse_raceon, "biji": parse_biji}
+def parse_ensage(html_doc):
+    """ensage blog calendar: <tr> rows 'M/D<race name>' (cycling + triathlon
+    mixed). Drop triathlon/running; keep cycling-ish race names."""
+    out = []
+    for tr in re.findall(r"<tr[ >].*?</tr>", html_doc, re.S):
+        t = re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", tr))).strip()
+        m = re.match(r"\d{1,2}/\d{1,2}\s*(.+)", t)
+        if not m:
+            continue
+        name = m.group(1).strip()
+        if TRI_RUN.search(name):
+            continue
+        # drop ensage's own tour/shuttle/overseas products (not competitive races)
+        if name.startswith("ensage") or re.search(
+                r"保母車|接駁|順騎|約騎|賞櫻|神掌|trip|東南旅遊|佐渡|新潟|SADO|海外", name, re.I):
+            continue
+        if not re.search(r"賽|挑戰|盃|車|KOM|繞圈|武嶺|環|登山|騎|P字|塔|gravel|Gravel", name):
+            continue
+        name = re.sub(r"【[^】]*】|&\w+;|^\W+", "", name).strip()
+        if len(name) >= 4:
+            out.append(name[:48])
+    return out
+
+
+PARSERS = {"raceon": parse_raceon, "biji": parse_biji, "ensage": parse_ensage}
 
 
 def core(name):
