@@ -13,12 +13,13 @@ Collect, clean, and normalize Taiwan road-cycling race results (2015–2026) int
 | **Phase 1a: cyclist.org.tw pipeline (2024–26)** | ✅ **3,913 rows / 12 races** (competitive; gender 83% + age-group 95%) |
 | **Phase 1b: Bravelog pipeline (2018–26)** | ✅ **44,850 rows / 61 races** (citizen/challenge; triathlons excluded) |
 | **Phase 1d: cycling.org.tw national source** | ✅ National road championship **203 rows (2025, with UCI IDs)**; old wide-table years deferred |
-| Normalization + merge + validation tooling | ✅ `normalize.py` / `merge.py` (year-agnostic, auto-discovers sources) / `validate.py` |
-| **★ Merged master dataset** | ✅ **56,329 rows / 2015–2026 / 72 races / 3 sources**, de-identified |
+| **Phase 1e: tsu.com.tw results platform** | ✅ **24,925 rows / 2009–2025** (county criteriums/gravel/NeverStop Wuling/96 series; carries **TCU rider IDs**, fills the deepest history) |
+| Normalization + merge + validation tooling | ✅ `normalize.py` / `merge.py` (year-agnostic, auto-discovers sources, cross-source dedup) / `validate.py` |
+| **★ Merged master dataset** | ✅ **80,904 rows / 2009–2026 / 143 races / 4 sources**, de-identified |
 | **Phase 2: interactive dashboard (4 pages)** | ✅ `web/` (Overview / Explore / Race / Climbs; Astro+React+ECharts, Claude aesthetic, responsive) |
 | **Vercel deployment** | ✅ Live (Root Directory=`web`; auto-deploys on push) |
 | **Phase 1c: historical backfill (cyclist 2014–23 + Bravelog 2018–23)** | ✅ +7,363 + historical Bravelog |
-| **Phase 3: per-athlete tracking (name-primary, team+UCI-assisted)** | ✅ `/athletes` **11,205 trackable athletes** (≥2 results); progression + career table + homonym confidence flag |
+| **Phase 3: per-athlete tracking (TCU/UCI-ID-anchored, name fallback)** | ✅ `/athletes` **15,301 trackable athletes** (≥2 results); progression + career table + homonym confidence flag; 650 anchored by TCU ID, 101 by UCI |
 
 ## Layout
 
@@ -33,7 +34,9 @@ scrapers/
   cyclist_crawl.py     ★ crawler for cyclist.org.tw (supports --years backfill, --out)
   bravelog_calendar.py ★ Bravelog contest discovery (/search API) + cycling-race classifier
   bravelog_crawl.py    ★ crawler for Bravelog (contest→raceId sub-race→pagination, per-contest cache)
-  merge.py             ★ merge all sources → master dataset (applies normalize)
+  cycling_crawl.py     ★ crawler for cycling.org.tw national PDF result books (carry UCI IDs)
+  tsu_crawl.py         ★ crawler for tsu.com.tw (/race?y= year×page → /race/result header-mapped tables; carries TCU rider IDs)
+  merge.py             ★ merge all sources → master dataset (applies normalize, cross-source dedup)
   validate.py          data-quality checks (dupes / times / rank inversions / coverage / year drift)
   build_viz.py         ★ master.public → frontend data files (viz/races/race; pytest-tested)
   build_athletes.py    ★ master → athlete-tracking data (athletes index + athlete/<id>; name-primary grouping, homonym confidence flag; pytest-tested)
@@ -86,7 +89,7 @@ npm run build                           # static output to web/dist
 
 ## Unified record schema (one row = one athlete in one race)
 
-`source_platform` `source_url` `source_format` ｜ `race_name_raw` `race_name_canonical` `race_key` (dedupe/merge key) `year` `date` `race_type` `region` ｜ `result_label` `category_raw` (raw division) `gender` (M/F/None) `age_group` (`24-35`/`U15`/`MASTER`…) ｜ `rank_overall` `bib` ｜ `name_raw` (internal) `name_masked` (`李○○`, PDPA) `nationality` `team` ｜ `finish_time` `finish_seconds` `splits` ｜ `scraped_at`
+`source_platform` `source_url` `source_format` ｜ `race_name_raw` `race_name_canonical` `race_key` (dedupe/merge key) `year` `date` `race_type` `region` ｜ `result_label` `category_raw` (raw division) `gender` (M/F/None) `age_group` (`24-35`/`U15`/`MASTER`…) `age_band` (coarse decade band) ｜ `rank_overall` `bib` `uci_id` `tsu_rider_id` (identity anchors) ｜ `name_raw` (internal) `name_masked` (`李○明`, head+tail, PDPA) `nationality` `team` ｜ `finish_time` `finish_seconds` `splits` ｜ `scraped_at`
 
 ## Notes & limitations
 
@@ -99,8 +102,8 @@ npm run build                           # static output to web/dist
 
 ## Athlete identity resolution (Phase 3)
 
-- **Primary key is `name_raw`** — keeps a whole career together (teams change yearly; a hard name+team key would fragment riders who switch teams).
-- **UCI ID is a strong anchor** — when a name maps to exactly one UCI ID, its UCI + non-UCI results are unified and marked high confidence.
+- **Stable rider IDs are the strong anchor** — tsu's `tsu_rider_id` (TCU-…) and cycling's `uci_id`: when a name maps to exactly one ID, all its results unify at high confidence. This correctly merges careers across team changes and years (e.g. a 2013–2026 woman across 8 teams is one athlete via her TCU ID).
+- **Name fallback** — riders without an ID group by `name_raw` (teams change yearly; a hard name+team key would fragment riders who switch teams).
 - **Homonym confidence flag** — a name spanning many distinct teams, or one identity racing as both M and F, is flagged `low` (high homonym risk) with a UI caveat.
 - **PDPA** — output carries only masked names (`林○宇`, head+tail kept), a salted non-reversible `athlete_id`, and a `has_uci` boolean — never `name_raw` or the raw UCI ID. Index holds only ≥2-result athletes; each career file is fetched lazily on click.
 

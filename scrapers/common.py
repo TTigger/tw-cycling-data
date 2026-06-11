@@ -182,7 +182,7 @@ def make_record(**kw):
         "race_name_raw": None, "race_name_canonical": None, "race_key": None, "year": None,
         "date": None, "race_type": None, "region": None,
         "result_label": None, "category_raw": None, "gender": None, "age_group": None,
-        "rank_overall": None, "bib": None, "uci_id": None,
+        "rank_overall": None, "bib": None, "uci_id": None, "tsu_rider_id": None,
         "name_raw": None, "name_masked": None, "nationality": None, "team": None,
         "finish_time": None, "finish_seconds": None, "splits": None,
         "scraped_at": None,

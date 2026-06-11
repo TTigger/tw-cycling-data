@@ -21,7 +21,7 @@ export type Confidence = "high" | "med" | "low";
 export interface AthleteIndexEntry {
   id: string; nm: string; n: number; ny: number; nr: number;
   y0: number | null; y1: number | null; best: number | null;
-  conf: Confidence; uci: boolean;
+  conf: Confidence; uci: boolean; rid: boolean;
 }
 export interface AthleteHistoryRow {
   y: number | null; rk: string; rn: string; cat: string | null;
@@ -30,6 +30,6 @@ export interface AthleteHistoryRow {
   d: string | null; field: number | null;
 }
 export interface AthleteDetail {
-  id: string; nm: string; conf: Confidence; has_uci: boolean;
+  id: string; nm: string; conf: Confidence; has_uci: boolean; has_rider: boolean;
   teams: string[]; history: AthleteHistoryRow[];
 }

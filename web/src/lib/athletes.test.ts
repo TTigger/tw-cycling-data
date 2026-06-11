@@ -3,7 +3,7 @@ import { percentileInField, searchAthletes, careerSummary, progression } from ".
 import type { AthleteIndexEntry, AthleteDetail, AthleteHistoryRow } from "./types";
 
 function a(p: Partial<AthleteIndexEntry>): AthleteIndexEntry {
-  return { id: "x", nm: "王○明", n: 3, ny: 2, nr: 3, y0: 2023, y1: 2025, best: 5, conf: "high", uci: false, ...p };
+  return { id: "x", nm: "王○明", n: 3, ny: 2, nr: 3, y0: 2023, y1: 2025, best: 5, conf: "high", uci: false, rid: false, ...p };
 }
 function h(p: Partial<AthleteHistoryRow>): AthleteHistoryRow {
   return { y: 2024, rk: "r", rn: "賽", cat: "M30", g: "M", ag: "30", team: "A隊", rank: 5, t: 3600, label: null, d: "2024-05-01", field: 100, ...p };
@@ -43,7 +43,7 @@ describe("searchAthletes", () => {
 describe("careerSummary", () => {
   it("aggregates wins / podiums / best rank / years", () => {
     const d: AthleteDetail = {
-      id: "x", nm: "王○明", conf: "high", has_uci: false, teams: ["A隊"],
+      id: "x", nm: "王○明", conf: "high", has_uci: false, has_rider: false, teams: ["A隊"],
       history: [h({ y: 2023, rank: 1 }), h({ y: 2024, rank: 2 }), h({ y: 2024, rank: 8 })],
     };
     const s = careerSummary(d);
