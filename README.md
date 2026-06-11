@@ -39,7 +39,9 @@ scrapers/
   merge.py             ★ 合併所有來源 → master 資料集(套用 normalize、跨源去重)
   validate.py          資料品質驗證(重複/時間/名次倒置/覆蓋率/年份漂移)
   build_viz.py         ★ master.public → 前端資料檔(viz/races/race;含 pytest)
-  build_athletes.py    ★ master → 選手追蹤資料(athletes 索引 + athlete/<id>;姓名為主歸併、同名信心標記;含 pytest)
+  build_athletes.py    ★ master → 選手追蹤資料(athletes 索引 + athlete/<id>:身分歸併、同名信心、爬坡王 climb_vam、專長雷達 traits、交手戰績 rivals;含 pytest)
+  build_insights.py    ★ master → insights.json(巔峰年齡曲線/突破之星/賽事星等/地理熱點;含 pytest)
+  race_type.py         賽事類型分類(爬坡/繞圈/計時/公路;含 pytest)
   summarize.py         產生單一資料集統計摘要
   *_poc.py / *_inspect.py / *_probe.py / bravelog_parse.py   PoC/探勘一次性腳本(保留參考)
 data/processed/
@@ -68,11 +70,16 @@ python scrapers\validate.py master.json      # 資料品質檢查
 
 ## 前端儀表板(`web/`)
 
-Astro + React islands + Tailwind v4 + ECharts,Claude 暖色風,5 頁:`/`(總覽)、`/explore`(探索)、`/race`(賽事詳情)、`/athletes`(選手追蹤)、`/climbs`(傳奇爬坡 + **爬坡指數 VAM**:單場 VAM 排行 + 跨賽「爬坡王」榜 + 推算 W/kg,基於策展的 `climb_profiles.json` 海拔對照表)。
+Astro + React islands + Tailwind v4 + ECharts,Claude 暖色風,6 頁:
+- `/`(總覽)、`/explore`(探索)、`/race`(賽事詳情)
+- `/athletes`(選手追蹤 + **④ 爬坡手vs平路手雷達** + **③ 交手戰績宿敵**)
+- `/climbs`(傳奇爬坡 + **① 爬坡指數 VAM**:單場 VAM 排行 + 跨賽「爬坡王」榜 + 推算 W/kg,基於策展的 `climb_profiles.json` 海拔對照表)
+- `/insights`(數據洞察:**② 巔峰年齡曲線**、突破之星、賽事星等、成績換算器、賽事地理熱點)
 
 ```powershell
 python scrapers\build_viz.py            # master.public → web/public/data/{viz,races,race/*}.json
-python scrapers\build_athletes.py       # master → web/public/data/{athletes.json, athlete/<id>.json}
+python scrapers\build_athletes.py       # master → athletes/athlete/<id>/climb_vam.json(含雷達+宿敵)
+python scrapers\build_insights.py       # master → insights.json(洞察頁:年齡曲線/突破之星/星等/地理)
 cd web
 npm install
 npm run dev                             # http://localhost:4321
