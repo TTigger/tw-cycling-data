@@ -95,25 +95,31 @@ def parse_pdf(path, race_name, year):
                 if em and len(s) < 40:
                     event = em.group(1)
                 toks = s.split()
-                if len(toks) < 5 or not toks[0].isdigit():
+                if len(toks) < 6 or not toks[0].isdigit():
                     continue
-                times = [t for t in toks if TIME.fullmatch(t)]
-                if not times:
+                tidx = [i for i, t in enumerate(toks) if TIME.fullmatch(t)]
+                if not tidx:
                     continue
+                # Individual finisher rows carry a 組別 token; TTT-race and the
+                # 積分/累計 standings do NOT (team-based) — skip those here.
+                divs = [i for i in range(1, tidx[0]) if DIV.match(toks[i])]
+                if not divs:
+                    continue
+                di = divs[0]
                 rank = int(toks[0])
-                bib = toks[1]
-                div = next((t for t in toks[2:] if DIV.match(t)), None)
-                if div:
-                    di = toks.index(div)
+                result = toks[tidx[-1]]                  # last HH:MM:SS = 完成時間
+                div = toks[di]
+                if di == 1:                              # layout: 排名 組別 編號 姓名 車隊 …
+                    bib = toks[2] if len(toks) > 2 else None
+                    rest = toks[3:tidx[0]]
+                    name = rest[0] if rest else None
+                    team = " ".join(rest[1:]).strip() or None
+                else:                                    # layout: 排名 編號 姓名 … 組別 車隊 …
+                    bib = toks[1]
                     name = " ".join(toks[2:di]).strip()
-                    ti = next((i for i, t in enumerate(toks) if TIME.fullmatch(t)), len(toks))
-                    team = " ".join(toks[di + 1:ti]).strip() or None
-                else:
-                    name = toks[2]
-                    team = None
+                    team = " ".join(toks[di + 1:tidx[0]]).strip() or None
                 if not name or not re.search(r"[一-鿿A-Za-z]", name):
                     continue
-                result = times[-1]                       # last HH:MM:SS = 完成時間
                 gender, age = common.parse_division(div or "")
                 key = (event, bib, name, result)
                 if key in seen:
@@ -141,13 +147,14 @@ def main():
             if path:
                 records.extend(parse_pdf(path, re.sub(r"^20\d{2}", "", title).strip(), year))
         print(f"  pno={pno} {title[:30]:<30} pdfs={len(pdfs)} rows={len(records) - n0}")
-    # Keep only what parses cleanly AND is genuinely new: 個人計時賽 (ITT) — a
-    # time-trial format we don't otherwise have, with unique short durations
-    # (no overlap with the mass-start road results). The road 公路賽 rows
-    # duplicate existing 環花東/陽明山王/太平山王/KOM data, and 團隊計時賽 (TTT)
-    # uses a team-based layout this parser garbles — both excluded until a
-    # dedicated TTT/繞圈分組 parser exists (see SOURCES.md).
-    records = [r for r in records if r.get("result_label") == "個人計時賽"]
+    # Avoid double-counting: the road 公路賽 PDFs duplicate existing 環花東/
+    # 陽明山王/太平山王/KOM data. Keep only genuinely-new individual results:
+    #  - 個人計時賽 (ITT): a time-trial format we don't otherwise have
+    #  - 桃園繞圈賽: an entirely new race (its ITT + 繞圈各分組 results)
+    # TTT-race + 積分/累計 standings are already dropped (no 組別 token).
+    records = [r for r in records
+               if r.get("result_label") != "累計總排名"          # derived sum — would double-count
+               and (r.get("result_label") == "個人計時賽" or "桃園繞圈" in (r.get("race_name_raw") or ""))]
     out = os.path.join(OUT_DIR, "cycling_league.json")
     json.dump(records, open(out, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
     from collections import Counter
