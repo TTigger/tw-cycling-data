@@ -7,6 +7,7 @@ career via build_athletes' TCU/UCI/name grouping; output carries only masked
 names + salted athlete ids — never name_raw.
 """
 import json
+import math
 import os
 import sys
 from collections import Counter, defaultdict
@@ -138,12 +139,64 @@ def build_breakout(records, min_per_year=2, min_jump=15.0, top=40):
     return out[:top]
 
 
+def build_ratings(records):
+    """A transparent per-race competitiveness rating from three signals:
+      - scale: median finishers per edition (log-scaled)
+      - longevity: number of years the race has been held
+      - field depth: % of finishers who are 'regulars' (race >=3 distinct races)
+    Combined to a 0-100 score, then bucketed to 1-5 stars by rank across all
+    rated races (>=20 median finishers)."""
+    fields = field_sizes(records)
+    name_races = defaultdict(set)
+    for r in records:
+        if r.get("name_raw"):
+            name_races[r["name_raw"]].add(r.get("race_key"))
+    regular = {nm for nm, rks in name_races.items() if len(rks) >= 3}
+
+    agg = defaultdict(lambda: {"years": set(), "name": None, "finishers": 0, "regulars": 0})
+    for r in records:
+        rk = r.get("race_key")
+        if not rk:
+            continue
+        d = agg[rk]
+        d["years"].add(r.get("year"))
+        d["name"] = r.get("race_name_canonical") or rk
+        d["finishers"] += 1
+        if r.get("name_raw") in regular:
+            d["regulars"] += 1
+
+    rows = []
+    for rk, d in agg.items():
+        eds = [fields[(rk, y)] for y in d["years"] if (rk, y) in fields]
+        if not eds:
+            continue
+        med_field = int(quantile(sorted(eds), 0.5))
+        if med_field < 20:                           # skip tiny races
+            continue
+        editions = len([y for y in d["years"] if y])
+        reg_pct = round(d["regulars"] / d["finishers"] * 100, 1) if d["finishers"] else 0.0
+        f_score = min(math.log10(med_field) / math.log10(2500), 1.0)
+        e_score = min(editions / 8, 1.0)
+        r_score = min(reg_pct / 40, 1.0)
+        score = round((0.4 * f_score + 0.25 * e_score + 0.35 * r_score) * 100)
+        rows.append({"race_key": rk, "name": d["name"], "score": score,
+                     "med_field": med_field, "editions": editions, "regular_pct": reg_pct,
+                     "years": sorted(y for y in d["years"] if y)})
+    rows.sort(key=lambda x: -x["score"])
+    n = len(rows) or 1
+    for i, row in enumerate(rows):
+        q = i / n
+        row["stars"] = 5 if q < 0.1 else 4 if q < 0.3 else 3 if q < 0.6 else 2 if q < 0.85 else 1
+    return rows[:60]
+
+
 def main():
     with open(IN, encoding="utf-8") as f:
         records = json.load(f)
     insights = {
         "age_curve": build_age_curve(records),
         "breakout": build_breakout(records),
+        "ratings": build_ratings(records),
     }
     with open(os.path.join(OUT, "insights.json"), "w", encoding="utf-8") as f:
         json.dump(insights, f, ensure_ascii=False, separators=(",", ":"))

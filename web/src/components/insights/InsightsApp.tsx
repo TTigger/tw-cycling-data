@@ -4,6 +4,7 @@ import { loadInsights } from "../../lib/data-load";
 import type { Insights } from "../../lib/types";
 import AgeCurve from "./AgeCurve";
 import Breakout from "./Breakout";
+import RaceRatings from "./RaceRatings";
 
 function Card({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
   return (
@@ -33,6 +34,9 @@ export default function InsightsApp() {
       </Card>
       <Card title="🚀 突破之星" hint="年度間相對表現躍升最大的選手">
         <Breakout entries={ins.breakout} />
+      </Card>
+      <Card title="⭐ 賽事星等" hint="規模 × 屆數 × 場域深度的綜合競爭力評分">
+        <RaceRatings ratings={ins.ratings} />
       </Card>
     </div>
   );

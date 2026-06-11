@@ -50,7 +50,12 @@ export interface BreakoutEntry {
   id: string; nm: string; g: "M" | "F" | null; anchored: boolean;
   from_y: number; to_y: number; from_pct: number; to_pct: number; jump: number;
 }
+export interface RaceRating {
+  race_key: string; name: string; score: number; stars: number;
+  med_field: number; editions: number; regular_pct: number; years: number[];
+}
 export interface Insights {
   age_curve: AgeCurvePoint[];
   breakout: BreakoutEntry[];
+  ratings: RaceRating[];
 }
