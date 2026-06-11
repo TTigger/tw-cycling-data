@@ -18,7 +18,7 @@ Collect, clean, and normalize Taiwan road-cycling race results (2015–2026) int
 | **Phase 2: interactive dashboard (4 pages)** | ✅ `web/` (Overview / Explore / Race / Climbs; Astro+React+ECharts, Claude aesthetic, responsive) |
 | **Vercel deployment** | ✅ Live (Root Directory=`web`; auto-deploys on push) |
 | **Phase 1c: historical backfill (cyclist 2014–23 + Bravelog 2018–23)** | ✅ +7,363 + historical Bravelog |
-| Phase 3: per-athlete tracking (name-primary, UCI-assisted) | TODO (next) |
+| **Phase 3: per-athlete tracking (name-primary, team+UCI-assisted)** | ✅ `/athletes` **11,205 trackable athletes** (≥2 results); progression + career table + homonym confidence flag |
 
 ## Layout
 
@@ -36,6 +36,7 @@ scrapers/
   merge.py             ★ merge all sources → master dataset (applies normalize)
   validate.py          data-quality checks (dupes / times / rank inversions / coverage / year drift)
   build_viz.py         ★ master.public → frontend data files (viz/races/race; pytest-tested)
+  build_athletes.py    ★ master → athlete-tracking data (athletes index + athlete/<id>; name-primary grouping, homonym confidence flag; pytest-tested)
   summarize.py         per-dataset summary stats
   *_poc.py / *_inspect.py / *_probe.py / bravelog_parse.py   one-off PoC/exploration scripts (kept for reference)
 data/processed/
@@ -64,10 +65,11 @@ python scrapers\validate.py master.json      # data-quality report
 
 ## Frontend dashboard (`web/`)
 
-Astro + React islands + Tailwind v4 + ECharts, "Claude" warm aesthetic. Four pages: `/` (Overview), `/explore` (Explore), `/race` (Race detail), `/climbs` (Legendary climbs).
+Astro + React islands + Tailwind v4 + ECharts, "Claude" warm aesthetic. Five pages: `/` (Overview), `/explore` (Explore), `/race` (Race detail), `/athletes` (Athlete tracking), `/climbs` (Legendary climbs).
 
 ```powershell
 python scrapers\build_viz.py            # master.public → web/public/data/{viz,races,race/*}.json
+python scrapers\build_athletes.py       # master → web/public/data/{athletes.json, athlete/<id>.json}
 cd web
 npm install
 npm run dev                             # dev server at http://localhost:4321
@@ -94,8 +96,14 @@ npm run build                           # static output to web/dist
 - **PDPA**: only `*.public.json` (no `name_raw`) is published; the UI shows masked names; the site footer states sources and a takedown note.
 - **race_key / category** use conservative normalization; a curated race/category mapping table is still a refinement TODO (the three different "武嶺" races must not be merged; KOM Challenge ≠ KOM-no-michi).
 
+## Athlete identity resolution (Phase 3)
+
+- **Primary key is `name_raw`** — keeps a whole career together (teams change yearly; a hard name+team key would fragment riders who switch teams).
+- **UCI ID is a strong anchor** — when a name maps to exactly one UCI ID, its UCI + non-UCI results are unified and marked high confidence.
+- **Homonym confidence flag** — a name spanning many distinct teams, or one identity racing as both M and F, is flagged `low` (high homonym risk) with a UI caveat.
+- **PDPA** — output carries only masked names (`林○宇`, head+tail kept), a salted non-reversible `athlete_id`, and a `has_uci` boolean — never `name_raw` or the raw UCI ID. Index holds only ≥2-result athletes; each career file is fetched lazily on click.
+
 ## Next steps
 
-- **cycling.org.tw national source** (Tour de Taiwan / national championships / team selection, includes **UCI IDs**).
-- **Phase 3 per-athlete tracking** (join on UCI ID, build athlete pages).
-- Dashboard enhancements: cross-page links, race/athlete search, race/category normalization table, ECharts tree-shake, mobile filter drawer, a11y, custom domain.
+- Dashboard enhancements: race/category normalization table (unify M20/20-24/M24-35), ECharts tree-shake, mobile filter drawer, a11y, custom domain.
+- cycling.org.tw old wide-table years backfill (currently 2025 national source only).

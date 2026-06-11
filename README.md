@@ -18,7 +18,7 @@
 | **Phase 2:互動視覺化儀表板(4 頁)** | ✅ `web/`(總覽/探索/賽事/傳奇爬坡;Astro+React+ECharts,Claude 風,RWD) |
 | **部署 Vercel** | ✅ 已上線(Root Directory=`web`,push 自動部署) |
 | **Phase 1c:歷史回填(cyclist 2014–23 + Bravelog 2018–23)** | ✅ +7,363 + 歷史 Bravelog |
-| Phase 3:選手歷年追蹤(UCI 為輔、姓名為主) | 待辦(下一步) |
+| **Phase 3:選手歷年追蹤(姓名為主、車隊+UCI 為輔)** | ✅ `/athletes` **11,205 位可追蹤選手**(≥2 場);進步軌跡+歷年成績+同名信心標記 |
 
 ## 目錄
 
@@ -36,6 +36,7 @@ scrapers/
   merge.py             ★ 合併所有來源 → master 資料集(套用 normalize)
   validate.py          資料品質驗證(重複/時間/名次倒置/覆蓋率/年份漂移)
   build_viz.py         ★ master.public → 前端資料檔(viz/races/race;含 pytest)
+  build_athletes.py    ★ master → 選手追蹤資料(athletes 索引 + athlete/<id>;姓名為主歸併、同名信心標記;含 pytest)
   summarize.py         產生單一資料集統計摘要
   *_poc.py / *_inspect.py / *_probe.py / bravelog_parse.py   PoC/探勘一次性腳本(保留參考)
 data/processed/
@@ -64,10 +65,11 @@ python scrapers\validate.py master.json      # 資料品質檢查
 
 ## 前端儀表板(`web/`)
 
-Astro + React islands + Tailwind v4 + ECharts,Claude 暖色風,4 頁:`/`(總覽)、`/explore`(探索)、`/race`(賽事詳情)、`/climbs`(傳奇爬坡)。
+Astro + React islands + Tailwind v4 + ECharts,Claude 暖色風,5 頁:`/`(總覽)、`/explore`(探索)、`/race`(賽事詳情)、`/athletes`(選手追蹤)、`/climbs`(傳奇爬坡)。
 
 ```powershell
 python scrapers\build_viz.py            # master.public → web/public/data/{viz,races,race/*}.json
+python scrapers\build_athletes.py       # master → web/public/data/{athletes.json, athlete/<id>.json}
 cd web
 npm install
 npm run dev                             # http://localhost:4321
@@ -94,8 +96,14 @@ npm run build                           # 產出 web/dist(靜態)
 - **PDPA**:公開輸出僅用 `*.public.json`(無 `name_raw`)、顯示遮罩姓名;網站頁尾標註來源與下架說明。
 - **race_key / 組別** 為保守正規化;正式對照表仍待精修(三個「武嶺」不可合併、KOM 挑戰≠登山王之路)。
 
+## 選手追蹤的身分識別(Phase 3)
+
+- **以 `name_raw` 為主鍵**串接整段生涯(車隊逐年變動,硬用車隊當複合鍵會把換隊選手拆散)。
+- **UCI ID 為強錨點**:姓名唯一對應到一個 UCI ID 時,合併其 UCI 與非 UCI 成績,並標 high 信心。
+- **同名信心標記**:跨多支車隊、或同一身分出現 M+F 性別不一致 → 標 `low`(高同名風險),UI 加註提醒。
+- **PDPA**:輸出僅含遮罩姓名(`林○宇`,保留首尾)、加鹽不可逆 `athlete_id`、`has_uci` 布林;不公開 `name_raw` 與原始 UCI ID。索引僅 ≥2 場的可追蹤選手;每位歷程檔點擊才載入。
+
 ## 下一步
 
-- **cycling.org.tw 國家級源**(環台賽/全國錦標賽/國手選拔,含 **UCI ID**)。
-- **Phase 3 選手歷年追蹤**(以 UCI ID 串接,做選手頁)。
-- 儀表板增強:頁面互連、賽事/選手搜尋、賽名/組別正規化對照表、ECharts tree-shake、手機篩選抽屜、a11y、自訂網域。
+- 儀表板增強:賽名/組別正規化對照表(統一 M20/20-24/M24-35)、ECharts tree-shake、手機篩選抽屜、a11y 打磨、自訂網域。
+- cycling.org.tw 舊年份寬表格式回填(目前僅 2025 國家級源)。

@@ -15,3 +15,21 @@ export interface DetailRow {
   cat: string | null; g: "M" | "F" | null; ag: string | null;
   team: string | null; t: number | null; label: string | null;
 }
+
+export type Confidence = "high" | "med" | "low";
+
+export interface AthleteIndexEntry {
+  id: string; nm: string; n: number; ny: number; nr: number;
+  y0: number | null; y1: number | null; best: number | null;
+  conf: Confidence; uci: boolean;
+}
+export interface AthleteHistoryRow {
+  y: number | null; rk: string; rn: string; cat: string | null;
+  g: "M" | "F" | null; ag: string | null; team: string | null;
+  rank: number | null; t: number | null; label: string | null;
+  d: string | null; field: number | null;
+}
+export interface AthleteDetail {
+  id: string; nm: string; conf: Confidence; has_uci: boolean;
+  teams: string[]; history: AthleteHistoryRow[];
+}

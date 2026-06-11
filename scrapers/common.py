@@ -105,7 +105,10 @@ def gender_from_group(group):
 
 def mask_name(name):
     """PDPA de-identification for public output.
-    CJK: keep surname char, mask rest -> '李○○'. Latin: keep first token + initial."""
+    CJK: keep head+tail char, mask the middle -> 2-char '李○', 3-char '王○明',
+    4+ '歐○○菲' (owner-chosen rule: surname + last given-name char stay visible,
+    enough to disambiguate homonyms in athlete tracking without exposing full name).
+    Latin: keep first token + initial -> 'Alex D.'."""
     if not name:
         return name
     name = name.strip()
@@ -113,7 +116,9 @@ def mask_name(name):
         chars = [c for c in name if not c.isspace()]
         if len(chars) <= 1:
             return name
-        return chars[0] + "○" * (len(chars) - 1)
+        if len(chars) == 2:
+            return chars[0] + "○"
+        return chars[0] + "○" * (len(chars) - 2) + chars[-1]
     # latin name -> "Alex D."
     parts = name.split()
     if len(parts) == 1:
