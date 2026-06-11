@@ -1,6 +1,6 @@
 # 台灣公路車賽事資料專案 (tw-cycling-data)
 
-> 🌐 English: **[README.en.md](README.en.md)**
+> 🌐 English: **[README.en.md](README.en.md)** ｜ 📋 資料來源登錄表(已爬/受限/發現):**[SOURCES.md](SOURCES.md)**
 
 收集、清洗、正規化台灣公路車賽事成績(2015–2026),做成資料庫 → 互動視覺化儀表板,已部署為 Vercel 靜態網頁。
 
@@ -42,6 +42,8 @@ scrapers/
   build_viz.py         ★ master.public → 前端資料檔(viz/races/race;含 pytest)
   build_athletes.py    ★ master → 選手追蹤資料(athletes 索引 + athlete/<id>:身分歸併、同名信心、爬坡王 climb_vam、專長雷達 traits、交手戰績 rivals;含 pytest)
   build_insights.py    ★ master → insights.json(巔峰年齡曲線/突破之星/賽事星等/地理熱點;含 pytest)
+  discover.py          ★ 缺漏發現:爬公開行事曆 → 與 master 比對 → 輸出「缺漏賽事 + 推測來源」(不靠人工列舉)
+  overseas_runnet.py   海外賽(runnet headless)→ web/public/data/overseas(獨立別集,不進 master)
   race_type.py         賽事類型分類(爬坡/繞圈/計時/公路;含 pytest)
   summarize.py         產生單一資料集統計摘要
   *_poc.py / *_inspect.py / *_probe.py / bravelog_parse.py   PoC/探勘一次性腳本(保留參考)

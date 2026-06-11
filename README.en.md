@@ -1,6 +1,6 @@
 # Taiwan Road-Cycling Race Data (tw-cycling-data)
 
-> 🌐 繁體中文:**[README.md](README.md)**
+> 🌐 繁體中文:**[README.md](README.md)** ｜ 📋 Data-source registry (scraped / blocked / discovery): **[SOURCES.md](SOURCES.md)**
 
 Collect, clean, and normalize Taiwan road-cycling race results (2015–2026) into a unified dataset, then an interactive visualization dashboard, deployed as a static site on Vercel.
 
