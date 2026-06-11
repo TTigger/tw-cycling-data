@@ -68,7 +68,7 @@ python scrapers\validate.py master.json      # 資料品質檢查
 
 ## 前端儀表板(`web/`)
 
-Astro + React islands + Tailwind v4 + ECharts,Claude 暖色風,5 頁:`/`(總覽)、`/explore`(探索)、`/race`(賽事詳情)、`/athletes`(選手追蹤)、`/climbs`(傳奇爬坡)。
+Astro + React islands + Tailwind v4 + ECharts,Claude 暖色風,5 頁:`/`(總覽)、`/explore`(探索)、`/race`(賽事詳情)、`/athletes`(選手追蹤)、`/climbs`(傳奇爬坡 + **爬坡指數 VAM**:單場 VAM 排行 + 跨賽「爬坡王」榜 + 推算 W/kg,基於策展的 `climb_profiles.json` 海拔對照表)。
 
 ```powershell
 python scrapers\build_viz.py            # master.public → web/public/data/{viz,races,race/*}.json

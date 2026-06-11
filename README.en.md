@@ -68,7 +68,7 @@ python scrapers\validate.py master.json      # data-quality report
 
 ## Frontend dashboard (`web/`)
 
-Astro + React islands + Tailwind v4 + ECharts, "Claude" warm aesthetic. Five pages: `/` (Overview), `/explore` (Explore), `/race` (Race detail), `/athletes` (Athlete tracking), `/climbs` (Legendary climbs).
+Astro + React islands + Tailwind v4 + ECharts, "Claude" warm aesthetic. Five pages: `/` (Overview), `/explore` (Explore), `/race` (Race detail), `/athletes` (Athlete tracking), `/climbs` (Legendary climbs + **VAM climbing index**: single-race VAM leaderboard + cross-race "Climbing King" board + estimated W/kg, from a curated `climb_profiles.json` elevation table).
 
 ```powershell
 python scrapers\build_viz.py            # master.public → web/public/data/{viz,races,race/*}.json
