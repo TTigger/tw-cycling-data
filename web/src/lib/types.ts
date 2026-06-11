@@ -58,6 +58,15 @@ export interface RaceRating {
   med_field: number; editions: number; regular_pct: number; years: number[];
 }
 export interface GeoRegion { region: string; races: number; rows: number; }
+
+export interface OverseasRaceMeta {
+  file: string; race: string; region: string; date: string; source: string; n: number;
+}
+export interface OverseasRow {
+  category_raw: string | null; gender: "M" | "F" | null; rank_overall: number | null;
+  bib: string | null; name_masked: string | null; team: string | null;
+  finish_time: string | null; finish_seconds: number | null;
+}
 export interface Insights {
   age_curve: AgeCurvePoint[];
   breakout: BreakoutEntry[];

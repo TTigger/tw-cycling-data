@@ -1,0 +1,9 @@
+---
+import Base from "../layouts/Base.astro";
+import OverseasApp from "../components/overseas/OverseasApp.tsx";
+---
+<Base title="海外賽 | 台灣公路車賽事成績儀表板">
+  <h1 class="font-display text-3xl">海外賽事</h1>
+  <p class="mt-2 mb-6 text-muted">獨立收錄的海外賽事(不計入台灣統計)。例如日本 Mt.富士ヒルクライム,成績由公開賽事頁取得並去識別化。</p>
+  <OverseasApp client:only="react" />
+</Base>
