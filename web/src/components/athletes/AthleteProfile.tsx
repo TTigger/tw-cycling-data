@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { careerSummary, percentileInField, CONF_LABEL } from "../../lib/athletes";
 import { secondsToHMS } from "../../lib/format";
 import type { AthleteDetail } from "../../lib/types";
 import AthleteProgression from "./AthleteProgression";
 import AthleteRadar from "./AthleteRadar";
+import ShareCard from "./ShareCard";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
@@ -23,6 +25,7 @@ function Stat({ label, value }: { label: string; value: string | number }) {
 
 export default function AthleteProfile({ d, onBack }: { d: AthleteDetail; onBack: () => void }) {
   const s = careerSummary(d);
+  const [showCard, setShowCard] = useState(false);
   return (
     <div className="space-y-6">
       <div className="flex items-start justify-between gap-3">
@@ -35,9 +38,14 @@ export default function AthleteProfile({ d, onBack }: { d: AthleteDetail; onBack
             {CONF_LABEL[d.conf]}{d.has_rider && " · TCU ID 串接"}{d.has_uci && " · UCI 串接"}
           </span>
         </div>
-        <button className="shrink-0 rounded-lg border border-border px-3 py-2 text-sm text-muted hover:text-accent"
-          onClick={onBack}>← 換一位</button>
+        <div className="flex shrink-0 flex-col gap-2">
+          <button className="rounded-lg border border-accent bg-accent/10 px-3 py-2 text-sm text-accent hover:bg-accent/20"
+            onClick={() => setShowCard(true)}>📇 產生成績卡</button>
+          <button className="rounded-lg border border-border px-3 py-2 text-sm text-muted hover:text-accent"
+            onClick={onBack}>← 換一位</button>
+        </div>
       </div>
+      {showCard && <ShareCard d={d} onClose={() => setShowCard(false)} />}
 
       {d.conf !== "high" && (
         <p className="rounded-lg border border-amber-400/50 bg-amber-50 px-3 py-2 text-xs text-amber-700">
