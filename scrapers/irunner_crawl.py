@@ -14,6 +14,7 @@ iRunner (irunner.biji.co) 即時成績查詢 — 自行車賽爬蟲。
 
 僅輸出去識別化欄位流向 normalize/merge;名次為衍生值。
 """
+import gc
 import io
 import json
 import os
@@ -52,12 +53,18 @@ EXCLUDE = re.compile(
     r"田徑|全民運動|運動節|友善運動", re.I)
 
 
-def _get(url, tries=3):
+def _get(url, tries=4):
     for i in range(tries):
         try:
             r = requests.get(url, headers=H, timeout=30)
             if r.status_code == 200:
                 return r.content.decode("utf-8", "replace")
+        except MemoryError:
+            # RAM-tight host (other apps spiking) — reclaim and wait for pressure
+            # to settle, then retry rather than aborting a long crawl.
+            gc.collect()
+            time.sleep(5 * (i + 1))
+            continue
         except requests.RequestException:
             pass
         time.sleep(1.5 * (i + 1))
@@ -140,47 +147,59 @@ def to_records(track_id, title, year, rows):
     import normalize
     from collections import defaultdict
 
+    # A category segment is a STRICT age/gender code (M45 / W40 / M / 女 / U15 /
+    # 30-39 / MASTER) — NOT any string starting with M/F/W (English team names like
+    # 'FTL Cycling Team', 'Mgo', 'Maxxis' would otherwise be mistaken for genders).
+    catseg_re = re.compile(r"^(?:[MWFmwf]\d{1,3}|[MWFmwf]|U\d{1,2}|\d{1,2}-\d{1,2}|MASTER)$")
+
+    def is_catseg(s):
+        return bool(catseg_re.match(s)) or s in ("男", "女", "男子", "女子", "男子組", "女子組")
+
     def parse_div(div):
-        """Split iRunner's glued division『主組別．M45/女．車隊』into its parts.
-        The COMPETITIVE category is only the head group (市民組 / 精英競賽組 /
-        距離組); age (M45/W40) and team are rider attributes, NOT sub-categories."""
+        """Split iRunner's glued division『主組別．M45/女．車隊』. The award CATEGORY =
+        head group + its age/gender code (市民組．M30 / 精英競賽組．M45); the TEAM
+        segment is excluded (rider attribute, not a sub-category).
+        Returns (category, group, gender, age, team)."""
         parts = [p.strip() for p in re.split(r"[．·・.、]", div) if p.strip()]
         group = parts[0] if parts else None
-        gender = "M" if "男" in div else ("F" if "女" in div else None)
+        cat_segs = []
+        gender = "M" if "男" in (group or "") else ("F" if "女" in (group or "") else None)
         age = None
         team = None
         for p in parts[1:]:
-            g2, a2 = common.parse_division(p)
-            if g2 or a2 or "男" in p or "女" in p:        # M45/W40 or 男/女 code
+            if is_catseg(p):                              # strict age/gender code → category
+                cat_segs.append(p)
+                g2, a2 = common.parse_division(p)
                 gender = gender or g2 or ("M" if "男" in p else "F" if "女" in p else None)
                 age = age or a2
             else:
-                team = p or None                          # remaining segment = team
+                team = p or None                          # anything else → team (excluded)
         if age is None:
             _, age = common.parse_division(group or "")
-        return group, gender, age, team
+        category = "．".join([group] + cat_segs) if group else div
+        return category, group, gender, age, team
 
-    # Bucket by the HEAD group (市民組/精英競賽組/距離組) so the dashboard category
-    # is coarse and derived rank is within that real award group — not fragmented
-    # by age×team (which produced hundreds of 1-member "categories", all rank 1).
+    # Bucket by the AWARD category (group + age/gender, team stripped) so derived
+    # rank is within the real award group — coarse enough not to fragment by team,
+    # fine enough to keep M20/M30/M40 age bands the organiser actually scored.
     attrs = {r["memno"]: parse_div(r["division"]) for r in rows}
-    by_group = defaultdict(list)
+    by_cat = defaultdict(list)
     for r in rows:
-        by_group[attrs[r["memno"]][0]].append(r)
+        by_cat[attrs[r["memno"]][0]].append(r)
 
     recs = []
-    for group, members in by_group.items():
+    for category, members in by_cat.items():
         timed = [m for m in members if common.time_to_seconds(m["time"])]
         timed.sort(key=lambda m: common.time_to_seconds(m["time"]))
         rank = {m["memno"]: i + 1 for i, m in enumerate(timed)}
         for m in members:
-            _, gender, age, team = attrs[m["memno"]]
+            _, group, gender, age, team = attrs[m["memno"]]
             rec = common.make_record(
                 source_platform="irunner.biji.co",
                 source_url=f"{BASE}/track/{track_id}/record/{m['memno']}",
                 source_format="html-search-derivedrank",
                 race_name_raw=title, year=year,
-                result_label=group, category_raw=group,
+                result_label=group, category_raw=category,
                 gender=gender, age_group=age,
                 bib=(m["bib"] or None), team=team,
                 name_raw=(m["name"] or None),
@@ -224,11 +243,17 @@ if __name__ == "__main__":
         print(f"discovered {len(evs)} cycling events")
     elif cmd == "fetch":
         for tid in [int(x) for x in sys.argv[2:]]:
+            # skip already-fetched events so a crashed run resumes cleanly
+            out_f = os.path.join(RAW, f"irunner_{tid}.json")
+            if os.path.exists(out_f):
+                print(f"event {tid}: already fetched, skip")
+                continue
             rows = fetch_event(tid)
             maxm = max(int(r["memno"]) for r in rows) if rows else 0
             print(f"event {tid}: {len(rows)} distinct finishers, max memno {maxm}")
-            io.open(os.path.join(RAW, f"irunner_{tid}.json"), "w", encoding="utf-8").write(
+            io.open(out_f, "w", encoding="utf-8").write(
                 json.dumps(rows, ensure_ascii=False, indent=2))
+            gc.collect()
     elif cmd == "build":
         build_processed()
     elif cmd == "test":
