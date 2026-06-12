@@ -1,7 +1,7 @@
 # 資料來源登錄表(Sources Registry)
 
 > 本檔是**活的登錄表**:每次新增來源、發現新阻擋、或解開某個卡點,都要回來更新。
-> 最後更新:2026-06-11
+> 最後更新:2026-06-12
 
 主資料集 master:**84,091 筆 / 2009–2026 / 116 場 / 4 來源**(海外賽另計)。
 
@@ -30,7 +30,7 @@
 | **iBodyGo** | UA / Session 阻擋 | 帶完整 headers + cookie jar |
 | **ATSport** | 封鎖非台灣 IP | 台灣 IP 代理 / 在台節點 |
 | **樂活成績站** | JS 動態渲染 | Playwright headless |
-| **irunner.biji.co**<br>(筆記報名) | **逐筆查(競賽編號 or 姓名)**、無「列出全部」端點;結果走 csrf+session 的 AJAX,頁面重(廣告/FB widget)→ 瀏覽器擷取 XHR 常 timeout。已知端點 `/track/{id}/results|record|group`,但 search 參數未破。理論可破:headless + **依常見姓氏(陳/林/黃…)或 bib 列舉** 拼回全場(每查一批),但 per-query 慢、ROI 低(多為跑步) | headless + 姓氏/bib 列舉(未完成,新玉門關為例) |
+| **irunner.biji.co**<br>(筆記報名) | **逐筆查(競賽編號 or 姓名)**、無「列出全部」端點;結果走 csrf+session 的 AJAX,頁面重(廣告/FB widget)→ 瀏覽器擷取 XHR 常 timeout。**2026-06-12 深探確認**:搜尋表單欄位 = `csrf_token / keyword / filter_y / filter_m / rs`,action=POST `/track/{id}/record`,但 POST 只「重渲染搜尋頁」(回同一份 HTML、零成績);成績由後續帶 session state 的 `/timing/{func}` AJAX 取得,`func` 由 JS 動態填入(靜態抓不到);`/timing/loadevents` 需未知參數、GET/POST 皆空。csrf 為一次性。`/track` 清單只給 ~10 筆精選、分頁無效。**結論:無乾淨全榜端點**。理論可破:headless 驅動搜尋 UI + 依常見姓氏/bib 列舉拼回全場,但 per-query 慢、ROI 低(多為跑步) | headless 驅動 UI + 姓氏/bib 列舉(未完成;戀戀197-2025 為例) |
 | **ctrun**<br>(全統) | 成績查詢需**會員登入**;且多為認證型無名次 | headless 帶登入 cookie;以「認證型」型別收 |
 | **runnet.jp** | JS/SPA + JSON API **受保護**(Python 直連被擋/500) | ✅ 已解:headless 在已登入分頁內 `fetch` API |
 | **sportsnet.org.tw** | 純跑步(路跑協會),**非自行車** | 不適用(不對題) |
@@ -64,6 +64,23 @@
 
 ---
 
+## 🔁 「賽事搬家」型缺口(2026-06-12 發現)
+
+部分我們**過去有收**的賽事,新一屆**換了計時/成績平台**,於是斷在我們爬不到的那一邊。典型例:
+
+- **戀戀197 東海岸自行車公路賽**(台東 197 縣道):2022/2023/2024 三屆都在 **Bravelog**(已收,共 6,547 列);**2025 屆(12/07 辦)不在 Bravelog**,改由 **iRunner(筆記晶片計時)/ ATSport** 計時 → 落在我們的 blocked 平台。這不是 Bravelog 漏抓,是賽事換平台。
+
+**順手做的 Bravelog 完整度稽核**:用 `/search` JSON 比對「Bravelog 上的自行車賽 vs 我們已收」——
+
+| 年 | Bravelog 上自行車賽 | 我們已收 | 結論 |
+|---|---|---|---|
+| 2025 | 27(含 2 組重複/拆組) | 26 | 實質**收滿** |
+| 2026 | 8 | 6 | 其餘 2 場為未來賽、尚無成績 |
+
+→ **我們在爬的平台(Bravelog)沒有系統性漏抓**;新缺口主要來自「搬家到 iRunner/ATSport」與長尾 FB/主辦頁。要把戀戀197-2025 這類補回來,得先破 iRunner 或 ATSport(見上表卡點),或走投稿/主辦索取。
+
+---
+
 ## 真正剩的缺口
 
-散落 **FB 社團 / 主辦一次性頁** 的在地賽(輪耀台灣、Dirty Formosa/gravel、梅山36彎、澎湖跳島、環大苗栗、桃園航空城繞圈賽…)——無結構化來源,需 **OCR 成績圖** 或主辦索取原始檔。
+散落 **FB 社團 / 主辦一次性頁** 的在地賽(輪耀台灣、Dirty Formosa/gravel、梅山36彎、澎湖跳島、環大苗栗、桃園航空城繞圈賽…)——無結構化來源,需 **OCR 成績圖** 或主辦索取原始檔。另加「搬家到 iRunner/ATSport」的競技賽(戀戀197-2025 等)。
