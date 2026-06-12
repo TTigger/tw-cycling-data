@@ -140,40 +140,47 @@ def to_records(track_id, title, year, rows):
     import normalize
     from collections import defaultdict
 
-    by_div = defaultdict(list)
-    for r in rows:
-        by_div[r["division"]].append(r)
-
-    recs = []
-    for div, members in by_div.items():
+    def parse_div(div):
+        """Split iRunner's glued division『主組別．M45/女．車隊』into its parts.
+        The COMPETITIVE category is only the head group (市民組 / 精英競賽組 /
+        距離組); age (M45/W40) and team are rider attributes, NOT sub-categories."""
         parts = [p.strip() for p in re.split(r"[．·・.、]", div) if p.strip()]
         group = parts[0] if parts else None
-        # gender/age live in a segment that is either 男/女 or an M45/W40-style code;
-        # team is the segment that parses to neither.
         gender = "M" if "男" in div else ("F" if "女" in div else None)
         age = None
         team = None
         for p in parts[1:]:
             g2, a2 = common.parse_division(p)
-            if g2 or a2 or "男" in p or "女" in p:
+            if g2 or a2 or "男" in p or "女" in p:        # M45/W40 or 男/女 code
                 gender = gender or g2 or ("M" if "男" in p else "F" if "女" in p else None)
                 age = age or a2
             else:
-                team = p or None
+                team = p or None                          # remaining segment = team
         if age is None:
             _, age = common.parse_division(group or "")
+        return group, gender, age, team
 
+    # Bucket by the HEAD group (市民組/精英競賽組/距離組) so the dashboard category
+    # is coarse and derived rank is within that real award group — not fragmented
+    # by age×team (which produced hundreds of 1-member "categories", all rank 1).
+    attrs = {r["memno"]: parse_div(r["division"]) for r in rows}
+    by_group = defaultdict(list)
+    for r in rows:
+        by_group[attrs[r["memno"]][0]].append(r)
+
+    recs = []
+    for group, members in by_group.items():
         timed = [m for m in members if common.time_to_seconds(m["time"])]
         timed.sort(key=lambda m: common.time_to_seconds(m["time"]))
         rank = {m["memno"]: i + 1 for i, m in enumerate(timed)}
-
         for m in members:
+            _, gender, age, team = attrs[m["memno"]]
             rec = common.make_record(
                 source_platform="irunner.biji.co",
                 source_url=f"{BASE}/track/{track_id}/record/{m['memno']}",
                 source_format="html-search-derivedrank",
                 race_name_raw=title, year=year,
-                result_label=group, category_raw=div,
+                result_label=group, category_raw=group,
                 gender=gender, age_group=age,
                 bib=(m["bib"] or None), team=team,
                 name_raw=(m["name"] or None),
