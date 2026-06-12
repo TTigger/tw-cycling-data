@@ -22,7 +22,7 @@ import normalize  # noqa: E402
 
 sys.stdout.reconfigure(encoding="utf-8")
 OUT = os.path.join(os.path.dirname(__file__), "..", "data", "processed")
-SOURCE_PREFIXES = ("cyclist_", "bravelog_", "cycling_")
+SOURCE_PREFIXES = ("cyclist_", "bravelog_", "cycling_", "irunner_")
 
 
 def discover_sources():
@@ -35,67 +35,77 @@ def discover_sources():
     return out
 
 
-def load(p):
-    d = json.load(open(p, encoding="utf-8"))
-    print(f"  loaded {len(d):>6}  {os.path.basename(p)}")
-    return d
+iter_records = common.iter_records  # streaming JSON-array reader (RAM-frugal)
 
 
 def main():
-    print("merging sources:")
-    records = []
-    for p in discover_sources():
-        records.extend(load(p))
-    # drop zero-time DNF/未計時 noise (00:00:00) — not real finishes
-    before = len(records)
-    records = [r for r in records if r.get("finish_seconds") is None or r["finish_seconds"] > 0]
-    if before - len(records):
-        print(f"  dropped {before - len(records)} zero-time (DNF/未計時) rows")
+    print("merging sources (streaming):")
+    import gc
+    mf = open(os.path.join(OUT, "master.json"), "w", encoding="utf-8")
+    pf = open(os.path.join(OUT, "master.public.json"), "w", encoding="utf-8")
+    mf.write("[\n")
+    pf.write("[\n")
 
-    # cross-source exact-duplicate dedup: the same rider+year+finish-second
-    # showing up in two platforms (e.g. a 96 race on both Bravelog and tsu).
-    # Keeps the first-loaded source; tolerant to ms vs whole-second precision.
-    before = len(records)
-    seen, deduped = set(), []
-    for r in records:
-        fs = r.get("finish_seconds")
-        k = (r.get("year"), r.get("name_raw"), int(fs) if fs else None)
-        if r.get("name_raw") and fs and k in seen:
-            continue
-        if r.get("name_raw") and fs:
-            seen.add(k)
-        deduped.append(r)
-    records = deduped
-    if before - len(records):
-        print(f"  dropped {before - len(records)} cross-source exact-duplicate rows")
-    for r in records:
-        normalize.enrich(r)
-        # Re-mask at merge time so the de-identification policy is applied here,
-        # not frozen at crawl time (lets us change mask_name without re-crawling).
-        if r.get("name_raw"):
-            r["name_masked"] = common.mask_name(r["name_raw"])
-
-    full = os.path.join(OUT, "master.json")
-    json.dump(records, open(full, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
-    pub = [{k: v for k, v in r.items() if k != "name_raw"} for r in records]
-    json.dump(pub, open(os.path.join(OUT, "master.public.json"), "w", encoding="utf-8"),
-              ensure_ascii=False, indent=2)
-
-    # summary
+    # Stream one source at a time: filter → cross-source dedup → enrich → re-mask →
+    # write each record straight to disk, then free the source. Peak memory stays at
+    # ~one source instead of the whole corpus (RAM-tight machines OOM'd otherwise).
+    # Dedup keeps the first-loaded source (sources load in sorted-glob order, as before).
+    seen = set()
+    n_out = n_zero = n_dup = 0
     races = defaultdict(lambda: {"rows": 0, "years": set(), "series": None, "platform": None})
-    for r in records:
-        k = r["race_key"]
-        races[k]["rows"] += 1
-        races[k]["years"].add(r["year"])
-        races[k]["series"] = r.get("series")
-        races[k]["platform"] = r["source_platform"]
+    by_platform, by_year, by_gender, by_class, by_series = (Counter() for _ in range(5))
+
+    for p in discover_sources():
+        src_n = 0
+        for r in iter_records(p):
+            src_n += 1
+            fs = r.get("finish_seconds")
+            if fs is not None and fs <= 0:      # drop zero-time DNF/未計時 noise
+                n_zero += 1
+                continue
+            if r.get("name_raw") and fs:        # cross-source exact-dup dedup
+                k = (r.get("year"), r.get("name_raw"), int(fs))
+                if k in seen:
+                    n_dup += 1
+                    continue
+                seen.add(k)
+            normalize.enrich(r)
+            if r.get("name_raw"):               # re-mask at merge time (policy applied here)
+                r["name_masked"] = common.mask_name(r["name_raw"])
+            rk = r["race_key"]
+            races[rk]["rows"] += 1
+            races[rk]["years"].add(r["year"])
+            races[rk]["series"] = r.get("series")
+            races[rk]["platform"] = r["source_platform"]
+            by_platform[r["source_platform"]] += 1
+            by_year[r["year"]] += 1
+            by_gender[r["gender"]] += 1
+            by_class[r["race_class"]] += 1
+            by_series[r["series"]] += 1
+            sep = ",\n" if n_out else ""
+            mf.write(sep)
+            json.dump(r, mf, ensure_ascii=False)
+            r.pop("name_raw", None)             # public: de-identified
+            pf.write(sep)
+            json.dump(r, pf, ensure_ascii=False)
+            n_out += 1
+        print(f"  loaded {src_n:>6}  {os.path.basename(p)}")
+        gc.collect()
+
+    mf.write("\n]\n"); mf.close()
+    pf.write("\n]\n"); pf.close()
+    if n_zero:
+        print(f"  dropped {n_zero} zero-time (DNF/未計時) rows")
+    if n_dup:
+        print(f"  dropped {n_dup} cross-source exact-duplicate rows")
+
     summary = {
-        "total_records": len(records),
-        "by_platform": dict(Counter(r["source_platform"] for r in records)),
-        "by_year": dict(sorted(Counter(r["year"] for r in records).items(), key=lambda x: str(x[0]))),
-        "by_gender": dict(Counter(r["gender"] for r in records)),
-        "by_race_class": dict(Counter(r["race_class"] for r in records)),
-        "by_series": dict(Counter(r["series"] for r in records).most_common()),
+        "total_records": n_out,
+        "by_platform": dict(by_platform),
+        "by_year": dict(sorted(by_year.items(), key=lambda x: str(x[0]))),
+        "by_gender": dict(by_gender),
+        "by_race_class": dict(by_class),
+        "by_series": dict(by_series.most_common()),
         "distinct_races": len(races),
         "races": [
             {"race_key": k, "series": v["series"], "platform": v["platform"],

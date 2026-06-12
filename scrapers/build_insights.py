@@ -248,8 +248,7 @@ def build_ratings(records):
 
 
 def main():
-    with open(IN, encoding="utf-8") as f:
-        records = json.load(f)
+    records = list(common.iter_records(IN))  # RAM-frugal streaming parse
     insights = {
         "age_curve": build_age_curve(records),
         "breakout": build_breakout(records),

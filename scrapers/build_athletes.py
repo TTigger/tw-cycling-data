@@ -297,8 +297,7 @@ def build_head_to_head(records, details, min_results=6, min_meets=3, top_rivals=
 
 
 def main():
-    with open(IN, encoding="utf-8") as f:
-        records = json.load(f)
+    records = list(common.iter_records(IN))  # RAM-frugal streaming parse
     index, details = build_athletes(records)
     rivals = build_head_to_head(records, details)
     for aid, rows in rivals.items():
