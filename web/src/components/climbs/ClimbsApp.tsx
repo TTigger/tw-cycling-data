@@ -5,6 +5,7 @@ import { climbRaces } from "../../lib/climbs";
 import type { RaceIndex, DetailRow, ClimbProfile, ClimbVamEntry } from "../../lib/types";
 import VamLeaderboard from "./VamLeaderboard";
 import ClimbKingBoard from "./ClimbKingBoard";
+import CourseRecords from "./CourseRecords";
 import VamMethodology from "./VamMethodology";
 import PercentileWidget from "../race/PercentileWidget";
 import RaceTimeHistogram from "../race/RaceTimeHistogram";
@@ -92,6 +93,7 @@ export default function ClimbsApp() {
           <ClimbKingBoard entries={vamRows} />
         </Card>
       )}
+      <CourseRecords />
       <Card title="方法論"><VamMethodology /></Card>
     </div>
   );

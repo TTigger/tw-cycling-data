@@ -244,6 +244,56 @@ def build_climb_vam(records, profiles):
     return out
 
 
+def build_course_records(records, profiles, top_n=50):
+    """All-time fastest board PER profiled climb race (course records 2009→).
+    Only the curated, route-stable climbs (climb_profiles.json) qualify, so times
+    are comparable across editions. Dedups to each rider's single fastest ascent;
+    ranks by finish time (≡ VAM rank for a fixed-elevation profile). Output keyed
+    by race_key — each event keeps its own board (different events up the same
+    mountain ride different courses)."""
+    keys = build_group_keys(records)
+    group_size = Counter(keys)
+    best = {}  # (athlete_group, race_key) -> that rider's fastest ascent here
+    for k, r in zip(keys, records):
+        if k in ("n:", "u:", "t:"):       # unresolved identity / nameless — skip
+            continue
+        rk = r.get("race_key")
+        prof = profiles.get(rk)
+        if not prof:
+            continue
+        sec = r.get("finish_seconds")
+        v = _vam(prof["elev_m"], sec)
+        if not _plausible(v):
+            continue
+        key2 = (k, rk)
+        cur = best.get(key2)
+        if cur is None or sec < cur["_sec"]:
+            best[key2] = {
+                "_sec": sec, "_gk": k,
+                "nm": r.get("name_masked") or common.mask_name(r.get("name_raw")),
+                "t": int(sec), "vam": v, "wkg": _wkg(v, prof.get("grade")),
+                "y": r.get("year"), "g": r.get("gender"),
+                "cat": r.get("category_raw") or r.get("result_label"),
+            }
+    by_rk = defaultdict(list)
+    for (gk, rk), e in best.items():
+        by_rk[rk].append(e)
+    out = {}
+    for rk, entries in by_rk.items():
+        prof = profiles[rk]
+        entries.sort(key=lambda e: e["_sec"])
+        recs = [
+            {"rank": i, "nm": e["nm"], "t": e["t"], "vam": e["vam"], "wkg": e["wkg"],
+             "y": e["y"], "g": e["g"], "cat": e["cat"],
+             "id": athlete_id(e["_gk"]), "link": group_size[e["_gk"]] >= MIN_RESULTS}
+            for i, e in enumerate(entries[:top_n], 1)
+        ]
+        out[rk] = {"name": prof["name"], "rk": rk, "dist_km": prof["dist_km"],
+                   "elev_m": prof["elev_m"], "grade": prof["grade"],
+                   "n": len(entries), "records": recs}
+    return out
+
+
 def build_head_to_head(records, details, min_results=6, min_meets=3, top_rivals=6):
     """Each athlete's top head-to-head rivals: opponents they've met in the same
     race-year >=min_meets times, with the win/loss split (lower rank = win).
@@ -285,7 +335,10 @@ def build_head_to_head(records, details, min_results=6, min_meets=3, top_rivals=
         aid = athlete_id(k)
         if aid not in details:
             continue
-        lst.sort(key=lambda x: -x[2])
+        # deterministic order: most meetings, then most wins, then a stable id —
+        # without the id tiebreak, tied rivals fall back to set-iteration order
+        # (randomized per process by PYTHONHASHSEED), churning every athlete file.
+        lst.sort(key=lambda x: (-x[2], -x[1], athlete_id(x[0])))
         rows = []
         for b, w, m in lst[:top_rivals]:
             bid = athlete_id(b)
@@ -316,6 +369,11 @@ def main():
     with open(os.path.join(OUT, "climb_vam.json"), "w", encoding="utf-8") as f:
         json.dump(climb_vam, f, ensure_ascii=False, separators=(",", ":"))
     print(f"climb_vam={len(climb_vam)} (across {len(profiles)} profiled climbs)")
+    course_records = build_course_records(records, profiles)
+    with open(os.path.join(OUT, "course_records.json"), "w", encoding="utf-8") as f:
+        json.dump(course_records, f, ensure_ascii=False, separators=(",", ":"))
+    print(f"course_records={len(course_records)} boards "
+          f"({sum(len(b['records']) for b in course_records.values())} rows)")
 
 
 if __name__ == "__main__":

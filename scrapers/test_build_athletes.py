@@ -146,3 +146,24 @@ def test_build_climb_vam_best_per_athlete():
     assert e["best_vam"] == 1200 and e["y"] == 2024 and e["climb"] == "Climb A"
     assert e["conf"] == "high" and e["g"] == "M" and e["best_wkg"] is not None
     assert "id" in e and e["nm"] == "王○明"  # de-identified
+
+
+def test_build_course_records_alltime_fastest():
+    profiles = {"wuling": {"name": "武嶺", "dist_km": 50.0, "elev_m": 3000, "grade": 6.0, "conf": "high"}}
+    recs = [
+        _rec("選手A", tsu="A1", year=2022, rk="wuling", t=7200.0),   # VAM 1500
+        _rec("選手A", tsu="A1", year=2023, rk="wuling", t=6000.0),   # VAM 1800 — A's best
+        _rec("選手B", tsu="B1", year=2022, rk="wuling", t=8000.0),   # B's best
+        _rec("選手B", tsu="B1", year=2023, rk="wuling", t=9000.0),
+        _rec("選手A", tsu="A1", year=2023, rk="other", t=100.0),     # non-profiled → ignored
+    ]
+    out = ba.build_course_records(recs, profiles)
+    assert set(out) == {"wuling"}
+    board = out["wuling"]
+    assert board["name"] == "武嶺" and board["n"] == 2
+    rows = board["records"]
+    # deduped to each rider's fastest ascent, ranked by time
+    assert [r["t"] for r in rows] == [6000, 8000]
+    assert rows[0]["rank"] == 1 and rows[0]["vam"] == ba._vam(3000, 6000)  # record holder = A
+    assert rows[1]["rank"] == 2
+    assert rows[0]["link"] is True   # ≥2 results → trackable/linkable
