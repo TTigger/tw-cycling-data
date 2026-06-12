@@ -3,7 +3,7 @@
 > 本檔是**活的登錄表**:每次新增來源、發現新阻擋、或解開某個卡點,都要回來更新。
 > 最後更新:2026-06-12
 
-主資料集 master:**84,091 筆 / 2009–2026 / 116 場 / 4 來源**(海外賽另計)。
+主資料集 master:**96,818 筆 / 2009–2026 / 127 場 / 5 來源**(海外賽另計)。
 
 ---
 
@@ -16,6 +16,7 @@
 | **tsu.com.tw**<br>(台灣自行車聯盟) | 縣長盃繞圈、越野/gravel、NeverStop武嶺、96系列、大專/地方賽;**含 TCU 選手 ID** | 靜態 HTML(UTF-8),表頭對映;`/race?y=` 年份×分頁 → `/race/result` | 2009–2025 | `tsu_crawl.py` | 24,925 |
 | **cycling.org.tw**<br>(自由車協會) | 國家級:全國公路錦標賽/國手選拔(**含 UCI ID**)+ 2013 舊寬表 | 新制 PDF + 舊 .xls 寬表→長表 reshape | 2013, 2025 | `cycling_crawl.py` + `cycling_oldroad.py` | 349 |
 | **cyclist.org.tw 臺灣自行車聯賽**<br>(子來源:`results_txt.asp` 聯賽頁) | TCL 個人計時賽 ITT + **團隊計時賽 TTT** + 公路繞圈各分組。走 `results_list.asp?pno=13` → `results_txt.asp?pno=N` 落地頁 → 成績公告 PDF,主 `cyclist_crawl` 抓不到。個人列雙版面(組別在 col1/col3);TTT 依車隊分組、把名次與「取第4名時間」傳遞給全隊。排除 road(重複)/積分/累計 | landing 頁 → 成績公告 PDF | 2025–2026 | `cyclist_league.py` | 819(TTT)+ ITT + 繞圈 |
+| **irunner.biji.co**<br>(筆記晶片計時) | 換平台後的競技/市民賽:新玉門關公路賽、美利達盃、輪躍台南、彰化Classic 100、淡江大橋、環大苗栗、Gravel Fundo(Gravel/MTB/Enduro) | **逐筆查 → 翻頁全擷取**(見下「破解」);姓名/名字字/拉丁字母列舉 + GET `?rs=&page=` 分頁,依 memno 去重(~99%);組內完賽時間衍生名次 | 2025–2026 | `irunner_crawl.py` | 12,727 |
 | **runnet.jp**<br>(海外,獨立別集) | 日本 Mt.富士ヒルクライム等(**不進台灣 master**) | JS/SPA(Next.js);headless 渲染 + 頁內 fetch 受保護 JSON API | 2026 | `overseas_runnet.py` | 8,724 |
 
 > 合併工具:`merge.py`(年份無關、自動納源、跨源去重)。海外賽存 `web/public/data/overseas/`,不進 merge。
@@ -30,13 +31,24 @@
 | **iBodyGo** | UA / Session 阻擋 | 帶完整 headers + cookie jar |
 | **ATSport** | 封鎖非台灣 IP | 台灣 IP 代理 / 在台節點 |
 | **樂活成績站** | JS 動態渲染 | Playwright headless |
-| **irunner.biji.co**<br>(筆記報名) | **逐筆查(競賽編號 or 姓名)**、無「列出全部」端點;結果走 csrf+session 的 AJAX,頁面重(廣告/FB widget)→ 瀏覽器擷取 XHR 常 timeout。**2026-06-12 深探確認**:搜尋表單欄位 = `csrf_token / keyword / filter_y / filter_m / rs`,action=POST `/track/{id}/record`,但 POST 只「重渲染搜尋頁」(回同一份 HTML、零成績);成績由後續帶 session state 的 `/timing/{func}` AJAX 取得,`func` 由 JS 動態填入(靜態抓不到);`/timing/loadevents` 需未知參數、GET/POST 皆空。csrf 為一次性。`/track` 清單只給 ~10 筆精選、分頁無效。**結論:無乾淨全榜端點**。理論可破:headless 驅動搜尋 UI + 依常見姓氏/bib 列舉拼回全場,但 per-query 慢、ROI 低(多為跑步) | headless 驅動 UI + 姓氏/bib 列舉(未完成;戀戀197-2025 為例) |
+| ~~**irunner.biji.co**~~ | ✅ **已破(2026-06-12)**,移至上方已爬取表。破解法見下節。 | — 已解 — |
 | **ctrun**<br>(全統) | 成績查詢需**會員登入**;且多為認證型無名次 | headless 帶登入 cookie;以「認證型」型別收 |
 | **runnet.jp** | JS/SPA + JSON API **受保護**(Python 直連被擋/500) | ✅ 已解:headless 在已登入分頁內 `fetch` API |
 | **sportsnet.org.tw** | 純跑步(路跑協會),**非自行車** | 不適用(不對題) |
 | **96好動客 / taiwanbike.tw** | 純報名 / 觀光入口,**成績流向他站或無成績** | 不必處理(下游已抓 / 無成績) |
 
 **通則**:能抓的共同點 = 有可瀏覽清單 + 靜態檔/HTML(或可從頁內呼叫的 JSON) + 免登入。卡點分四型:① 成績不在站內 ② 無清單可列舉 ③ 登入/IP/UA 牆 ④ 純 JS 動態(需 headless)。
+
+### 🔓 iRunner 破解法(`irunner_crawl.py`,2026-06-12)
+先前判「無全榜端點」是**填錯搜尋欄位**所致。實際:
+1. **搜尋欄位是 `rs`**(中文姓名/晶片號**子字串**比對),不是 `keyword`。POST `/track/{id}/record` 只重渲染;
+2. **分頁用 GET `/track/{id}/record?rs={詞}&page={N}`**(POST 帶 page 無效)→ 每頁 10 筆、**無上限**,翻到 maxpage 即完整批;
+3. 結果列直出:`data-memno` / `timing-record-number`(號碼布)/ `timing-record-name`(姓名)/ `timing-record-time`(完賽)/ `timing-record-div`(組別含距離·性別/M45·車隊);
+4. **完整擷取**:列舉「台灣百家姓 + 高頻名字字 + 拉丁 a–z」(拉丁掃英文名/車隊),每詞翻頁,依 **memno 去重** → 聯集 ≈ 全場。實測美利達盃 1834(純姓氏)→ **2016(加掃尾)≈ 真實場 ~2015**,**~99%**;
+5. **賽事發現**:掃 `/track/{id}` 區間取 og:title,關鍵字分類自行車(排除馬拉松/三鐵/田徑);
+6. 名次非結果列所含 → **依組內完賽時間排序衍生**(標 `derivedrank`);成績經 PDPA 遮罩後入 master,跨源與 Bravelog 自動去重(2026-06 該批去重 2,934 筆)。
+
+> 同法應可套用其他 biji 系晶片計時站。**ATSport** 則是 TCP 層封我方出口 IP(GCP 主機 35.194.189.45,443/80 皆 timeout),須在台節點/代理。
 
 ---
 
@@ -77,7 +89,7 @@
 | 2025 | 27(含 2 組重複/拆組) | 26 | 實質**收滿** |
 | 2026 | 8 | 6 | 其餘 2 場為未來賽、尚無成績 |
 
-→ **我們在爬的平台(Bravelog)沒有系統性漏抓**;新缺口主要來自「搬家到 iRunner/ATSport」與長尾 FB/主辦頁。要把戀戀197-2025 這類補回來,得先破 iRunner 或 ATSport(見上表卡點),或走投稿/主辦索取。
+→ **我們在爬的平台(Bravelog)沒有系統性漏抓**;新缺口主要來自「搬家到 iRunner/ATSport」與長尾 FB/主辦頁。**iRunner 已於 2026-06-12 破解收錄**(11 場/12,727 筆);**戀戀197-2025 仍缺**——它在 ATSport,而 ATSport 於本環境 TCP 層被封(需在台節點),或走投稿/主辦索取。
 
 ---
 

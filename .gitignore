@@ -11,6 +11,8 @@ data/pdf/
 data/cycorg_samples/
 data/raw/bravelog_by_contest/
 data/raw/bravelog_contests_*.json
+# raw iRunner pulls contain unmasked names (PII) — never commit
+data/raw/irunner_*
 data/raw/*.html
 data/processed/*.json
 !data/processed/*summary*.json

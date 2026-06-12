@@ -7,7 +7,11 @@ Writes web/public/data/{viz.json, races.json, race/<race_key>__<year>.json}
 import json
 import os
 import re
+import sys
 from collections import defaultdict
+
+sys.path.insert(0, os.path.dirname(__file__))
+import common  # noqa: E402
 
 HERE = os.path.dirname(__file__)
 IN = os.path.join(HERE, "..", "data", "processed", "master.public.json")
@@ -105,8 +109,7 @@ def detail_record(rec):
 
 
 def main():
-    with open(IN, encoding="utf-8") as f:
-        records = json.load(f)
+    records = list(common.iter_records(IN))  # RAM-frugal streaming parse
     os.makedirs(os.path.join(OUT, "race"), exist_ok=True)
     viz = [slim_record(r) for r in records]
     with open(os.path.join(OUT, "viz.json"), "w", encoding="utf-8") as f:

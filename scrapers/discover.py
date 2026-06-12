@@ -163,7 +163,7 @@ def guess_source(name):
 
 
 def main():
-    recs = json.load(open(MASTER, encoding="utf-8"))
+    recs = list(common.iter_records(MASTER))  # RAM-frugal streaming parse
     master_cores = {core(r.get("race_name_canonical")) for r in recs if r.get("race_name_canonical")}
     master_cores.discard("")
 

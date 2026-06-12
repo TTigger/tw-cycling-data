@@ -4,12 +4,51 @@ Shared helpers for the TW cycling data pipeline:
 HTTP session, division/category normalization, name de-identification (PDPA),
 time parsing, and the unified result-record builder.
 """
+import json
 import re
 import time
 import requests
 
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/124.0 Safari/537.36")
+
+
+def iter_records(path, chunk=1 << 18):
+    """Stream a top-level JSON array of objects one record at a time, never holding
+    the whole file string in memory. `list(iter_records(p))` peaks at ~the result
+    list (no extra 80 MB file-str + parse spike) — survives RAM-tight machines where
+    json.load() of the 80 MB master OOMs."""
+    dec = json.JSONDecoder()
+    with open(path, encoding="utf-8") as f:
+        buf = ""
+        while "[" not in buf:
+            more = f.read(chunk)
+            if not more:
+                return
+            buf += more
+        buf = buf[buf.index("[") + 1:]
+        while True:
+            buf = buf.lstrip()
+            while buf[:1] == ",":
+                buf = buf[1:].lstrip()
+            if buf[:1] == "]":
+                return
+            if buf == "":
+                more = f.read(chunk)
+                if not more:
+                    return
+                buf += more
+                continue
+            try:
+                obj, end = dec.raw_decode(buf)
+            except ValueError:
+                more = f.read(chunk)
+                if not more:
+                    return
+                buf += more
+                continue
+            yield obj
+            buf = buf[end:]
 
 
 def make_session():
