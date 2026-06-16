@@ -148,6 +148,90 @@ def test_build_climb_vam_best_per_athlete():
     assert "id" in e and e["nm"] == "王○明"  # de-identified
 
 
+def test_feature_raw_medians_by_class():
+    # field=100 for every (rk, year) so pct = 100 - rank
+    fs = {("climbR", 2024): 100, ("roadR", 2024): 100, ("ttR", 2024): 100}
+    recs = [
+        {"race_key": "climbR", "race_name_canonical": "武嶺盃", "year": 2024,
+         "rank_overall": 5, "category_raw": None},                 # climb pct 95
+        {"race_key": "climbR", "race_name_canonical": "武嶺盃", "year": 2024,
+         "rank_overall": 15, "category_raw": None},                # climb pct 85
+        {"race_key": "roadR", "race_name_canonical": "戀戀197", "year": 2024,
+         "rank_overall": 60, "category_raw": None},                # flat (road) pct 40
+        {"race_key": "ttR", "race_name_canonical": "個人計時賽", "year": 2024,
+         "rank_overall": 10, "category_raw": None},                # tt pct 90
+    ]
+    raw = ba._feature_raw(recs, fs)
+    assert raw["n"] == 4
+    assert raw["overall"] == 87.5            # median(95,85,40,90)
+    assert raw["climb"] == 90.0             # median(95,85)
+    assert raw["flat"] == 40.0             # single road sample
+    assert raw["tt"] == 90.0
+    # too few in-field samples -> None
+    assert ba._feature_raw(recs[:1], fs) is None
+
+
+def test_age_mid_from_band():
+    recs = [{"age_band": "30-39"}, {"age_band": "30-39"}, {"age_band": "40-49"}]
+    assert ba._age_mid(recs) == 34
+    assert ba._age_mid([{"age_band": "MASTER"}, {"age_band": None}]) is None
+
+
+def test_standardize_imputes_missing_discipline_and_age():
+    # 3 athletes; C has no climb/tt -> those z must equal C's overall z; age missing -> 0
+    raws = [
+        {"overall": 90.0, "climb": 95.0, "flat": 50.0, "tt": None, "age": 34},
+        {"overall": 70.0, "climb": 50.0, "flat": 95.0, "tt": None, "age": 44},
+        {"overall": 30.0, "climb": None, "flat": 30.0, "tt": None, "age": None},
+    ]
+    vecs = ba._standardize(raws)
+    # vector order: [climb_z, flat_z, tt_z, overall_z, age_z]
+    assert len(vecs) == 3 and all(len(v) == 5 for v in vecs)
+    # overall z-scores sum to ~0 (standardized about the mean)
+    assert abs(sum(v[3] for v in vecs)) < 1e-6
+    # athlete C: missing climb -> climb_z == overall_z; missing tt -> tt_z == overall_z
+    assert vecs[2][0] == vecs[2][3]
+    assert vecs[2][2] == vecs[2][3]
+    # all tt missing -> column imputed to each one's overall_z
+    assert [v[2] for v in vecs] == [v[3] for v in vecs]
+    # C age missing -> 0
+    assert vecs[2][4] == 0.0
+    # stronger overall -> higher overall_z
+    assert vecs[0][3] > vecs[1][3] > vecs[2][3]
+
+
+def test_build_features_per_gender_and_eligibility():
+    fs = {("r1", 2024): 100, ("r2", 2024): 100, ("r3", 2024): 100}
+    recs = [
+        # M athlete A: climb-strong (anchored by tsu id)
+        _rec("男甲", tsu="A", rk="r1", rn="武嶺盃", rank=5, g="M", year=2024, ag=None),
+        _rec("男甲", tsu="A", rk="r2", rn="戀戀197", rank=50, g="M", year=2024, ag=None),
+        # M athlete B: flat-strong
+        _rec("男乙", tsu="B", rk="r1", rn="武嶺盃", rank=50, g="M", year=2024, ag=None),
+        _rec("男乙", tsu="B", rk="r2", rn="戀戀197", rank=5, g="M", year=2024, ag=None),
+        # F athlete C: standardized in its own (F) pool
+        _rec("女丙", tsu="C", rk="r1", rn="武嶺盃", rank=20, g="F", year=2024, ag=None),
+        _rec("女丙", tsu="C", rk="r2", rn="戀戀197", rank=30, g="F", year=2024, ag=None),
+        # gender-unknown D: excluded
+        _rec("無名", tsu="D", rk="r1", rn="武嶺盃", rank=10, g=None, year=2024, ag=None),
+        _rec("無名", tsu="D", rk="r2", rn="戀戀197", rank=10, g=None, year=2024, ag=None),
+    ]
+    # inject age_band on A's recs only
+    for r in recs[:2]:
+        r["age_band"] = "30-39"
+    out = ba.build_features(recs, field_sizes=fs)
+    by_id = {e["id"]: e for e in out}
+    aid_a, aid_b = ba.athlete_id("t:A"), ba.athlete_id("t:B")
+    aid_c, aid_d = ba.athlete_id("t:C"), ba.athlete_id("t:D")
+    assert aid_d not in by_id                       # unknown gender excluded
+    assert by_id[aid_a]["g"] == "M" and by_id[aid_c]["g"] == "F"
+    # A is climb>flat, B is flat>climb (climb_z vs flat_z)
+    assert by_id[aid_a]["v"][0] > by_id[aid_a]["v"][1]
+    assert by_id[aid_b]["v"][0] < by_id[aid_b]["v"][1]
+    # C alone in F pool -> all z = 0
+    assert by_id[aid_c]["v"] == [0.0, 0.0, 0.0, 0.0, 0.0]
+
+
 def test_build_course_records_alltime_fastest():
     profiles = {"wuling": {"name": "武嶺", "dist_km": 50.0, "elev_m": 3000, "grade": 6.0, "conf": "high"}}
     recs = [

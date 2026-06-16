@@ -42,7 +42,7 @@ export default function AthletesApp() {
   if (err) return <p className="text-accent">資料載入失敗:{err}</p>;
   if (!list.length) return <p className="text-muted">載入中…</p>;
 
-  if (sel) return <AthleteProfile d={sel} onBack={back} />;
+  if (sel) return <AthleteProfile d={sel} index={list} onBack={back} />;
   if (loadingSel) return <p className="text-muted">載入選手…</p>;
 
   return (

@@ -154,6 +154,130 @@ def _traits(recs, field_sizes):
             for t, v in by_type.items() if len(v) >= 2}
 
 
+# ── ① riding doppelganger: per-athlete fingerprint vectors ──────────────────
+# 5-axis fingerprint: [climb, flat, tt, overall, age]. climb/flat/tt/overall are
+# median in-field percentiles by discipline (flat = road+crit); age is the band
+# midpoint. Standardized per gender so axes are comparable; the frontend does the
+# nearest-neighbor search (same gender only) against this compact file.
+FEATURE_MIN_SAMPLES = 2   # need >=2 ranked, in-field results for a stable fingerprint
+AGE_MID = {"U19": 17, "19-29": 24, "30-39": 34, "40-49": 44, "50-59": 54, "60+": 64}
+
+
+def _pcts_by_class(recs, field_sizes):
+    """(overall_pcts, {class: [pct...]}) for one athlete — class in climb/flat/tt
+    (road+crit fold into flat). pct = (field - rank) / field * 100."""
+    overall, by = [], defaultdict(list)
+    for r in recs:
+        rank = r.get("rank_overall")
+        f = field_sizes.get((r.get("race_key"), r.get("year")))
+        if not rank or not f or f < 1 or rank > f:
+            continue
+        pct = (f - rank) / f * 100
+        overall.append(pct)
+        t = race_type(r.get("race_name_canonical") or r.get("race_name_raw"),
+                      r.get("category_raw"))
+        cls = "climb" if t == "climb" else "tt" if t == "tt" else "flat"
+        by[cls].append(pct)
+    return overall, by
+
+
+def _feature_raw(recs, field_sizes):
+    """Raw (un-standardized) fingerprint for one athlete, or None if too few
+    in-field results. Discipline medians are None when that discipline is absent."""
+    overall, by = _pcts_by_class(recs, field_sizes)
+    if len(overall) < FEATURE_MIN_SAMPLES:
+        return None
+    med = statistics.median
+    return {"overall": med(overall), "n": len(overall),
+            "climb": med(by["climb"]) if by["climb"] else None,
+            "flat": med(by["flat"]) if by["flat"] else None,
+            "tt": med(by["tt"]) if by["tt"] else None}
+
+
+def _age_mid(recs):
+    """Decade-band midpoint from the athlete's most common known age_band."""
+    bands = [r.get("age_band") for r in recs if r.get("age_band") in AGE_MID]
+    if not bands:
+        return None
+    return AGE_MID[Counter(bands).most_common(1)[0][0]]
+
+
+def _dominant_gender(recs):
+    """M/F majority for the group; None if unknown or a tie (ambiguous homonym)."""
+    c = Counter(r.get("gender") for r in recs if r.get("gender") in ("M", "F"))
+    if not c:
+        return None
+    top = c.most_common()
+    if len(top) > 1 and top[0][1] == top[1][1]:
+        return None
+    return top[0][0]
+
+
+def _standardize(raws):
+    """raws: list of {overall, climb, flat, tt, age}. Returns list of
+    [climb_z, flat_z, tt_z, overall_z, age_z], each z-scored over the pool's
+    present values. A missing discipline carries the athlete's overall_z (their
+    general level is the best guess); a missing age is 0 (the pool mean)."""
+    def stats(key):
+        vals = [r[key] for r in raws if r.get(key) is not None]
+        if not vals:
+            return (0.0, 0.0)
+        return (statistics.mean(vals), statistics.pstdev(vals))
+
+    mo, so = stats("overall")
+    st = {k: stats(k) for k in ("climb", "flat", "tt", "age")}
+
+    def z(x, m, s):
+        return 0.0 if not s else (x - m) / s
+
+    out = []
+    for r in raws:
+        oz = z(r["overall"], mo, so)
+        row = []
+        for k in ("climb", "flat", "tt"):
+            m, s = st[k]
+            row.append(oz if r.get(k) is None else z(r[k], m, s))
+        row.append(oz)
+        am, as_ = st["age"]
+        row.append(0.0 if r.get("age") is None else z(r["age"], am, as_))
+        out.append(row)
+    return out
+
+
+def build_features(records, field_sizes=None):
+    """Compact fingerprint vectors for every trackable rider with a known gender,
+    standardized within each gender pool. Returns [{id, g, v:[5 floats]}].
+    Shipped whole to the athlete page; the client finds nearest neighbors."""
+    keys = build_group_keys(records)
+    groups = defaultdict(list)
+    for k, r in zip(keys, records):
+        if k in ("n:", "u:", "t:"):
+            continue
+        groups[k].append(r)
+    if field_sizes is None:
+        field_sizes = Counter((r.get("race_key"), r.get("year")) for r in records)
+
+    pool = {"M": [], "F": []}
+    for gk, recs in groups.items():
+        if len(recs) < MIN_RESULTS:
+            continue
+        g = _dominant_gender(recs)
+        if g not in ("M", "F"):
+            continue
+        raw = _feature_raw(recs, field_sizes)
+        if raw is None:
+            continue
+        raw["age"] = _age_mid(recs)
+        raw["_id"] = athlete_id(gk)
+        pool[g].append(raw)
+
+    out = []
+    for g, raws in pool.items():
+        for raw, v in zip(raws, _standardize(raws)):
+            out.append({"id": raw["_id"], "g": g, "v": [round(x, 2) for x in v]})
+    return out
+
+
 def build_athletes(records):
     """Return (index, details): index is the athlete list (>=2 results),
     details maps id -> per-athlete detail dict. Both fully de-identified."""
@@ -374,6 +498,11 @@ def main():
         json.dump(course_records, f, ensure_ascii=False, separators=(",", ":"))
     print(f"course_records={len(course_records)} boards "
           f"({sum(len(b['records']) for b in course_records.values())} rows)")
+    features = build_features(records)
+    with open(os.path.join(OUT, "athlete_features.json"), "w", encoding="utf-8") as f:
+        json.dump(features, f, ensure_ascii=False, separators=(",", ":"))
+    fg = Counter(e["g"] for e in features)
+    print(f"athlete_features={len(features)} (M={fg.get('M', 0)} F={fg.get('F', 0)})")
 
 
 if __name__ == "__main__":
