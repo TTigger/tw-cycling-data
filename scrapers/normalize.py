@@ -14,6 +14,33 @@ for browsing but each keeps its own race_key. KOM登山王之路 ≠ KOM太平�
 import re
 
 
+# ---- curated canonical race_key map (reviewed 2026-06-16) ------------------
+# Collapse the SAME annual event that source naming split across editions by
+# 屆次 / HTML-entity / English transliteration tail / sponsor word-order. Each
+# member keeps its own year, so merging only re-keys (no row loss) and lets the
+# cross-year / DNA / series / H2H views see one race across years.
+# DELIBERATELY NOT merged: the three 武嶺 by organizer (崇越 ≠ NeverStop ≠ 96聯賽),
+# KOM 春季/夏季, Day1/Day2 stages, 崇越武嶺 六月/九月 rounds, GravelFundo stages/heats.
+RACE_KEY_CANONICAL = {
+    '第13屆美利達‧兆豐銀行彰化經典百K': '彰化經典百K',
+    '第14屆兆豐銀行‧美利達彰化經典百KChanghuaClassic100單車自我挑戰': '彰化經典百K',
+    '第15屆兆豐銀行‧美利達彰化經典百KChanghuaClassic100單車自我挑戰': '彰化經典百K',
+    '第16屆兆豐銀行‧美利達彰化經典百KChanghuaClassic100單車自我挑戰': '彰化經典百K',
+    '美利達盃amp;單車嘉年華': '美利達盃單車嘉年華',
+    '美利達盃單車嘉年華': '美利達盃單車嘉年華',
+    '輪躍台南單車嘉年華': '輪躍台南單車嘉年華',
+    '輪躍台南單車嘉年華TainanCyclingFestival': '輪躍台南單車嘉年華',
+    '瘋系列環台賽西部段': '瘋系列環台賽-西部段',
+    '瘋系列第二屆環台賽西部段': '瘋系列環台賽-西部段',
+    '瘋系列環台賽蘇花段': '瘋系列環台賽-蘇花段',
+    '瘋系列第二屆環台賽蘇花段': '瘋系列環台賽-蘇花段',
+    '瘋系列環台賽東部段': '瘋系列環台賽-東部段',
+    '瘋系列第二屆環台賽東部段': '瘋系列環台賽-東部段',
+    'TIS崇越盃武嶺自行車挑戰賽': '崇越盃武嶺挑戰賽',
+    '崇越盃武嶺自行車挑戰賽': '崇越盃武嶺挑戰賽',
+}
+
+
 # ---- race_class: the awarded competition bucket ----------------------------
 def race_class(result_label=None, category_raw=None):
     lab = result_label or ""
@@ -151,9 +178,14 @@ def age_from_category(category_raw):
 
 
 def enrich(rec):
-    """Add race_class + series + age_band; back-fill missing gender/age_band from
-    the organizer's category code (M/W + age) when the source left them blank
-    (mutates and returns it). Existing gender/age_group are never overridden."""
+    """Add race_class + series + age_band; canonicalize the race_key for curated
+    merged events; back-fill missing gender/age_band from the organizer's category
+    code (M/W + age) when blank (mutates and returns it). Existing gender/age_group
+    are never overridden."""
+    canon = RACE_KEY_CANONICAL.get(rec.get("race_key"))
+    if canon:
+        rec["race_key"] = canon
+        rec["race_name_canonical"] = canon
     rec["race_class"] = race_class(rec.get("result_label"), rec.get("category_raw"))
     rec["series"] = series_of(rec.get("race_name_raw") or rec.get("race_name_canonical"))
     if rec.get("gender") not in ("M", "F"):

@@ -66,8 +66,20 @@
     "銅礦88經典挑戰賽": 322,
     "臺灣KOM太平洋經典賽": 78
   },
-  "distinct_races": 149,
+  "distinct_races": 140,
   "races": [
+    {
+      "race_key": "彰化經典百K",
+      "series": null,
+      "platform": "irunner.biji.co",
+      "years": [
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "rows": 19910
+    },
     {
       "race_key": "建大武嶺盃",
       "series": null,
@@ -98,31 +110,15 @@
       "rows": 6547
     },
     {
-      "race_key": "第14屆兆豐銀行‧美利達彰化經典百KChanghuaClassic100單車自我挑戰",
+      "race_key": "美利達盃單車嘉年華",
       "series": null,
       "platform": "irunner.biji.co",
       "years": [
-        2024
-      ],
-      "rows": 5359
-    },
-    {
-      "race_key": "第13屆美利達‧兆豐銀行彰化經典百K",
-      "series": null,
-      "platform": "bravelog.tw",
-      "years": [
-        2023
-      ],
-      "rows": 5114
-    },
-    {
-      "race_key": "第15屆兆豐銀行‧美利達彰化經典百KChanghuaClassic100單車自我挑戰",
-      "series": null,
-      "platform": "irunner.biji.co",
-      "years": [
+        2023,
+        2024,
         2025
       ],
-      "rows": 4939
+      "rows": 5958
     },
     {
       "race_key": "TBA北高360雙塔520四極602自行車認證",
@@ -132,25 +128,6 @@
         2025
       ],
       "rows": 4501
-    },
-    {
-      "race_key": "第16屆兆豐銀行‧美利達彰化經典百KChanghuaClassic100單車自我挑戰",
-      "series": null,
-      "platform": "irunner.biji.co",
-      "years": [
-        2026
-      ],
-      "rows": 4498
-    },
-    {
-      "race_key": "美利達盃單車嘉年華",
-      "series": null,
-      "platform": "irunner.biji.co",
-      "years": [
-        2024,
-        2025
-      ],
-      "rows": 4077
     },
     {
       "race_key": "環大臺北自行車挑戰成績",
@@ -173,6 +150,27 @@
         2025
       ],
       "rows": 3248
+    },
+    {
+      "race_key": "輪躍台南單車嘉年華",
+      "series": null,
+      "platform": "irunner.biji.co",
+      "years": [
+        2023,
+        2024,
+        2025
+      ],
+      "rows": 3189
+    },
+    {
+      "race_key": "崇越盃武嶺挑戰賽",
+      "series": "TIS崇越盃系列",
+      "platform": "bravelog.tw",
+      "years": [
+        2023,
+        2024
+      ],
+      "rows": 3003
     },
     {
       "race_key": "自行車嘉年華GIANTCUPLIVDAY",
@@ -210,34 +208,6 @@
         2025
       ],
       "rows": 2101
-    },
-    {
-      "race_key": "輪躍台南單車嘉年華TainanCyclingFestival",
-      "series": null,
-      "platform": "irunner.biji.co",
-      "years": [
-        2023,
-        2024
-      ],
-      "rows": 2018
-    },
-    {
-      "race_key": "美利達盃amp;單車嘉年華",
-      "series": null,
-      "platform": "irunner.biji.co",
-      "years": [
-        2023
-      ],
-      "rows": 1881
-    },
-    {
-      "race_key": "崇越盃武嶺自行車挑戰賽",
-      "series": "TIS崇越盃系列",
-      "platform": "bravelog.tw",
-      "years": [
-        2024
-      ],
-      "rows": 1809
     },
     {
       "race_key": "第六屆經典新玉門關公路自行車賽",
@@ -283,24 +253,6 @@
         2024
       ],
       "rows": 1341
-    },
-    {
-      "race_key": "TIS崇越盃武嶺自行車挑戰賽",
-      "series": "TIS崇越盃系列",
-      "platform": "bravelog.tw",
-      "years": [
-        2023
-      ],
-      "rows": 1194
-    },
-    {
-      "race_key": "輪躍台南單車嘉年華",
-      "series": null,
-      "platform": "irunner.biji.co",
-      "years": [
-        2025
-      ],
-      "rows": 1171
     },
     {
       "race_key": "【96聯賽第二站】NeverStop永不放棄塔塔加探索新中橫自行車活動",
@@ -826,6 +778,26 @@
       "rows": 241
     },
     {
+      "race_key": "瘋系列環台賽-西部段",
+      "series": "瘋系列環台賽",
+      "platform": "bravelog.tw",
+      "years": [
+        2024,
+        2025
+      ],
+      "rows": 239
+    },
+    {
+      "race_key": "瘋系列環台賽-蘇花段",
+      "series": "瘋系列環台賽",
+      "platform": "bravelog.tw",
+      "years": [
+        2024,
+        2025
+      ],
+      "rows": 232
+    },
+    {
       "race_key": "96聯賽台北站暨國手選拔積分賽",
       "series": "96聯賽",
       "platform": "bravelog.tw",
@@ -840,6 +812,16 @@
       "platform": "bravelog.tw",
       "years": [
         2022
+      ],
+      "rows": 225
+    },
+    {
+      "race_key": "瘋系列環台賽-東部段",
+      "series": "瘋系列環台賽",
+      "platform": "bravelog.tw",
+      "years": [
+        2024,
+        2025
       ],
       "rows": 225
     },
@@ -1025,33 +1007,6 @@
       "rows": 128
     },
     {
-      "race_key": "瘋系列第二屆環台賽西部段",
-      "series": "瘋系列環台賽",
-      "platform": "bravelog.tw",
-      "years": [
-        2025
-      ],
-      "rows": 126
-    },
-    {
-      "race_key": "瘋系列第二屆環台賽東部段",
-      "series": "瘋系列環台賽",
-      "platform": "bravelog.tw",
-      "years": [
-        2025
-      ],
-      "rows": 123
-    },
-    {
-      "race_key": "瘋系列第二屆環台賽蘇花段",
-      "series": "瘋系列環台賽",
-      "platform": "bravelog.tw",
-      "years": [
-        2025
-      ],
-      "rows": 122
-    },
-    {
       "race_key": "109年桃園市長盃自由車錦標賽公路賽",
       "series": "自由車錦標賽/選拔",
       "platform": "bravelog.tw",
@@ -1088,15 +1043,6 @@
       "rows": 117
     },
     {
-      "race_key": "瘋系列環台賽西部段",
-      "series": "瘋系列環台賽",
-      "platform": "bravelog.tw",
-      "years": [
-        2024
-      ],
-      "rows": 113
-    },
-    {
       "race_key": "頂成ZIPP盃府城GravelCriterium",
       "series": null,
       "platform": "tsu.com.tw",
@@ -1113,15 +1059,6 @@
         2025
       ],
       "rows": 111
-    },
-    {
-      "race_key": "瘋系列環台賽蘇花段",
-      "series": "瘋系列環台賽",
-      "platform": "bravelog.tw",
-      "years": [
-        2024
-      ],
-      "rows": 110
     },
     {
       "race_key": "102年全國自由車公路錦標賽成績總表",
@@ -1194,15 +1131,6 @@
         2026
       ],
       "rows": 103
-    },
-    {
-      "race_key": "瘋系列環台賽東部段",
-      "series": "瘋系列環台賽",
-      "platform": "bravelog.tw",
-      "years": [
-        2024
-      ],
-      "rows": 102
     },
     {
       "race_key": "TCU台中城市繞圈檢定男子組NoviceOpenMen",

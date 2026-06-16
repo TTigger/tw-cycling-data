@@ -45,6 +45,31 @@ def test_enrich_sets_age_band():
     assert "race_class" in r and "series" in r
 
 
+def test_enrich_canonicalizes_merged_race_keys():
+    r = {"race_key": "美利達盃amp;單車嘉年華", "race_name_canonical": "美利達盃&amp;單車嘉年華",
+         "category_raw": None, "result_label": None, "race_name_raw": "2023美利達盃&amp;單車嘉年華", "year": 2023}
+    nz.enrich(r)
+    assert r["race_key"] == "美利達盃單車嘉年華"
+    assert r["race_name_canonical"] == "美利達盃單車嘉年華"
+
+
+def test_enrich_leaves_unmapped_race_keys_untouched():
+    r = {"race_key": "建大武嶺盃", "race_name_canonical": "建大武嶺盃",
+         "category_raw": None, "result_label": None, "race_name_raw": "建大武嶺盃", "year": 2024}
+    nz.enrich(r)
+    assert r["race_key"] == "建大武嶺盃"
+
+
+def test_canonical_map_keeps_distinct_events_separate():
+    m = nz.RACE_KEY_CANONICAL
+    # 崇越武嶺 dated rounds and different-organizer 武嶺 are NOT collapsed
+    assert "TIS崇越盃武嶺自行車挑戰賽六月場次" not in m
+    assert "TIS崇越盃武嶺自行車挑戰賽九月場次" not in m
+    assert all("NeverStop" not in k and "96聯賽" not in k for k in m)
+    # no key maps to itself-as-noise (every canonical is a real target)
+    assert all(v and "屆" not in v and "amp;" not in v for v in m.values())
+
+
 def test_gender_from_category_codes():
     assert nz.gender_from_category("RM35") == "M"
     assert nz.gender_from_category("M40") == "M"
