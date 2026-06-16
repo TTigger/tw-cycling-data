@@ -1,0 +1,9 @@
+---
+import Base from "../layouts/Base.astro";
+import SeriesApp from "../components/series/SeriesApp.tsx";
+---
+<Base title="賽事系列 | 台灣公路車賽事成績儀表板">
+  <h1 class="font-display text-3xl">賽事系列總標</h1>
+  <p class="mt-2 mb-6 text-muted">96聯賽、捷安特嘉年華、崇越盃、雪巴大滿貫等多站系列的賽季綜合表現總排——把散在各站的成績拼成全季全貌。積分為各站「贏過全場 %」加總(非官方積分),僅供參考。</p>
+  <SeriesApp client:only="react" />
+</Base>

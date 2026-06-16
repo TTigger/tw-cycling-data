@@ -37,6 +37,14 @@ export interface AthleteDetail {
   teams: string[]; traits: Record<string, AthleteTrait>;
   rivals?: RivalEntry[]; history: AthleteHistoryRow[];
 }
+export interface SeriesStation { rk: string; name: string | null; n: number | null; }
+export interface SeriesStandingRow {
+  id: string; nm: string; pts: number; n: number; best: number; link: boolean;
+}
+export interface SeriesSeason { stations: SeriesStation[]; standings: SeriesStandingRow[]; }
+export interface SeriesInfo { name: string; seasons: Record<string, SeriesSeason>; }
+export type SeriesFile = Record<string, SeriesInfo>;
+
 export interface YearDifficulty { median: number; coeff: number; n: number; }
 export interface RaceDifficulty {
   name: string | null; baseline: number; years: Record<string, YearDifficulty>;
