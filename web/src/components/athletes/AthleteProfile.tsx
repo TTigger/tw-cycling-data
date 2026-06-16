@@ -3,6 +3,7 @@ import { careerSummary, percentileInField, CONF_LABEL } from "../../lib/athletes
 import { secondsToHMS } from "../../lib/format";
 import type { AthleteDetail, AthleteIndexEntry } from "../../lib/types";
 import AthleteProgression from "./AthleteProgression";
+import CalibratedProgress from "./CalibratedProgress";
 import AthleteRadar from "./AthleteRadar";
 import Doppelganger from "./Doppelganger";
 import ShareCard from "./ShareCard";
@@ -72,6 +73,8 @@ export default function AthleteProfile(
         <p className="mb-2 text-xs text-muted">每年最佳「同場贏過 % 」(名次/該場人數),跨賽事可比;長條為當年出賽場次。</p>
         <AthleteProgression history={d.history} />
       </section>
+
+      <CalibratedProgress history={d.history} />
 
       <section className="rounded-xl border border-border bg-surface p-4">
         <h2 className="font-display text-lg text-ink">專長雷達(爬坡 vs 平路)</h2>

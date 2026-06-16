@@ -37,6 +37,12 @@ export interface AthleteDetail {
   teams: string[]; traits: Record<string, AthleteTrait>;
   rivals?: RivalEntry[]; history: AthleteHistoryRow[];
 }
+export interface YearDifficulty { median: number; coeff: number; n: number; }
+export interface RaceDifficulty {
+  name: string | null; baseline: number; years: Record<string, YearDifficulty>;
+}
+export type RaceDifficultyFile = Record<string, RaceDifficulty>;
+
 export interface ClimbProfile {
   race_key: string; name: string;
   dist_km: number; elev_m: number; grade: number;  // grade = elev_m/(dist_km*1000)*100

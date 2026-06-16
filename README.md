@@ -104,6 +104,7 @@ Astro + React islands + Tailwind v4 + ECharts,Claude 暖色風,6 頁:
 python scrapers\build_viz.py            # master.public → web/public/data/{viz,races,race/*}.json
 python scrapers\build_athletes.py       # master → athletes/athlete/<id>/climb_vam.json(含雷達+宿敵)
 python scrapers\build_insights.py       # master → insights.json(洞察頁:年齡曲線/突破之星/星等/地理)
+python scrapers\build_difficulty.py     # master → race_difficulty.json(選手頁:跨年難度校正)
 cd web
 npm install
 npm run dev                             # http://localhost:4321
