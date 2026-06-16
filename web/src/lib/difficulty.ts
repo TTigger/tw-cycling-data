@@ -31,6 +31,55 @@ export function calibratedSeries(
   return [...best.values()].sort((a, b) => a.y - b.y);
 }
 
+export type SeverityVerdict = "嚴苛" | "偏難" | "正常" | "偏易";
+export interface RaceSeverity {
+  year: number;
+  n: number;             // finishers that year
+  baselineN: number;     // median finishers across the race's covered years
+  finisherDelta: number; // % vs baseline (negative = fewer finishers than usual)
+  coeff: number;         // time coeff (>1 = slower than the race's typical year)
+  timeDelta: number;     // % vs baseline time (positive = slower)
+  verdict: SeverityVerdict;
+}
+
+function median(xs: number[]): number {
+  const s = [...xs].sort((a, b) => a - b);
+  const m = Math.floor(s.length / 2);
+  return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+}
+
+/**
+ * Attrition/severity proxy for one race-year. We have ONLY finishers (no DNF or
+ * registration data), so we compare against the race's own history: far fewer
+ * finishers than usual AND slower-than-usual times suggests a brutal edition
+ * (weather/conditions). Verdict: 嚴苛 = both fewer & slower; 偏難 = one of them;
+ * 偏易 = more finishers & faster; else 正常. null if the year isn't covered.
+ */
+export function raceSeverity(
+  diff: RaceDifficulty | undefined, year: number | string | null,
+): RaceSeverity | null {
+  if (!diff || year == null) return null;
+  const yd = diff.years[String(year)];
+  if (!yd) return null;
+  const baselineN = median(Object.values(diff.years).map((y) => y.n));
+  const finisherDelta = baselineN > 0 ? Math.round((yd.n / baselineN - 1) * 100) : 0;
+  const timeDelta = Math.round((yd.coeff - 1) * 100);
+  const fewer = finisherDelta <= -20, slower = timeDelta >= 5;
+  let verdict: SeverityVerdict = "正常";
+  if (fewer && slower) verdict = "嚴苛";
+  else if (fewer || slower) verdict = "偏難";
+  else if (finisherDelta >= 0 && timeDelta <= -5) verdict = "偏易";
+  return { year: Number(year), n: yd.n, baselineN, finisherDelta, coeff: yd.coeff, timeDelta, verdict };
+}
+
+/** Severity for every covered year of a race, newest first. */
+export function raceSeverityAll(diff: RaceDifficulty | undefined): RaceSeverity[] {
+  if (!diff) return [];
+  return Object.keys(diff.years)
+    .map((y) => raceSeverity(diff, y) as RaceSeverity)
+    .sort((a, b) => b.year - a.year);
+}
+
 export interface CalibratableRace { rk: string; name: string | null; n: number; }
 
 /**

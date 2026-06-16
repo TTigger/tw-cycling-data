@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { calibratedSeries, calibratableRaces } from "./difficulty";
-import type { AthleteHistoryRow, RaceDifficultyFile } from "./types";
+import { calibratedSeries, calibratableRaces, raceSeverity, raceSeverityAll } from "./difficulty";
+import type { AthleteHistoryRow, RaceDifficultyFile, RaceDifficulty } from "./types";
 
 function h(p: Partial<AthleteHistoryRow>): AthleteHistoryRow {
   return { y: 2024, rk: "r", rn: "賽", cat: null, g: "M", ag: null, team: null,
@@ -41,6 +41,35 @@ describe("calibratedSeries", () => {
   });
   it("returns empty when the race has no difficulty data", () => {
     expect(calibratedSeries([h({ rk: "x", y: 2024, t: 1 })], "x", undefined)).toEqual([]);
+  });
+});
+
+describe("raceSeverity", () => {
+  const diff: RaceDifficulty = {
+    name: "某盃", baseline: 10000,
+    years: {
+      "2022": { median: 10000, coeff: 1.0, n: 1000 },
+      "2023": { median: 12000, coeff: 1.2, n: 400 },   // far fewer + slower
+      "2024": { median: 9500, coeff: 0.95, n: 1100 },  // more + faster
+    },
+  };
+  it("flags 嚴苛 when an edition had far fewer finishers AND slower times", () => {
+    const s = raceSeverity(diff, 2023)!;
+    expect(s.baselineN).toBe(1000);          // median(1000,400,1100)
+    expect(s.finisherDelta).toBe(-60);       // 400 vs 1000
+    expect(s.timeDelta).toBe(20);            // coeff 1.2
+    expect(s.verdict).toBe("嚴苛");
+  });
+  it("flags 偏易 when more finishers and faster", () => {
+    expect(raceSeverity(diff, 2024)!.verdict).toBe("偏易");
+  });
+  it("is 正常 for a typical year and null for a missing/absent year", () => {
+    expect(raceSeverity(diff, 2022)!.verdict).toBe("正常");
+    expect(raceSeverity(diff, 2099)).toBeNull();
+    expect(raceSeverity(undefined, 2022)).toBeNull();
+  });
+  it("lists all covered years newest-first", () => {
+    expect(raceSeverityAll(diff).map((s) => s.year)).toEqual([2024, 2023, 2022]);
   });
 });
 
