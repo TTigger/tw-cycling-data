@@ -1,4 +1,4 @@
-import type { SlimRecord, RaceIndex, DetailRow, AthleteIndexEntry, AthleteDetail, AthleteFeature, ClimbProfile, ClimbVamEntry, Insights, OverseasRaceMeta, OverseasRow, Coverage, CourseRecordsFile, RaceDifficultyFile, RaceDnaFile } from "./types";
+import type { SlimRecord, RaceIndex, DetailRow, AthleteIndexEntry, AthleteDetail, AthleteFeature, ClimbProfile, ClimbVamEntry, Insights, OverseasRaceMeta, OverseasRow, Coverage, CourseRecordsFile, RaceDifficultyFile, RaceDnaFile, SeriesFile } from "./types";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
@@ -60,6 +60,11 @@ export async function loadRaceDna(): Promise<RaceDnaFile> {
     });
   }
   return _dnaCache;
+}
+export async function loadSeries(): Promise<SeriesFile> {
+  const r = await fetch(`${base}/data/series.json`);
+  if (!r.ok) throw new Error(`series.json ${r.status}`);
+  return r.json();
 }
 export async function loadClimbProfiles(): Promise<ClimbProfile[]> {
   const r = await fetch(`${base}/data/climb_profiles.json`);
