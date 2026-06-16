@@ -38,3 +38,43 @@ export function dnaRaceList(file: RaceDnaFile): DnaRaceOption[] {
   }
   return out.sort((a, b) => a.name.localeCompare(b.name) || b.year.localeCompare(a.year));
 }
+
+// Distance→similarity-% decay over the six 0–100 DNA axes. Tuned so a clearly
+// similar race reads ~70–90% and dissimilar ones fall away.
+const DNA_SIM_SCALE = 90;
+
+/** Euclidean distance between two race-year fingerprints (6 axes, each 0–100). */
+export function dnaDistance(a: RaceDnaAxes, b: RaceDnaAxes): number {
+  let s = 0;
+  for (const ax of DNA_AXES) {
+    const d = a[ax.key] - b[ax.key];
+    s += d * d;
+  }
+  return Math.sqrt(s);
+}
+
+export interface SimilarRace { rk: string; year: string; name: string; sim: number; }
+
+/**
+ * The `k` races whose DNA most resembles (rk, year). Excludes the target race's
+ * own other editions (those are reachable via the cross-year view), and keeps
+ * only each other race's single closest edition so the list is k distinct races.
+ */
+export function similarRaces(
+  file: RaceDnaFile, rk: string, year: number | string | null, k = 5,
+): SimilarRace[] {
+  const target = dnaFor(file, rk, year);
+  if (!target) return [];
+  const best = new Map<string, SimilarRace>();
+  for (const [ork, info] of Object.entries(file)) {
+    if (ork === rk) continue; // skip other editions of the same race
+    for (const [oy, ax] of Object.entries(info.years)) {
+      const sim = Math.round(100 * Math.exp(-dnaDistance(target, ax) / DNA_SIM_SCALE));
+      const cur = best.get(ork);
+      if (!cur || sim > cur.sim) best.set(ork, { rk: ork, year: oy, name: info.name ?? ork, sim });
+    }
+  }
+  return [...best.values()]
+    .sort((a, b) => b.sim - a.sim || a.name.localeCompare(b.name))
+    .slice(0, k);
+}
