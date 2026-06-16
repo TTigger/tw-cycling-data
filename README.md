@@ -8,15 +8,16 @@
 
 台灣的公路車成績**散落在 4 個以上的平台**,而且大多「只能逐場/逐筆查」,沒有一個地方能跨賽事比較、追蹤一位選手的生涯。本專案把這些公開成績**彙整、去識別化、正規化**,做成**免費、開源、互動**的成績探索站——目前是**全台唯一**把分散資料整合起來、還能分析的工具(現有 **116,953 筆 / 149 場 / 2009–2026**,另收海外賽)。
 
-**八頁各自的作用:**
+**九頁各自的作用:**
 
 | 頁面 | 功能 | 對誰、有什麼用 |
 |---|---|---|
 | **總覽** | KPI、賽季行事曆熱圖、逐年趨勢、女子參與、組別組成 | 一眼看懂台灣公路車生態 |
 | **探索** | 多維篩選 → 完賽時間分布、分齡箱形圖、競爭強度、距離vs速度 | 想自己切資料分析的人 |
-| **賽事** | 排行榜、領獎台、**「你贏過多少 %」percentile**、跨年變化、車隊戰力、**🧬 賽事 DNA 指紋(6 軸雷達、可並排比較)**、賽事搜尋 | **車友**:找自己那場、看落點、看歷年變快沒 |
-| **選手** | 21,842 位可追蹤選手、搜尋、**歷年生涯、進步軌跡、🎚️ 跨年難度校正、爬坡vs平路雷達、👯 騎乘分身、交手戰績(宿敵)** | 追蹤一位車手整段生涯、跟對手勝負 |
-| **傳奇爬坡** | **VAM 爬坡指數**、單場+跨賽爬坡王、推算 W/kg | 爬坡咖:武嶺/KOM 跨年跨賽同尺比較 |
+| **賽事** | 排行榜、領獎台、**「你贏過多少 %」percentile**、跨年變化、車隊戰力、**🧬 賽事 DNA 指紋(6 軸雷達、可並排比較、🧭 找相似賽事)**、**🌧️ 賽事嚴苛度(完賽異常推估)**、賽事搜尋 | **車友**:找自己那場、看落點、看歷年變快沒 |
+| **系列** | 多站系列(96聯賽/捷安特/崇越/雪巴大滿貫…)**賽季綜合表現總排** | 看一整季全貌、不再散在各站 |
+| **選手** | 21,842 位可追蹤選手、搜尋、**歷年生涯、進步軌跡、🎚️ 跨年難度校正、爬坡vs平路雷達、👯 騎乘分身、🆚 1v1 對比、交手戰績(宿敵)** | 追蹤一位車手整段生涯、跟對手勝負 |
+| **傳奇爬坡** | **VAM 爬坡指數**、單場+跨賽爬坡王、推算 W/kg、場地最速榜 | 爬坡咖:武嶺/KOM 跨年跨賽同尺比較 |
 | **洞察** | **巔峰年齡曲線、突破之星、賽事星等、成績換算器、地理熱點** | 趨勢與冷知識 |
 | **海外賽** | 富士山等(獨立收錄,不混入台灣統計) | 海外賽事 |
 | **資料涵蓋** | 資料來源透明度、行事曆缺漏賽事清單 | 看我們收了什麼、還缺什麼 |
@@ -44,6 +45,7 @@
 | **Phase 3:選手歷年追蹤(TCU/UCI ID 為錨、姓名為輔)** | ✅ `/athletes` **21,842 位可追蹤選手**(≥2 場);進步軌跡+歷年成績+同名信心標記 |
 | **★ 主資料集現況** | ✅ **116,953 筆 / 149 場 / 5 來源 / 2009–2026**(bravelog 46,553・irunner 32,862・tsu 24,924・cyclist 12,265・cycling 349) |
 | **Phase 4:分析型功能** | ✅ 選手頁 **👯 騎乘分身**(指紋最近鄰)+ **🎚️ 跨年難度校正**;賽事頁 **🧬 賽事 DNA 指紋**(6 軸雷達);各帶 pytest/vitest,去識別化 |
+| **Phase 5:更多分析** | ✅ **🧭 找相似賽事**(DNA 最近鄰)、**🆚 車手 1v1 對比**、**🏆 賽事系列總標**(`/series`)、**🌧️ 賽事嚴苛度**(完賽異常推估);**🧱 性別/分齡回填**(M/F 43%→52%) |
 | **資料新鮮度自動化** | ✅ 每週一/四雲端 routine 跑行事曆缺漏偵查 → 開 PR 回報「待 ingest」清單(雷達式提醒,非自動爬;master 含 PII 不上雲) |
 
 ## 目錄
@@ -68,7 +70,8 @@ scrapers/
   build_athletes.py    ★ master → 選手追蹤資料(athletes 索引 + athlete/<id>:身分歸併、同名信心、爬坡王 climb_vam、專長雷達 traits、交手戰績 rivals、👯 騎乘分身指紋 athlete_features;含 pytest)
   build_insights.py    ★ master → insights.json(巔峰年齡曲線/突破之星/賽事星等/地理熱點;含 pytest)
   build_difficulty.py  ★ master → race_difficulty.json(🎚️ 跨年難度校正:每場每年中位數+難度係數;含 pytest)
-  build_race_dna.py    ★ master → race_dna.json(🧬 賽事 DNA:每場每年 6 軸跨站正規化指紋;含 pytest)
+  build_race_dna.py    ★ master → race_dna.json(🧬 賽事 DNA:每場每年 6 軸跨站正規化指紋 + 🧭 找相似賽事;含 pytest)
+  build_series.py      ★ master → series.json(🏆 賽事系列總標:多站系列賽季綜合表現總排;含 pytest)
   discover.py          ★ 缺漏發現:爬公開行事曆 → 與 master 比對 → 輸出「缺漏賽事 + 推測來源」(不靠人工列舉)
   overseas_runnet.py   海外賽(runnet headless)→ web/public/data/overseas(獨立別集,不進 master)
   race_type.py         賽事類型分類(爬坡/繞圈/計時/公路;含 pytest)
@@ -100,10 +103,11 @@ python scrapers\validate.py master.json      # 資料品質檢查
 
 ## 前端儀表板(`web/`)
 
-Astro + React islands + Tailwind v4 + ECharts,Claude 暖色風,8 頁:
+Astro + React islands + Tailwind v4 + ECharts,Claude 暖色風,9 頁:
 - `/`(總覽)、`/explore`(探索)、`/overseas`(海外賽)、`/coverage`(資料涵蓋)
-- `/race`(賽事詳情 + 排行榜/percentile + **🧬 賽事 DNA 指紋**:6 軸跨站正規化雷達、可並排比較第二場,`race_dna.json`)
-- `/athletes`(選手追蹤 + **👯 騎乘分身**:指紋最近鄰相似選手,`athlete_features.json` + **🎚️ 跨年難度校正**:原始 vs 校正後完賽時間,`race_difficulty.json` + 爬坡手vs平路手雷達 + 交手戰績宿敵)
+- `/race`(賽事詳情 + 排行榜/percentile + **🧬 賽事 DNA 指紋**:6 軸跨站正規化雷達、可並排比較、**🧭 找相似賽事**最近鄰,`race_dna.json` + **🌧️ 賽事嚴苛度**:以完賽人數/時間 vs 歷年推估,`race_difficulty.json`)
+- `/series`(**🏆 賽事系列總標**:多站系列賽季綜合表現總排,`series.json`)
+- `/athletes`(選手追蹤 + **👯 騎乘分身**:指紋最近鄰相似選手,`athlete_features.json` + **🎚️ 跨年難度校正**:原始 vs 校正後完賽時間,`race_difficulty.json` + **🆚 1v1 對比** + 爬坡手vs平路手雷達 + 交手戰績宿敵)
 - `/climbs`(傳奇爬坡 + **爬坡指數 VAM**:單場 VAM 排行 + 跨賽「爬坡王」榜 + 推算 W/kg + 場地最速榜,基於策展的 `climb_profiles.json` 海拔對照表)
 - `/insights`(數據洞察:巔峰年齡曲線、突破之星、賽事星等、成績換算器、賽事地理熱點)
 
@@ -112,7 +116,8 @@ python scrapers\build_viz.py            # master.public → web/public/data/{viz
 python scrapers\build_athletes.py       # master → athletes/athlete/<id>/climb_vam.json(含雷達+宿敵)
 python scrapers\build_insights.py       # master → insights.json(洞察頁:年齡曲線/突破之星/星等/地理)
 python scrapers\build_difficulty.py     # master → race_difficulty.json(選手頁:跨年難度校正)
-python scrapers\build_race_dna.py       # master → race_dna.json(賽事頁:賽事 DNA 指紋雷達)
+python scrapers\build_race_dna.py       # master → race_dna.json(賽事頁:賽事 DNA 指紋雷達 + 找相似賽事)
+python scrapers\build_series.py         # master → series.json(系列頁:多站賽季綜合總排)
 cd web
 npm install
 npm run dev                             # http://localhost:4321

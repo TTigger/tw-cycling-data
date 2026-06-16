@@ -8,7 +8,7 @@ Collect, clean, and normalize Taiwan road-cycling race results (2009–2026) int
 
 Taiwan's cycling results are **scattered across 4+ platforms** and mostly only queryable race-by-race — there's no single place to compare across races or follow a rider's career. This project aggregates, de-identifies and normalizes those public results into a **free, open, interactive** explorer — currently the **only** unified, analyzable view of Taiwan road-cycling results (**116,953 rows / 149 races / 2009–2026**, plus an overseas collection).
 
-Eight pages: **Overview** (the scene at a glance) · **Explore** (filter & analyze distributions) · **Race** (leaderboard + "what % did you beat" percentile + **🧬 Race DNA** 6-axis radar with side-by-side compare + race search) · **Athletes** (21,842 trackable riders: career history, progression, **🎚️ cross-year difficulty calibration**, climber-vs-rouleur radar, **👯 riding doppelgangers**, head-to-head rivals) · **Climbs** (VAM climbing index + cross-race Climbing King + all-time course records) · **Insights** (peak-age curve, breakout stars, race star-ratings, result converter, geographic hotspots) · **Overseas** (kept separate) · **Coverage** (source transparency + missing-race worklist). The point: turn "scattered, query-only" results into a **searchable, career-trackable, comparable** community resource. PDPA-safe (masked names only). Coverage is disclosed honestly in **[SOURCES.md](SOURCES.md)**.
+Nine pages: **Overview** (the scene at a glance) · **Explore** (filter & analyze distributions) · **Race** (leaderboard + "what % did you beat" percentile + **🧬 Race DNA** 6-axis radar with side-by-side compare + **🧭 similar-race finder** + **🌧️ severity/attrition estimate** + race search) · **Series** (**🏆 multi-station season standings** for 96聯賽/捷安特/崇越/雪巴…) · **Athletes** (21,842 trackable riders: career history, progression, **🎚️ cross-year difficulty calibration**, climber-vs-rouleur radar, **👯 riding doppelgangers**, **🆚 1v1 head-to-head**, rivals) · **Climbs** (VAM climbing index + cross-race Climbing King + all-time course records) · **Insights** (peak-age curve, breakout stars, race star-ratings, result converter, geographic hotspots) · **Overseas** (kept separate) · **Coverage** (source transparency + missing-race worklist). The point: turn "scattered, query-only" results into a **searchable, career-trackable, comparable** community resource. PDPA-safe (masked names only). Coverage is disclosed honestly in **[SOURCES.md](SOURCES.md)**.
 
 ## Status
 
@@ -28,6 +28,7 @@ Eight pages: **Overview** (the scene at a glance) · **Explore** (filter & analy
 | **Phase 1c: historical backfill (cyclist 2014–23 + Bravelog 2018–23)** | ✅ +7,363 + historical Bravelog |
 | **Phase 3: per-athlete tracking (TCU/UCI-ID-anchored, name fallback)** | ✅ `/athletes` **21,842 trackable athletes** (≥2 results); progression + career table + homonym confidence flag |
 | **Phase 4: analytics features** | ✅ Athletes: **👯 riding doppelganger** (fingerprint nearest-neighbor) + **🎚️ cross-year difficulty calibration**; Race: **🧬 Race DNA** 6-axis radar — each with pytest/vitest, de-identified |
+| **Phase 5: more analytics** | ✅ **🧭 similar-race finder** (DNA NN), **🆚 athlete 1v1**, **🏆 series season standings** (`/series`), **🌧️ race severity/attrition** proxy; **🧱 gender/age back-fill** (43%→52% M/F) |
 
 ## Layout
 
