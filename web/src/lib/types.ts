@@ -43,6 +43,13 @@ export interface RaceDifficulty {
 }
 export type RaceDifficultyFile = Record<string, RaceDifficulty>;
 
+export interface RaceDnaAxes {
+  n: number; sel: number; size: number; climb: number;
+  prest: number; repeat: number; women: number;
+}
+export interface RaceDnaInfo { name: string | null; years: Record<string, RaceDnaAxes>; }
+export type RaceDnaFile = Record<string, RaceDnaInfo>;
+
 export interface ClimbProfile {
   race_key: string; name: string;
   dist_km: number; elev_m: number; grade: number;  // grade = elev_m/(dist_km*1000)*100
