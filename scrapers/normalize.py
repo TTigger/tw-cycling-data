@@ -113,9 +113,52 @@ def age_band(age_group):
     return "60+"
 
 
+# ---- gender / age back-fill from the organizer's category code -------------
+# Same convention as race_class above: M=male, W=women, optional R(oad) prefix,
+# age as the trailing number — e.g. RM35 / M40 / RW30 / W20 / Ｍ45, plus the
+# 男/女 keywords. A digit MUST follow the letter so criterium classes 'A'/'F'/'M'
+# aren't misread, and bare 'F' is not treated as female (this dataset codes women
+# as W, and 'F' is a criterium class letter). Citizen/challenge groups (107K自我
+# 挑戰, 一般組, 雙塔520…) carry no sex and correctly stay None.
+_GENDER_CODE = re.compile(r"[Rr]?([MWＭＷ])\s?\d")
+_AGE_CODE = re.compile(r"[Rr]?[MWＭＷ]\s?(\d{1,2})")
+
+
+def gender_from_category(category_raw):
+    """Infer M/F from a category code/keyword, or None when unsexed or mixed."""
+    if not category_raw:
+        return None
+    s = str(category_raw)
+    has_m, has_w = "男" in s, "女" in s
+    if "混" in s or (has_m and has_w):
+        return None
+    if has_w:
+        return "F"
+    if has_m:
+        return "M"
+    m = _GENDER_CODE.search(s)
+    if m:
+        return "M" if m.group(1) in ("M", "Ｍ") else "F"   # W/Ｗ -> female
+    return None
+
+
+def age_from_category(category_raw):
+    """The age number embedded in a gender-age code (RM35 -> '35'), else None."""
+    if not category_raw:
+        return None
+    m = _AGE_CODE.search(str(category_raw))
+    return m.group(1) if m else None
+
+
 def enrich(rec):
-    """Add race_class + series + age_band to a unified record (mutates and returns it)."""
+    """Add race_class + series + age_band; back-fill missing gender/age_band from
+    the organizer's category code (M/W + age) when the source left them blank
+    (mutates and returns it). Existing gender/age_group are never overridden."""
     rec["race_class"] = race_class(rec.get("result_label"), rec.get("category_raw"))
     rec["series"] = series_of(rec.get("race_name_raw") or rec.get("race_name_canonical"))
-    rec["age_band"] = age_band(rec.get("age_group"))
+    if rec.get("gender") not in ("M", "F"):
+        g = gender_from_category(rec.get("category_raw"))
+        if g:
+            rec["gender"] = g
+    rec["age_band"] = age_band(rec.get("age_group") or age_from_category(rec.get("category_raw")))
     return rec
