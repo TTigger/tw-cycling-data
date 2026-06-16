@@ -2,8 +2,10 @@ import { useEffect, useMemo, useState } from "react";
 import type { EChartsOption } from "echarts";
 import EChart from "../charts/EChart";
 import { loadRaceDna } from "../../lib/data-load";
-import { DNA_AXES, dnaFor, dnaRadarValues, dnaRaceList } from "../../lib/race-dna";
+import { DNA_AXES, dnaFor, dnaRadarValues, dnaRaceList, similarRaces } from "../../lib/race-dna";
 import type { RaceDnaFile } from "../../lib/types";
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 export default function RaceDna(
   { rk, year, name }: { rk: string; year: number | null; name: string },
@@ -27,6 +29,10 @@ export default function RaceDna(
   const cmpOpt = cmp !== "" ? options[Number(cmp)] : null;
   const compare = file && cmpOpt ? dnaFor(file, cmpOpt.rk, cmpOpt.year) : null;
   const cmpName = cmpOpt?.label ?? "";
+  const similar = useMemo(
+    () => (file ? similarRaces(file, rk, year, 5) : []),
+    [file, rk, year],
+  );
 
   if (err) return null;
   if (!file) return <p className="text-sm text-muted">計算中…</p>;
@@ -77,6 +83,23 @@ export default function RaceDna(
         六軸皆跨全站正規化為 0–100(該場在所有賽事年中的相對位置):
         {DNA_AXES.map((a) => `${a.label}=${a.hint}`).join("、")}。僅供參考。
       </p>
+
+      {similar.length > 0 && (
+        <div className="mt-4 border-t border-border/60 pt-3">
+          <h3 className="text-sm text-ink">🧭 DNA 最相似的賽事</h3>
+          <p className="mb-2 text-xs text-muted">六軸指紋最接近的其他賽事(不含本賽事其他屆),點擊前往。</p>
+          <div className="flex flex-wrap gap-2">
+            {similar.map((s) => (
+              <a key={`${s.rk}-${s.year}`}
+                href={`${base}/race?rk=${encodeURIComponent(s.rk)}&y=${s.year}`}
+                className="rounded-lg border border-border bg-bg px-3 py-2 text-sm hover:border-accent">
+                <span className="text-ink">{s.year} {s.name}</span>
+                <span className="ml-2 num text-accent">{s.sim}%</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
