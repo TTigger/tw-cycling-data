@@ -105,6 +105,7 @@ python scrapers\build_viz.py            # master.public → web/public/data/{viz
 python scrapers\build_athletes.py       # master → athletes/athlete/<id>/climb_vam.json(含雷達+宿敵)
 python scrapers\build_insights.py       # master → insights.json(洞察頁:年齡曲線/突破之星/星等/地理)
 python scrapers\build_difficulty.py     # master → race_difficulty.json(選手頁:跨年難度校正)
+python scrapers\build_race_dna.py       # master → race_dna.json(賽事頁:賽事 DNA 指紋雷達)
 cd web
 npm install
 npm run dev                             # http://localhost:4321

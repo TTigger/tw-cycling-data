@@ -9,6 +9,7 @@ import Podium from "./Podium";
 import RaceTimeHistogram from "./RaceTimeHistogram";
 import CrossYearTrend from "./CrossYearTrend";
 import TeamStrength from "./TeamStrength";
+import RaceDna from "./RaceDna";
 
 function Card({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
   return (
@@ -76,6 +77,9 @@ export default function RaceDetailApp() {
             {sel.multi_year && <Card title="跨年:變快了嗎" hint="冠軍與中位完賽時間"><CrossYearTrend rows={crossRows} /></Card>}
             {sel.has_team && <Card title="車隊戰力榜" hint="前 10 名人次"><TeamStrength rows={detail} /></Card>}
           </div>
+          <Card title="🧬 賽事 DNA" hint="六大特徵指紋,可選第二場並排比較">
+            <RaceDna rk={sel.rk} year={sel.y} name={sel.rn} />
+          </Card>
           <Card title="排行榜"><Leaderboard rows={detail} /></Card>
         </>
       )}
