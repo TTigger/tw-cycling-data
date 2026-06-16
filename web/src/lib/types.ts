@@ -29,6 +29,7 @@ export interface AthleteHistoryRow {
   rank: number | null; t: number | null; label: string | null;
   d: string | null; field: number | null;
 }
+export interface AthleteFeature { id: string; g: "M" | "F"; v: number[]; }
 export interface AthleteTrait { pct: number; n: number; }
 export interface RivalEntry { id: string; nm: string; w: number; l: number; meets: number; }
 export interface AthleteDetail {

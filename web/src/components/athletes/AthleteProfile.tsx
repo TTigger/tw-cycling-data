@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { careerSummary, percentileInField, CONF_LABEL } from "../../lib/athletes";
 import { secondsToHMS } from "../../lib/format";
-import type { AthleteDetail } from "../../lib/types";
+import type { AthleteDetail, AthleteIndexEntry } from "../../lib/types";
 import AthleteProgression from "./AthleteProgression";
 import AthleteRadar from "./AthleteRadar";
+import Doppelganger from "./Doppelganger";
 import ShareCard from "./ShareCard";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
@@ -23,7 +24,9 @@ function Stat({ label, value }: { label: string; value: string | number }) {
   );
 }
 
-export default function AthleteProfile({ d, onBack }: { d: AthleteDetail; onBack: () => void }) {
+export default function AthleteProfile(
+  { d, index, onBack }: { d: AthleteDetail; index: AthleteIndexEntry[]; onBack: () => void },
+) {
   const s = careerSummary(d);
   const [showCard, setShowCard] = useState(false);
   return (
@@ -75,6 +78,8 @@ export default function AthleteProfile({ d, onBack }: { d: AthleteDetail; onBack
         <p className="mb-2 text-xs text-muted">各賽事類型的相對表現,看出選手是爬坡型還是平路型。</p>
         <AthleteRadar traits={d.traits} />
       </section>
+
+      <Doppelganger targetId={d.id} index={index} />
 
       {d.rivals && d.rivals.length > 0 && (
         <section className="rounded-xl border border-border bg-surface p-4">

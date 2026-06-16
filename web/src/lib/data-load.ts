@@ -1,4 +1,4 @@
-import type { SlimRecord, RaceIndex, DetailRow, AthleteIndexEntry, AthleteDetail, ClimbProfile, ClimbVamEntry, Insights, OverseasRaceMeta, OverseasRow, Coverage, CourseRecordsFile } from "./types";
+import type { SlimRecord, RaceIndex, DetailRow, AthleteIndexEntry, AthleteDetail, AthleteFeature, ClimbProfile, ClimbVamEntry, Insights, OverseasRaceMeta, OverseasRow, Coverage, CourseRecordsFile } from "./types";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
@@ -26,6 +26,18 @@ export async function loadAthlete(id: string): Promise<AthleteDetail> {
   const r = await fetch(`${base}/data/athlete/${id}.json`);
   if (!r.ok) throw new Error(`athlete ${id} ${r.status}`);
   return r.json();
+}
+let _featuresCache: Promise<AthleteFeature[]> | null = null;
+/** All riders' fingerprint vectors (for the doppelganger search). Cached: one
+ * fetch per page session, reused across profile views. */
+export async function loadAthleteFeatures(): Promise<AthleteFeature[]> {
+  if (!_featuresCache) {
+    _featuresCache = fetch(`${base}/data/athlete_features.json`).then((r) => {
+      if (!r.ok) throw new Error(`athlete_features.json ${r.status}`);
+      return r.json();
+    });
+  }
+  return _featuresCache;
 }
 export async function loadClimbProfiles(): Promise<ClimbProfile[]> {
   const r = await fetch(`${base}/data/climb_profiles.json`);
