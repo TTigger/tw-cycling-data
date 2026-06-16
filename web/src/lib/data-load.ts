@@ -1,4 +1,4 @@
-import type { SlimRecord, RaceIndex, DetailRow, AthleteIndexEntry, AthleteDetail, AthleteFeature, ClimbProfile, ClimbVamEntry, Insights, OverseasRaceMeta, OverseasRow, Coverage, CourseRecordsFile } from "./types";
+import type { SlimRecord, RaceIndex, DetailRow, AthleteIndexEntry, AthleteDetail, AthleteFeature, ClimbProfile, ClimbVamEntry, Insights, OverseasRaceMeta, OverseasRow, Coverage, CourseRecordsFile, RaceDifficultyFile } from "./types";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
@@ -38,6 +38,17 @@ export async function loadAthleteFeatures(): Promise<AthleteFeature[]> {
     });
   }
   return _featuresCache;
+}
+let _difficultyCache: Promise<RaceDifficultyFile> | null = null;
+/** Cross-year race difficulty coefficients. Cached per page session. */
+export async function loadRaceDifficulty(): Promise<RaceDifficultyFile> {
+  if (!_difficultyCache) {
+    _difficultyCache = fetch(`${base}/data/race_difficulty.json`).then((r) => {
+      if (!r.ok) throw new Error(`race_difficulty.json ${r.status}`);
+      return r.json();
+    });
+  }
+  return _difficultyCache;
 }
 export async function loadClimbProfiles(): Promise<ClimbProfile[]> {
   const r = await fetch(`${base}/data/climb_profiles.json`);
