@@ -6,7 +6,7 @@ Collect, clean, and normalize Taiwan road-cycling race results (2009–2026) int
 
 ## What this is & who it's for (Why)
 
-Taiwan's cycling results are **scattered across 4+ platforms** and mostly only queryable race-by-race — there's no single place to compare across races or follow a rider's career. This project aggregates, de-identifies and normalizes those public results into a **free, open, interactive** explorer — currently the **only** unified, analyzable view of Taiwan road-cycling results (**116,953 rows / 149 races / 2009–2026**, plus an overseas collection).
+Taiwan's cycling results are **scattered across 4+ platforms** and mostly only queryable race-by-race — there's no single place to compare across races or follow a rider's career. This project aggregates, de-identifies and normalizes those public results into a **free, open, interactive** explorer — currently the **only** unified, analyzable view of Taiwan road-cycling results (**116,953 rows / 140 races / 2009–2026**, plus an overseas collection).
 
 Nine pages: **Overview** (the scene at a glance) · **Explore** (filter & analyze distributions) · **Race** (leaderboard + "what % did you beat" percentile + **🧬 Race DNA** 6-axis radar with side-by-side compare + **🧭 similar-race finder** + **🌧️ severity/attrition estimate** + race search) · **Series** (**🏆 multi-station season standings** for 96聯賽/捷安特/崇越/雪巴…) · **Athletes** (21,842 trackable riders: career history, progression, **🎚️ cross-year difficulty calibration**, climber-vs-rouleur radar, **👯 riding doppelgangers**, **🆚 1v1 head-to-head**, rivals) · **Climbs** (VAM climbing index + cross-race Climbing King + all-time course records) · **Insights** (peak-age curve, breakout stars, race star-ratings, result converter, geographic hotspots) · **Overseas** (kept separate) · **Coverage** (source transparency + missing-race worklist). The point: turn "scattered, query-only" results into a **searchable, career-trackable, comparable** community resource. PDPA-safe (masked names only). Coverage is disclosed honestly in **[SOURCES.md](SOURCES.md)**.
 
@@ -22,7 +22,7 @@ Nine pages: **Overview** (the scene at a glance) · **Explore** (filter & analyz
 | **Phase 1e: tsu.com.tw results platform** | ✅ **24,925 rows / 2009–2025** (county criteriums/gravel/NeverStop Wuling/96 series; carries **TCU rider IDs**, fills the deepest history) |
 | **Phase 1f: cycling.org.tw old wide-table backfill** | ✅ `cycling_oldroad.py` recovers the 2013 national road championship **146 rows** (wide→long reshape; other years are 404) |
 | Normalization + merge + validation tooling | ✅ `normalize.py` / `merge.py` (year-agnostic, auto-discovers sources, cross-source dedup) / `validate.py` |
-| **★ Merged master dataset** | ✅ **116,953 rows / 2009–2026 / 149 races / 5 sources**, de-identified |
+| **★ Merged master dataset** | ✅ **116,953 rows / 2009–2026 / 140 races / 5 sources**, de-identified |
 | **Phase 2: interactive dashboard (4 pages)** | ✅ `web/` (Overview / Explore / Race / Climbs; Astro+React+ECharts, Claude aesthetic, responsive) |
 | **Vercel deployment** | ✅ Live (Root Directory=`web`; auto-deploys on push) |
 | **Phase 1c: historical backfill (cyclist 2014–23 + Bravelog 2018–23)** | ✅ +7,363 + historical Bravelog |
