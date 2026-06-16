@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { careerSummary, percentileInField, CONF_LABEL } from "../../lib/athletes";
+import { useMemo, useState } from "react";
+import { careerSummary, percentileInField, searchAthletes, CONF_LABEL } from "../../lib/athletes";
 import { secondsToHMS } from "../../lib/format";
 import type { AthleteDetail, AthleteIndexEntry } from "../../lib/types";
 import AthleteProgression from "./AthleteProgression";
@@ -26,10 +26,17 @@ function Stat({ label, value }: { label: string; value: string | number }) {
 }
 
 export default function AthleteProfile(
-  { d, index, onBack }: { d: AthleteDetail; index: AthleteIndexEntry[]; onBack: () => void },
+  { d, index, onBack, onCompare }:
+  { d: AthleteDetail; index: AthleteIndexEntry[]; onBack: () => void; onCompare: (id: string) => void },
 ) {
   const s = careerSummary(d);
   const [showCard, setShowCard] = useState(false);
+  const [vsQuery, setVsQuery] = useState<string | null>(null); // null = picker closed
+  const vsResults = useMemo(
+    () => (vsQuery != null && vsQuery.trim()
+      ? searchAthletes(index, vsQuery, 8).filter((x) => x.id !== d.id) : []),
+    [index, vsQuery, d.id],
+  );
   return (
     <div className="space-y-6">
       <div className="flex items-start justify-between gap-3">
@@ -46,10 +53,31 @@ export default function AthleteProfile(
           <button className="rounded-lg border border-accent bg-accent/10 px-3 py-2 text-sm text-accent hover:bg-accent/20"
             onClick={() => setShowCard(true)}>📇 產生成績卡</button>
           <button className="rounded-lg border border-border px-3 py-2 text-sm text-muted hover:text-accent"
+            onClick={() => setVsQuery((q) => (q == null ? "" : null))}>🆚 比較選手</button>
+          <button className="rounded-lg border border-border px-3 py-2 text-sm text-muted hover:text-accent"
             onClick={onBack}>← 換一位</button>
         </div>
       </div>
       {showCard && <ShareCard d={d} onClose={() => setShowCard(false)} />}
+
+      {vsQuery != null && (
+        <div className="rounded-xl border border-border bg-surface p-3">
+          <input autoFocus value={vsQuery} onChange={(e) => setVsQuery(e.target.value)}
+            placeholder="搜尋要比較的選手(遮罩姓名,如「王○明」)"
+            className="w-full max-w-md rounded-lg border border-border bg-bg px-3 py-2 text-sm text-ink outline-none focus:border-accent" />
+          {vsResults.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-2">
+              {vsResults.map((x) => (
+                <button key={x.id} onClick={() => onCompare(x.id)}
+                  className="rounded-lg border border-border bg-bg px-3 py-1.5 text-sm hover:border-accent">
+                  <span className="text-ink">{x.nm}</span>
+                  <span className="ml-1 text-xs text-muted">{x.n} 場 · {x.y0}–{x.y1}</span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {d.conf !== "high" && (
         <p className="rounded-lg border border-amber-400/50 bg-amber-50 px-3 py-2 text-xs text-amber-700">

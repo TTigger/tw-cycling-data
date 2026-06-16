@@ -4,6 +4,7 @@ import { loadAthletes, loadAthlete } from "../../lib/data-load";
 import { searchAthletes, CONF_LABEL } from "../../lib/athletes";
 import type { AthleteIndexEntry, AthleteDetail } from "../../lib/types";
 import AthleteProfile from "./AthleteProfile";
+import AthleteCompare from "./AthleteCompare";
 
 const CONF_DOT: Record<string, string> = {
   high: "bg-emerald-400/70", med: "bg-amber-400/80", low: "bg-accent",
@@ -13,27 +14,45 @@ export default function AthletesApp() {
   const [list, setList] = useState<AthleteIndexEntry[]>([]);
   const [q, setQ] = useState("");
   const [sel, setSel] = useState<AthleteDetail | null>(null);
+  const [cmp, setCmp] = useState<AthleteDetail | null>(null);
   const [loadingSel, setLoadingSel] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
   useEffect(() => {
     loadAthletes().then((l) => {
       setList(l);
-      const id = new URLSearchParams(location.search).get("id");
+      const p = new URLSearchParams(location.search);
+      const id = p.get("id"), vs = p.get("vs");
       if (id) pick(id, false);
+      if (id && vs) loadAthlete(vs).then(setCmp).catch((e) => setErr(String(e)));
     }).catch((e) => setErr(String(e)));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function pick(id: string, pushUrl = true) {
-    setLoadingSel(true); setSel(null);
+    setLoadingSel(true); setSel(null); setCmp(null);
     if (pushUrl) history.pushState(null, "", `?id=${id}`);
     loadAthlete(id).then((d) => { setSel(d); setLoadingSel(false); })
       .catch((e) => { setErr(String(e)); setLoadingSel(false); });
   }
 
+  function pickCompare(id: string) {
+    const params = new URLSearchParams(location.search);
+    params.set("vs", id);
+    history.pushState(null, "", `?${params}`);
+    setCmp(null);
+    loadAthlete(id).then(setCmp).catch((e) => setErr(String(e)));
+  }
+
+  function clearCompare() {
+    setCmp(null);
+    const params = new URLSearchParams(location.search);
+    params.delete("vs");
+    history.pushState(null, "", `?${params}`);
+  }
+
   function back() {
-    setSel(null);
+    setSel(null); setCmp(null);
     history.pushState(null, "", location.pathname);
   }
 
@@ -42,7 +61,8 @@ export default function AthletesApp() {
   if (err) return <p className="text-accent">資料載入失敗:{err}</p>;
   if (!list.length) return <p className="text-muted">載入中…</p>;
 
-  if (sel) return <AthleteProfile d={sel} index={list} onBack={back} />;
+  if (sel && cmp) return <AthleteCompare a={sel} b={cmp} onBack={clearCompare} />;
+  if (sel) return <AthleteProfile d={sel} index={list} onBack={back} onCompare={pickCompare} />;
   if (loadingSel) return <p className="text-muted">載入選手…</p>;
 
   return (
