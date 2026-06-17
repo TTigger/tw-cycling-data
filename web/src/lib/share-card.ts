@@ -467,15 +467,10 @@ export async function drawPowerCard(
     ctx.fillStyle = t.accent; ctx.font = `500 26px ${SANS}`; ctx.fillText(st.label, x, 940);
   });
 
-  // rival + VAM (full)
-  if (full) {
-    const bits: string[] = [];
-    if (m.rival) bits.push(`⚔ 宿敵 ${m.rival.nm} ${m.rival.w}–${m.rival.l}`);
-    if (m.vam) bits.push(`⛰ VAM ${m.vam.value}`);
-    if (bits.length) {
-      ctx.fillStyle = INK; ctx.font = `500 28px ${SANS}`;
-      ctx.fillText(fit(ctx, bits.join("       "), W - 220), cx, 974);
-    }
+  // best climb VAM (full)
+  if (full && m.vam) {
+    ctx.fillStyle = INK; ctx.font = `500 28px ${SANS}`;
+    ctx.fillText(`⛰ 最佳爬坡 VAM ${m.vam.value}`, cx, 974);
   }
 
   // footer

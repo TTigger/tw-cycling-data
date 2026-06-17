@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { loadClimbVam } from "../../lib/data-load";
 import { buildModel, drawCard, powerModel, drawPowerCard, seasonYears, type CardType } from "../../lib/share-card";
 import type { AthleteDetail, ClimbVamEntry } from "../../lib/types";
@@ -22,6 +23,13 @@ export default function ShareCard({ d, onClose }: { d: AthleteDetail; onClose: (
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => { loadClimbVam().then(setVam).catch(() => {}); }, []);
+
+  // lock background scroll while the dialog is open
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = prev; };
+  }, []);
 
   useEffect(() => {
     const c = canvasRef.current;
@@ -59,7 +67,7 @@ export default function ShareCard({ d, onClose }: { d: AthleteDetail; onClose: (
     }, "image/png");
   }
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4"
       onClick={onClose}>
       <div className="max-h-[92vh] w-full max-w-md overflow-y-auto rounded-xl border border-border bg-surface p-4 shadow-xl"
@@ -130,6 +138,7 @@ export default function ShareCard({ d, onClose }: { d: AthleteDetail; onClose: (
         </button>
         <p className="mt-2 text-center text-xs text-muted">卡片只在你瀏覽器內合成;網站本身僅公開遮罩姓名與成績。</p>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
