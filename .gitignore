@@ -31,3 +31,5 @@ Thumbs.db
 
 # font subsetting source TTFs (woff2 outputs in web/public/fonts ARE committed)
 data/_fonts_src/
+
+.playwright-mcp/
