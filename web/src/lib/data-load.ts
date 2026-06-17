@@ -1,4 +1,4 @@
-import type { SlimRecord, RaceIndex, DetailRow, AthleteIndexEntry, AthleteDetail, AthleteFeature, ClimbProfile, ClimbVamEntry, Insights, OverseasRaceMeta, OverseasRow, Coverage, CourseRecordsFile, RaceDifficultyFile, RaceDnaFile, SeriesFile } from "./types";
+import type { SlimRecord, RaceIndex, DetailRow, AthleteIndexEntry, AthleteDetail, AthleteFeature, ClimbProfile, ClimbVamEntry, Insights, OverseasRaceMeta, OverseasRow, Coverage, CourseRecordsFile, RaceDifficultyFile, RaceDnaFile, SeriesFile, TeamIndexEntry, TeamDetail } from "./types";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
@@ -64,6 +64,16 @@ export async function loadRaceDna(): Promise<RaceDnaFile> {
 export async function loadSeries(): Promise<SeriesFile> {
   const r = await fetch(`${base}/data/series.json`);
   if (!r.ok) throw new Error(`series.json ${r.status}`);
+  return r.json();
+}
+export async function loadTeams(): Promise<TeamIndexEntry[]> {
+  const r = await fetch(`${base}/data/teams.json`);
+  if (!r.ok) throw new Error(`teams.json ${r.status}`);
+  return r.json();
+}
+export async function loadTeam(id: string): Promise<TeamDetail> {
+  const r = await fetch(`${base}/data/team/${id}.json`);
+  if (!r.ok) throw new Error(`team ${id} ${r.status}`);
   return r.json();
 }
 export async function loadClimbProfiles(): Promise<ClimbProfile[]> {
