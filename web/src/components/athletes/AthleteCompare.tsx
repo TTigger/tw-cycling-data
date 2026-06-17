@@ -147,10 +147,10 @@ export default function AthleteCompare(
                         href={`${base}/race?rk=${encodeURIComponent(r.rk)}&y=${r.y}`}>{r.rn}</a>
                     </td>
                     <td className="py-1.5 pr-3 num text-muted">
-                      {r.aRank ?? "—"}<span className="ml-1 text-xs">{secondsToHMS(r.aT)}</span>
+                      {r.aRank ?? "—"}<span className="ml-1 text-xs text-muted">({secondsToHMS(r.aT)})</span>
                     </td>
                     <td className="py-1.5 pr-3 num text-muted">
-                      {r.bRank ?? "—"}<span className="ml-1 text-xs">{secondsToHMS(r.bT)}</span>
+                      {r.bRank ?? "—"}<span className="ml-1 text-xs text-muted">({secondsToHMS(r.bT)})</span>
                     </td>
                     <td className="py-1.5 pr-3">
                       {r.winner === "a" ? <span className="text-accent">◀ {a.nm}</span>
