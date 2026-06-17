@@ -15,9 +15,9 @@ const D: AthleteDetail = {
   teams: ["喬家車隊"],
   traits: { climb: { pct: 80, n: 5 }, road: { pct: 60, n: 4 }, crit: { pct: 64, n: 2 } },
   history: [
-    row({ y: 2023, rn: "武嶺盃", rank: 5, field: 100 }),     // beat 95%
-    row({ y: 2024, rn: "KOM", rank: 50, field: 100 }),       // 50%
-    row({ y: 2024, rn: "彰化100", rank: 10, field: 200 }),   // beat 95%
+    row({ y: 2023, rk: "wuling", rn: "武嶺盃", rank: 5, field: 100 }),  // beat 95%
+    row({ y: 2024, rk: "kom", rn: "KOM", rank: 50, field: 100 }),       // 50%
+    row({ y: 2024, rk: "ch100", rn: "彰化100", rank: 10, field: 200 }), // beat 95%
   ],
 };
 
@@ -53,20 +53,24 @@ describe("careerModel", () => {
     expect(m.stats[0]).toEqual({ value: "3", label: "出賽場次" });
     expect(m.stats[1].value).toBe("95%");                  // best of 95/50/95
   });
-  it("adds climb VAM stat + specialty/anchor badge + spark", () => {
+  it("adds climb VAM stat + specialty tag (no source-linkage text) + spark", () => {
     expect(m.stats.some((s) => s.value === "1320")).toBe(true);
-    expect(m.badge).toContain("爬坡型");
-    expect(m.badge).toContain("TCU 串接");
+    expect(m.tag).toBe("爬坡型");                            // specialty only
+    expect(m.tag).not.toContain("串接");                     // no TCU/UCI linkage claim
     expect(m.spark?.length).toBe(2);                        // 2023 + 2024
   });
 });
 
 describe("seasonModel", () => {
-  it("scopes to one year and lists that year's races as chips", () => {
+  it("scopes to one year and lists that year's races with their placing", () => {
     const m = seasonModel(D, 2024, VAM);
     expect(m.kicker).toBe("你的 2024 賽季");
     expect(m.stats[0]).toEqual({ value: "2", label: "出賽" });
-    expect(m.chips).toEqual(["KOM", "彰化100"]);
+    // per-race results, strongest placing first (彰化100 10/200 beats KOM 50/100)
+    expect(m.rows).toEqual([
+      { left: "彰化100", right: "10/200" },
+      { left: "KOM", right: "50/100" },
+    ]);
     expect(m.stats.some((s) => s.label.includes("最快爬坡"))).toBe(true); // KOM 2024 climb
   });
 });
