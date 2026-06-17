@@ -5,6 +5,7 @@ import { searchAthletes, CONF_LABEL } from "../../lib/athletes";
 import type { AthleteIndexEntry, AthleteDetail } from "../../lib/types";
 import AthleteProfile from "./AthleteProfile";
 import AthleteCompare from "./AthleteCompare";
+import Skeleton from "../Skeleton";
 
 const CONF_DOT: Record<string, string> = {
   high: "bg-emerald-400/70", med: "bg-amber-400/80", low: "bg-accent",
@@ -59,7 +60,7 @@ export default function AthletesApp() {
   const results = useMemo(() => searchAthletes(list, q), [list, q]);
 
   if (err) return <p className="text-accent">資料載入失敗:{err}</p>;
-  if (!list.length) return <p className="text-muted">載入中…</p>;
+  if (!list.length) return <Skeleton cards={3} />;
 
   if (sel && cmp) return <AthleteCompare a={sel} b={cmp} onBack={clearCompare} />;
   if (sel) return <AthleteProfile d={sel} index={list} onBack={back} onCompare={pickCompare} />;

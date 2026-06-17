@@ -11,6 +11,7 @@ import CrossYearTrend from "./CrossYearTrend";
 import TeamStrength from "./TeamStrength";
 import RaceDna from "./RaceDna";
 import RaceSeverity from "./RaceSeverity";
+import Skeleton from "../Skeleton";
 
 function Card({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
   return (
@@ -54,7 +55,7 @@ export default function RaceDetailApp() {
   );
 
   if (err) return <p className="text-accent">資料載入失敗:{err}</p>;
-  if (!races.length) return <p className="text-muted">載入中…</p>;
+  if (!races.length) return <Skeleton cards={3} />;
 
   if (!sel) return <RacePicker races={races} onPick={(r) => pick(r)} />;
 

@@ -10,6 +10,7 @@ import VamMethodology from "./VamMethodology";
 import PercentileWidget from "../race/PercentileWidget";
 import RaceTimeHistogram from "../race/RaceTimeHistogram";
 import Podium from "../race/Podium";
+import Skeleton from "../Skeleton";
 import Leaderboard from "../race/Leaderboard";
 
 function Card({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
@@ -51,7 +52,7 @@ export default function ClimbsApp() {
   }
 
   if (err) return <p className="text-accent">資料載入失敗:{err}</p>;
-  if (!climbs.length) return <p className="text-muted">載入中…</p>;
+  if (!climbs.length) return <Skeleton cards={3} />;
 
   return (
     <div className="space-y-6">

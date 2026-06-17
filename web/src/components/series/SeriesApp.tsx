@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { loadSeries } from "../../lib/data-load";
 import { seriesList } from "../../lib/series";
 import type { SeriesFile } from "../../lib/types";
+import Skeleton from "../Skeleton";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
@@ -31,7 +32,7 @@ export default function SeriesApp() {
   const season = file && activeKey && activeYr ? file[activeKey].seasons[activeYr] : null;
 
   if (err) return <p className="text-accent">資料載入失敗:{err}</p>;
-  if (!file) return <p className="text-muted">載入中…</p>;
+  if (!file) return <Skeleton cards={3} />;
   if (!list.length) return <p className="text-muted">尚無多站系列資料。</p>;
 
   return (

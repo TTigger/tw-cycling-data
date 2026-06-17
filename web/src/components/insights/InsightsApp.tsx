@@ -8,6 +8,7 @@ import RaceRatings from "./RaceRatings";
 import ResultConverter from "./ResultConverter";
 import GeoHotspots from "./GeoHotspots";
 import RecordsWall from "./RecordsWall";
+import Skeleton from "../Skeleton";
 
 function Card({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
   return (
@@ -30,7 +31,7 @@ export default function InsightsApp() {
   }, []);
 
   if (err) return <p className="text-accent">資料載入失敗:{err}</p>;
-  if (!ins) return <p className="text-muted">載入中…</p>;
+  if (!ins) return <Skeleton cards={4} />;
 
   return (
     <div className="space-y-6">
