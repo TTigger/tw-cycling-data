@@ -7,6 +7,7 @@ import CalibratedProgress from "./CalibratedProgress";
 import AthleteRadar from "./AthleteRadar";
 import Doppelganger from "./Doppelganger";
 import ShareCard from "./ShareCard";
+import FavButton from "../FavButton";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
@@ -50,6 +51,7 @@ export default function AthleteProfile(
           </span>
         </div>
         <div className="flex shrink-0 flex-col gap-2">
+          <FavButton kind="athlete" item={{ id: d.id, nm: d.nm }} />
           <button className="rounded-lg border border-accent bg-accent/10 px-3 py-2 text-sm text-accent hover:bg-accent/20"
             onClick={() => setShowCard(true)}>📇 產生成績卡</button>
           <button className="rounded-lg border border-border px-3 py-2 text-sm text-muted hover:text-accent"

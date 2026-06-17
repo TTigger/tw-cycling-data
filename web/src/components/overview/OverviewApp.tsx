@@ -9,6 +9,7 @@ import ParticipationTrend from "./ParticipationTrend";
 import WomenParticipation from "./WomenParticipation";
 import CompositionByClass from "./CompositionByClass";
 import Skeleton from "../Skeleton";
+import Favorites from "../Favorites";
 
 function Card({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
   return (
@@ -35,6 +36,7 @@ export default function OverviewApp() {
 
   return (
     <div className="space-y-6">
+      <Favorites />
       <KpiCards kpi={kpi} />
       <div className="grid gap-4 lg:grid-cols-2">
         <Card title="賽季行事曆" hint="各月份人次(date 100% 完整)"><SeasonHeatmap rows={viz} /></Card>

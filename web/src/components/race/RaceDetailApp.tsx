@@ -12,6 +12,7 @@ import TeamStrength from "./TeamStrength";
 import RaceDna from "./RaceDna";
 import RaceSeverity from "./RaceSeverity";
 import Skeleton from "../Skeleton";
+import FavButton from "../FavButton";
 
 function Card({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
   return (
@@ -66,8 +67,11 @@ export default function RaceDetailApp() {
           <h1 className="font-display text-2xl text-ink">{sel.y} {sel.rn}</h1>
           <p className="text-sm text-muted">{sel.s} · {sel.rows.toLocaleString()} 筆成績</p>
         </div>
-        <button className="rounded-lg border border-border px-3 py-2 text-sm text-muted hover:text-accent"
-          onClick={() => { setSel(null); history.pushState(null, "", location.pathname); }}>← 換一場</button>
+        <div className="flex shrink-0 items-center gap-2">
+          {sel.y != null && <FavButton kind="race" item={{ rk: sel.rk, y: sel.y, rn: sel.rn }} />}
+          <button className="rounded-lg border border-border px-3 py-2 text-sm text-muted hover:text-accent"
+            onClick={() => { setSel(null); history.pushState(null, "", location.pathname); }}>← 換一場</button>
+        </div>
       </div>
 
       {!detail ? <p className="text-muted">載入排行榜…</p> : (
