@@ -6,6 +6,7 @@ import AthleteProgression from "./AthleteProgression";
 import CalibratedProgress from "./CalibratedProgress";
 import AthleteRadar from "./AthleteRadar";
 import Doppelganger from "./Doppelganger";
+import SeasonReview from "./SeasonReview";
 import ShareCard from "./ShareCard";
 import FavButton from "../FavButton";
 
@@ -97,6 +98,8 @@ export default function AthleteProfile(
         <Stat label="前三名" value={s.podiums} />
         <Stat label="最佳名次" value={s.bestRank ?? "—"} />
       </div>
+
+      <SeasonReview d={d} />
 
       <section className="rounded-xl border border-border bg-surface p-4">
         <h2 className="font-display text-lg text-ink">進步軌跡</h2>
