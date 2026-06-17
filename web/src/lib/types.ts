@@ -100,6 +100,25 @@ export interface OverseasRow {
   finish_time: string | null; finish_seconds: number | null;
 }
 
+export interface TeamIndexEntry {
+  id: string; name: string; riders: number; races: number;
+  wins: number; podiums: number; y0: number | null; y1: number | null;
+}
+export interface TeamRosterRider {
+  id: string; nm: string; link: boolean; n: number;
+  best: number | null; y0: number | null; y1: number | null;
+}
+export interface TeamHighlight {
+  id: string; nm: string; rn: string | null; rk: string | null;
+  y: number | null; rank: number | null; pct: number;
+}
+export interface TeamDetail extends TeamIndexEntry {
+  rows: number; best: number | null;
+  byYear: { y: number; riders: number; races: number }[];
+  roster: TeamRosterRider[];
+  highlights: TeamHighlight[];
+}
+
 export interface CoverageGap { race: string; calendar: string; guess_source: string; }
 export interface Coverage {
   summary: {
