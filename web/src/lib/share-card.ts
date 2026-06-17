@@ -142,16 +142,20 @@ export type Tier = "platinum" | "gold" | "silver" | "bronze";
 // ink = readable dark text on that metal, accent = sub-label colour.
 export const TIER_META: Record<Tier, {
   label: string; bg1: string; bg2: string; frame: string; glow: string;
-  ink: string; accent: string; pill1: string; pill2: string;
+  ink: string; accent: string; pill1: string; pill2: string; holo?: string[];
 }> = {
-  platinum: { label: "白金 PLATINUM", bg1: "#F4F7FB", bg2: "#BFCEDE", frame: "#94A8BE",
-    glow: "rgba(188,210,236,0.75)", ink: "#26313F", accent: "#3D5C7C", pill1: "#E7EEF6", pill2: "#A6B8CC" },
-  gold: { label: "金 GOLD", bg1: "#FCF3CC", bg2: "#E4B845", frame: "#C5901F",
-    glow: "rgba(247,210,96,0.8)", ink: "#473410", accent: "#946212", pill1: "#F9E184", pill2: "#D5A328" },
-  silver: { label: "銀 SILVER", bg1: "#F4F5F8", bg2: "#C4CAD3", frame: "#A0A8B3",
-    glow: "rgba(206,212,220,0.7)", ink: "#313842", accent: "#5A636E", pill1: "#E6E9EE", pill2: "#B4BBC6" },
-  bronze: { label: "銅 BRONZE", bg1: "#F8E6CC", bg2: "#CB8A4D", frame: "#A5662F",
-    glow: "rgba(219,160,98,0.75)", ink: "#46300F", accent: "#985A22", pill1: "#EDC79A", pill2: "#C9824A" },
+  // top tier = iridescent/holographic pearl (clearly ≠ plain silver)
+  platinum: { label: "白金 PLATINUM", bg1: "#EFF3F9", bg2: "#C7D4E4", frame: "#AEC0D4",
+    glow: "rgba(220,232,248,0.7)", ink: "#283341", accent: "#46618A", pill1: "#F2F7FD", pill2: "#C4D4E6",
+    holo: ["#BCE7FF", "#CFBCFF", "#FFC6E6", "#C6F6DB", "#FFE7B8"] },
+  // refined deep champagne gold (warmer/richer, not flat lemon-yellow)
+  gold: { label: "金 GOLD", bg1: "#F6EAC4", bg2: "#C6922E", frame: "#AC8020",
+    glow: "rgba(244,222,150,0.7)", ink: "#473307", accent: "#8A5A0F", pill1: "#F3E2A0", pill2: "#CB9C33" },
+  // plain neutral silver — no iridescence, so it never reads like platinum
+  silver: { label: "銀 SILVER", bg1: "#EFF1F4", bg2: "#BBC1CA", frame: "#A0A8B3",
+    glow: "rgba(200,206,214,0.55)", ink: "#333A43", accent: "#5A636E", pill1: "#E7EAEF", pill2: "#B0B7C1" },
+  bronze: { label: "銅 BRONZE", bg1: "#F6E3C7", bg2: "#C5824A", frame: "#A3622D",
+    glow: "rgba(214,156,96,0.7)", ink: "#46300F", accent: "#955722", pill1: "#EEC79A", pill2: "#C57F47" },
 };
 
 /** Strength tier from the career median in-field percentile (贏過全場 %). */
@@ -341,19 +345,30 @@ export async function drawPowerCard(
   const INK = t.ink;
 
   // 1) full-bleed metallic gradient
-  const bg = ctx.createLinearGradient(0, 0, W * 0.4, W);
+  const bg = ctx.createLinearGradient(0, 0, W * 0.35, W);
   bg.addColorStop(0, t.bg1); bg.addColorStop(1, t.bg2);
   ctx.fillStyle = bg; ctx.fillRect(0, 0, W, W);
 
+  // 1b) iridescent holographic sheen (top tier only — sets it apart from silver)
+  if (t.holo) {
+    ctx.save();
+    ctx.globalAlpha = 0.36;
+    ctx.translate(cx, cx); ctx.rotate(-Math.PI / 6); ctx.translate(-cx, -cx);
+    const ig = ctx.createLinearGradient(-220, 0, W + 220, 0);
+    t.holo.forEach((h, i) => ig.addColorStop(i / (t.holo!.length - 1), h));
+    ctx.fillStyle = ig; ctx.fillRect(-220, -220, W + 440, W + 440);
+    ctx.restore();
+  }
+
   // 2) radial glow, upper-centre
-  const glow = ctx.createRadialGradient(cx, 380, 30, cx, 380, 660);
+  const glow = ctx.createRadialGradient(cx, 360, 20, cx, 360, 690);
   glow.addColorStop(0, t.glow); glow.addColorStop(1, "rgba(255,255,255,0)");
   ctx.fillStyle = glow; ctx.fillRect(0, 0, W, W);
 
-  // 3) diagonal foil sheen
+  // 3) diagonal foil sheen — brighter, more streaks for shine
   ctx.save();
   ctx.translate(cx, cx); ctx.rotate(-Math.PI / 5); ctx.translate(-cx, -cx);
-  for (const [x, w, a] of [[-120, 150, 0.10], [340, 90, 0.18], [720, 180, 0.07]] as const) {
+  for (const [x, w, a] of [[-180, 130, 0.12], [120, 64, 0.24], [430, 150, 0.10], [820, 120, 0.16]] as const) {
     const f = ctx.createLinearGradient(x, 0, x + w, 0);
     f.addColorStop(0, "rgba(255,255,255,0)");
     f.addColorStop(0.5, `rgba(255,255,255,${a})`);
@@ -361,6 +376,11 @@ export async function drawPowerCard(
     ctx.fillStyle = f; ctx.fillRect(x, -420, w, W + 840);
   }
   ctx.restore();
+
+  // 3b) soft edge vignette for depth
+  const vg = ctx.createRadialGradient(cx, cx, W * 0.32, cx, cx, W * 0.72);
+  vg.addColorStop(0, "rgba(0,0,0,0)"); vg.addColorStop(1, "rgba(0,0,0,0.10)");
+  ctx.fillStyle = vg; ctx.fillRect(0, 0, W, W);
 
   // 4) framed border (thick tier frame + inner hairline)
   ctx.lineWidth = 18; ctx.strokeStyle = t.frame;
@@ -394,10 +414,16 @@ export async function drawPowerCard(
     ctx.restore();
   }
 
-  // rating hero (the focal number)
+  // rating hero (the focal number) — with a bright halo for shine
   const ratingY = hasAvatar ? 510 : 372;
-  ctx.fillStyle = INK; ctx.font = `800 ${hasAvatar ? 132 : 172}px ${MONO}`;
-  ctx.fillText(m.overall != null ? `${m.overall}` : "—", cx, ratingY);
+  const ratingTxt = m.overall != null ? `${m.overall}` : "—";
+  ctx.font = `800 ${hasAvatar ? 132 : 172}px ${MONO}`;
+  ctx.save();
+  ctx.shadowColor = "rgba(255,255,255,0.95)"; ctx.shadowBlur = 26;
+  ctx.fillStyle = INK; ctx.fillText(ratingTxt, cx, ratingY);
+  ctx.fillText(ratingTxt, cx, ratingY);  // double-pass to deepen the glow
+  ctx.restore();
+  ctx.fillStyle = INK; ctx.fillText(ratingTxt, cx, ratingY);  // crisp on top
   ctx.fillStyle = t.accent; ctx.font = `600 28px ${SANS}`;
   ctx.fillText("實力分位 · 贏過全場 % 中位", cx, ratingY + 42);
 
