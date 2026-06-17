@@ -94,6 +94,8 @@ _SERIES = [
     (r"仙山|一輪盃", "仙山單車挑戰賽"),
     (r"鵬灣|世界自行車日", "世界自行車日"),
     (r"四重溪", "屏東四重溪自行車挑戰賽"),
+    (r"Gravel\s?Fundo", "GravelFundo 礫石越野系列"),
+    (r"台中城市繞圈", "TCU 台中城市繞圈賽"),   # 中寮KOM 不含「城市繞圈」-> 不誤收
 ]
 _SERIES = [(re.compile(p, re.I), label) for p, label in _SERIES]
 
