@@ -10,6 +10,7 @@ import FinishTimeHistogram from "../charts/FinishTimeHistogram";
 import AgeBoxplot from "../charts/AgeBoxplot";
 import CompetitivenessSpread from "../charts/CompetitivenessSpread";
 import DistanceSpeedScatter from "../charts/DistanceSpeedScatter";
+import Skeleton from "../Skeleton";
 
 function Card({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
   return (
@@ -39,7 +40,7 @@ export default function ExploreApp() {
   const nameMap = useMemo(() => new Map(races.map((r) => [r.rk, r.rn])), [races]);
 
   if (err) return <p className="text-accent">資料載入失敗:{err}</p>;
-  if (!viz || !facets) return <p className="text-muted">載入中…</p>;
+  if (!viz || !facets) return <Skeleton cards={4} />;
 
   return (
     <div className="space-y-6">

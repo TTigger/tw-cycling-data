@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { loadOverseasIndex, loadOverseasRace } from "../../lib/data-load";
 import type { OverseasRaceMeta, OverseasRow } from "../../lib/types";
 import { secondsToHMS } from "../../lib/format";
+import Skeleton from "../Skeleton";
 
 const PAGE = 50;
 
@@ -39,7 +40,7 @@ export default function OverseasApp() {
   const maxPage = Math.max(0, Math.ceil(filtered.length / PAGE) - 1);
 
   if (err) return <p className="text-accent">資料載入失敗:{err}</p>;
-  if (!index.length) return <p className="text-muted">載入中…</p>;
+  if (!index.length) return <Skeleton cards={2} />;
 
   return (
     <div className="space-y-5">

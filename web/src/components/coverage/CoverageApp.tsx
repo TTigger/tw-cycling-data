@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { loadCoverage, loadRaces } from "../../lib/data-load";
 import type { Coverage, RaceIndex } from "../../lib/types";
+import Skeleton from "../Skeleton";
 
 // Where contributions go. Set this to your preferred channel (GitHub Issues /
 // Google Form / community link). Defaults to the project's GitHub.
@@ -48,7 +49,7 @@ export default function CoverageApp() {
   }, [races]);
 
   if (err) return <p className="text-accent">資料載入失敗:{err}</p>;
-  if (!cov) return <p className="text-muted">載入中…</p>;
+  if (!cov) return <Skeleton cards={3} />;
   const s = cov.summary;
 
   return (

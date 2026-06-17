@@ -8,6 +8,7 @@ import SeasonHeatmap from "./SeasonHeatmap";
 import ParticipationTrend from "./ParticipationTrend";
 import WomenParticipation from "./WomenParticipation";
 import CompositionByClass from "./CompositionByClass";
+import Skeleton from "../Skeleton";
 
 function Card({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
   return (
@@ -30,7 +31,7 @@ export default function OverviewApp() {
   const kpi = useMemo(() => (viz ? kpiStats(viz) : null), [viz]);
 
   if (err) return <p className="text-accent">資料載入失敗:{err}</p>;
-  if (!viz || !kpi) return <p className="text-muted">載入中…</p>;
+  if (!viz || !kpi) return <Skeleton cards={4} />;
 
   return (
     <div className="space-y-6">
