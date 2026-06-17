@@ -108,9 +108,21 @@ export interface Coverage {
   };
   gaps: CoverageGap[];
 }
+export interface RecordAthlete { id: string; nm: string; g: "M" | "F" | null; v: number; }
+export interface RecordRace { rk: string; name: string; y: number; n: number; }
+export interface RecordLoyal { id: string; nm: string; rk: string; name: string; v: number; }
+export interface Records {
+  biggest_field: RecordRace[];
+  most_starts: RecordAthlete[];
+  most_wins: RecordAthlete[];
+  most_races: RecordAthlete[];
+  longest_streak: RecordAthlete[];
+  most_loyal: RecordLoyal[];
+}
 export interface Insights {
   age_curve: AgeCurvePoint[];
   breakout: BreakoutEntry[];
   ratings: RaceRating[];
   geo: GeoRegion[];
+  records: Records;
 }

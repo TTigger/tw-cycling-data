@@ -7,6 +7,7 @@ import Breakout from "./Breakout";
 import RaceRatings from "./RaceRatings";
 import ResultConverter from "./ResultConverter";
 import GeoHotspots from "./GeoHotspots";
+import RecordsWall from "./RecordsWall";
 
 function Card({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
   return (
@@ -33,6 +34,11 @@ export default function InsightsApp() {
 
   return (
     <div className="space-y-6">
+      {ins.records && (
+        <Card title="🏅 紀錄牆" hint="跨全站的極值冷知識(已排除高同名風險身分;點擊前往)">
+          <RecordsWall records={ins.records} />
+        </Card>
+      )}
       <Card title="年齡 vs 全場表現" hint="各年齡層在全場的相對名次落點(跨賽事正規化)">
         <AgeCurve points={ins.age_curve} />
       </Card>

@@ -14,7 +14,7 @@ from collections import Counter, defaultdict
 
 sys.path.insert(0, os.path.dirname(__file__))
 import common  # noqa: E402,F401
-from build_athletes import build_group_keys, athlete_id, MIN_RESULTS  # noqa: E402
+from build_athletes import build_group_keys, athlete_id, MIN_RESULTS, confidence  # noqa: E402
 
 sys.stdout.reconfigure(encoding="utf-8")
 HERE = os.path.dirname(__file__)
@@ -247,6 +247,76 @@ def build_ratings(records):
     return rows[:60]
 
 
+def _streak(years):
+    """Longest run of consecutive racing years (e.g. {2019,2020,2021,2024} -> 3)."""
+    ys = sorted({y for y in years if y})
+    if not ys:
+        return 0
+    best = run = 1
+    for a, b in zip(ys, ys[1:]):
+        run = run + 1 if b == a + 1 else 1
+        best = max(best, run)
+    return best
+
+
+def build_records(records, top=8):
+    """A 'records wall' of well-defined cold facts (the /insights page). Race-level
+    facts need no identity; athlete-level facts use the TCU/UCI/name grouping and
+    EXCLUDE low-confidence (high-homonym-risk) identities so a name collision can't
+    falsely top a leaderboard. De-identified output (masked names + salted ids)."""
+    fields = field_sizes(records)
+    names = {}
+    for r in records:
+        rk = r.get("race_key")
+        if rk and rk not in names:
+            names[rk] = r.get("race_name_canonical") or rk
+
+    big = sorted(((n, rk, y) for (rk, y), n in fields.items() if y), key=lambda t: -t[0])[:top]
+    biggest_field = [{"rk": rk, "name": names.get(rk, rk), "y": y, "n": n} for n, rk, y in big]
+
+    keys = build_group_keys(records)
+    groups = defaultdict(list)
+    for k, r in zip(keys, records):
+        if k not in ("n:", "u:", "t:"):
+            groups[k].append(r)
+
+    ath = []
+    for gk, recs in groups.items():
+        if len(recs) < MIN_RESULTS:
+            continue
+        teams = {r.get("team") for r in recs if r.get("team")}
+        genders = {r.get("gender") for r in recs if r.get("gender") in ("M", "F")}
+        name_len = len([c for c in (recs[0].get("name_raw") or "") if not c.isspace()])
+        if confidence(gk[0] in ("t", "u"), len(teams), name_len, mixed_gender=len(genders) > 1) == "low":
+            continue
+        per_race_years = defaultdict(set)
+        for r in recs:
+            if r.get("race_key") and r.get("year"):
+                per_race_years[r["race_key"]].add(r["year"])
+        lrk, lys = max(per_race_years.items(), key=lambda kv: len(kv[1])) if per_race_years else (None, set())
+        ath.append({
+            "id": athlete_id(gk), "nm": _masked(recs), "g": _mode_gender(recs),
+            "n": len(recs), "wins": sum(1 for r in recs if r.get("rank_overall") == 1),
+            "nr": len({r.get("race_key") for r in recs}),
+            "streak": _streak([r.get("year") for r in recs]),
+            "lrk": lrk, "lname": names.get(lrk, lrk), "lyears": len(lys),
+        })
+
+    def board(key, label_key="v"):
+        return [{"id": a["id"], "nm": a["nm"], "g": a["g"], label_key: a[key]}
+                for a in sorted(ath, key=lambda a: -a[key])[:top] if a[key] > 0]
+
+    return {
+        "biggest_field": biggest_field,
+        "most_starts": board("n"),
+        "most_wins": board("wins"),
+        "most_races": board("nr"),
+        "longest_streak": board("streak"),
+        "most_loyal": [{"id": a["id"], "nm": a["nm"], "rk": a["lrk"], "name": a["lname"], "v": a["lyears"]}
+                       for a in sorted(ath, key=lambda a: -a["lyears"])[:top] if a["lyears"] > 1],
+    }
+
+
 def main():
     records = list(common.iter_records(IN))  # RAM-frugal streaming parse
     insights = {
@@ -254,6 +324,7 @@ def main():
         "breakout": build_breakout(records),
         "ratings": build_ratings(records),
         "geo": build_geo(records),
+        "records": build_records(records),
     }
     with open(os.path.join(OUT, "insights.json"), "w", encoding="utf-8") as f:
         json.dump(insights, f, ensure_ascii=False, separators=(",", ":"))
