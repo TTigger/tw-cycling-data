@@ -18,6 +18,7 @@ export default function ShareCard({ d, onClose }: { d: AthleteDetail; onClose: (
   const [raceIdx, setRaceIdx] = useState(0);
   const [full, setFull] = useState(true);
   const [photo, setPhoto] = useState<HTMLImageElement | null>(null);
+  const [customName, setCustomName] = useState("");
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => { loadClimbVam().then(setVam).catch(() => {}); }, []);
@@ -25,9 +26,15 @@ export default function ShareCard({ d, onClose }: { d: AthleteDetail; onClose: (
   useEffect(() => {
     const c = canvasRef.current;
     if (!c) return;
-    if (type === "power") drawPowerCard(c, powerModel(d, vam), { full, photo });
-    else drawCard(c, buildModel(type, d, vam, year, raceIdx));
-  }, [type, d, vam, year, raceIdx, full, photo]);
+    const name = customName.trim() || d.nm;   // user may opt to show their full name
+    if (type === "power") {
+      const m = powerModel(d, vam); m.name = name;
+      drawPowerCard(c, m, { full, photo });
+    } else {
+      const m = buildModel(type, d, vam, year, raceIdx); m.name = name;
+      drawCard(c, m);
+    }
+  }, [type, d, vam, year, raceIdx, full, photo, customName]);
 
   function onPhoto(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -53,9 +60,9 @@ export default function ShareCard({ d, onClose }: { d: AthleteDetail; onClose: (
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/30 p-4 py-[6vh]"
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4"
       onClick={onClose}>
-      <div className="w-full max-w-md rounded-xl border border-border bg-surface p-4 shadow-xl"
+      <div className="max-h-[92vh] w-full max-w-md overflow-y-auto rounded-xl border border-border bg-surface p-4 shadow-xl"
         onClick={(e) => e.stopPropagation()} role="dialog" aria-label="成績卡">
         <div className="mb-3 flex items-center justify-between">
           <h2 className="font-display text-lg text-ink">分享成績卡</h2>
@@ -69,6 +76,13 @@ export default function ShareCard({ d, onClose }: { d: AthleteDetail; onClose: (
               {t.label}
             </button>
           ))}
+        </div>
+
+        <div className="mb-3">
+          <input value={customName} onChange={(e) => setCustomName(e.target.value)}
+            maxLength={24} placeholder={`顯示名稱(預設 ${d.nm})`}
+            className="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-ink outline-none focus:border-accent" />
+          <p className="mt-1 text-xs text-muted">預設為遮罩姓名;想印完整姓名可自行輸入 —— 只會合成到你下載的卡片,網站不會儲存或公開。</p>
         </div>
 
         {type === "power" && (
@@ -114,7 +128,7 @@ export default function ShareCard({ d, onClose }: { d: AthleteDetail; onClose: (
           className="mt-3 w-full rounded-lg border border-accent bg-accent/10 px-4 py-2 text-sm text-accent hover:bg-accent/20">
           下載 PNG ↓
         </button>
-        <p className="mt-2 text-center text-xs text-muted">僅含遮罩姓名與公開成績,可安心分享</p>
+        <p className="mt-2 text-center text-xs text-muted">卡片只在你瀏覽器內合成;網站本身僅公開遮罩姓名與成績。</p>
       </div>
     </div>
   );
