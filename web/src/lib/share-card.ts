@@ -90,7 +90,6 @@ export function seasonModel(d: AthleteDetail, year: number, vam: ClimbVamEntry[]
     { value: bp == null ? "—" : `${bp}%`, label: "最佳贏過" },
   ];
   if (climb) stats.push({ value: String(Math.round(climb.best_vam)), label: `最快爬坡·${climb.climb}` });
-  // best result per race that year, strongest placing first
   const byRace = new Map<string, AthleteHistoryRow>();
   for (const r of rows) {
     const cur = byRace.get(r.rk);
@@ -138,11 +137,21 @@ export function buildModel(
 
 // ---- power card (戰力卡) ---------------------------------------------------
 export type Tier = "platinum" | "gold" | "silver" | "bronze";
-export const TIER_META: Record<Tier, { label: string; c1: string; c2: string; tint: string }> = {
-  platinum: { label: "白金 PLATINUM", c1: "#EEF0F3", c2: "#AEB8C4", tint: "rgba(174,184,196,0.16)" },
-  gold: { label: "金 GOLD", c1: "#F6DA7C", c2: "#C7942B", tint: "rgba(199,148,43,0.16)" },
-  silver: { label: "銀 SILVER", c1: "#DEDFE2", c2: "#9AA0A6", tint: "rgba(154,160,166,0.16)" },
-  bronze: { label: "銅 BRONZE", c1: "#DCAB74", c2: "#9C6B3F", tint: "rgba(156,107,63,0.16)" },
+// Distinct metallic palettes (clearly different hues so tiers read at a glance):
+// bg1→bg2 = the card gradient, glow = the radial highlight, frame = border,
+// ink = readable dark text on that metal, accent = sub-label colour.
+export const TIER_META: Record<Tier, {
+  label: string; bg1: string; bg2: string; frame: string; glow: string;
+  ink: string; accent: string; pill1: string; pill2: string;
+}> = {
+  platinum: { label: "白金 PLATINUM", bg1: "#F4F7FB", bg2: "#BFCEDE", frame: "#94A8BE",
+    glow: "rgba(188,210,236,0.75)", ink: "#26313F", accent: "#3D5C7C", pill1: "#E7EEF6", pill2: "#A6B8CC" },
+  gold: { label: "金 GOLD", bg1: "#FCF3CC", bg2: "#E4B845", frame: "#C5901F",
+    glow: "rgba(247,210,96,0.8)", ink: "#473410", accent: "#946212", pill1: "#F9E184", pill2: "#D5A328" },
+  silver: { label: "銀 SILVER", bg1: "#F4F5F8", bg2: "#C4CAD3", frame: "#A0A8B3",
+    glow: "rgba(206,212,220,0.7)", ink: "#313842", accent: "#5A636E", pill1: "#E6E9EE", pill2: "#B4BBC6" },
+  bronze: { label: "銅 BRONZE", bg1: "#F8E6CC", bg2: "#CB8A4D", frame: "#A5662F",
+    glow: "rgba(219,160,98,0.75)", ink: "#46300F", accent: "#985A22", pill1: "#EDC79A", pill2: "#C9824A" },
 };
 
 /** Strength tier from the career median in-field percentile (贏過全場 %). */
@@ -250,7 +259,6 @@ export async function drawCard(canvas: HTMLCanvasElement, m: CardModel): Promise
   ctx.fillStyle = C.accent; ctx.fillRect(0, 0, W, 14);
   ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
 
-  // header
   ctx.fillStyle = C.accent; ctx.font = `600 30px 'Hanken Grotesk',${SANS}`;
   ctx.fillText(fit(ctx, m.kicker, IW), PAD, 184);
   ctx.fillStyle = C.ink; fitFont(ctx, m.name, IW, 104, DISPLAY, 600, 52);
@@ -267,7 +275,6 @@ export async function drawCard(canvas: HTMLCanvasElement, m: CardModel): Promise
   }
 
   if (m.rows) {
-    // season — results list as the focal content
     rule(ctx, 470);
     ctx.fillStyle = C.muted; ctx.font = `500 30px ${SANS}`;
     ctx.fillText(fit(ctx, m.stats.map((s) => `${s.label} ${s.value}`).join("    ·    "), IW), PAD, 532);
@@ -289,7 +296,6 @@ export async function drawCard(canvas: HTMLCanvasElement, m: CardModel): Promise
       ctx.fillText(`…還有 ${m.rows.length - MAXR} 場`, PAD, y + 14);
     }
   } else {
-    // career / race — big hero stats
     rule(ctx, 456);
     const colW = IW / m.stats.length;
     m.stats.forEach((st, i) => {
@@ -308,45 +314,18 @@ export async function drawCard(canvas: HTMLCanvasElement, m: CardModel): Promise
     }
   }
 
-  // footer
   rule(ctx, W - 128);
   ctx.textAlign = "left"; ctx.fillStyle = C.muted; ctx.font = `500 30px 'Hanken Grotesk',${SANS}`;
   ctx.fillText(m.footer, PAD, W - 74);
 }
 
-function radarShape(ctx: CanvasRenderingContext2D, axes: PowerRadarAxis[], cx: number, cy: number, r: number, color: string) {
-  const n = axes.length;
-  const ang = (i: number) => -Math.PI / 2 + (i / n) * 2 * Math.PI;
-  ctx.strokeStyle = "rgba(42,39,34,0.10)"; ctx.lineWidth = 2;
-  for (let ring = 1; ring <= 3; ring++) {
-    ctx.beginPath();
-    for (let i = 0; i <= n; i++) {
-      const rr = (r * ring) / 3, a = ang(i % n);
-      const x = cx + rr * Math.cos(a), y = cy + rr * Math.sin(a);
-      i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
-    }
-    ctx.closePath(); ctx.stroke();
-  }
-  ctx.beginPath();
-  axes.forEach((ax, i) => {
-    const rr = r * Math.max(0, Math.min(100, ax.pct)) / 100, a = ang(i);
-    const x = cx + rr * Math.cos(a), y = cy + rr * Math.sin(a);
-    i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
-  });
-  ctx.closePath();
-  ctx.fillStyle = color + "40"; ctx.fill();
-  ctx.strokeStyle = color; ctx.lineWidth = 4; ctx.lineJoin = "round"; ctx.stroke();
-  ctx.fillStyle = C.muted; ctx.font = `600 26px ${SANS}`; ctx.textAlign = "center";
-  axes.forEach((ax, i) => {
-    const a = ang(i), x = cx + (r + 32) * Math.cos(a), y = cy + (r + 32) * Math.sin(a) + 9;
-    ctx.fillText(ax.label, x, y);
-  });
-  ctx.textAlign = "left";
+function roundRectPath(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
+  ctx.beginPath(); ctx.roundRect(x, y, w, h, r);
 }
 
-/** Render the power card (戰力卡). full=false drops radar/rival/VAM for a clean
- * minimal card. An optional in-memory photo is the avatar (never stored); with
- * no photo there is NO avatar block — the layout breathes instead. */
+/** Render the power card (戰力卡) — a premium tier card. full=false drops the
+ * attribute row + rival/VAM. An optional in-memory photo is the avatar (never
+ * stored); with no photo there is no avatar block. */
 export async function drawPowerCard(
   canvas: HTMLCanvasElement, m: PowerModel,
   opts: { full?: boolean; photo?: HTMLImageElement | null } = {},
@@ -359,76 +338,107 @@ export async function drawPowerCard(
   try { await (document as Document & { fonts?: FontFaceSet }).fonts?.ready; } catch { /* no-op */ }
   const t = TIER_META[m.tier];
   const cx = W / 2;
+  const INK = t.ink;
 
-  // metallic tier frame
-  const g = ctx.createLinearGradient(0, 0, W, W);
-  g.addColorStop(0, t.c1); g.addColorStop(0.5, t.c2); g.addColorStop(1, t.c1);
-  ctx.fillStyle = g; ctx.fillRect(0, 0, W, W);
-  ctx.fillStyle = C.paper;
-  ctx.beginPath(); ctx.roundRect(26, 26, W - 52, W - 52, 44); ctx.fill();
-  const bg = ctx.createLinearGradient(0, 26, 0, W - 26);
-  bg.addColorStop(0, t.tint); bg.addColorStop(1, "rgba(255,255,255,0)");
-  ctx.fillStyle = bg; ctx.beginPath(); ctx.roundRect(26, 26, W - 52, W - 52, 44); ctx.fill();
+  // 1) full-bleed metallic gradient
+  const bg = ctx.createLinearGradient(0, 0, W * 0.4, W);
+  bg.addColorStop(0, t.bg1); bg.addColorStop(1, t.bg2);
+  ctx.fillStyle = bg; ctx.fillRect(0, 0, W, W);
 
-  // glass panel
+  // 2) radial glow, upper-centre
+  const glow = ctx.createRadialGradient(cx, 380, 30, cx, 380, 660);
+  glow.addColorStop(0, t.glow); glow.addColorStop(1, "rgba(255,255,255,0)");
+  ctx.fillStyle = glow; ctx.fillRect(0, 0, W, W);
+
+  // 3) diagonal foil sheen
   ctx.save();
-  ctx.shadowColor = "rgba(42,39,34,0.10)"; ctx.shadowBlur = 40; ctx.shadowOffsetY = 12;
-  ctx.fillStyle = "rgba(255,255,255,0.55)";
-  ctx.beginPath(); ctx.roundRect(70, 70, W - 140, W - 140, 36); ctx.fill();
+  ctx.translate(cx, cx); ctx.rotate(-Math.PI / 5); ctx.translate(-cx, -cx);
+  for (const [x, w, a] of [[-120, 150, 0.10], [340, 90, 0.18], [720, 180, 0.07]] as const) {
+    const f = ctx.createLinearGradient(x, 0, x + w, 0);
+    f.addColorStop(0, "rgba(255,255,255,0)");
+    f.addColorStop(0.5, `rgba(255,255,255,${a})`);
+    f.addColorStop(1, "rgba(255,255,255,0)");
+    ctx.fillStyle = f; ctx.fillRect(x, -420, w, W + 840);
+  }
   ctx.restore();
-  ctx.strokeStyle = "rgba(255,255,255,0.7)"; ctx.lineWidth = 2;
-  ctx.beginPath(); ctx.roundRect(70, 70, W - 140, W - 140, 36); ctx.stroke();
+
+  // 4) framed border (thick tier frame + inner hairline)
+  ctx.lineWidth = 18; ctx.strokeStyle = t.frame;
+  roundRectPath(ctx, 28, 28, W - 56, W - 56, 46); ctx.stroke();
+  ctx.lineWidth = 3; ctx.strokeStyle = "rgba(255,255,255,0.6)";
+  roundRectPath(ctx, 46, 46, W - 92, W - 92, 36); ctx.stroke();
 
   ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
 
   // tier pill
-  const pillW = 360, pillH = 58, pillY = 124;
-  const pg = ctx.createLinearGradient(cx - pillW / 2, 0, cx + pillW / 2, 0);
-  pg.addColorStop(0, t.c1); pg.addColorStop(1, t.c2);
-  ctx.fillStyle = pg; ctx.beginPath(); ctx.roundRect(cx - pillW / 2, pillY, pillW, pillH, 29); ctx.fill();
-  ctx.fillStyle = "#2A2722"; ctx.font = `700 30px 'Hanken Grotesk',${SANS}`;
-  ctx.fillText(`🏆 ${t.label}`, cx, pillY + 39);
+  const pillW = 384, pillH = 64, pillY = 100;
+  ctx.save();
+  ctx.shadowColor = "rgba(0,0,0,0.18)"; ctx.shadowBlur = 16; ctx.shadowOffsetY = 5;
+  const pg = ctx.createLinearGradient(0, pillY, 0, pillY + pillH);
+  pg.addColorStop(0, t.pill1); pg.addColorStop(1, t.pill2);
+  ctx.fillStyle = pg; roundRectPath(ctx, cx - pillW / 2, pillY, pillW, pillH, 32); ctx.fill();
+  ctx.restore();
+  ctx.lineWidth = 2; ctx.strokeStyle = "rgba(255,255,255,0.6)";
+  roundRectPath(ctx, cx - pillW / 2, pillY, pillW, pillH, 32); ctx.stroke();
+  ctx.fillStyle = INK; ctx.font = `800 32px 'Hanken Grotesk',${SANS}`;
+  ctx.fillText(`★ ${t.label}`, cx, pillY + 43);
 
-  // avatar (only when a photo is supplied)
-  let nameY = 330;
+  // avatar (only with a photo)
   if (hasAvatar) {
-    const ay = 330, ar = 100;
+    const ay = 296, ar = 92;
+    ctx.beginPath(); ctx.arc(cx, ay, ar + 7, 0, Math.PI * 2); ctx.fillStyle = t.frame; ctx.fill();
     ctx.save();
-    ctx.beginPath(); ctx.arc(cx, ay, ar, 0, Math.PI * 2); ctx.closePath();
-    ctx.lineWidth = 8; ctx.strokeStyle = t.c2; ctx.stroke(); ctx.clip();
+    ctx.beginPath(); ctx.arc(cx, ay, ar, 0, Math.PI * 2); ctx.closePath(); ctx.clip();
     const img = opts.photo as HTMLImageElement, s = Math.min(img.width, img.height) || 1;
     ctx.drawImage(img, (img.width - s) / 2, (img.height - s) / 2, s, s, cx - ar, ay - ar, ar * 2, ar * 2);
     ctx.restore();
-    nameY = 528;
   }
 
-  // name + archetype/overall (no source-linkage text)
-  ctx.fillStyle = C.ink; fitFont(ctx, m.name, W - 220, 88, DISPLAY, 600, 48);
+  // rating hero (the focal number)
+  const ratingY = hasAvatar ? 510 : 372;
+  ctx.fillStyle = INK; ctx.font = `800 ${hasAvatar ? 132 : 172}px ${MONO}`;
+  ctx.fillText(m.overall != null ? `${m.overall}` : "—", cx, ratingY);
+  ctx.fillStyle = t.accent; ctx.font = `600 28px ${SANS}`;
+  ctx.fillText("實力分位 · 贏過全場 % 中位", cx, ratingY + 42);
+
+  // name
+  const nameY = ratingY + 128;
+  ctx.fillStyle = INK; fitFont(ctx, m.name, W - 260, hasAvatar ? 66 : 78, DISPLAY, 600, 44);
   ctx.textAlign = "center"; ctx.fillText(m.name, cx, nameY);
-  const sub = [m.archetype, m.overall != null ? `實力分位 ${m.overall}%` : null].filter(Boolean).join("  ·  ");
-  if (sub) {
-    ctx.fillStyle = C.accent; ctx.font = `600 38px ${SANS}`;
-    ctx.fillText(fit(ctx, sub, W - 220), cx, nameY + 58);
+
+  // archetype tag
+  if (m.archetype) {
+    ctx.font = `600 30px ${SANS}`;
+    const tw = ctx.measureText(m.archetype).width + 48;
+    ctx.fillStyle = "rgba(255,255,255,0.5)";
+    roundRectPath(ctx, cx - tw / 2, nameY + 22, tw, 50, 25); ctx.fill();
+    ctx.lineWidth = 1.5; ctx.strokeStyle = "rgba(255,255,255,0.65)";
+    roundRectPath(ctx, cx - tw / 2, nameY + 22, tw, 50, 25); ctx.stroke();
+    ctx.fillStyle = INK; ctx.textBaseline = "middle";
+    ctx.fillText(m.archetype, cx, nameY + 48); ctx.textBaseline = "alphabetic";
   }
 
-  if (full && m.radar.length >= 3) {
-    radarShape(ctx, m.radar, cx, hasAvatar ? 706 : 700, 122, C.accent);
-  } else {
-    ctx.fillStyle = C.ink; ctx.font = `700 196px ${MONO}`;
-    ctx.fillText(m.overall != null ? `${m.overall}` : "—", cx, hasAvatar ? 800 : 770);
-    ctx.fillStyle = C.muted; ctx.font = `500 34px ${SANS}`;
-    ctx.fillText("實力分位(贏過全場 % 中位)", cx, hasAvatar ? 852 : 822);
+  // ── bottom-anchored blocks (so nothing crowds the footer) ──
+  const hair = (y: number) => { ctx.fillStyle = "rgba(255,255,255,0.5)"; ctx.fillRect(160, y, W - 320, 1); };
+
+  // attributes (traits, FC-style) — full + no avatar + has traits
+  if (full && !hasAvatar && m.radar.length) {
+    const axes = m.radar.slice(0, 4), n = axes.length, cw = (W - 280) / n;
+    hair(722);
+    axes.forEach((a, i) => {
+      const x = 140 + cw * (i + 0.5);
+      ctx.fillStyle = INK; ctx.font = `800 56px ${MONO}`; ctx.fillText(String(Math.round(a.pct)), x, 798);
+      ctx.fillStyle = t.accent; ctx.font = `600 27px ${SANS}`; ctx.fillText(a.label, x, 836);
+    });
   }
 
-  // hero stats row (3)
-  const sy = full ? 884 : 920;
-  const colW = (W - 220) / m.stats.length;
+  // career stats row (always)
+  const colW = (W - 240) / m.stats.length;
+  hair(868);
   m.stats.forEach((st, i) => {
-    const x = 110 + colW * (i + 0.5);
-    ctx.fillStyle = C.ink; ctx.font = `700 60px ${MONO}`;
-    ctx.fillText(st.value, x, sy);
-    ctx.fillStyle = C.muted; ctx.font = `400 26px ${SANS}`;
-    ctx.fillText(st.label, x, sy + 42);
+    const x = 120 + colW * (i + 0.5);
+    ctx.fillStyle = INK; ctx.font = `700 54px ${MONO}`; ctx.fillText(st.value, x, 902);
+    ctx.fillStyle = t.accent; ctx.font = `500 26px ${SANS}`; ctx.fillText(st.label, x, 940);
   });
 
   // rival + VAM (full)
@@ -437,12 +447,13 @@ export async function drawPowerCard(
     if (m.rival) bits.push(`⚔ 宿敵 ${m.rival.nm} ${m.rival.w}–${m.rival.l}`);
     if (m.vam) bits.push(`⛰ VAM ${m.vam.value}`);
     if (bits.length) {
-      ctx.fillStyle = C.muted; ctx.font = `500 30px ${SANS}`;
-      ctx.fillText(fit(ctx, bits.join("      "), W - 200), cx, 966);
+      ctx.fillStyle = INK; ctx.font = `500 28px ${SANS}`;
+      ctx.fillText(fit(ctx, bits.join("       "), W - 220), cx, 974);
     }
   }
 
-  ctx.fillStyle = C.muted; ctx.font = `500 28px 'Hanken Grotesk',${SANS}`;
-  ctx.fillText(m.footer, cx, W - 58);
+  // footer
+  ctx.fillStyle = t.accent; ctx.font = `500 26px 'Hanken Grotesk',${SANS}`;
+  ctx.fillText(m.footer, cx, W - 62);
   ctx.textAlign = "left";
 }
