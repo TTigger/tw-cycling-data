@@ -39,5 +39,26 @@ echarts.registerTheme("claude", {
   },
 });
 
+// Dark variant — same warm palette, light text + darker grid for dark mode.
+echarts.registerTheme("claude-dark", {
+  color: ["#E8916F", "#7FA0B0", "#9BAE89", "#D6B083", "#B597BA", "#C2766A"],
+  backgroundColor: "transparent",
+  textStyle: { fontFamily: "Hanken Grotesk, Noto Sans TC, system-ui, sans-serif", color: "#ECE9E3" },
+  title: { textStyle: { color: "#ECE9E3", fontFamily: "Fraunces, Noto Serif TC, serif" } },
+  categoryAxis: {
+    axisLine: { lineStyle: { color: "#34303A" } }, axisTick: { lineStyle: { color: "#34303A" } },
+    axisLabel: { color: "#9C968C" }, splitLine: { show: false },
+  },
+  valueAxis: {
+    axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: "#9C968C" },
+    splitLine: { lineStyle: { color: "#2C2932", type: "dashed" } },
+  },
+  legend: { textStyle: { color: "#9C968C" } },
+  tooltip: {
+    backgroundColor: "#211F24", borderColor: "#34303A",
+    textStyle: { color: "#ECE9E3", fontFamily: "Hanken Grotesk, Noto Sans TC, sans-serif" },
+  },
+});
+
 export { echarts };
 export const CLAUDE_THEME = "claude";
