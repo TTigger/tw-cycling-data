@@ -1,28 +1,42 @@
 import { useEffect, useRef, useState } from "react";
 import { loadClimbVam } from "../../lib/data-load";
-import { buildModel, drawCard, seasonYears, type CardType } from "../../lib/share-card";
+import { buildModel, drawCard, powerModel, drawPowerCard, seasonYears, type CardType } from "../../lib/share-card";
 import type { AthleteDetail, ClimbVamEntry } from "../../lib/types";
 
 const TYPES: { key: CardType; label: string }[] = [
+  { key: "power", label: "戰力" },
   { key: "career", label: "生涯" },
   { key: "season", label: "賽季" },
   { key: "race", label: "單場" },
 ];
 
 export default function ShareCard({ d, onClose }: { d: AthleteDetail; onClose: () => void }) {
-  const [type, setType] = useState<CardType>("career");
+  const [type, setType] = useState<CardType>("power");
   const [vam, setVam] = useState<ClimbVamEntry[]>([]);
   const years = seasonYears(d);
   const [year, setYear] = useState(years[0] ?? 0);
   const [raceIdx, setRaceIdx] = useState(0);
+  const [full, setFull] = useState(true);
+  const [photo, setPhoto] = useState<HTMLImageElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => { loadClimbVam().then(setVam).catch(() => {}); }, []);
 
   useEffect(() => {
     const c = canvasRef.current;
-    if (c) drawCard(c, buildModel(type, d, vam, year, raceIdx));
-  }, [type, d, vam, year, raceIdx]);
+    if (!c) return;
+    if (type === "power") drawPowerCard(c, powerModel(d, vam), { full, photo });
+    else drawCard(c, buildModel(type, d, vam, year, raceIdx));
+  }, [type, d, vam, year, raceIdx, full, photo]);
+
+  function onPhoto(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => { setPhoto(img); URL.revokeObjectURL(url); };  // decoded in memory; not uploaded/stored
+    img.src = url;
+  }
 
   function download() {
     const c = canvasRef.current;
@@ -32,7 +46,7 @@ export default function ShareCard({ d, onClose }: { d: AthleteDetail; onClose: (
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `成績卡-${type}.png`;
+      a.download = `${type === "power" ? "戰力卡" : `成績卡-${type}`}.png`;
       a.click();
       URL.revokeObjectURL(url);
     }, "image/png");
@@ -56,6 +70,29 @@ export default function ShareCard({ d, onClose }: { d: AthleteDetail; onClose: (
             </button>
           ))}
         </div>
+
+        {type === "power" && (
+          <div className="mb-3 space-y-2">
+            <div className="flex gap-1 rounded-lg border border-border p-1 text-sm">
+              {[{ k: true, l: "全上版" }, { k: false, l: "精簡版" }].map((o) => (
+                <button key={o.l} onClick={() => setFull(o.k)}
+                  className={`flex-1 rounded-md px-2 py-1 ${full === o.k ? "bg-accent/10 text-accent" : "text-muted hover:text-ink"}`}>
+                  {o.l}
+                </button>
+              ))}
+            </div>
+            <div className="flex items-center gap-2">
+              <label className="cursor-pointer rounded-lg border border-border px-3 py-1.5 text-sm text-muted hover:border-accent hover:text-accent">
+                📷 上傳照片
+                <input type="file" accept="image/*" onChange={onPhoto} className="hidden" />
+              </label>
+              {photo && (
+                <button onClick={() => setPhoto(null)} className="text-xs text-muted hover:text-accent">移除照片</button>
+              )}
+              <span className="text-xs text-muted">照片只在你瀏覽器內合成,不會上傳或儲存</span>
+            </div>
+          </div>
+        )}
 
         {type === "season" && years.length > 0 && (
           <select value={year} onChange={(e) => setYear(Number(e.target.value))}
