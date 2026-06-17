@@ -73,6 +73,7 @@ scrapers/
   build_difficulty.py  ★ master → race_difficulty.json(🎚️ 跨年難度校正:每場每年中位數+難度係數;含 pytest)
   build_race_dna.py    ★ master → race_dna.json(🧬 賽事 DNA:每場每年 6 軸跨站正規化指紋 + 🧭 找相似賽事;含 pytest)
   build_series.py      ★ master → series.json(🏆 賽事系列總標:多站系列賽季綜合表現總排;含 pytest)
+  build_fonts.py       ★ 自架字型瘦身:擷取站上實際用到的字 → 子集化 5 種字型為 web/public/fonts/*.woff2(免 Google Fonts、CJK 不再分 ~25 個子集請求)
   discover.py          ★ 缺漏發現:爬公開行事曆 → 與 master 比對 → 輸出「缺漏賽事 + 推測來源」(不靠人工列舉)
   overseas_runnet.py   海外賽(runnet headless)→ web/public/data/overseas(獨立別集,不進 master)
   race_type.py         賽事類型分類(爬坡/繞圈/計時/公路;含 pytest)
@@ -119,6 +120,7 @@ python scrapers\build_insights.py       # master → insights.json(洞察頁:年
 python scrapers\build_difficulty.py     # master → race_difficulty.json(選手頁:跨年難度校正)
 python scrapers\build_race_dna.py       # master → race_dna.json(賽事頁:賽事 DNA 指紋雷達 + 找相似賽事)
 python scrapers\build_series.py         # master → series.json(系列頁:多站賽季綜合總排)
+python scrapers\build_fonts.py          # 子集化自架字型 → web/public/fonts/*.woff2(需 data/_fonts_src 內的來源 TTF)
 cd web
 npm install
 npm run dev                             # http://localhost:4321

@@ -1,3 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&family=Spline+Sans+Mono:wght@400;500&display=swap");
 @import "tailwindcss";
 @import "./tokens.css";
+
+/* Self-hosted, glyph-subset fonts (see scrapers/build_fonts.py) — one woff2 per
+   family instead of ~25 Google-Fonts CJK subset requests. */
+@font-face { font-family: "Noto Sans TC"; src: url("/fonts/noto-sans-tc.woff2") format("woff2"); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "Noto Serif TC"; src: url("/fonts/noto-serif-tc.woff2") format("woff2"); font-weight: 200 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "Fraunces"; src: url("/fonts/fraunces.woff2") format("woff2"); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "Hanken Grotesk"; src: url("/fonts/hanken-grotesk.woff2") format("woff2"); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "Spline Sans Mono"; src: url("/fonts/spline-sans-mono.woff2") format("woff2"); font-weight: 300 700; font-style: normal; font-display: swap; }
