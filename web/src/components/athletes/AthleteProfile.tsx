@@ -150,7 +150,7 @@ export default function AthleteProfile(
               {d.history.map((r, i) => {
                 const pct = percentileInField(r.rank, r.field);
                 return (
-                  <tr key={i} className="border-t border-border/60">
+                  <tr key={i} className="border-t border-border/60 transition-colors hover:bg-accent/5">
                     <td className="py-1.5 pr-3 num text-muted">{r.y ?? "—"}</td>
                     <td className="py-1.5 pr-3">
                       <a className="text-ink hover:text-accent"

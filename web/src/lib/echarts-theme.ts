@@ -22,6 +22,7 @@ echarts.use([
 echarts.registerTheme("claude", {
   color: ["#D97757", "#5B7B8A", "#7C8C6B", "#C99A6B", "#9A7AA0", "#A0564B"],
   backgroundColor: "transparent",
+  animationDuration: 700, animationEasing: "cubicOut",
   textStyle: { fontFamily: "Hanken Grotesk, Noto Sans TC, system-ui, sans-serif", color: "#1F1E1D" },
   title: { textStyle: { color: "#1F1E1D", fontFamily: "Fraunces, Noto Serif TC, serif" } },
   categoryAxis: {
@@ -43,6 +44,7 @@ echarts.registerTheme("claude", {
 echarts.registerTheme("claude-dark", {
   color: ["#E8916F", "#7FA0B0", "#9BAE89", "#D6B083", "#B597BA", "#C2766A"],
   backgroundColor: "transparent",
+  animationDuration: 700, animationEasing: "cubicOut",
   textStyle: { fontFamily: "Hanken Grotesk, Noto Sans TC, system-ui, sans-serif", color: "#ECE9E3" },
   title: { textStyle: { color: "#ECE9E3", fontFamily: "Fraunces, Noto Serif TC, serif" } },
   categoryAxis: {
