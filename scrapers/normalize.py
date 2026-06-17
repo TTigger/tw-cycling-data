@@ -57,11 +57,13 @@ def race_class(result_label=None, category_raw=None):
         return "競賽"
     if "經典" in lab or "經典組" in cat:
         return "市民經典"
-    if "市民" in lab or "巿民" in lab:
+    if "市民" in lab or "巿民" in lab or "一般" in cat or "一般" in lab:
         return "市民"
     if "認證" in lab or "完賽" in lab:
         return "認證"
-    if re.match(r"^[MWＭＷ]\d", cat) or cat == "MASTER" or "分齡" in lab:
+    # age-group codes: M35 / W30 and the road-prefixed RM35 / RW30 (same convention
+    # as gender_from_category — the R prefix used to fall through to 未分類).
+    if re.match(r"^[Rr]?[MWＭＷ]\d", cat) or cat == "MASTER" or "分齡" in lab:
         return "分齡"
     if "女子" in cat:
         return "女子"
@@ -188,6 +190,10 @@ def enrich(rec):
         rec["race_name_canonical"] = canon
     rec["race_class"] = race_class(rec.get("result_label"), rec.get("category_raw"))
     rec["series"] = series_of(rec.get("race_name_raw") or rec.get("race_name_canonical"))
+    # the long-distance certification series (北高360 / 雙塔520 / 四極620…) is by
+    # definition 認證, even when the group label carries no 認證 keyword.
+    if rec["series"] == "TBA 長途認證":
+        rec["race_class"] = "認證"
     if rec.get("gender") not in ("M", "F"):
         g = gender_from_category(rec.get("category_raw"))
         if g:

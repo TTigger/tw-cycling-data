@@ -45,6 +45,29 @@ def test_enrich_sets_age_band():
     assert "race_class" in r and "series" in r
 
 
+def test_race_class_age_codes_incl_road_prefix():
+    assert nz.race_class(category_raw="M35") == "分齡"
+    assert nz.race_class(category_raw="RM35") == "分齡"     # road-prefixed (was 未分類)
+    assert nz.race_class(category_raw="RW30") == "分齡"
+    assert nz.race_class(category_raw="MASTER") == "分齡"
+    assert nz.race_class(category_raw="MTB男子組") == "未分類"  # not an age code -> unchanged
+
+
+def test_race_class_general_citizen_and_default():
+    assert nz.race_class(category_raw="一般組") == "市民"
+    assert nz.race_class(category_raw="北高360") == "未分類"   # class set via series in enrich
+    assert nz.race_class(category_raw="A") == "未分類"          # criterium letter stays unclassified
+
+
+def test_enrich_marks_long_distance_cert_series_as_認證():
+    r = {"race_key": "x", "race_name_canonical": "北高360",
+         "race_name_raw": "2025北高360雙塔520四極602自行車認證",
+         "category_raw": "北高360", "result_label": None, "year": 2025}
+    nz.enrich(r)
+    assert r["series"] == "TBA 長途認證"
+    assert r["race_class"] == "認證"
+
+
 def test_enrich_canonicalizes_merged_race_keys():
     r = {"race_key": "美利達盃amp;單車嘉年華", "race_name_canonical": "美利達盃&amp;單車嘉年華",
          "category_raw": None, "result_label": None, "race_name_raw": "2023美利達盃&amp;單車嘉年華", "year": 2023}
