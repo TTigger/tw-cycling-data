@@ -21,7 +21,7 @@ export default function Breakout({ entries }: { entries: BreakoutEntry[] }) {
                 <td className="py-1.5 pr-3 num text-muted">{i + 1}</td>
                 <td className="py-1.5 pr-3">
                   <a className="text-ink hover:text-accent" href={`${base}/athletes?id=${e.id}`}>{e.nm}</a>
-                  {e.anchored && <span className="ml-1 text-xs text-emerald-600" title="以 TCU/UCI ID 串接,身分可靠">★</span>}
+                  {e.anchored && <span className="ml-1 text-xs text-emerald-600" title="以 TCU/UCI 選手編號歸併,身分可靠">★</span>}
                 </td>
                 <td className="py-1.5 pr-3 num text-accent">+{e.jump}</td>
                 <td className="py-1.5 pr-3 num text-muted">{e.from_pct}% → {e.to_pct}%</td>
@@ -33,7 +33,7 @@ export default function Breakout({ entries }: { entries: BreakoutEntry[] }) {
       </div>
       <p className="mt-2 text-xs text-muted">
         躍升 = 相鄰參賽年度「贏過全場 %」中位數的最大增幅(每年至少 2 場)。
-        ★ 為以 TCU/UCI ID 串接的可靠身分;其餘以姓名歸併,可能含同名,僅供參考。
+        ★ 為以 TCU/UCI 選手編號歸併的可靠身分;其餘以姓名歸併,可能含同名,僅供參考。
       </p>
     </div>
   );

@@ -46,7 +46,7 @@ export default function AthleteProfile(
             {s.y0}–{s.y1} · {s.teams.length ? s.teams.join("、") : "無車隊紀錄"}
           </p>
           <span className={`mt-2 inline-block rounded-full border px-2 py-0.5 text-xs ${CONF_STYLE[d.conf]}`}>
-            {CONF_LABEL[d.conf]}{d.has_rider && " · TCU ID 串接"}{d.has_uci && " · UCI 串接"}
+            {CONF_LABEL[d.conf]}{d.has_rider && " · 以 TCU 編號歸併"}{d.has_uci && " · 以 UCI 編號歸併"}
           </span>
         </div>
         <div className="flex shrink-0 flex-col gap-2">
