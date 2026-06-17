@@ -110,3 +110,36 @@ def test_race_region_and_geo():
     assert nantou["rows"] == 2 and nantou["races"] == 1
 
 
+
+
+def test_streak():
+    assert bi._streak([2019, 2020, 2021, 2024]) == 3
+    assert bi._streak([2020, 2022, 2024]) == 1
+    assert bi._streak([]) == 0
+
+
+def _rrec(name, rk, y, rank, g="M", tsu=None, team="A"):
+    return {"name_raw": name, "name_masked": None, "race_key": rk, "race_name_canonical": rk,
+            "year": y, "rank_overall": rank, "gender": g, "team": team,
+            "tsu_rider_id": tsu, "uci_id": None}
+
+
+def test_build_records_biggest_field_wins_loyal():
+    recs = [_rrec(f"p{i}", "BIG", 2024, i + 1, tsu=f"T{i}") for i in range(5)]  # 5 finishers
+    recs += [_rrec(f"q{i}", "small", 2024, i + 1, tsu=f"S{i}") for i in range(2)]
+    recs.append(_rrec("p0", "BIG", 2023, 1, tsu="T0"))   # p0 wins BIG twice, rides it 2 yrs
+    out = bi.build_records(recs, top=5)
+    assert out["biggest_field"][0]["rk"] == "BIG" and out["biggest_field"][0]["n"] == 5
+    aid = bi.athlete_id("t:T0")
+    assert next(x for x in out["most_wins"] if x["id"] == aid)["v"] == 2
+    loyal = next(x for x in out["most_loyal"] if x["id"] == aid)
+    assert loyal["v"] == 2 and loyal["rk"] == "BIG"
+
+
+def test_build_records_excludes_low_confidence_homonym():
+    # one name across 6 teams + mixed gender -> low confidence -> excluded from boards
+    recs = [_rrec("甲", f"r{i}", 2020 + i, 1, g=("M" if i % 2 else "F"), team=t)
+            for i, t in enumerate("ABCDEQ")]
+    aid = bi.athlete_id("n:甲")
+    out = bi.build_records(recs)
+    assert all(x["id"] != aid for x in out["most_wins"])   # 6 wins, but homonym-risky -> dropped
