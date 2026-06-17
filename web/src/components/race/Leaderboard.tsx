@@ -38,7 +38,7 @@ export default function Leaderboard({ rows }: { rows: DetailRow[] }) {
           </thead>
           <tbody>
             {slice.map((r, i) => (
-              <tr key={`${r.bib}-${i}`} className="border-b border-border/60">
+              <tr key={`${r.bib}-${i}`} className="border-b border-border/60 transition-colors hover:bg-accent/5">
                 <td className="num py-1.5 pr-3">{r.rank ?? "—"}</td>
                 <td className="num pr-3 text-muted">{r.bib ?? ""}</td>
                 <td className="pr-3 text-ink">{r.name ?? "—"}</td>
