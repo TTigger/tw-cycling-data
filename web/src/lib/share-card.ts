@@ -185,14 +185,16 @@ export function powerModel(d: AthleteDetail, vam: ClimbVamEntry[] = []): PowerMo
   const ranks = d.history.map((r) => r.rank).filter((r): r is number => r != null);
   const wins = ranks.filter((r) => r === 1).length;
   const climb = bestClimb(d.id, vam);
+  const stats = [
+    { value: String(d.history.length), label: "出賽場次" },
+    { value: String(wins), label: "冠軍" },
+    { value: ranks.length ? String(Math.min(...ranks)) : "—", label: "最佳名次" },
+  ];
+  if (climb) stats.push({ value: String(Math.round(climb.best_vam)), label: "爬坡 VAM" });
   return {
     name: d.nm, tier: tierOf(overall), overall, archetype: specialtyLabel(d.traits),
     radar: TRAIT_ORDER.filter((t) => d.traits[t]).map((t) => ({ label: TRAIT_LABEL[t], pct: d.traits[t].pct })),
-    stats: [
-      { value: String(d.history.length), label: "出賽場次" },
-      { value: String(wins), label: "冠軍" },
-      { value: ranks.length ? String(Math.min(...ranks)) : "—", label: "最佳名次" },
-    ],
+    stats,
     rival: d.rivals?.[0] ? { nm: d.rivals[0].nm, w: d.rivals[0].w, l: d.rivals[0].l } : undefined,
     vam: climb ? { value: Math.round(climb.best_vam), climb: climb.climb } : undefined,
     footer: FOOTER,
@@ -458,20 +460,17 @@ export async function drawPowerCard(
     });
   }
 
-  // career stats row (always)
-  const colW = (W - 240) / m.stats.length;
+  // hero stats row (always) — includes 爬坡 VAM as its own number when present
+  const colW = (W - 220) / m.stats.length;
   hair(868);
   m.stats.forEach((st, i) => {
-    const x = 120 + colW * (i + 0.5);
-    ctx.fillStyle = INK; ctx.font = `700 54px ${MONO}`; ctx.fillText(st.value, x, 902);
-    ctx.fillStyle = t.accent; ctx.font = `500 26px ${SANS}`; ctx.fillText(st.label, x, 940);
+    const x = 110 + colW * (i + 0.5);
+    ctx.textAlign = "center"; ctx.fillStyle = INK;
+    fitFont(ctx, st.value, colW - 18, 56, MONO, 700, 34);
+    ctx.fillText(st.value, x, 906);
+    ctx.fillStyle = t.accent; ctx.font = `500 ${m.stats.length > 3 ? 24 : 26}px ${SANS}`;
+    ctx.fillText(fit(ctx, st.label, colW - 8), x, 944);
   });
-
-  // best climb VAM (full)
-  if (full && m.vam) {
-    ctx.fillStyle = INK; ctx.font = `500 28px ${SANS}`;
-    ctx.fillText(`⛰ 最佳爬坡 VAM ${m.vam.value}`, cx, 974);
-  }
 
   // footer
   ctx.fillStyle = t.accent; ctx.font = `500 26px 'Hanken Grotesk',${SANS}`;
