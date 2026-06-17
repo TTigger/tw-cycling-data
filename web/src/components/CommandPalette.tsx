@@ -87,7 +87,7 @@ export default function CommandPalette() {
       <button onClick={() => setOpen(true)} aria-label="開啟搜尋"
         className="flex items-center gap-1.5 rounded-lg border border-border bg-surface px-2.5 py-1 text-xs text-muted hover:border-accent hover:text-accent">
         <span>搜尋</span>
-        <kbd className="rounded border border-border px-1 num">{isMac ? "⌘" : "Ctrl"}K</kbd>
+        <kbd aria-hidden="true" className="rounded border border-border px-1 num">{isMac ? "⌘" : "Ctrl"}K</kbd>
       </button>
 
       {open && (
