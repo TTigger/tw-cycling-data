@@ -10,20 +10,57 @@ const { title = siteTitle } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="台灣公路車賽事成績資料探索與視覺化(2009–2026)" />
     <title>{title}</title>
+    <script is:inline>
+      // set theme before paint to avoid a flash
+      (() => {
+        try {
+          const s = localStorage.getItem("theme");
+          const dark = s ? s === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+          if (dark) document.documentElement.classList.add("dark");
+        } catch (e) { /* no-op */ }
+      })();
+    </script>
   </head>
   <body class="bg-bg text-ink font-body">
     <header class="border-b border-border px-4 py-3 sm:px-6 sm:py-4">
-      <div class="flex items-start justify-between gap-3">
+      <div class="flex items-center justify-between gap-3">
         <a href="/" class="font-display text-lg text-ink sm:text-xl">{siteTitle}</a>
-        <CommandPalette client:load />
+        <div class="flex items-center gap-2">
+          <CommandPalette client:load />
+          <button id="themeToggle" type="button" aria-label="切換深色模式"
+            class="rounded-lg border border-border px-2.5 py-1.5 text-sm leading-none text-muted hover:border-accent hover:text-accent">🌙</button>
+          <button id="navToggle" type="button" aria-label="開啟選單" aria-controls="siteNav" aria-expanded="false"
+            class="rounded-lg border border-border px-2.5 py-1.5 text-lg leading-none text-muted hover:border-accent hover:text-accent sm:hidden">☰</button>
+        </div>
       </div>
-      <nav class="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted">
-        <a href="/" class="hover:text-accent">總覽</a><a href="/explore" class="hover:text-accent">探索</a>
-        <a href="/race" class="hover:text-accent">賽事</a><a href="/series" class="hover:text-accent">系列</a><a href="/athletes" class="hover:text-accent">選手</a>
-        <a href="/climbs" class="hover:text-accent">傳奇爬坡</a><a href="/insights" class="hover:text-accent">洞察</a>
-        <a href="/overseas" class="hover:text-accent">海外賽</a><a href="/coverage" class="hover:text-accent">資料涵蓋</a>
+      <nav id="siteNav" class="mt-2 hidden flex-col gap-0.5 text-sm text-muted sm:mt-1 sm:flex sm:flex-row sm:flex-wrap sm:gap-x-4 sm:gap-y-1">
+        <a href="/" class="py-1 hover:text-accent">總覽</a><a href="/explore" class="py-1 hover:text-accent">探索</a>
+        <a href="/race" class="py-1 hover:text-accent">賽事</a><a href="/series" class="py-1 hover:text-accent">系列</a><a href="/athletes" class="py-1 hover:text-accent">選手</a>
+        <a href="/climbs" class="py-1 hover:text-accent">傳奇爬坡</a><a href="/insights" class="py-1 hover:text-accent">洞察</a>
+        <a href="/overseas" class="py-1 hover:text-accent">海外賽</a><a href="/coverage" class="py-1 hover:text-accent">資料涵蓋</a>
       </nav>
     </header>
+    <script is:inline>
+      (() => {
+        const b = document.getElementById("navToggle"), n = document.getElementById("siteNav");
+        if (!b || !n) return;
+        const set = (open) => { n.style.display = open ? "flex" : ""; b.setAttribute("aria-expanded", String(open)); };
+        b.addEventListener("click", () => set(n.style.display !== "flex"));
+        n.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => set(false)));
+      })();
+      (() => {
+        const t = document.getElementById("themeToggle");
+        if (!t) return;
+        const sync = () => { t.textContent = document.documentElement.classList.contains("dark") ? "☀️" : "🌙"; };
+        sync();
+        t.addEventListener("click", () => {
+          const dark = document.documentElement.classList.toggle("dark");
+          try { localStorage.setItem("theme", dark ? "dark" : "light"); } catch (e) { /* no-op */ }
+          window.dispatchEvent(new Event("themechange"));  // re-theme charts
+          sync();
+        });
+      })();
+    </script>
     <main class="mx-auto min-h-[80vh] max-w-6xl px-4 py-6 sm:px-6 sm:py-8"><slot /></main>
     <footer class="mt-12 border-t border-border px-4 py-6 text-xs text-muted sm:px-6">
       <div class="mx-auto max-w-6xl space-y-1">

@@ -23,6 +23,21 @@
   --font-mono: "Spline Sans Mono", ui-monospace, monospace;
 }
 
+/* Dark theme — override the same tokens so every bg-*/text-*/border-* utility
+   flips automatically (Tailwind v4 utilities reference var(--color-*)). */
+html.dark {
+  --color-bg: #18171A;
+  --color-surface: #211F24;
+  --color-border: #34303A;
+  --color-ink: #ECE9E3;
+  --color-muted: #9C968C;
+  --color-accent: #E8916F;
+  --color-series-blue: #7FA0B0;
+  --color-series-sage: #9BAE89;
+}
+html { color-scheme: light; }
+html.dark { color-scheme: dark; }
+
 html { background: var(--color-bg); color: var(--color-ink); font-family: var(--font-body); }
 h1, h2, h3, .display { font-family: var(--font-display); }
 .num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
