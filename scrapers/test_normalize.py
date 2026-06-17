@@ -45,6 +45,14 @@ def test_enrich_sets_age_band():
     assert "race_class" in r and "series" in r
 
 
+def test_series_gravelfundo_and_tcu_circuit():
+    assert nz.series_of("GravelFundo Stage1 台南玉井站") == "GravelFundo 礫石越野系列"
+    assert nz.series_of("秋季TCU台中城市繞圈賽") == "TCU 台中城市繞圈賽"
+    assert nz.series_of("春季TCU台中城市繞圈賽Y12組別") == "TCU 台中城市繞圈賽"
+    # the 中寮 KOM climb is NOT a city criterium -> must not join the TCU series
+    assert nz.series_of("TCU三發國王盃中寮KOM單車挑戰賽") != "TCU 台中城市繞圈賽"
+
+
 def test_race_class_age_codes_incl_road_prefix():
     assert nz.race_class(category_raw="M35") == "分齡"
     assert nz.race_class(category_raw="RM35") == "分齡"     # road-prefixed (was 未分類)
