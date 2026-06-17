@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import {
   careerModel, seasonModel, raceModel, specialtyLabel, bestClimb, seasonYears,
+  tierOf, powerModel,
 } from "./share-card";
 import type { AthleteDetail, ClimbVamEntry, AthleteHistoryRow } from "./types";
 
@@ -76,5 +77,28 @@ describe("raceModel", () => {
     expect(m.kicker).toBe("2023 武嶺盃");
     expect(m.stats.find((s) => s.label === "名次")?.value).toBe("5/100");
     expect(m.stats.find((s) => s.label === "贏過全場")?.value).toBe("95%");
+  });
+});
+
+describe("tierOf", () => {
+  it("maps career median percentile to tiers", () => {
+    expect(tierOf(90)).toBe("platinum");
+    expect(tierOf(85)).toBe("platinum");
+    expect(tierOf(70)).toBe("gold");
+    expect(tierOf(50)).toBe("silver");
+    expect(tierOf(49)).toBe("bronze");
+    expect(tierOf(null)).toBe("bronze");
+  });
+});
+
+describe("powerModel", () => {
+  it("derives tier from median in-field percentile, plus archetype/stats/vam", () => {
+    const m = powerModel(D, VAM);
+    expect(m.overall).toBe(95);                 // median(95, 50, 95)
+    expect(m.tier).toBe("platinum");
+    expect(m.archetype).toBe("爬坡型");
+    expect(m.radar.map((a) => a.label)).toEqual(["爬坡", "公路", "繞圈"]); // no tt trait
+    expect(m.stats.find((s) => s.label === "冠軍")?.value).toBe("0");
+    expect(m.vam?.value).toBe(1320);            // best of this athlete's VAMs only
   });
 });

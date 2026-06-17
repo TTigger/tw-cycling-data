@@ -8,7 +8,7 @@ import type { AthleteDetail, AthleteHistoryRow, ClimbVamEntry, AthleteTrait } fr
 import { percentileInField } from "./athletes";
 import { secondsToHMS } from "./format";
 
-export type CardType = "career" | "season" | "race";
+export type CardType = "career" | "season" | "race" | "power";
 
 export interface CardModel {
   kicker: string;                               // small top label
@@ -115,6 +115,204 @@ export function buildModel(
   if (type === "season") return seasonModel(d, year, vam);
   if (type === "race") return raceModel(d, raceIdx);
   return careerModel(d, vam);
+}
+
+// ---- power card (戰力卡) ---------------------------------------------------
+export type Tier = "platinum" | "gold" | "silver" | "bronze";
+// metallic frame palette per tier (c1 = highlight, c2 = shade)
+export const TIER_META: Record<Tier, { label: string; c1: string; c2: string; tint: string }> = {
+  platinum: { label: "白金 PLATINUM", c1: "#EEF0F3", c2: "#AEB8C4", tint: "rgba(174,184,196,0.16)" },
+  gold: { label: "金 GOLD", c1: "#F6DA7C", c2: "#C7942B", tint: "rgba(199,148,43,0.16)" },
+  silver: { label: "銀 SILVER", c1: "#DEDFE2", c2: "#9AA0A6", tint: "rgba(154,160,166,0.16)" },
+  bronze: { label: "銅 BRONZE", c1: "#DCAB74", c2: "#9C6B3F", tint: "rgba(156,107,63,0.16)" },
+};
+
+/** Strength tier from the career median in-field percentile (贏過全場 %). */
+export function tierOf(overallPct: number | null): Tier {
+  const p = overallPct ?? 0;
+  if (p >= 85) return "platinum";
+  if (p >= 70) return "gold";
+  if (p >= 50) return "silver";
+  return "bronze";
+}
+
+function medianPct(rows: AthleteHistoryRow[]): number | null {
+  const ps = rows.map((r) => percentileInField(r.rank, r.field))
+    .filter((p): p is number => p != null).sort((a, b) => a - b);
+  if (!ps.length) return null;
+  const m = Math.floor(ps.length / 2);
+  return Math.round(ps.length % 2 ? ps[m] : (ps[m - 1] + ps[m]) / 2);
+}
+
+const TRAIT_LABEL: Record<string, string> = { climb: "爬坡", road: "公路", crit: "繞圈", tt: "計時" };
+const TRAIT_ORDER = ["climb", "road", "crit", "tt"];
+
+export interface PowerRadarAxis { label: string; pct: number; }
+export interface PowerModel {
+  name: string; tier: Tier; overall: number | null; archetype: string | null; badge?: string;
+  radar: PowerRadarAxis[];
+  stats: { value: string; label: string }[];
+  rival?: { nm: string; w: number; l: number };
+  vam?: { value: number; climb: string };
+  footer: string;
+}
+
+export function powerModel(d: AthleteDetail, vam: ClimbVamEntry[] = []): PowerModel {
+  const overall = medianPct(d.history);
+  const ranks = d.history.map((r) => r.rank).filter((r): r is number => r != null);
+  const wins = ranks.filter((r) => r === 1).length;
+  const climb = bestClimb(d.id, vam);
+  const anchor = d.has_rider ? "TCU 串接" : d.has_uci ? "UCI 串接" : undefined;
+  return {
+    name: d.nm, tier: tierOf(overall), overall, archetype: specialtyLabel(d.traits), badge: anchor,
+    radar: TRAIT_ORDER.filter((t) => d.traits[t]).map((t) => ({ label: TRAIT_LABEL[t], pct: d.traits[t].pct })),
+    stats: [
+      { value: String(d.history.length), label: "出賽場次" },
+      { value: String(wins), label: "冠軍" },
+      { value: ranks.length ? String(Math.min(...ranks)) : "—", label: "最佳名次" },
+    ],
+    rival: d.rivals?.[0] ? { nm: d.rivals[0].nm, w: d.rivals[0].w, l: d.rivals[0].l } : undefined,
+    vam: climb ? { value: Math.round(climb.best_vam), climb: climb.climb } : undefined,
+    footer: FOOTER,
+  };
+}
+
+function radarShape(ctx: CanvasRenderingContext2D, axes: PowerRadarAxis[], cx: number, cy: number, r: number, color: string) {
+  const n = axes.length;
+  const ang = (i: number) => -Math.PI / 2 + (i / n) * 2 * Math.PI;
+  ctx.strokeStyle = "rgba(42,39,34,0.10)";
+  ctx.lineWidth = 2;
+  for (let ring = 1; ring <= 3; ring++) {
+    ctx.beginPath();
+    for (let i = 0; i <= n; i++) {
+      const rr = (r * ring) / 3, a = ang(i % n);
+      const x = cx + rr * Math.cos(a), y = cy + rr * Math.sin(a);
+      i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+    }
+    ctx.closePath(); ctx.stroke();
+  }
+  ctx.beginPath();
+  axes.forEach((ax, i) => {
+    const rr = r * Math.max(0, Math.min(100, ax.pct)) / 100, a = ang(i);
+    const x = cx + rr * Math.cos(a), y = cy + rr * Math.sin(a);
+    i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+  });
+  ctx.closePath();
+  ctx.fillStyle = color + "40"; ctx.fill();
+  ctx.strokeStyle = color; ctx.lineWidth = 4; ctx.lineJoin = "round"; ctx.stroke();
+  ctx.fillStyle = C.muted; ctx.font = "600 26px 'Noto Sans TC',sans-serif"; ctx.textAlign = "center";
+  axes.forEach((ax, i) => {
+    const a = ang(i), x = cx + (r + 30) * Math.cos(a), y = cy + (r + 30) * Math.sin(a) + 9;
+    ctx.fillText(ax.label, x, y);
+  });
+  ctx.textAlign = "left";
+}
+
+/** Render the power card (戰力卡). full=false drops radar/rival/VAM for a clean
+ * minimal card. An optional in-memory photo is drawn as the avatar (never stored). */
+export async function drawPowerCard(
+  canvas: HTMLCanvasElement, m: PowerModel,
+  opts: { full?: boolean; photo?: HTMLImageElement | null } = {},
+): Promise<void> {
+  const full = opts.full !== false;
+  canvas.width = W; canvas.height = W;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+  try { await (document as Document & { fonts?: FontFaceSet }).fonts?.ready; } catch { /* no-op */ }
+  const t = TIER_META[m.tier];
+  const cx = W / 2;
+
+  // metallic tier frame
+  const g = ctx.createLinearGradient(0, 0, W, W);
+  g.addColorStop(0, t.c1); g.addColorStop(0.5, t.c2); g.addColorStop(1, t.c1);
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, W);
+  // soft tinted paper inset
+  ctx.fillStyle = C.paper;
+  ctx.beginPath(); ctx.roundRect(26, 26, W - 52, W - 52, 44); ctx.fill();
+  const bg = ctx.createLinearGradient(0, 26, 0, W - 26);
+  bg.addColorStop(0, t.tint); bg.addColorStop(1, "rgba(255,255,255,0)");
+  ctx.fillStyle = bg; ctx.beginPath(); ctx.roundRect(26, 26, W - 52, W - 52, 44); ctx.fill();
+
+  // glass panel
+  ctx.save();
+  ctx.shadowColor = "rgba(42,39,34,0.10)"; ctx.shadowBlur = 40; ctx.shadowOffsetY = 12;
+  ctx.fillStyle = "rgba(255,255,255,0.55)";
+  ctx.beginPath(); ctx.roundRect(70, 70, W - 140, W - 140, 36); ctx.fill();
+  ctx.restore();
+  ctx.strokeStyle = "rgba(255,255,255,0.7)"; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.roundRect(70, 70, W - 140, W - 140, 36); ctx.stroke();
+
+  ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
+
+  // tier pill
+  const pillW = 360, pillH = 56, pillY = 116;
+  const pg = ctx.createLinearGradient(cx - pillW / 2, 0, cx + pillW / 2, 0);
+  pg.addColorStop(0, t.c1); pg.addColorStop(1, t.c2);
+  ctx.fillStyle = pg; ctx.beginPath(); ctx.roundRect(cx - pillW / 2, pillY, pillW, pillH, 28); ctx.fill();
+  ctx.fillStyle = "#2A2722"; ctx.font = "700 30px 'Hanken Grotesk','Noto Sans TC',sans-serif";
+  ctx.fillText(`🏆 ${t.label}`, cx, pillY + 38);
+
+  // avatar — photo (in-memory) or tier-tinted initial
+  const ay = 320, ar = 96;
+  ctx.save();
+  ctx.beginPath(); ctx.arc(cx, ay, ar, 0, Math.PI * 2); ctx.closePath();
+  ctx.lineWidth = 8; ctx.strokeStyle = t.c2; ctx.stroke(); ctx.clip();
+  if (opts.photo) {
+    const img = opts.photo, s = Math.min(img.width, img.height) || 1;
+    ctx.drawImage(img, (img.width - s) / 2, (img.height - s) / 2, s, s, cx - ar, ay - ar, ar * 2, ar * 2);
+  } else {
+    const ag2 = ctx.createLinearGradient(cx - ar, ay - ar, cx + ar, ay + ar);
+    ag2.addColorStop(0, t.c1); ag2.addColorStop(1, t.c2);
+    ctx.fillStyle = ag2; ctx.fillRect(cx - ar, ay - ar, ar * 2, ar * 2);
+    ctx.fillStyle = "rgba(255,255,255,0.85)"; ctx.font = "700 96px 'Fraunces','Noto Sans TC',serif";
+    ctx.fillText((m.name || "?").slice(0, 1), cx, ay + 34);
+  }
+  ctx.restore();
+
+  // name + archetype/overall
+  ctx.fillStyle = C.ink; ctx.font = "600 84px 'Fraunces','Noto Sans TC',serif";
+  ctx.fillText(fit(ctx, m.name, W - 200), cx, 500);
+  ctx.fillStyle = C.accent; ctx.font = "600 38px 'Noto Sans TC',sans-serif";
+  const line = [m.archetype, m.overall != null ? `實力分位 ${m.overall}%` : null, m.badge]
+    .filter(Boolean).join("  ·  ");
+  if (line) ctx.fillText(fit(ctx, line, W - 200), cx, 556);
+
+  if (full && m.radar.length >= 3) {
+    radarShape(ctx, m.radar, cx, 686, 120, C.accent);
+  } else {
+    // minimal / no-radar: big hero 實力分位
+    ctx.fillStyle = C.ink; ctx.font = "700 200px 'Spline Sans Mono','Noto Sans TC',monospace";
+    ctx.fillText(m.overall != null ? `${m.overall}` : "—", cx, 770);
+    ctx.fillStyle = C.muted; ctx.font = "500 34px 'Noto Sans TC',sans-serif";
+    ctx.fillText("實力分位(贏過全場 % 中位)", cx, 826);
+  }
+
+  // hero stats row (3)
+  const sy = full ? 878 : 900;
+  const colW = (W - 220) / m.stats.length;
+  m.stats.forEach((st, i) => {
+    const x = 110 + colW * (i + 0.5);
+    ctx.fillStyle = C.ink; ctx.font = "700 60px 'Spline Sans Mono','Noto Sans TC',monospace";
+    ctx.fillText(st.value, x, sy);
+    ctx.fillStyle = C.muted; ctx.font = "400 26px 'Noto Sans TC',sans-serif";
+    ctx.fillText(st.label, x, sy + 40);
+  });
+
+  // rival + VAM (full only)
+  if (full) {
+    const bits: string[] = [];
+    if (m.rival) bits.push(`⚔ 宿敵 ${m.rival.nm} ${m.rival.w}–${m.rival.l}`);
+    if (m.vam) bits.push(`⛰ VAM ${m.vam.value}`);
+    if (bits.length) {
+      ctx.fillStyle = C.muted; ctx.font = "500 30px 'Noto Sans TC',sans-serif";
+      ctx.fillText(fit(ctx, bits.join("    "), W - 200), cx, 962);
+    }
+  }
+
+  // footer
+  ctx.fillStyle = C.muted; ctx.font = "500 28px 'Hanken Grotesk','Noto Sans TC',sans-serif";
+  ctx.fillText(m.footer, cx, W - 56);
+  ctx.textAlign = "left";
 }
 
 // ---- canvas renderer (DOM-only) -------------------------------------------
