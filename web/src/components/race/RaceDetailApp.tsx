@@ -46,6 +46,23 @@ export default function RaceDetailApp({ initRk, initY }: { initRk?: string; init
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // keep the view in sync with the browser back/forward buttons.
+  useEffect(() => {
+    if (!races.length) return;
+    const onPop = () => {
+      const p = new URLSearchParams(location.search);
+      const rk = initRk ?? p.get("rk"), y = initY != null ? String(initY) : p.get("y");
+      if (rk && y) {
+        const m = races.find((r) => r.rk === rk && String(r.y) === y);
+        if (m) { if (!sel || sel.file !== m.file) pick(m, false); return; }
+      }
+      setSel(null); setDetail(null);
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [races, sel, initRk, initY]);
+
   function pick(r: RaceIndex, pushUrl = true) {
     setSel(r); setDetail(null);
     if (pushUrl) history.pushState(null, "", `?rk=${encodeURIComponent(r.rk)}&y=${r.y}`);

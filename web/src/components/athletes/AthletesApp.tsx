@@ -32,6 +32,23 @@ export default function AthletesApp({ initId }: { initId?: string } = {}) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // keep the view in sync with the browser back/forward buttons.
+  useEffect(() => {
+    if (!list.length) return;
+    const onPop = () => {
+      const p = new URLSearchParams(location.search);
+      const id = initId ?? p.get("id"), vs = p.get("vs");
+      if (id) {
+        if (!sel || sel.id !== id) pick(id, false);
+        if (vs) { if (!cmp || cmp.id !== vs) loadAthlete(vs).then(setCmp).catch((e) => setErr(String(e))); }
+        else setCmp(null);
+      } else { setSel(null); setCmp(null); }
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [list, sel, cmp, initId]);
+
   function pick(id: string, pushUrl = true) {
     setLoadingSel(true); setSel(null); setCmp(null);
     if (pushUrl) history.pushState(null, "", `?id=${id}`);
