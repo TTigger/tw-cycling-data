@@ -55,9 +55,9 @@ export default function AthleteProfile(
         <div className="flex shrink-0 flex-col gap-2">
           <FavButton kind="athlete" item={{ id: d.id, nm: d.nm }} />
           <button className="rounded-lg border border-accent bg-accent/10 px-3 py-2 text-sm text-accent hover:bg-accent/20"
-            onClick={() => setShowCard(true)}>📇 產生成績卡</button>
+            onClick={() => setShowCard(true)}>產生成績卡</button>
           <button className="rounded-lg border border-border px-3 py-2 text-sm text-muted hover:text-accent"
-            onClick={() => setVsQuery((q) => (q == null ? "" : null))}>🆚 比較選手</button>
+            onClick={() => setVsQuery((q) => (q == null ? "" : null))}>比較選手</button>
           <button className="rounded-lg border border-border px-3 py-2 text-sm text-muted hover:text-accent"
             onClick={onBack}>← 換一位</button>
         </div>
@@ -120,7 +120,7 @@ export default function AthleteProfile(
 
       {d.rivals && d.rivals.length > 0 && (
         <section className="rounded-xl border border-border bg-surface p-4">
-          <h2 className="font-display text-lg text-ink">⚔️ 交手戰績(宿敵)</h2>
+          <h2 className="font-display text-lg text-ink">交手戰績(宿敵)</h2>
           <p className="mb-2 text-xs text-muted">最常同場較勁的對手與勝負(同場名次較前者勝)。</p>
           <div className="flex flex-wrap gap-2">
             {d.rivals.map((r) => {

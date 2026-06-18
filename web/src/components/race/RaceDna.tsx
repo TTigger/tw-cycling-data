@@ -84,7 +84,7 @@ export default function RaceDna(
 
       {similar.length > 0 && (
         <div className="mt-4 border-t border-border/60 pt-3">
-          <h3 className="text-sm text-ink">🧭 DNA 最相似的賽事</h3>
+          <h3 className="text-sm text-ink">DNA 最相似的賽事</h3>
           <p className="mb-2 text-xs text-muted">六軸指紋最接近的其他賽事(不含本賽事其他屆),點擊前往。</p>
           <div className="flex flex-wrap gap-2">
             {similar.map((s) => (

@@ -48,7 +48,7 @@ export default function OverseasApp() {
         {index.map((m) => (
           <button key={m.file} onClick={() => pick(m)}
             className={`rounded-lg border px-3 py-2 text-sm ${sel?.file === m.file ? "border-accent text-accent" : "border-border text-ink hover:border-accent"}`}>
-            🌏 {m.race} <span className="num text-muted">({m.region}·{m.n.toLocaleString()})</span>
+            {m.race} <span className="num text-muted">({m.region}·{m.n.toLocaleString()})</span>
           </button>
         ))}
       </div>

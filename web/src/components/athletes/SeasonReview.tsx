@@ -28,7 +28,7 @@ export default function SeasonReview({ d }: { d: AthleteDetail }) {
   return (
     <section className="rounded-xl border border-border bg-surface p-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h2 className="font-display text-lg text-ink">🎬 賽季回顧</h2>
+        <h2 className="font-display text-lg text-ink">賽季回顧</h2>
         <div className="flex flex-wrap gap-1">
           {years.map((y) => (
             <button key={y} onClick={() => setYear(y)}

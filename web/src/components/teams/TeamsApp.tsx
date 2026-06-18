@@ -78,7 +78,7 @@ export default function TeamsApp() {
               {t.riders} 位車手 · {t.races} 賽事 · {t.y0}–{t.y1}
             </div>
             <div className="mt-1 text-xs text-muted">
-              🏆 {t.wins} 冠軍 · 🥉 {t.podiums} 前三
+              {t.wins} 冠軍 · {t.podiums} 前三
             </div>
           </button>
         ))}

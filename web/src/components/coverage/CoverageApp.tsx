@@ -111,7 +111,7 @@ export default function CoverageApp() {
         </div>
       </Card>
 
-      <Card title="📥 幫忙補資料(投稿)" hint="長尾在地賽要靠社群一起補">
+      <Card title="幫忙補資料(投稿)" hint="長尾在地賽要靠社群一起補">
         <p className="text-sm text-ink">看到自己參加的賽事沒被收錄?歡迎提供,讓資料更完整:</p>
         <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-muted">
           <li>賽事<b className="text-ink">名稱 + 日期</b></li>

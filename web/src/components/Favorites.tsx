@@ -17,7 +17,7 @@ export default function Favorites() {
   if (!f.athletes.length && !f.races.length) return null;
   return (
     <section className="rounded-xl border border-border bg-surface p-4">
-      <h2 className="font-display text-lg text-ink">⭐ 我的最愛</h2>
+      <h2 className="font-display text-lg text-ink">我的最愛</h2>
       <div className="mt-2 flex flex-wrap gap-2">
         {f.athletes.map((a) => (
           <a key={a.id} href={`${base}/athletes?id=${a.id}`}

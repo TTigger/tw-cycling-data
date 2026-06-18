@@ -50,7 +50,7 @@ export default function TeamProfile({ d, onBack }: { d: TeamDetail; onBack: () =
 
       {d.highlights.length > 0 && (
         <section className="rounded-xl border border-border bg-surface p-4">
-          <h2 className="font-display text-lg text-ink">⭐ 隊史最佳戰績</h2>
+          <h2 className="font-display text-lg text-ink">隊史最佳戰績</h2>
           <p className="mb-2 text-xs text-muted">隊員以此隊名出賽時,「同場贏過 %」最高的成績(跨賽事可比)。</p>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">

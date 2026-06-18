@@ -65,7 +65,7 @@ export default function CourseRecords() {
       ) : (
         <>
           <div className="mb-3 rounded-lg border border-accent/40 bg-accent/5 px-4 py-3">
-            <div className="text-xs text-accent">👑 現紀錄保持者</div>
+            <div className="text-xs text-accent">現紀錄保持者</div>
             <div className="mt-0.5 flex flex-wrap items-baseline gap-x-3">
               <span className="font-display text-lg text-ink">
                 {rows[0].link && rows[0].id
