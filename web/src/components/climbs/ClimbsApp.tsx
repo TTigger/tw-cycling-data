@@ -84,7 +84,7 @@ export default function ClimbsApp() {
       {sel && (
         <>
           <h1 className="font-display text-2xl text-ink">{sel.y} {sel.rn}</h1>
-          {!detail ? <p className="text-muted">載入成績…</p> : (
+          {!detail ? <Skeleton bare cards={2} /> : (
             <div className="space-y-6">
               {sel && profiles[sel.rk] && (
                 <Card title="爬坡指數 VAM 排行" hint="垂直爬升速度(公尺/小時),跨賽可比">

@@ -1,11 +1,12 @@
 import type { EChartsOption } from "echarts";
 import EChart from "../charts/EChart";
+import ChartEmpty from "../charts/ChartEmpty";
 import type { Heat } from "../../lib/overview";
 
 const MONTHS = Array.from({ length: 12 }, (_, i) => `${i + 1}月`);
 
 export default function SeasonHeatmap({ heat }: { heat: Heat }) {
-  if (!heat.cells.length) return <div className="flex h-[260px] items-center justify-center text-muted">無資料</div>;
+  if (!heat.cells.length) return <ChartEmpty height={260}>無資料</ChartEmpty>;
   const option: EChartsOption = {
     grid: { left: 56, right: 16, top: 16, bottom: 64 },
     tooltip: {

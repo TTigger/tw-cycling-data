@@ -57,7 +57,7 @@ export default function TeamsApp() {
   if (err) return <p className="text-accent">資料載入失敗:{err}</p>;
   if (!list.length) return <Skeleton cards={3} />;
   if (sel) return <TeamProfile d={sel} onBack={back} />;
-  if (loadingSel) return <p className="text-muted">載入車隊…</p>;
+  if (loadingSel) return <Skeleton cards={2} />;
 
   return (
     <div className="space-y-5">

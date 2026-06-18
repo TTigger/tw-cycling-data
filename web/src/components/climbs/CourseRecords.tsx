@@ -3,6 +3,7 @@ import { loadCourseRecords } from "../../lib/data-load";
 import { boardOptions, genderRecords, type GenderFilter } from "../../lib/course-records";
 import { secondsToHMS } from "../../lib/format";
 import type { CourseRecordsFile } from "../../lib/types";
+import Skeleton from "../Skeleton";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const GENDERS: { key: GenderFilter; label: string }[] = [
@@ -29,7 +30,7 @@ export default function CourseRecords() {
   const effG = hasGender ? g : "all";
   const rows = useMemo(() => (board ? genderRecords(board, effG) : []), [board, effG]);
 
-  if (!file) return <p className="text-muted">載入場地紀錄…</p>;
+  if (!file) return <Skeleton bare cards={1} />;
   if (!boards.length) return null;
 
   return (
@@ -41,7 +42,7 @@ export default function CourseRecords() {
       </p>
 
       <div className="mb-3 flex flex-wrap items-center gap-2">
-        <select value={rk} onChange={(e) => setRk(e.target.value)}
+        <select aria-label="選擇爬坡路段" value={rk} onChange={(e) => setRk(e.target.value)}
           className="rounded-lg border border-border bg-bg px-3 py-2 text-sm text-ink">
           {boards.map((b) => (
             <option key={b.rk} value={b.rk}>{b.name}(爬升 {b.elev_m}m · {b.n} 人)</option>

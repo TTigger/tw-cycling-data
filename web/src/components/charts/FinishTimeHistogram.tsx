@@ -1,5 +1,6 @@
 import type { EChartsOption } from "echarts";
 import EChart from "./EChart";
+import ChartEmpty from "./ChartEmpty";
 import { histogram } from "../../lib/aggregate";
 import { secondsToHMS } from "../../lib/format";
 import type { SlimRecord } from "../../lib/types";
@@ -10,7 +11,7 @@ export default function FinishTimeHistogram({ rows }: { rows: SlimRecord[] }) {
   const values = rows.map((r) => r.t).filter((t): t is number => t != null);
   const bins = histogram(values, BIN);
   if (!bins.length) {
-    return <div className="flex h-[320px] items-center justify-center text-muted">此條件下無資料</div>;
+    return <ChartEmpty height={320}>此條件下無資料</ChartEmpty>;
   }
   const option: EChartsOption = {
     grid: { left: 48, right: 16, top: 24, bottom: 40 },

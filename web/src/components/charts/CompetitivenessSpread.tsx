@@ -1,5 +1,6 @@
 import type { EChartsOption } from "echarts";
 import EChart from "./EChart";
+import ChartEmpty from "./ChartEmpty";
 import { raceSpread } from "../../lib/aggregate";
 import { setFilter } from "../../lib/filter-store";
 import type { SlimRecord } from "../../lib/types";
@@ -8,7 +9,7 @@ export default function CompetitivenessSpread(
   { rows, nameMap }: { rows: SlimRecord[]; nameMap: Map<string, string> },
 ) {
   const spreads = raceSpread(rows.map((r) => ({ rk: r.rk, y: r.y, t: r.t, rc: r.rc, s: r.s })), 10).slice(0, 15);
-  if (!spreads.length) return <div className="flex h-[360px] items-center justify-center text-muted">此條件下無足夠資料</div>;
+  if (!spreads.length) return <ChartEmpty height={360}>此條件下無足夠資料</ChartEmpty>;
   const labels = spreads.map((s) => `${nameMap.get(s.rk) ?? s.rk} ${s.y ?? ""}`.trim());
   const option: EChartsOption = {
     grid: { left: 200, right: 24, top: 24, bottom: 40 },

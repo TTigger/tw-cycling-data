@@ -1,11 +1,12 @@
 import type { EChartsOption } from "echarts";
 import EChart from "../charts/EChart";
+import ChartEmpty from "../charts/ChartEmpty";
 import { teamStrength } from "../../lib/racedetail";
 import type { DetailRow } from "../../lib/types";
 
 export default function TeamStrength({ rows }: { rows: DetailRow[] }) {
   const teams = teamStrength(rows, 12, 10);
-  if (!teams.length) return <div className="flex h-[300px] items-center justify-center text-muted">無車隊資料</div>;
+  if (!teams.length) return <ChartEmpty height={300}>無車隊資料</ChartEmpty>;
   const option: EChartsOption = {
     grid: { left: 160, right: 24, top: 16, bottom: 32 },
     tooltip: { trigger: "item", formatter: (p: any) => {

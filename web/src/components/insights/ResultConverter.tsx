@@ -21,7 +21,7 @@ export default function ResultConverter({ races }: { races: RaceIndex[] }) {
   const Select = ({ value, onChange, placeholder }: {
     value: string; onChange: (v: string) => void; placeholder: string;
   }) => (
-    <select value={value} onChange={(e) => onChange(e.target.value)}
+    <select aria-label={placeholder} value={value} onChange={(e) => onChange(e.target.value)}
       className="w-full max-w-md rounded-lg border border-border bg-surface px-3 py-2 text-sm text-ink">
       <option value="">{placeholder}</option>
       {opts.map((r) => (

@@ -90,7 +90,10 @@ export default function ShareCard({ d, onClose }: { d: AthleteDetail; onClose: (
           <input value={customName} onChange={(e) => setCustomName(e.target.value)}
             maxLength={24} placeholder={`顯示名稱(預設 ${d.nm})`}
             className="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-ink outline-none focus:border-accent" />
-          <p className="mt-1 text-xs text-muted">預設為遮罩姓名;想印完整姓名可自行輸入 —— 只會合成到你下載的卡片,網站不會儲存或公開。</p>
+          <div className="mt-1 flex items-start justify-between gap-2 text-xs text-muted">
+            <span>預設為遮罩姓名;想印完整姓名可自行輸入 —— 只會合成到你下載的卡片,網站不會儲存或公開。</span>
+            {customName.length > 0 && <span className="num shrink-0">{customName.length}/24</span>}
+          </div>
         </div>
 
         {type === "power" && (
@@ -117,13 +120,13 @@ export default function ShareCard({ d, onClose }: { d: AthleteDetail; onClose: (
         )}
 
         {type === "season" && years.length > 0 && (
-          <select value={year} onChange={(e) => setYear(Number(e.target.value))}
+          <select aria-label="選擇賽季" value={year} onChange={(e) => setYear(Number(e.target.value))}
             className="mb-3 w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-ink">
             {years.map((y) => <option key={y} value={y}>{y} 賽季</option>)}
           </select>
         )}
         {type === "race" && (
-          <select value={raceIdx} onChange={(e) => setRaceIdx(Number(e.target.value))}
+          <select aria-label="選擇賽事" value={raceIdx} onChange={(e) => setRaceIdx(Number(e.target.value))}
             className="mb-3 w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-ink">
             {d.history.map((r, i) => <option key={i} value={i}>{r.y} {r.rn}</option>)}
           </select>

@@ -1,5 +1,6 @@
 import type { EChartsOption } from "echarts";
 import EChart from "../charts/EChart";
+import ChartEmpty from "../charts/ChartEmpty";
 import { histogram } from "../../lib/aggregate";
 import { secondsToHMS } from "../../lib/format";
 import type { DetailRow } from "../../lib/types";
@@ -7,7 +8,7 @@ import type { DetailRow } from "../../lib/types";
 export default function RaceTimeHistogram({ rows }: { rows: DetailRow[] }) {
   const values = rows.map((r) => r.t).filter((t): t is number => t != null);
   const bins = histogram(values, 300);
-  if (!bins.length) return <div className="flex h-[280px] items-center justify-center text-muted">無時間資料</div>;
+  if (!bins.length) return <ChartEmpty height={280}>無時間資料</ChartEmpty>;
   const option: EChartsOption = {
     grid: { left: 48, right: 16, top: 24, bottom: 40 },
     tooltip: {
