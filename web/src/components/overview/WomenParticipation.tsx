@@ -1,10 +1,11 @@
 import type { EChartsOption } from "echarts";
 import EChart from "../charts/EChart";
+import ChartEmpty from "../charts/ChartEmpty";
 import type { WomenShare } from "../../lib/overview";
 
 export default function WomenParticipation({ women }: { women: WomenShare[] }) {
   const shares = women.slice(0, 12);
-  if (!shares.length) return <div className="flex h-[320px] items-center justify-center text-muted">無足夠性別資料</div>;
+  if (!shares.length) return <ChartEmpty height={320}>無足夠性別資料</ChartEmpty>;
   const option: EChartsOption = {
     grid: { left: 170, right: 32, top: 16, bottom: 32 },
     tooltip: {

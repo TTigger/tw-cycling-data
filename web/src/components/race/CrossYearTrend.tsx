@@ -1,9 +1,10 @@
 import type { EChartsOption } from "echarts";
 import EChart from "../charts/EChart";
+import ChartEmpty from "../charts/ChartEmpty";
 import { secondsToHMS } from "../../lib/format";
 
 export default function CrossYearTrend({ cy }: { cy: { y: number; winner: number; median: number }[] }) {
-  if (cy.length < 2) return <div className="flex h-[260px] items-center justify-center text-muted">僅單一年度,無跨年比較</div>;
+  if (cy.length < 2) return <ChartEmpty height={260}>僅單一年度,無跨年比較</ChartEmpty>;
   const option: EChartsOption = {
     grid: { left: 64, right: 16, top: 24, bottom: 40 },
     tooltip: { trigger: "axis", formatter: (p: any) =>

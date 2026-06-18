@@ -59,11 +59,11 @@ export default function OverseasApp() {
             <h1 className="font-display text-2xl text-ink">{sel.race}</h1>
             <p className="text-sm text-muted">{sel.date} · {sel.region} · {sel.source} · {sel.n.toLocaleString()} 位完賽 · 已去識別化</p>
           </div>
-          {!rows ? <p className="text-muted">載入成績…</p> : (
+          {!rows ? <Skeleton bare cards={2} /> : (
             <>
               <div className="flex items-center gap-2 text-sm">
                 <span className="text-muted">分組</span>
-                <select value={cat} onChange={(e) => { setCat(e.target.value); setPage(0); }}
+                <select aria-label="篩選組別" value={cat} onChange={(e) => { setCat(e.target.value); setPage(0); }}
                   className="max-w-xs rounded-lg border border-border bg-surface px-3 py-2 text-ink">
                   <option value="">全部分組</option>
                   {cats.map((c) => <option key={c} value={c}>{c}</option>)}

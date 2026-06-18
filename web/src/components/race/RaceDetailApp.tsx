@@ -90,7 +90,7 @@ export default function RaceDetailApp({ initRk, initY }: { initRk?: string; init
         </div>
       </div>
 
-      {!detail ? <p className="text-muted">載入排行榜…</p> : (
+      {!detail ? <Skeleton bare cards={2} /> : (
         <>
           <Card title="領獎台"><Podium rows={detail} /></Card>
           <div className="grid gap-4 lg:grid-cols-2">

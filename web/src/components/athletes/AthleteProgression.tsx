@@ -1,12 +1,13 @@
 import type { EChartsOption } from "echarts";
 import EChart from "../charts/EChart";
+import ChartEmpty from "../charts/ChartEmpty";
 import { progression } from "../../lib/athletes";
 import type { AthleteHistoryRow } from "../../lib/types";
 
 export default function AthleteProgression({ history }: { history: AthleteHistoryRow[] }) {
   const pts = progression(history).filter((p) => p.pct != null);
   if (pts.length < 2)
-    return <div className="flex h-[260px] items-center justify-center text-muted">資料不足,無法畫進步曲線</div>;
+    return <ChartEmpty height={260}>資料不足,無法畫進步曲線</ChartEmpty>;
 
   const option: EChartsOption = {
     grid: { left: 48, right: 48, top: 24, bottom: 36 },

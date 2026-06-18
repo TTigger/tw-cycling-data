@@ -66,7 +66,7 @@ export default function RaceDna(
     <div>
       <div className="mb-3 flex flex-wrap items-center gap-2 text-sm">
         <span className="text-muted">並排比較:</span>
-        <select value={cmp} onChange={(e) => setCmp(e.target.value)}
+        <select aria-label="選擇並排比較的賽事" value={cmp} onChange={(e) => setCmp(e.target.value)}
           className="max-w-[16rem] rounded-lg border border-border bg-bg px-2 py-1 text-sm text-ink outline-none focus:border-accent">
           <option value="">(選一場賽事)</option>
           {options.map((o, i) => (

@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import type { EChartsOption } from "echarts";
 import EChart from "../charts/EChart";
+import ChartEmpty from "../charts/ChartEmpty";
 import type { AgeCurvePoint } from "../../lib/types";
 
 const ORDER = ["U19", "19-29", "30-39", "40-49", "50-59", "60+"];
@@ -13,7 +14,7 @@ export default function AgeCurve({ points }: { points: AgeCurvePoint[] }) {
   );
 
   if (rows.length < 2)
-    return <div className="flex h-[300px] items-center justify-center text-muted">此分組資料不足</div>;
+    return <ChartEmpty height={300}>此分組資料不足</ChartEmpty>;
 
   const bands = rows.map((r) => r.band);
   const option: EChartsOption = {

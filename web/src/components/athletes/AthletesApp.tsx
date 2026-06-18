@@ -87,7 +87,7 @@ export default function AthletesApp({ initId }: { initId?: string } = {}) {
 
   if (sel && cmp) return <AthleteCompare a={sel} b={cmp} onBack={clearCompare} />;
   if (sel) return <AthleteProfile d={sel} index={list} onBack={back} onCompare={pickCompare} />;
-  if (loadingSel) return <p className="text-muted">載入選手…</p>;
+  if (loadingSel) return <Skeleton cards={2} />;
 
   return (
     <div className="space-y-5">
