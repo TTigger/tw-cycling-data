@@ -9,6 +9,7 @@ import ResultConverter from "./ResultConverter";
 import GeoHotspots from "./GeoHotspots";
 import RecordsWall from "./RecordsWall";
 import Skeleton from "../Skeleton";
+import Tabs from "../Tabs";
 
 function Card({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
   return (
@@ -23,6 +24,7 @@ function Card({ title, hint, children }: { title: string; hint?: string; childre
 export default function InsightsApp() {
   const [ins, setIns] = useState<Insights | null>(null);
   const [races, setRaces] = useState<RaceIndex[]>([]);
+  const [tab, setTab] = useState("records");
   const [err, setErr] = useState<string | null>(null);
 
   useEffect(() => {
@@ -33,26 +35,46 @@ export default function InsightsApp() {
   if (err) return <p className="text-accent">資料載入失敗:{err}</p>;
   if (!ins) return <Skeleton cards={4} />;
 
+  const tabs = [
+    ...(ins.records ? [{ key: "records", label: "紀錄牆" }] : []),
+    { key: "riders", label: "選手趨勢" },
+    { key: "races", label: "賽事" },
+    ...(races.length ? [{ key: "tools", label: "工具" }] : []),
+  ];
+
   return (
-    <div className="space-y-6">
-      {ins.records && (
+    <div className="space-y-5">
+      <Tabs tabs={tabs} active={tab} onChange={setTab} />
+
+      {tab === "records" && ins.records && (
         <Card title="紀錄牆" hint="跨全站的極值冷知識(已排除高同名風險身分;點擊前往)">
           <RecordsWall records={ins.records} />
         </Card>
       )}
-      <Card title="年齡 vs 全場表現" hint="各年齡層在全場的相對名次落點(跨賽事正規化)">
-        <AgeCurve points={ins.age_curve} />
-      </Card>
-      <Card title="突破之星" hint="年度間相對表現躍升最大的選手">
-        <Breakout entries={ins.breakout} />
-      </Card>
-      <Card title="賽事地理熱點" hint="各縣市的賽事場數與參賽人次">
-        <GeoHotspots regions={ins.geo} />
-      </Card>
-      <Card title="賽事星等" hint="規模 × 屆數 × 場域深度的綜合競爭力評分">
-        <RaceRatings ratings={ins.ratings} />
-      </Card>
-      {races.length > 0 && (
+
+      {tab === "riders" && (
+        <div className="space-y-6">
+          <Card title="年齡 vs 全場表現" hint="各年齡層在全場的相對名次落點(跨賽事正規化)">
+            <AgeCurve points={ins.age_curve} />
+          </Card>
+          <Card title="突破之星" hint="年度間相對表現躍升最大的選手">
+            <Breakout entries={ins.breakout} />
+          </Card>
+        </div>
+      )}
+
+      {tab === "races" && (
+        <div className="space-y-6">
+          <Card title="賽事地理熱點" hint="各縣市的賽事場數與參賽人次">
+            <GeoHotspots regions={ins.geo} />
+          </Card>
+          <Card title="賽事星等" hint="規模 × 屆數 × 場域深度的綜合競爭力評分">
+            <RaceRatings ratings={ins.ratings} />
+          </Card>
+        </div>
+      )}
+
+      {tab === "tools" && races.length > 0 && (
         <Card title="成績換算器" hint="你在某場的名次,換算到另一場大約第幾名">
           <ResultConverter races={races} />
         </Card>
