@@ -11,7 +11,7 @@ const CONF_DOT: Record<string, string> = {
   high: "bg-emerald-400/70", med: "bg-amber-400/80", low: "bg-accent",
 };
 
-export default function AthletesApp() {
+export default function AthletesApp({ initId }: { initId?: string } = {}) {
   const [list, setList] = useState<AthleteIndexEntry[]>([]);
   const [q, setQ] = useState("");
   const [sel, setSel] = useState<AthleteDetail | null>(null);
@@ -23,7 +23,9 @@ export default function AthletesApp() {
     loadAthletes().then((l) => {
       setList(l);
       const p = new URLSearchParams(location.search);
-      const id = p.get("id"), vs = p.get("vs");
+      // top-N popular riders are SSG'd at /athletes/<id> (id via props); the
+      // rest stay on the query-param SPA (/athletes?id=).
+      const id = initId ?? p.get("id"), vs = p.get("vs");
       if (id) pick(id, false);
       if (id && vs) loadAthlete(vs).then(setCmp).catch((e) => setErr(String(e)));
     }).catch((e) => setErr(String(e)));
