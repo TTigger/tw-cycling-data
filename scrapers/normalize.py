@@ -38,6 +38,36 @@ RACE_KEY_CANONICAL = {
     '瘋系列第二屆環台賽東部段': '瘋系列環台賽-東部段',
     'TIS崇越盃武嶺自行車挑戰賽': '崇越盃武嶺挑戰賽',
     '崇越盃武嶺自行車挑戰賽': '崇越盃武嶺挑戰賽',
+
+    # ---- review batch (per-group human sign-off 2026-06-18) ------------------
+    # candidate table from suggest_race_merges.py; only the approved groups added.
+    # 扶輪盃陽明山登山王: the 2021 edition dropped the 挑戰 tail — same event.
+    '扶輪盃陽明山自行車登山王': '扶輪盃陽明山自行車登山王挑戰',
+    # 桃園市運動會 市長盃: 分齡組 is an age-category split of one championship.
+    # (96聯賽 挑戰組/競賽組 NOT merged — different courses/field, kept distinct.)
+    '115年桃園市運動會市長盃自由車錦標賽暨國手積分賽分齡組': '115年桃園市運動會-市長盃自由車錦標賽暨國手積分賽',
+    '115年桃園市運動會市長盃自由車錦標賽暨國手積分賽': '115年桃園市運動會-市長盃自由車錦標賽暨國手積分賽',
+    # GravelFundo: collapse Stage no. + qualifying heats (S1/S2/S3) into one race
+    # per 地點+賽別 across years (heats become rows within the race). 年終站
+    # (already cross-year) and 頂成ZIPP盃 (different organizer) left untouched.
+    'GravelFundoStage1台南玉井站【GravelRace礫石車賽】': 'GravelFundo-台南玉井-礫石車賽',
+    'GravelFundoStage2台南玉井站【GravelRace礫石車賽】': 'GravelFundo-台南玉井-礫石車賽',
+    'GravelFundoStage1台南玉井站【MTBXCORace越野林道賽】': 'GravelFundo-台南玉井-越野林道賽',
+    'GravelFundoStage2台南玉井站【MTBXCORace越野林道賽】': 'GravelFundo-台南玉井-越野林道賽',
+    'GravelFundoStage1台南玉井站【MiniEnduroRace迷你全地形賽】': 'GravelFundo-台南玉井-迷你全地形賽',
+    'GravelFundoStage1台南玉井站【MiniEnduroRace迷你全地形賽】S1': 'GravelFundo-台南玉井-迷你全地形賽',
+    'GravelFundoStage1台南玉井站【MiniEnduroRace迷你全地形賽】S2': 'GravelFundo-台南玉井-迷你全地形賽',
+    'GravelFundoStage2台南玉井站【MiniEnduroRace迷你全地形賽】': 'GravelFundo-台南玉井-迷你全地形賽',
+    'GravelFundoStage2台南玉井站【MiniEnduroRace迷你全地形賽】S1': 'GravelFundo-台南玉井-迷你全地形賽',
+    'GravelFundoStage2台南玉井站【MiniEnduroRace迷你全地形賽】S2': 'GravelFundo-台南玉井-迷你全地形賽',
+    'GravelFundoStage2台南玉井站【MiniEnduroRace迷你全地形賽】S3': 'GravelFundo-台南玉井-迷你全地形賽',
+    'GravelFundoStage1彰化員林站【GravelRace礫石車賽】': 'GravelFundo-彰化員林-礫石車賽',
+    'GravelFundoStage2彰化員林站【GravelRace礫石車賽】': 'GravelFundo-彰化員林-礫石車賽',
+    'GravelFundoStage1彰化員林站【MTBXCORace越野林道賽】': 'GravelFundo-彰化員林-越野林道賽',
+    'GravelFundoStage2彰化員林站【MTBXCORace越野林道賽】': 'GravelFundo-彰化員林-越野林道賽',
+    'GravelFundo年度系列Stage1台中老外林道站【MiniEnduro迷你全地形賽】': 'GravelFundo-台中老外林道-迷你全地形賽',
+    'GravelFundo年度系列Stage1台中老外林道站【MiniEnduro迷你全地形賽S1】': 'GravelFundo-台中老外林道-迷你全地形賽',
+    'GravelFundo年度系列Stage1台中老外林道站【MiniEnduro迷你全地形賽S2】': 'GravelFundo-台中老外林道-迷你全地形賽',
 }
 
 
