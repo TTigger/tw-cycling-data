@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { careerSummary, percentileInField, searchAthletes, CONF_LABEL } from "../../lib/athletes";
+import { raceHref } from "../../lib/race-url";
 import { secondsToHMS } from "../../lib/format";
 import type { AthleteDetail, AthleteIndexEntry } from "../../lib/types";
 import AthleteProgression from "./AthleteProgression";
@@ -158,7 +159,7 @@ export default function AthleteProfile(
                     <td className="py-1.5 pr-3 num text-muted">{r.y ?? "—"}</td>
                     <td className="py-1.5 pr-3">
                       <a className="text-ink hover:text-accent"
-                        href={`${base}/race?rk=${encodeURIComponent(r.rk)}&y=${r.y}`}>{r.rn}</a>
+                        href={raceHref(r.rk, r.y)}>{r.rn}</a>
                       {r.label && <span className="ml-1 text-xs text-muted">{r.label}</span>}
                     </td>
                     <td className="py-1.5 pr-3 text-muted">{r.cat ?? "—"}</td>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { TeamDetail } from "../../lib/types";
+import { raceHref } from "../../lib/race-url";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const ROSTER_PAGE = 30;
@@ -66,7 +67,7 @@ export default function TeamProfile({ d, onBack }: { d: TeamDetail; onBack: () =
                     <td className="py-1.5 pr-3 num text-muted">{h.y ?? "—"}</td>
                     <td className="py-1.5 pr-3">
                       {h.rk
-                        ? <a className="text-ink hover:text-accent" href={`${base}/race?rk=${encodeURIComponent(h.rk)}&y=${h.y}`}>{h.rn}</a>
+                        ? <a className="text-ink hover:text-accent" href={raceHref(h.rk, h.y)}>{h.rn}</a>
                         : <span className="text-ink">{h.rn ?? "—"}</span>}
                     </td>
                     <td className="py-1.5 pr-3">

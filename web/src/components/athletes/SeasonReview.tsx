@@ -3,8 +3,7 @@ import { loadClimbVam } from "../../lib/data-load";
 import { seasonRecap } from "../../lib/season-review";
 import { seasonYears } from "../../lib/share-card";
 import type { AthleteDetail, ClimbVamEntry } from "../../lib/types";
-
-const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+import { raceHref } from "../../lib/race-url";
 
 function Tile({ kicker, value, sub }: { kicker: string; value: React.ReactNode; sub?: React.ReactNode }) {
   return (
@@ -58,7 +57,7 @@ export default function SeasonReview({ d }: { d: AthleteDetail }) {
           <div className="col-span-2 rounded-lg border border-accent/40 bg-accent/5 p-3 sm:col-span-3">
             <div className="text-xs text-muted">年度最佳一役</div>
             <a className="mt-1 block font-display text-lg text-ink hover:text-accent"
-              href={`${base}/race?rk=${encodeURIComponent(d.history.find((h) => h.rn === r.best!.rn && h.y === year)?.rk ?? "")}&y=${year}`}>
+              href={raceHref(d.history.find((h) => h.rn === r.best!.rn && h.y === year)?.rk ?? "", year)}>
               {r.best.rn}
             </a>
             <div className="mt-0.5 text-sm text-muted">

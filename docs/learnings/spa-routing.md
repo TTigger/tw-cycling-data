@@ -11,10 +11,13 @@ The site mixes two URL schemes; know which a page uses before touching links.
   (`getStaticPaths`). These mount the same island preselected via props
   (`initRk`/`initY`, `initId`).
 
-Internal links mostly use the query-param form (works for any entity). Use the
-SSG path when you want crawlable/shareable URLs and the entity is guaranteed
-pre-rendered (e.g. CommandPalette links races to `/race/<file>`; athletes stay on
-`/athletes?id=` because the long tail isn't pre-rendered).
+Internal link policy: **races link to the SSG path** `/race/<file>` everywhere
+(all races are pre-rendered → crawlable, per-race meta/OG, self-canonical). Use
+the helper `lib/race-url.ts` `raceHref(rk, y)` — its slug must match
+`build_viz.race_file_name` exactly (validated against races.json). **Athletes
+stay on `/athletes?id=`** because only the top-300 are pre-rendered AND names are
+masked (PDPA), so per-athlete SEO has little value — generating 21k pages isn't
+worth it. See [PDPA](./pdpa-deidentification.md).
 
 ## popstate is required (was a real bug)
 The SPA islands `pushState` on select but originally had **no `popstate`
