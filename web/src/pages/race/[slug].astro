@@ -1,0 +1,22 @@
+---
+import Base from "../../layouts/Base.astro";
+import RaceDetailApp from "../../components/race/RaceDetailApp.tsx";
+import races from "../../../public/data/races.json";
+
+// Full SSG: one crawlable, per-race page for every race-year. The React app
+// hydrates and loads the leaderboard client-side; the build-time <head> carries
+// the race-specific title/description so shares & search engines get real meta.
+export function getStaticPaths() {
+  return races.map((r: any) => ({ params: { slug: r.file }, props: { race: r } }));
+}
+
+const { race } = Astro.props;
+const yr = race.y ?? "";
+const title = `${yr} ${race.rn} 成績 | 台灣公路車賽事`;
+const description =
+  `${race.rn}${yr ? `(${yr})` : ""}完整成績排行、完賽時間分布、賽事 DNA 與跨年趨勢` +
+  `,共 ${race.rows.toLocaleString()} 筆成績。姓名已去識別化。`;
+---
+<Base title={title} description={description} ogType="article">
+  <RaceDetailApp client:only="react" initRk={race.rk} initY={race.y} />
+</Base>

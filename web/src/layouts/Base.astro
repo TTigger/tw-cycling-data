@@ -2,14 +2,36 @@
 import "../styles/global.css";
 import CommandPalette from "../components/CommandPalette.tsx";
 const siteTitle = "台灣公路車賽事成績儀表板";
-const { title = siteTitle } = Astro.props;
+const {
+  title = siteTitle,
+  description = "台灣公路車賽事成績資料探索與視覺化(2009–2026)",
+  ogImage = "/og.png",
+  ogType = "website",
+} = Astro.props;
+// Absolute URLs for canonical + OG (Astro.site set in astro.config.mjs).
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImageUrl = new URL(ogImage, Astro.site).href;
 ---
 <html lang="zh-Hant">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="台灣公路車賽事成績資料探索與視覺化(2009–2026)" />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
     <title>{title}</title>
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={siteTitle} />
+    <meta property="og:locale" content="zh_TW" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
     <script is:inline>
       // set theme before paint to avoid a flash
       (() => {

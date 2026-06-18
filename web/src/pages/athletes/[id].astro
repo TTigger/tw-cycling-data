@@ -1,0 +1,27 @@
+---
+import Base from "../../layouts/Base.astro";
+import AthletesApp from "../../components/athletes/AthletesApp.tsx";
+import athletes from "../../../public/data/athletes.json";
+
+// Partial SSG (折衷): with ~22k riders we only pre-render the most-raced TOP_N as
+// crawlable /athletes/<id> pages with per-rider meta. Everyone else stays on the
+// query-param SPA (/athletes?id=), which still works for sharing.
+// (TOP_N lives inside getStaticPaths — Astro evaluates it in isolation.)
+export function getStaticPaths() {
+  const TOP_N = 300;
+  const top = [...athletes].sort((a: any, b: any) => b.n - a.n).slice(0, TOP_N);
+  return top.map((a: any) => ({ params: { id: a.id }, props: { ath: a } }));
+}
+
+const { ath } = Astro.props;
+const span = ath.y0 && ath.y1 ? `${ath.y0}–${ath.y1}` : "";
+const title = `${ath.nm} 的公路車成績 | 台灣公路車賽事`;
+const description =
+  `${ath.nm} 歷年公路車賽事成績:出賽 ${ath.n} 場、${ath.nr} 項賽事${span ? `(${span})` : ""}` +
+  `${ath.best ? `,最佳第 ${ath.best} 名` : ""}。進步軌跡、騎乘分身與對手分析。姓名已去識別化。`;
+---
+<Base title={title} description={description} ogType="profile">
+  <h1 class="font-display text-3xl">選手追蹤</h1>
+  <p class="mt-2 mb-6 text-muted">搜尋一位選手,查看歷年成績、進步軌跡與出賽足跡。姓名已去識別化,身分以姓名+車隊(UCI 為輔)推斷,可能含同名,僅供參考。</p>
+  <AthletesApp client:only="react" initId={ath.id} />
+</Base>

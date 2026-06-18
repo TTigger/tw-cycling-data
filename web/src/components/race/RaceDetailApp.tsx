@@ -24,7 +24,7 @@ function Card({ title, hint, children }: { title: string; hint?: string; childre
   );
 }
 
-export default function RaceDetailApp() {
+export default function RaceDetailApp({ initRk, initY }: { initRk?: string; initY?: number } = {}) {
   const [races, setRaces] = useState<RaceIndex[]>([]);
   const [viz, setViz] = useState<SlimRecord[]>([]);
   const [sel, setSel] = useState<RaceIndex | null>(null);
@@ -35,7 +35,9 @@ export default function RaceDetailApp() {
     Promise.all([loadRaces(), loadViz()]).then(([rs, v]) => {
       setRaces(rs); setViz(v);
       const p = new URLSearchParams(location.search);
-      const rk = p.get("rk"), y = p.get("y");
+      // a path-based SSG page (/race/<slug>) passes the race via props; the
+      // query-param SPA (/race?rk=&y=) falls back to the URL.
+      const rk = initRk ?? p.get("rk"), y = initY != null ? String(initY) : p.get("y");
       if (rk && y) {
         const m = rs.find((r) => r.rk === rk && String(r.y) === y);
         if (m) pick(m, false);
