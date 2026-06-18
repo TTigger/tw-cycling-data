@@ -11,7 +11,9 @@ const PAGES: Item[] = [
   { kind: "頁面", label: "總覽", url: "/" },
   { kind: "頁面", label: "探索", url: "/explore" },
   { kind: "頁面", label: "賽事", url: "/race" },
+  { kind: "頁面", label: "系列", url: "/series" },
   { kind: "頁面", label: "選手", url: "/athletes" },
+  { kind: "頁面", label: "車隊", url: "/teams" },
   { kind: "頁面", label: "傳奇爬坡", url: "/climbs" },
   { kind: "頁面", label: "洞察", url: "/insights" },
   { kind: "頁面", label: "海外賽", url: "/overseas" },
@@ -60,7 +62,8 @@ export default function CommandPalette() {
       .filter((r) => `${r.y} ${r.rn} ${r.s ?? ""}`.includes(query))
       .slice(0, 8)
       .map((r) => ({ kind: "賽事", label: `${r.y} ${r.rn}`, hint: `${r.rows} 筆`,
-        url: `/race?rk=${encodeURIComponent(r.rk)}&y=${r.y}` }));
+        // every race is pre-rendered, so link to the crawlable SSG page
+        url: `/race/${encodeURIComponent(r.file)}` }));
     const athItems: Item[] = (athletes ?? [])
       .filter((a) => a.nm.includes(query))
       .sort((a, b) => b.n - a.n)

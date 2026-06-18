@@ -124,11 +124,12 @@ export default function AthleteProfile(
           <div className="flex flex-wrap gap-2">
             {d.rivals.map((r) => {
               const lead = r.w > r.l ? "text-emerald-600 dark:text-emerald-400" : r.w < r.l ? "text-accent" : "text-muted";
+              const leadLabel = r.w > r.l ? "領先" : r.w < r.l ? "落後" : "平手";
               return (
                 <a key={r.id} href={`${base}/athletes?id=${r.id}`}
                   className="rounded-lg border border-border bg-bg px-3 py-2 text-sm hover:border-accent">
                   <span className="text-ink">{r.nm}</span>
-                  <span className={`ml-2 num ${lead}`}>{r.w}–{r.l}</span>
+                  <span className={`ml-2 num ${lead}`} title={`${leadLabel} ${r.w}勝${r.l}負`}>{r.w}–{r.l}</span>
                   <span className="ml-1 text-xs text-muted">/ {r.meets} 場</span>
                 </a>
               );
