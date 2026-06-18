@@ -55,3 +55,18 @@ html.dark { color-scheme: dark; }
 html { background: var(--bg, #FAF9F5); color: var(--ink, #1F1E1D); font-family: var(--font-body); }
 h1, h2, h3, .display { font-family: var(--font-display); }
 .num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+/* Horizontal scroll affordance for wide data tables (each is a table inside an
+   overflow-x-auto div). Edge shadows appear only when the table overflows and
+   fade out at the scroll extents (background-attachment: local trick), so on a
+   phone it is obvious the table can be swiped sideways. The cover gradients use
+   --surface to blend with the card the table sits in. */
+.scroll-x, div:has(> table) {
+  overflow-x: auto;
+  background:
+    linear-gradient(to right, var(--surface, #fff) 30%, rgba(255,255,255,0)) 0 0 / 28px 100% no-repeat,
+    linear-gradient(to left, var(--surface, #fff) 30%, rgba(255,255,255,0)) 100% 0 / 28px 100% no-repeat,
+    radial-gradient(farthest-side at 0 50%, rgba(0,0,0,.10), rgba(0,0,0,0)) 0 0 / 14px 100% no-repeat,
+    radial-gradient(farthest-side at 100% 50%, rgba(0,0,0,.10), rgba(0,0,0,0)) 100% 0 / 14px 100% no-repeat;
+  background-attachment: local, local, scroll, scroll;
+}
