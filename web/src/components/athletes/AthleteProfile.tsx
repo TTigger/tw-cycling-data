@@ -10,6 +10,7 @@ import Doppelganger from "./Doppelganger";
 import SeasonReview from "./SeasonReview";
 import ShareCard from "./ShareCard";
 import FavButton from "../FavButton";
+import Tabs from "../Tabs";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
@@ -40,8 +41,16 @@ export default function AthleteProfile(
       ? searchAthletes(index, vsQuery, 8).filter((x) => x.id !== d.id) : []),
     [index, vsQuery, d.id],
   );
+  const [tab, setTab] = useState("overview");
+  const tabs = [
+    { key: "overview", label: "總覽" },
+    { key: "analysis", label: "分析" },
+    ...(d.rivals && d.rivals.length ? [{ key: "rivals", label: "對手" }] : []),
+    { key: "history", label: "歷年成績" },
+  ];
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
+      <button onClick={onBack} className="text-sm text-muted hover:text-accent">‹ 所有選手</button>
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <h1 className="font-display text-2xl text-ink">{d.nm}</h1>
@@ -58,8 +67,6 @@ export default function AthleteProfile(
             onClick={() => setShowCard(true)}>產生成績卡</button>
           <button className="rounded-lg border border-border px-3 py-2 text-sm text-muted hover:text-accent"
             onClick={() => setVsQuery((q) => (q == null ? "" : null))}>比較選手</button>
-          <button className="rounded-lg border border-border px-3 py-2 text-sm text-muted hover:text-accent"
-            onClick={onBack}>← 換一位</button>
         </div>
       </div>
       {showCard && <ShareCard d={d} onClose={() => setShowCard(false)} />}
@@ -100,25 +107,32 @@ export default function AthleteProfile(
         <Stat label="最佳名次" value={s.bestRank ?? "—"} />
       </div>
 
-      <SeasonReview d={d} />
+      <Tabs tabs={tabs} active={tab} onChange={setTab} />
 
-      <section className="rounded-xl border border-border bg-surface p-4">
-        <h2 className="font-display text-lg text-ink">進步軌跡</h2>
-        <p className="mb-2 text-xs text-muted">每年最佳「同場贏過 % 」(名次/該場人數),跨賽事可比;長條為當年出賽場次。</p>
-        <AthleteProgression history={d.history} />
-      </section>
+      {tab === "overview" && (
+        <div className="space-y-6">
+          <SeasonReview d={d} />
+          <section className="rounded-xl border border-border bg-surface p-4">
+            <h2 className="font-display text-lg text-ink">進步軌跡</h2>
+            <p className="mb-2 text-xs text-muted">每年最佳「同場贏過 % 」(名次/該場人數),跨賽事可比;長條為當年出賽場次。</p>
+            <AthleteProgression history={d.history} />
+          </section>
+        </div>
+      )}
 
-      <CalibratedProgress history={d.history} />
+      {tab === "analysis" && (
+        <div className="space-y-6">
+          <CalibratedProgress history={d.history} />
+          <section className="rounded-xl border border-border bg-surface p-4">
+            <h2 className="font-display text-lg text-ink">專長雷達(爬坡 vs 平路)</h2>
+            <p className="mb-2 text-xs text-muted">各賽事類型的相對表現,看出選手是爬坡型還是平路型。</p>
+            <AthleteRadar traits={d.traits} />
+          </section>
+          <Doppelganger targetId={d.id} index={index} />
+        </div>
+      )}
 
-      <section className="rounded-xl border border-border bg-surface p-4">
-        <h2 className="font-display text-lg text-ink">專長雷達(爬坡 vs 平路)</h2>
-        <p className="mb-2 text-xs text-muted">各賽事類型的相對表現,看出選手是爬坡型還是平路型。</p>
-        <AthleteRadar traits={d.traits} />
-      </section>
-
-      <Doppelganger targetId={d.id} index={index} />
-
-      {d.rivals && d.rivals.length > 0 && (
+      {tab === "rivals" && d.rivals && d.rivals.length > 0 && (
         <section className="rounded-xl border border-border bg-surface p-4">
           <h2 className="font-display text-lg text-ink">交手戰績(宿敵)</h2>
           <p className="mb-2 text-xs text-muted">最常同場較勁的對手與勝負(同場名次較前者勝)。</p>
@@ -139,6 +153,7 @@ export default function AthleteProfile(
         </section>
       )}
 
+      {tab === "history" && (
       <section className="rounded-xl border border-border bg-surface p-4">
         <h2 className="font-display text-lg text-ink">歷年成績</h2>
         <div className="mt-2 overflow-x-auto">
@@ -174,6 +189,7 @@ export default function AthleteProfile(
           </table>
         </div>
       </section>
+      )}
     </div>
   );
 }

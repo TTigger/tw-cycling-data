@@ -22,7 +22,8 @@ export default function TeamProfile({ d, onBack }: { d: TeamDetail; onBack: () =
   const peakYear = d.byYear.reduce((a, b) => (b.riders > a.riders ? b : a), d.byYear[0]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
+      <button onClick={onBack} className="text-sm text-muted hover:text-accent">‹ 所有車隊</button>
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <h1 className="font-display text-2xl text-ink">{d.name}</h1>
@@ -30,8 +31,6 @@ export default function TeamProfile({ d, onBack }: { d: TeamDetail; onBack: () =
             {d.y0}–{d.y1} · {d.riders} 位車手 · 出賽 {d.rows.toLocaleString()} 人次
           </p>
         </div>
-        <button className="shrink-0 rounded-lg border border-border px-3 py-2 text-sm text-muted hover:text-accent"
-          onClick={onBack}>← 換一隊</button>
       </div>
 
       <div className="grid grid-cols-3 gap-3 sm:grid-cols-5">
