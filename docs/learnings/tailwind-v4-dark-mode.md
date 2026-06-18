@@ -1,7 +1,7 @@
 # Tailwind v4 dark mode (token override gets stripped)
 
 **Symptom found 2026-06:** class-based dark mode was silently dead in the
-production build — the 🌙 toggle added `html.dark` but nothing changed.
+production build — the toggle added `html.dark` but nothing changed.
 
 **Cause:** Tailwind v4's build **strips author custom-property declarations** that
 sit on `:root` / bare `html`, and any `--color-*` (theme-namespaced) override

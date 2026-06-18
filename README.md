@@ -1,6 +1,6 @@
 # 台灣公路車賽事資料專案 (tw-cycling-data)
 
-> 🌐 English: **[README.en.md](README.en.md)** ｜ 📋 資料來源登錄表(已爬/受限/發現):**[SOURCES.md](SOURCES.md)**
+> English: **[README.en.md](README.en.md)** ｜ 資料來源登錄表(已爬/受限/發現):**[SOURCES.md](SOURCES.md)**
 
 收集、清洗、正規化台灣公路車賽事成績(2009–2026),做成資料庫 → 互動視覺化儀表板,已部署為 Vercel 靜態網頁。
 
@@ -14,12 +14,12 @@
 |---|---|---|
 | **總覽** | KPI、賽季行事曆熱圖、逐年趨勢、女子參與、組別組成 | 一眼看懂台灣公路車生態 |
 | **探索** | 多維篩選 → 完賽時間分布、分齡箱形圖、競爭強度、距離vs速度 | 想自己切資料分析的人 |
-| **賽事** | 排行榜、領獎台、**「你贏過多少 %」percentile**、跨年變化、車隊戰力、**🧬 賽事 DNA 指紋(6 軸雷達、可並排比較、🧭 找相似賽事)**、**🌧️ 賽事嚴苛度(完賽異常推估)**、賽事搜尋 | **車友**:找自己那場、看落點、看歷年變快沒 |
+| **賽事** | 排行榜、領獎台、**「你贏過多少 %」percentile**、跨年變化、車隊戰力、**賽事 DNA 指紋(6 軸雷達、可並排比較、找相似賽事)**、**賽事嚴苛度(完賽異常推估)**、賽事搜尋 | **車友**:找自己那場、看落點、看歷年變快沒 |
 | **系列** | 多站系列(96聯賽/捷安特/崇越/雪巴大滿貫/GravelFundo/TCU…)**賽季綜合表現總排** | 看一整季全貌、不再散在各站 |
-| **選手** | 21,842 位可追蹤選手、搜尋、**歷年生涯、進步軌跡、🎬 賽季回顧、🎚️ 跨年難度校正、爬坡vs平路雷達、👯 騎乘分身、🆚 1v1 對比、交手戰績(宿敵)、🃏 戰力卡(白金/金/銀/銅分級·可上傳照片)** | 追蹤一位車手整段生涯、跟對手勝負 |
+| **選手** | 21,842 位可追蹤選手、搜尋、**歷年生涯、進步軌跡、賽季回顧、跨年難度校正、爬坡vs平路雷達、騎乘分身、1v1 對比、交手戰績(宿敵)、戰力卡(白金/金/銀/銅分級·可上傳照片)** | 追蹤一位車手整段生涯、跟對手勝負 |
 | **車隊** | 車隊名單、隊史最佳戰績、活躍年表(805 隊,門檻 ≥4 位可追蹤車手、≥2 場) | 看一支車隊的陣容與戰績 |
 | **傳奇爬坡** | **VAM 爬坡指數**、單場+跨賽爬坡王、推算 W/kg、場地最速榜 | 爬坡咖:武嶺/KOM 跨年跨賽同尺比較 |
-| **洞察** | **🏅 紀錄牆、巔峰年齡曲線、突破之星、賽事星等、成績換算器、地理熱點** | 趨勢與冷知識 |
+| **洞察** | **紀錄牆、巔峰年齡曲線、突破之星、賽事星等、成績換算器、地理熱點** | 趨勢與冷知識 |
 | **海外賽** | 富士山等(獨立收錄,不混入台灣統計) | 海外賽事 |
 | **資料涵蓋** | 資料來源透明度、行事曆缺漏賽事清單 | 看我們收了什麼、還缺什麼 |
 
@@ -45,11 +45,11 @@
 | **Phase 1c:歷史回填(cyclist 2014–23 + Bravelog 2018–23)** | ✅ +7,363 + 歷史 Bravelog |
 | **Phase 3:選手歷年追蹤(TCU/UCI ID 為錨、姓名為輔)** | ✅ `/athletes` **21,842 位可追蹤選手**(≥2 場);進步軌跡+歷年成績+同名信心標記 |
 | **★ 主資料集現況** | ✅ **116,953 筆 / 126 場 / 5 來源 / 2009–2026**(bravelog 46,553・irunner 32,862・tsu 24,924・cyclist 12,265・cycling 349) |
-| **Phase 4:分析型功能** | ✅ 選手頁 **👯 騎乘分身**(指紋最近鄰)+ **🎚️ 跨年難度校正**;賽事頁 **🧬 賽事 DNA 指紋**(6 軸雷達);各帶 pytest/vitest,去識別化 |
-| **Phase 5:更多分析** | ✅ **🧭 找相似賽事**(DNA 最近鄰)、**🆚 車手 1v1 對比**、**🏆 賽事系列總標**(`/series`)、**🌧️ 賽事嚴苛度**(完賽異常推估);**🧱 性別/分齡回填**(M/F 43%→52%) |
+| **Phase 4:分析型功能** | ✅ 選手頁 **騎乘分身**(指紋最近鄰)+ **跨年難度校正**;賽事頁 **賽事 DNA 指紋**(6 軸雷達);各帶 pytest/vitest,去識別化 |
+| **Phase 5:更多分析** | ✅ **找相似賽事**(DNA 最近鄰)、**車手 1v1 對比**、**賽事系列總標**(`/series`)、**賽事嚴苛度**(完賽異常推估);**性別/分齡回填**(M/F 43%→52%) |
 | **資料正規化精修** | ✅ 賽名:同活動跨屆合併(149→140→**126 場**,含人工逐組核可的 review batch,候選產生器 `suggest_race_merges.py`);組別:`race_class` 補 RM##/RW## 分齡碼+一般組+長途認證 → 未分類 37%→23% |
 | **資料新鮮度自動化** | ✅ 每週一/四雲端 routine 跑行事曆缺漏偵查 → 開 PR 回報「待 ingest」清單(雷達式提醒,非自動爬;master 含 PII 不上雲) |
-| **Phase 6:體驗強化** | ✅ 行動版導覽抽屜、⭐ 我的最愛(localStorage)、🌙 深色模式、圖表微互動+表格分頁、🎬 賽季回顧、🚴 車隊頁(`/teams`,805 隊) |
+| **Phase 6:體驗強化** | ✅ 行動版導覽抽屜、我的最愛(localStorage)、深色模式、圖表微互動+表格分頁、賽季回顧、車隊頁(`/teams`,805 隊) |
 | **Phase 7:SSG + 分享** | ✅ 賽事全 SSG + 熱門選手預渲染、per-page meta + OG 分享圖(`build_og.py`);站內賽事連結改連可爬的 SSG 頁 |
 | **Phase 8:效能 + 打磨** | ✅ 首頁/賽事頁不再載 24.5MB `viz.json`(預聚合 `overview.json`/`race_crossyear.json`)、選手大檔延後載入;修好瀏覽器上一頁(popstate)與深色模式 build 失效;a11y/載入態/圖表空狀態一致化 |
 
@@ -72,11 +72,11 @@ scrapers/
   merge.py             ★ 合併所有來源 → master 資料集(套用 normalize、跨源去重)
   validate.py          資料品質驗證(重複/時間/名次倒置/覆蓋率/年份漂移)
   build_viz.py         ★ master.public → 前端資料檔(viz/races/race;含 pytest)
-  build_athletes.py    ★ master → 選手追蹤資料(athletes 索引 + athlete/<id>:身分歸併、同名信心、爬坡王 climb_vam、專長雷達 traits、交手戰績 rivals、👯 騎乘分身指紋 athlete_features;含 pytest)
+  build_athletes.py    ★ master → 選手追蹤資料(athletes 索引 + athlete/<id>:身分歸併、同名信心、爬坡王 climb_vam、專長雷達 traits、交手戰績 rivals、騎乘分身指紋 athlete_features;含 pytest)
   build_insights.py    ★ master → insights.json(巔峰年齡曲線/突破之星/賽事星等/地理熱點;含 pytest)
-  build_difficulty.py  ★ master → race_difficulty.json(🎚️ 跨年難度校正:每場每年中位數+難度係數;含 pytest)
-  build_race_dna.py    ★ master → race_dna.json(🧬 賽事 DNA:每場每年 6 軸跨站正規化指紋 + 🧭 找相似賽事;含 pytest)
-  build_series.py      ★ master → series.json(🏆 賽事系列總標:多站系列賽季綜合表現總排;含 pytest)
+  build_difficulty.py  ★ master → race_difficulty.json(跨年難度校正:每場每年中位數+難度係數;含 pytest)
+  build_race_dna.py    ★ master → race_dna.json(賽事 DNA:每場每年 6 軸跨站正規化指紋 + 找相似賽事;含 pytest)
+  build_series.py      ★ master → series.json(賽事系列總標:多站系列賽季綜合表現總排;含 pytest)
   build_fonts.py       ★ 自架字型瘦身:擷取站上實際用到的字 → 子集化 5 種字型為 web/public/fonts/*.woff2(免 Google Fonts、CJK 不再分 ~25 個子集請求)
   discover.py          ★ 缺漏發現:爬公開行事曆 → 與 master 比對 → 輸出「缺漏賽事 + 推測來源」(不靠人工列舉)
   overseas_runnet.py   海外賽(runnet headless)→ web/public/data/overseas(獨立別集,不進 master)
@@ -109,14 +109,14 @@ python scrapers\validate.py master.json      # 資料品質檢查
 
 ## 前端儀表板(`web/`)
 
-Astro + React islands + Tailwind v4 + ECharts,Claude 暖色風,10 頁(🌙 深色模式、⭐ 我的最愛、行動版抽屜):
+Astro + React islands + Tailwind v4 + ECharts,Claude 暖色風,10 頁(深色模式、我的最愛、行動版抽屜):
 - `/`(總覽)、`/explore`(探索)、`/overseas`(海外賽)、`/coverage`(資料涵蓋)
-- `/teams`(**🚴 車隊頁**:車手名單、隊史最佳戰績、活躍年表,`teams.json` + `team/<id>.json`)
-- `/race`(賽事詳情 + 排行榜/percentile + **🧬 賽事 DNA 指紋**:6 軸跨站正規化雷達、可並排比較、**🧭 找相似賽事**最近鄰,`race_dna.json` + **🌧️ 賽事嚴苛度**:以完賽人數/時間 vs 歷年推估,`race_difficulty.json`)
-- `/series`(**🏆 賽事系列總標**:多站系列賽季綜合表現總排,`series.json`)
-- `/athletes`(選手追蹤 + **👯 騎乘分身**:指紋最近鄰相似選手,`athlete_features.json` + **🎚️ 跨年難度校正**:原始 vs 校正後完賽時間,`race_difficulty.json` + **🆚 1v1 對比** + 爬坡手vs平路手雷達 + 交手戰績宿敵)
+- `/teams`(**車隊頁**:車手名單、隊史最佳戰績、活躍年表,`teams.json` + `team/<id>.json`)
+- `/race`(賽事詳情 + 排行榜/percentile + **賽事 DNA 指紋**:6 軸跨站正規化雷達、可並排比較、**找相似賽事**最近鄰,`race_dna.json` + **賽事嚴苛度**:以完賽人數/時間 vs 歷年推估,`race_difficulty.json`)
+- `/series`(**賽事系列總標**:多站系列賽季綜合表現總排,`series.json`)
+- `/athletes`(選手追蹤 + **騎乘分身**:指紋最近鄰相似選手,`athlete_features.json` + **跨年難度校正**:原始 vs 校正後完賽時間,`race_difficulty.json` + **1v1 對比** + 爬坡手vs平路手雷達 + 交手戰績宿敵)
 - `/climbs`(傳奇爬坡 + **爬坡指數 VAM**:單場 VAM 排行 + 跨賽「爬坡王」榜 + 推算 W/kg + 場地最速榜,基於策展的 `climb_profiles.json` 海拔對照表)
-- `/insights`(數據洞察:**🏅 紀錄牆**(最大場面/最多出賽/冠軍/連續年/回頭王,去識別化)、巔峰年齡曲線、突破之星、賽事星等、成績換算器、賽事地理熱點)
+- `/insights`(數據洞察:**紀錄牆**(最大場面/最多出賽/冠軍/連續年/回頭王,去識別化)、巔峰年齡曲線、突破之星、賽事星等、成績換算器、賽事地理熱點)
 
 ```powershell
 python scrapers\build_viz.py            # master.public → web/public/data/{viz,races,race/*}.json
@@ -125,7 +125,7 @@ python scrapers\build_insights.py       # master → insights.json(洞察頁:年
 python scrapers\build_difficulty.py     # master → race_difficulty.json(選手頁:跨年難度校正)
 python scrapers\build_race_dna.py       # master → race_dna.json(賽事頁:賽事 DNA 指紋雷達 + 找相似賽事)
 python scrapers\build_series.py         # master → series.json(系列頁:多站賽季綜合總排)
-python scrapers\build_teams.py          # master → teams.json + team/<id>.json(🚴 車隊頁)
+python scrapers\build_teams.py          # master → teams.json + team/<id>.json(車隊頁)
 python scrapers\build_viz.py            # 亦產 overview.json(首頁預聚合)+ race_crossyear.json(賽事跨年)
 python scrapers\build_og.py             # → web/public/og.png(OG 分享圖,需重跑於統計變動後)
 python scrapers\build_fonts.py          # 子集化自架字型 → web/public/fonts/*.woff2(需 data/_fonts_src 內的來源 TTF)
@@ -165,7 +165,7 @@ npm run build                           # 產出 web/dist(靜態)
 
 ## 下一步
 
-- **設定 `astro.config` 的 `site` 為正式部署網址**(目前為佔位網域,影響 OG/canonical 絕對網址)、自訂網域。
+- 自訂網域(若未來綁定,需更新 `astro.config` 的 `site`;目前指向 `tw-cycling-data.vercel.app`)。
 - 賽名/組別正規化續精修(候選產生器 `scrapers/suggest_race_merges.py` 產人工核可表)。
 - cycling.org.tw 舊年份寬表格式回填(目前僅 2025 國家級源)。
 - 維護者請先讀 `docs/learnings/` 與 `AGENTS.md`(這次大改的非顯而易見決策與陷阱)。

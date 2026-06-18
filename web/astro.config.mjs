@@ -6,9 +6,9 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  // Absolute origin for canonical + OpenGraph URLs. Override here if the site
-  // moves to a custom domain (the data layer serves from the root, BASE_URL "/").
-  site: 'https://ttigger.github.io',
+  // Absolute origin for canonical + OpenGraph URLs (production deploy on Vercel).
+  // Update here if the site moves to a custom domain.
+  site: 'https://tw-cycling-data.vercel.app',
   integrations: [react()],
 
   vite: {
