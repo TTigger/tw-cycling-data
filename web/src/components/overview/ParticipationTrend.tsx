@@ -1,10 +1,8 @@
 import type { EChartsOption } from "echarts";
 import EChart from "../charts/EChart";
-import { trendByYearSeries } from "../../lib/overview";
-import type { SlimRecord } from "../../lib/types";
+import type { Trend } from "../../lib/overview";
 
-export default function ParticipationTrend({ rows }: { rows: SlimRecord[] }) {
-  const t = trendByYearSeries(rows, 8);
+export default function ParticipationTrend({ trend: t }: { trend: Trend }) {
   if (!t.years.length) return <div className="flex h-[300px] items-center justify-center text-muted">無資料</div>;
   const option: EChartsOption = {
     grid: { left: 56, right: 16, top: 16, bottom: 64 },

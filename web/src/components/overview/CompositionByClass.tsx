@@ -1,10 +1,8 @@
 import type { EChartsOption } from "echarts";
 import EChart from "../charts/EChart";
-import { compositionByClass } from "../../lib/overview";
-import type { SlimRecord } from "../../lib/types";
+import type { Composition } from "../../lib/overview";
 
-export default function CompositionByClass({ rows }: { rows: SlimRecord[] }) {
-  const c = compositionByClass(rows);
+export default function CompositionByClass({ composition: c }: { composition: Composition }) {
   if (!c.classes.length) return <div className="flex h-[300px] items-center justify-center text-muted">無資料</div>;
   const option: EChartsOption = {
     grid: { left: 56, right: 16, top: 16, bottom: 64 },

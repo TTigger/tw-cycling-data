@@ -99,6 +99,113 @@ def race_file_name(rk, year):
     return f"{safe}__{year}"
 
 
+def _quantile(sorted_vals, q):
+    """Linear-interpolated quantile — matches web/src/lib/aggregate.ts quantile()."""
+    n = len(sorted_vals)
+    if n == 0:
+        return float("nan")
+    if n == 1:
+        return sorted_vals[0]
+    pos = (n - 1) * q
+    base = int(pos)
+    rest = pos - base
+    nxt = sorted_vals[base + 1] if base + 1 < n else None
+    return sorted_vals[base] + rest * (nxt - sorted_vals[base]) if nxt is not None else sorted_vals[base]
+
+
+def build_overview(viz, top_n=8, women_min=50):
+    """Precompute the homepage aggregates so the landing page no longer downloads
+    the full 24MB viz.json. Mirrors web/src/lib/overview.ts (kpiStats /
+    monthYearHeat / trendByYearSeries / womenShareBySeries / compositionByClass)."""
+    races, series = set(), set()
+    mn, mx = None, None
+    for r in viz:
+        if r["rk"]:
+            races.add(r["rk"])
+        if r["s"]:
+            series.add(r["s"])
+        if r["y"] is not None:
+            mn = r["y"] if mn is None else min(mn, r["y"])
+            mx = r["y"] if mx is None else max(mx, r["y"])
+    kpi = {"records": len(viz), "races": len(races), "series": len(series),
+           "minYear": mn, "maxYear": mx}
+
+    years = sorted({r["y"] for r in viz if r["y"] is not None})
+    yi = {y: i for i, y in enumerate(years)}
+
+    # heat: month x year people-count
+    grid = defaultdict(int)
+    for r in viz:
+        if r["mon"] is None or r["y"] is None:
+            continue
+        grid[(r["mon"], r["y"])] += 1
+    cells = [[m - 1, yi[y], c] for (m, y), c in grid.items()]
+    heat = {"years": years, "cells": cells, "max": max((c for *_, c in cells), default=0)}
+
+    # trend: stacked participation by year, top-N series (+ 其他)
+    totals = defaultdict(int)
+    for r in viz:
+        totals[r["s"] or "其他"] += 1
+    top = [s for s, _ in sorted(totals.items(), key=lambda e: -e[1])[:top_n]]
+    top_set = set(top)
+    counts = {s: [0] * len(years) for s in [*top, "其他"]}
+    for r in viz:
+        if r["y"] is None:
+            continue
+        s = r["s"] or "其他"
+        counts[s if s in top_set else "其他"][yi[r["y"]]] += 1
+    if all(c == 0 for c in counts["其他"]):
+        del counts["其他"]
+    trend = {"years": years, "series": list(counts.keys()), "counts": counts}
+
+    # women share by series (sample >= women_min)
+    wg = defaultdict(lambda: {"f": 0, "t": 0})
+    for r in viz:
+        if r["g"] not in ("M", "F"):
+            continue
+        e = wg[r["s"] or "其他"]
+        if r["g"] == "F":
+            e["f"] += 1
+        e["t"] += 1
+    women = sorted(
+        ({"series": s, "f": e["f"], "total": e["t"], "pct": round(100 * e["f"] / e["t"])}
+         for s, e in wg.items() if e["t"] >= women_min),
+        key=lambda w: -w["total"])
+
+    # composition by race_class x gender
+    cg = defaultdict(lambda: {"m": 0, "f": 0, "u": 0})
+    for r in viz:
+        e = cg[r["rc"] or "未分類"]
+        e["m" if r["g"] == "M" else "f" if r["g"] == "F" else "u"] += 1
+    classes = sorted(cg.keys(), key=lambda c: -(cg[c]["m"] + cg[c]["f"] + cg[c]["u"]))
+    composition = {"classes": classes,
+                   "male": [cg[c]["m"] for c in classes],
+                   "female": [cg[c]["f"] for c in classes],
+                   "unknown": [cg[c]["u"] for c in classes]}
+
+    return {"kpi": kpi, "heat": heat, "trend": trend, "women": women,
+            "composition": composition}
+
+
+def build_crossyear(viz):
+    """Per-race cross-year winner/median finish time, so the race page no longer
+    loads the full viz.json just to chart one race. Mirrors racedetail.crossYear."""
+    by = defaultdict(lambda: defaultdict(list))   # rk -> y -> [t]
+    for r in viz:
+        if r["rk"] and r["y"] is not None and r["t"] is not None:
+            by[r["rk"]][r["y"]].append(r["t"])
+    out = {}
+    for rk, years in by.items():
+        if len(years) < 2:                        # cross-year card needs >=2 years
+            continue
+        rows = []
+        for y in sorted(years):
+            ts = sorted(years[y])
+            rows.append({"y": y, "winner": ts[0], "median": round(_quantile(ts, 0.5))})
+        out[rk] = rows
+    return out
+
+
 def detail_record(rec):
     """Per-race leaderboard row (de-identified)."""
     return {"rank": rec.get("rank_overall"), "bib": rec.get("bib"),
@@ -117,6 +224,10 @@ def main():
     idx = build_races_index(records)
     with open(os.path.join(OUT, "races.json"), "w", encoding="utf-8") as f:
         json.dump(idx, f, ensure_ascii=False, separators=(",", ":"))
+    with open(os.path.join(OUT, "overview.json"), "w", encoding="utf-8") as f:
+        json.dump(build_overview(viz), f, ensure_ascii=False, separators=(",", ":"))
+    with open(os.path.join(OUT, "race_crossyear.json"), "w", encoding="utf-8") as f:
+        json.dump(build_crossyear(viz), f, ensure_ascii=False, separators=(",", ":"))
     groups = defaultdict(list)
     for r in records:
         groups[race_file_name(r.get("race_key"), r.get("year"))].append(r)

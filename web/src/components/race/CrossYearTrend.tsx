@@ -1,10 +1,8 @@
 import type { EChartsOption } from "echarts";
 import EChart from "../charts/EChart";
-import { crossYear } from "../../lib/racedetail";
 import { secondsToHMS } from "../../lib/format";
 
-export default function CrossYearTrend({ rows }: { rows: { y: number | null; t: number | null }[] }) {
-  const cy = crossYear(rows);
+export default function CrossYearTrend({ cy }: { cy: { y: number; winner: number; median: number }[] }) {
   if (cy.length < 2) return <div className="flex h-[260px] items-center justify-center text-muted">僅單一年度,無跨年比較</div>;
   const option: EChartsOption = {
     grid: { left: 64, right: 16, top: 24, bottom: 40 },

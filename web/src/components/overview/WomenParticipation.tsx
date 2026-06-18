@@ -1,10 +1,9 @@
 import type { EChartsOption } from "echarts";
 import EChart from "../charts/EChart";
-import { womenShareBySeries } from "../../lib/overview";
-import type { SlimRecord } from "../../lib/types";
+import type { WomenShare } from "../../lib/overview";
 
-export default function WomenParticipation({ rows }: { rows: SlimRecord[] }) {
-  const shares = womenShareBySeries(rows, 50).slice(0, 12);
+export default function WomenParticipation({ women }: { women: WomenShare[] }) {
+  const shares = women.slice(0, 12);
   if (!shares.length) return <div className="flex h-[320px] items-center justify-center text-muted">無足夠性別資料</div>;
   const option: EChartsOption = {
     grid: { left: 170, right: 32, top: 16, bottom: 32 },
