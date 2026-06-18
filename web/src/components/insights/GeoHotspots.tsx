@@ -19,7 +19,7 @@ export default function GeoHotspots({ regions }: { regions: GeoRegion[] }) {
     series: [{
       type: "bar", data: top.map((r) => r.rows), barWidth: "62%",
       itemStyle: { color: "#D97757" },
-      label: { show: true, position: "right", color: "#6B6760",
+      label: { show: true, position: "right",
         formatter: (p: any) => top[p.dataIndex].races + " 場" },
     }],
   };

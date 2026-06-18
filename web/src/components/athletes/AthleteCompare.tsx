@@ -32,8 +32,7 @@ export default function AthleteCompare(
   const radar: EChartsOption | null = types.length >= 3 ? {
     radar: {
       indicator: types.map((t) => ({ name: TRAIT_LABELS[t], max: 100 })),
-      radius: "62%", axisName: { color: "#6B6760", fontSize: 11 },
-      splitLine: { lineStyle: { color: "#E8E3D9" } },
+      radius: "62%", axisName: { fontSize: 11 },
       splitArea: { areaStyle: { color: ["rgba(0,0,0,0)", "rgba(217,119,87,0.04)"] } },
     },
     legend: { bottom: 0, data: [a.nm, b.nm] },

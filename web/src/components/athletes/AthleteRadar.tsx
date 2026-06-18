@@ -29,8 +29,7 @@ export default function AthleteRadar({ traits }: { traits: Record<string, Athlet
       const option: EChartsOption = {
         radar: {
           indicator: types.map((t) => ({ name: `${LABELS[t]}\n(${traits[t].n})`, max: 100 })),
-          radius: "62%", axisName: { color: "#6B6760", fontSize: 11 },
-          splitLine: { lineStyle: { color: "#E8E3D9" } },
+          radius: "62%", axisName: { fontSize: 11 },
           splitArea: { areaStyle: { color: ["rgba(0,0,0,0)", "rgba(217,119,87,0.04)"] } },
         },
         tooltip: {},

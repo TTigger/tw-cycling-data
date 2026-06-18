@@ -1,4 +1,7 @@
 @import "tailwindcss";
+/* Bind the Tailwind `dark:` variant to the .dark class (set on <html> by the
+   theme toggle), instead of the default prefers-color-scheme media query. */
+@custom-variant dark (&:where(.dark, .dark *));
 @import "./tokens.css";
 
 /* Self-hosted, glyph-subset fonts (see scrapers/build_fonts.py) — one woff2 per

@@ -21,7 +21,7 @@ export default function Breakout({ entries }: { entries: BreakoutEntry[] }) {
                 <td className="py-1.5 pr-3 num text-muted">{i + 1}</td>
                 <td className="py-1.5 pr-3">
                   <a className="text-ink hover:text-accent" href={`${base}/athletes?id=${e.id}`}>{e.nm}</a>
-                  {e.anchored && <span className="ml-1 text-xs text-emerald-600" title="以 TCU/UCI 選手編號歸併,身分可靠">★</span>}
+                  {e.anchored && <span className="ml-1 text-xs text-emerald-600 dark:text-emerald-400" title="以 TCU/UCI 選手編號歸併,身分可靠">★</span>}
                 </td>
                 <td className="py-1.5 pr-3 num text-accent">+{e.jump}</td>
                 <td className="py-1.5 pr-3 num text-muted">{e.from_pct}% → {e.to_pct}%</td>

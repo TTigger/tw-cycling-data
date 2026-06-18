@@ -37,7 +37,7 @@ export default function AgeCurve({ points }: { points: AgeCurvePoint[] }) {
       // p50 median line on top (not stacked)
       { name: "中位 %", type: "line", data: rows.map((r) => r.p50), smooth: true,
         itemStyle: { color: "#D97757" }, lineStyle: { width: 3 },
-        label: { show: true, formatter: "{c}%", color: "#6B6760", position: "top" } },
+        label: { show: true, formatter: "{c}%", position: "top" } },
     ],
   };
 

@@ -1,43 +1,57 @@
 /* Claude warm palette + fonts */
 /* Note: Google Fonts @import url() must come first in global.css before @import "tailwindcss" */
 
-/* Tailwind v4 theme tokens — single source of truth.
-   Exposes custom design tokens as utility classes:
-   bg-bg, bg-surface, text-ink, text-muted, text-accent,
-   border-border, text-series-blue, text-series-sage,
-   font-display, font-body, font-mono
-   Tailwind also emits each token as a CSS variable (e.g. --color-bg,
-   --color-ink, --font-body) which the bare-CSS rules below consume. */
-@theme {
-  --color-bg: #FAF9F5;
-  --color-surface: #FFFFFF;
-  --color-border: #E8E3D9;
-  --color-ink: #1F1E1D;
-  --color-muted: #6B6760;
-  --color-accent: #D97757;
-  --color-series-blue: #5B7B8A;
-  --color-series-sage: #7C8C6B;
+/* Dark mode by class. Tailwind v4 strips author custom-property declarations on
+   :root / bare html (it owns those), so a `html { --bg: … }` light block silently
+   disappears — but a `.dark`-qualified rule survives. So: light values live as
+   var() fallbacks inside @theme inline, and only the dark overrides are declared
+   as real custom properties (on html.dark). @theme inline maps the tokens into
+   Tailwind's color namespace, so bg-*/text-*/border-* utilities emit
+   var(--bg, <light>) and flip automatically when .dark sets --bg. */
+html {
+  --bg: #FAF9F5;
+  --surface: #FFFFFF;
+  --border: #E8E3D9;
+  --ink: #1F1E1D;
+  --muted: #6B6760;
+  --accent: #D97757;
+  --series-blue: #5B7B8A;
+  --series-sage: #7C8C6B;
+}
+html.dark {
+  --bg: #18171A;
+  --surface: #211F24;
+  --border: #34303A;
+  --ink: #ECE9E3;
+  --muted: #9C968C;
+  --accent: #E8916F;
+  --series-blue: #7FA0B0;
+  --series-sage: #9BAE89;
+}
+html { color-scheme: light; }
+html.dark { color-scheme: dark; }
 
+/* Exposes: bg-bg, bg-surface, text-ink, text-muted, text-accent, border-border,
+   text-series-blue, text-series-sage (each flips via the --* override above). */
+@theme inline {
+  --color-bg: var(--bg, #FAF9F5);
+  --color-surface: var(--surface, #FFFFFF);
+  --color-border: var(--border, #E8E3D9);
+  --color-ink: var(--ink, #1F1E1D);
+  --color-muted: var(--muted, #6B6760);
+  --color-accent: var(--accent, #D97757);
+  --color-series-blue: var(--series-blue, #5B7B8A);
+  --color-series-sage: var(--series-sage, #7C8C6B);
+}
+
+/* Fonts never flip — a normal @theme emits --font-* to :root and keeps
+   var(--font-*) usable in the bare rules below. */
+@theme {
   --font-display: "Fraunces", "Noto Serif TC", serif;
   --font-body: "Hanken Grotesk", "Noto Sans TC", system-ui, sans-serif;
   --font-mono: "Spline Sans Mono", ui-monospace, monospace;
 }
 
-/* Dark theme — override the same tokens so every bg-*/text-*/border-* utility
-   flips automatically (Tailwind v4 utilities reference var(--color-*)). */
-html.dark {
-  --color-bg: #18171A;
-  --color-surface: #211F24;
-  --color-border: #34303A;
-  --color-ink: #ECE9E3;
-  --color-muted: #9C968C;
-  --color-accent: #E8916F;
-  --color-series-blue: #7FA0B0;
-  --color-series-sage: #9BAE89;
-}
-html { color-scheme: light; }
-html.dark { color-scheme: dark; }
-
-html { background: var(--color-bg); color: var(--color-ink); font-family: var(--font-body); }
+html { background: var(--bg, #FAF9F5); color: var(--ink, #1F1E1D); font-family: var(--font-body); }
 h1, h2, h3, .display { font-family: var(--font-display); }
 .num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }

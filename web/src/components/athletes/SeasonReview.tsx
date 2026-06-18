@@ -49,7 +49,7 @@ export default function SeasonReview({ d }: { d: AthleteDetail }) {
         <Tile kicker="中位贏過全場"
           value={r.medianPct == null ? "—" : `${r.medianPct}%`}
           sub={delta == null ? "首個賽季" : delta >= 0
-            ? <span className="text-emerald-600">↑ 較去年 +{delta}</span>
+            ? <span className="text-emerald-600 dark:text-emerald-400">↑ 較去年 +{delta}</span>
             : <span className="text-accent">↓ 較去年 {delta}</span>} />
         <Tile kicker="冠軍 / 前三" value={<><span>{r.wins}</span><span className="text-muted text-base"> / {r.podiums}</span></>} />
         {r.bestVam && <Tile kicker={`最猛爬坡 · ${r.bestVam.climb}`} value={`VAM ${r.bestVam.value}`} />}

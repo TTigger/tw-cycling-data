@@ -8,7 +8,7 @@ export default function CrossYearTrend({ cy }: { cy: { y: number; winner: number
     grid: { left: 64, right: 16, top: 24, bottom: 40 },
     tooltip: { trigger: "axis", formatter: (p: any) =>
       p.map((s: any) => `${s.seriesName} ${secondsToHMS(s.value)}`).join("<br/>") },
-    legend: { bottom: 0, textStyle: { color: "#6B6760" } },
+    legend: { bottom: 0 },
     xAxis: { type: "category", data: cy.map((c) => String(c.y)) },
     yAxis: { type: "value", name: "完賽時間", axisLabel: { formatter: (v: number) => secondsToHMS(v) } },
     series: [

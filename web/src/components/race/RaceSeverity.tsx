@@ -5,9 +5,9 @@ import type { RaceDifficultyFile } from "../../lib/types";
 
 const VERDICT_STYLE: Record<SeverityVerdict, string> = {
   嚴苛: "border-accent/60 bg-accent/10 text-accent",
-  偏難: "border-amber-400/60 bg-amber-50 text-amber-700",
+  偏難: "border-amber-400/60 bg-amber-50 text-amber-700 dark:bg-amber-400/10 dark:text-amber-300",
   正常: "border-border text-muted",
-  偏易: "border-emerald-400/60 bg-emerald-50 text-emerald-700",
+  偏易: "border-emerald-400/60 bg-emerald-50 text-emerald-700 dark:bg-emerald-400/10 dark:text-emerald-300",
 };
 const VERDICT_TEXT: Record<SeverityVerdict, string> = {
   嚴苛: "該屆完賽人數明顯偏少、且中位時間偏慢——很可能受天候/路況等因素影響(本站無報名與 DNF 數,為推估)。",
