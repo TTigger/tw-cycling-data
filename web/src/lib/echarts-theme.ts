@@ -34,6 +34,12 @@ echarts.registerTheme("claude", {
     splitLine: { lineStyle: { color: "#E8E3D9", type: "dashed" } },
   },
   legend: { textStyle: { color: "#6B6760" } },
+  // radar is its own coordinate system (not category/value axis) — theme it so
+  // charts don't hard-code light colors that break in dark mode.
+  radar: {
+    axisName: { color: "#6B6760" }, splitArea: { show: false },
+    axisLine: { lineStyle: { color: "#E8E3D9" } }, splitLine: { lineStyle: { color: "#E8E3D9" } },
+  },
   tooltip: {
     backgroundColor: "#FFFFFF", borderColor: "#E8E3D9",
     textStyle: { color: "#1F1E1D", fontFamily: "Hanken Grotesk, Noto Sans TC, sans-serif" },
@@ -56,6 +62,10 @@ echarts.registerTheme("claude-dark", {
     splitLine: { lineStyle: { color: "#2C2932", type: "dashed" } },
   },
   legend: { textStyle: { color: "#9C968C" } },
+  radar: {
+    axisName: { color: "#9C968C" }, splitArea: { show: false },
+    axisLine: { lineStyle: { color: "#34303A" } }, splitLine: { lineStyle: { color: "#34303A" } },
+  },
   tooltip: {
     backgroundColor: "#211F24", borderColor: "#34303A",
     textStyle: { color: "#ECE9E3", fontFamily: "Hanken Grotesk, Noto Sans TC, sans-serif" },

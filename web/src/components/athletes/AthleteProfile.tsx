@@ -14,7 +14,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 const CONF_STYLE: Record<string, string> = {
   high: "border-border text-muted",
-  med: "border-amber-400/60 bg-amber-50 text-amber-700",
+  med: "border-amber-400/60 bg-amber-50 text-amber-700 dark:bg-amber-400/10 dark:text-amber-300",
   low: "border-accent/60 bg-accent/10 text-accent",
 };
 
@@ -83,7 +83,7 @@ export default function AthleteProfile(
       )}
 
       {d.conf !== "high" && (
-        <p className="rounded-lg border border-amber-400/50 bg-amber-50 px-3 py-2 text-xs text-amber-700">
+        <p className="rounded-lg border border-amber-400/50 bg-amber-50 px-3 py-2 text-xs text-amber-700 dark:bg-amber-400/10 dark:text-amber-300">
           ⚠ 此頁以「遮罩姓名」歸併,
           {d.conf === "low"
             ? "因跨多支車隊或性別不一致,很可能混入多位同名選手,僅供參考。"
@@ -123,7 +123,7 @@ export default function AthleteProfile(
           <p className="mb-2 text-xs text-muted">最常同場較勁的對手與勝負(同場名次較前者勝)。</p>
           <div className="flex flex-wrap gap-2">
             {d.rivals.map((r) => {
-              const lead = r.w > r.l ? "text-emerald-600" : r.w < r.l ? "text-accent" : "text-muted";
+              const lead = r.w > r.l ? "text-emerald-600 dark:text-emerald-400" : r.w < r.l ? "text-accent" : "text-muted";
               return (
                 <a key={r.id} href={`${base}/athletes?id=${r.id}`}
                   className="rounded-lg border border-border bg-bg px-3 py-2 text-sm hover:border-accent">

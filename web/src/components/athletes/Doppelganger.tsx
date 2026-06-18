@@ -7,7 +7,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 const LEAN_STYLE: Record<string, string> = {
   偏爬坡: "border-accent/50 text-accent",
-  偏平路: "border-emerald-400/50 text-emerald-600",
+  偏平路: "border-emerald-400/50 text-emerald-600 dark:text-emerald-400",
   全能: "border-border text-muted",
 };
 

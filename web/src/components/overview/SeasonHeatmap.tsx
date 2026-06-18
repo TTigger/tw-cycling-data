@@ -16,7 +16,7 @@ export default function SeasonHeatmap({ heat }: { heat: Heat }) {
     yAxis: { type: "category", data: heat.years.map(String), splitArea: { show: true } },
     visualMap: {
       min: 0, max: heat.max, calculable: true, orient: "horizontal", left: "center", bottom: 8,
-      inRange: { color: ["#FAF1EC", "#E7A98C", "#D97757", "#A0564B"] }, textStyle: { color: "#6B6760" },
+      inRange: { color: ["#FAF1EC", "#E7A98C", "#D97757", "#A0564B"] },
     },
     series: [{ type: "heatmap", data: heat.cells, label: { show: false },
       emphasis: { itemStyle: { borderColor: "#1F1E1D", borderWidth: 1 } } }],

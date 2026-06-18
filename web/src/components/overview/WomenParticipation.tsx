@@ -15,7 +15,7 @@ export default function WomenParticipation({ women }: { women: WomenShare[] }) {
     yAxis: { type: "category", inverse: true, data: shares.map((w) => w.series),
       axisLabel: { width: 160, overflow: "truncate" } },
     series: [{ type: "bar", data: shares.map((w) => w.pct), itemStyle: { color: "#9A7AA0" }, barWidth: "70%",
-      label: { show: true, position: "right", formatter: "{c}%", color: "#6B6760" } }],
+      label: { show: true, position: "right", formatter: "{c}%" } }],
   };
   return <EChart option={option} height={320} />;
 }

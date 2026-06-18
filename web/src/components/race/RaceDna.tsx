@@ -45,8 +45,7 @@ export default function RaceDna(
   const option: EChartsOption = {
     radar: {
       indicator: DNA_AXES.map((a) => ({ name: a.label, max: 100 })),
-      radius: "62%", axisName: { color: "#6B6760", fontSize: 11 },
-      splitLine: { lineStyle: { color: "#E8E3D9" } },
+      radius: "62%", axisName: { fontSize: 11 },
       splitArea: { areaStyle: { color: ["rgba(0,0,0,0)", "rgba(217,119,87,0.04)"] } },
     },
     legend: { bottom: 0, data: series.map((s) => s.name) },

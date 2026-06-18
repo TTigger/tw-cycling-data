@@ -7,7 +7,7 @@ export default function CompositionByClass({ composition: c }: { composition: Co
   const option: EChartsOption = {
     grid: { left: 56, right: 16, top: 16, bottom: 64 },
     tooltip: { trigger: "axis", axisPointer: { type: "shadow" } },
-    legend: { bottom: 0, textStyle: { color: "#6B6760" } },
+    legend: { bottom: 0 },
     xAxis: { type: "category", data: c.classes, axisLabel: { rotate: 30 } },
     yAxis: { type: "value", name: "人次" },
     series: [
