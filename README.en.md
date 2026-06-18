@@ -1,6 +1,6 @@
 # Taiwan Road-Cycling Race Data (tw-cycling-data)
 
-> 🌐 繁體中文:**[README.md](README.md)** ｜ 📋 Data-source registry (scraped / blocked / discovery): **[SOURCES.md](SOURCES.md)**
+> 繁體中文:**[README.md](README.md)** ｜ Data-source registry (scraped / blocked / discovery): **[SOURCES.md](SOURCES.md)**
 
 Collect, clean, and normalize Taiwan road-cycling race results (2009–2026) into a unified dataset, then an interactive visualization dashboard, deployed as a static site on Vercel.
 
@@ -8,7 +8,7 @@ Collect, clean, and normalize Taiwan road-cycling race results (2009–2026) int
 
 Taiwan's cycling results are **scattered across 4+ platforms** and mostly only queryable race-by-race — there's no single place to compare across races or follow a rider's career. This project aggregates, de-identifies and normalizes those public results into a **free, open, interactive** explorer — currently the **only** unified, analyzable view of Taiwan road-cycling results (**116,953 rows / 126 races / 2009–2026**, plus an overseas collection).
 
-Ten pages: **Overview** (the scene at a glance) · **Explore** (filter & analyze distributions) · **Race** (leaderboard + "what % did you beat" percentile + **🧬 Race DNA** 6-axis radar with side-by-side compare + **🧭 similar-race finder** + **🌧️ severity/attrition estimate** + race search) · **Series** (**🏆 multi-station season standings** for 96聯賽/捷安特/崇越/雪巴…) · **Athletes** (21,842 trackable riders: career history, progression, **🎬 season review**, **🎚️ cross-year difficulty calibration**, climber-vs-rouleur radar, **👯 riding doppelgangers**, **🆚 1v1 head-to-head**, rivals) · **Teams** (roster, team records, activity timeline; 805 teams) · **Climbs** (VAM climbing index + cross-race Climbing King + all-time course records) · **Insights** (peak-age curve, breakout stars, race star-ratings, result converter, geographic hotspots) · **Overseas** (kept separate) · **Coverage** (source transparency + missing-race worklist). The point: turn "scattered, query-only" results into a **searchable, career-trackable, comparable** community resource. PDPA-safe (masked names only). Coverage is disclosed honestly in **[SOURCES.md](SOURCES.md)**.
+Ten pages: **Overview** (the scene at a glance) · **Explore** (filter & analyze distributions) · **Race** (leaderboard + "what % did you beat" percentile + **Race DNA** 6-axis radar with side-by-side compare + **similar-race finder** + **severity/attrition estimate** + race search) · **Series** (**multi-station season standings** for 96聯賽/捷安特/崇越/雪巴…) · **Athletes** (21,842 trackable riders: career history, progression, **season review**, **cross-year difficulty calibration**, climber-vs-rouleur radar, **riding doppelgangers**, **1v1 head-to-head**, rivals) · **Teams** (roster, team records, activity timeline; 805 teams) · **Climbs** (VAM climbing index + cross-race Climbing King + all-time course records) · **Insights** (peak-age curve, breakout stars, race star-ratings, result converter, geographic hotspots) · **Overseas** (kept separate) · **Coverage** (source transparency + missing-race worklist). The point: turn "scattered, query-only" results into a **searchable, career-trackable, comparable** community resource. PDPA-safe (masked names only). Coverage is disclosed honestly in **[SOURCES.md](SOURCES.md)**.
 
 ## Status
 
@@ -27,9 +27,9 @@ Ten pages: **Overview** (the scene at a glance) · **Explore** (filter & analyze
 | **Vercel deployment** | ✅ Live (Root Directory=`web`; auto-deploys on push) |
 | **Phase 1c: historical backfill (cyclist 2014–23 + Bravelog 2018–23)** | ✅ +7,363 + historical Bravelog |
 | **Phase 3: per-athlete tracking (TCU/UCI-ID-anchored, name fallback)** | ✅ `/athletes` **21,842 trackable athletes** (≥2 results); progression + career table + homonym confidence flag |
-| **Phase 4: analytics features** | ✅ Athletes: **👯 riding doppelganger** (fingerprint nearest-neighbor) + **🎚️ cross-year difficulty calibration**; Race: **🧬 Race DNA** 6-axis radar — each with pytest/vitest, de-identified |
-| **Phase 5: more analytics** | ✅ **🧭 similar-race finder** (DNA NN), **🆚 athlete 1v1**, **🏆 series season standings** (`/series`), **🌧️ race severity/attrition** proxy; **🧱 gender/age back-fill** (43%→52% M/F) |
-| **Phase 6: experience** | ✅ Mobile nav drawer, ⭐ favorites (localStorage), 🌙 dark mode, chart micro-interactions + table pagination, 🎬 season review, 🚴 teams page (`/teams`, 805 teams) |
+| **Phase 4: analytics features** | ✅ Athletes: **riding doppelganger** (fingerprint nearest-neighbor) + **cross-year difficulty calibration**; Race: **Race DNA** 6-axis radar — each with pytest/vitest, de-identified |
+| **Phase 5: more analytics** | ✅ **similar-race finder** (DNA NN), **athlete 1v1**, **series season standings** (`/series`), **race severity/attrition** proxy; **gender/age back-fill** (43%→52% M/F) |
+| **Phase 6: experience** | ✅ Mobile nav drawer, favorites (localStorage), dark mode, chart micro-interactions + table pagination, season review, teams page (`/teams`, 805 teams) |
 | **Phase 7: SSG + sharing** | ✅ Full-SSG race pages + pre-rendered popular athletes, per-page meta + OG share image (`build_og.py`); internal race links now point to the crawlable SSG pages |
 | **Phase 8: performance + polish** | ✅ Homepage/race pages no longer load the 24.5MB `viz.json` (precomputed `overview.json`/`race_crossyear.json`), athlete heavy files lazy-loaded; fixed browser Back (popstate) and a dark-mode build-strip bug; consistent a11y/loading/empty states; race-name review-batch merges (140→126) |
 
@@ -82,10 +82,10 @@ python scrapers\validate.py master.json      # data-quality report
 
 ## Frontend dashboard (`web/`)
 
-Astro + React islands + Tailwind v4 + ECharts, "Claude" warm aesthetic. Ten pages (🌙 dark mode, ⭐ favorites, mobile drawer):
+Astro + React islands + Tailwind v4 + ECharts, "Claude" warm aesthetic. Ten pages (dark mode, favorites, mobile drawer):
 - `/` (Overview), `/explore` (Explore), `/race` (Race detail), `/series`, `/overseas`, `/coverage`
-- `/athletes` (Athlete tracking + 🎬 season review + **climber-vs-rouleur radar** + **head-to-head rivals**)
-- `/teams` (**🚴 Teams**: roster, team records, activity timeline; `teams.json` + `team/<id>.json`)
+- `/athletes` (Athlete tracking + season review + **climber-vs-rouleur radar** + **head-to-head rivals**)
+- `/teams` (**Teams**: roster, team records, activity timeline; `teams.json` + `team/<id>.json`)
 - `/climbs` (Legendary climbs + **VAM climbing index**: single-race leaderboard + cross-race "Climbing King" + estimated W/kg, from a curated `climb_profiles.json`)
 - `/insights` (peak-age curve, breakout stars, race star-ratings, result converter, region hotspots)
 
@@ -93,7 +93,7 @@ Astro + React islands + Tailwind v4 + ECharts, "Claude" warm aesthetic. Ten page
 python scrapers\build_viz.py            # master.public → web/public/data/{viz,races,race/*}.json
 python scrapers\build_athletes.py       # master → athletes/athlete/<id>/climb_vam.json (incl. radar + rivals)
 python scrapers\build_insights.py       # master → insights.json (age curve / breakout / ratings / geo)
-python scrapers\build_teams.py          # master → teams.json + team/<id>.json (🚴 teams page)
+python scrapers\build_teams.py          # master → teams.json + team/<id>.json (teams page)
 python scrapers\build_viz.py            # also emits overview.json (homepage aggregates) + race_crossyear.json
 python scrapers\build_og.py             # → web/public/og.png (OG share image; rerun when headline stats change)
 cd web
@@ -132,7 +132,7 @@ npm run build                           # static output to web/dist
 
 ## Next steps
 
-- **Set `astro.config` `site` to the real production URL** (currently a placeholder — affects absolute OG/canonical URLs) + custom domain.
+- Custom domain (if added later, update `astro.config` `site`; currently `tw-cycling-data.vercel.app`).
 - Continue race/category normalization (candidate generator `scrapers/suggest_race_merges.py` emits a human-approval table).
 - cycling.org.tw old wide-table years backfill (currently 2025 national source only).
 - Maintainers: read `docs/learnings/` and `AGENTS.md` first (non-obvious decisions & gotchas from this round).
