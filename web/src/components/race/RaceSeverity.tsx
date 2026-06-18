@@ -38,7 +38,7 @@ export default function RaceSeverity({ rk, year }: { rk: string; year: number | 
 
   return (
     <section className="rounded-xl border border-border bg-surface p-4">
-      <h2 className="font-display text-lg text-ink">🌧️ 賽事嚴苛度(完賽異常推估)</h2>
+      <h2 className="font-display text-lg text-ink">賽事嚴苛度(完賽異常推估)</h2>
       <p className="mb-3 text-xs text-muted">
         本站僅有完賽者資料(無報名數、無 DNF)。以「完賽人數 vs 歷年中位」與「中位完賽時間 vs 歷年」兩個訊號,推估該屆是否特別嚴苛;僅供參考。
       </p>

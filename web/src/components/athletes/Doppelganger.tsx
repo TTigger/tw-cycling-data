@@ -52,7 +52,7 @@ export default function Doppelganger(
 
   return (
     <section ref={ref} className="rounded-xl border border-border bg-surface p-4">
-      <h2 className="font-display text-lg text-ink">👯 騎乘分身</h2>
+      <h2 className="font-display text-lg text-ink">騎乘分身</h2>
       <p className="mb-3 text-xs text-muted">
         以爬坡 / 平路 / 計時專長、整體實力與年齡帶組成「騎乘指紋」,在同性別選手中找出最相似的 6 位(相似度由指紋距離換算,僅供參考)。
       </p>

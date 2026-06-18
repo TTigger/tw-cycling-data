@@ -30,16 +30,16 @@ export default function RecordsWall({ records }: { records: Records }) {
 
   const boards = [
     {
-      title: "🏟️ 最大場面", hint: "單場(年)完賽人數",
+      title: "最大場面", hint: "單場(年)完賽人數",
       rows: records.biggest_field.map((r) => ({
         key: `${r.rk}-${r.y}`, href: raceHref(r.rk, r.y),
         label: `${r.y} ${r.name}`, value: `${r.n.toLocaleString()} 人`,
       })),
     },
-    { title: "🔁 生涯最多出賽", hint: "完賽場次最多", rows: ath(records.most_starts, " 場") },
-    { title: "🏆 生涯最多冠軍", hint: "第一名次數", rows: ath(records.most_wins, " 冠") },
-    { title: "🌐 跨最多賽事", hint: "出賽過的不同賽事數", rows: ath(records.most_races, " 賽") },
-    { title: "📅 最長連續參賽", hint: "連續出賽年數", rows: ath(records.longest_streak, " 年") },
+    { title: "生涯最多出賽", hint: "完賽場次最多", rows: ath(records.most_starts, " 場") },
+    { title: "生涯最多冠軍", hint: "第一名次數", rows: ath(records.most_wins, " 冠") },
+    { title: "跨最多賽事", hint: "出賽過的不同賽事數", rows: ath(records.most_races, " 賽") },
+    { title: "最長連續參賽", hint: "連續出賽年數", rows: ath(records.longest_streak, " 年") },
     {
       title: "❤️ 同場回頭王", hint: "同一賽事參賽最多年",
       rows: records.most_loyal.map((r) => ({

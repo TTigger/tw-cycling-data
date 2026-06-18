@@ -100,7 +100,7 @@ export default function RaceDetailApp({ initRk, initY }: { initRk?: string; init
             {sel.has_team && <Card title="車隊戰力榜" hint="前 10 名人次"><TeamStrength rows={detail} /></Card>}
           </div>
           <RaceSeverity rk={sel.rk} year={sel.y} />
-          <Card title="🧬 賽事 DNA" hint="六大特徵指紋,可選第二場並排比較">
+          <Card title="賽事 DNA" hint="六大特徵指紋,可選第二場並排比較">
             <RaceDna rk={sel.rk} year={sel.y} name={sel.rn} />
           </Card>
           <Card title="排行榜"><Leaderboard rows={detail} /></Card>

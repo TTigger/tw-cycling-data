@@ -104,7 +104,7 @@ export default function ClimbsApp() {
         </>
       )}
       {vamRows.length > 0 && (
-        <Card title="🏔 跨賽爬坡王" hint="每位選手在所有有路線數據的爬坡賽中的最佳 VAM">
+        <Card title="跨賽爬坡王" hint="每位選手在所有有路線數據的爬坡賽中的最佳 VAM">
           <ClimbKingBoard entries={vamRows} />
         </Card>
       )}
