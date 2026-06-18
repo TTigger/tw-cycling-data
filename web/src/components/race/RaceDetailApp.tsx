@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import "../../lib/echarts-theme";
-import { loadRaces, loadViz, loadRaceDetail } from "../../lib/data-load";
-import type { RaceIndex, DetailRow, SlimRecord } from "../../lib/types";
+import { loadRaces, loadCrossYear, loadRaceDetail } from "../../lib/data-load";
+import type { RaceIndex, DetailRow } from "../../lib/types";
+import type { CrossYearMap } from "../../lib/overview";
 import RacePicker from "./RacePicker";
 import Leaderboard from "./Leaderboard";
 import PercentileWidget from "./PercentileWidget";
@@ -26,14 +27,14 @@ function Card({ title, hint, children }: { title: string; hint?: string; childre
 
 export default function RaceDetailApp({ initRk, initY }: { initRk?: string; initY?: number } = {}) {
   const [races, setRaces] = useState<RaceIndex[]>([]);
-  const [viz, setViz] = useState<SlimRecord[]>([]);
+  const [crossYear, setCrossYear] = useState<CrossYearMap>({});
   const [sel, setSel] = useState<RaceIndex | null>(null);
   const [detail, setDetail] = useState<DetailRow[] | null>(null);
   const [err, setErr] = useState<string | null>(null);
 
   useEffect(() => {
-    Promise.all([loadRaces(), loadViz()]).then(([rs, v]) => {
-      setRaces(rs); setViz(v);
+    Promise.all([loadRaces(), loadCrossYear()]).then(([rs, cy]) => {
+      setRaces(rs); setCrossYear(cy);
       const p = new URLSearchParams(location.search);
       // a path-based SSG page (/race/<slug>) passes the race via props; the
       // query-param SPA (/race?rk=&y=) falls back to the URL.
@@ -69,10 +70,6 @@ export default function RaceDetailApp({ initRk, initY }: { initRk?: string; init
     loadRaceDetail(r.file).then(setDetail).catch((e) => setErr(String(e)));
   }
 
-  const crossRows = useMemo(
-    () => (sel ? viz.filter((v) => v.rk === sel.rk).map((v) => ({ y: v.y, t: v.t })) : []),
-    [viz, sel],
-  );
 
   if (err) return <p className="text-accent">資料載入失敗:{err}</p>;
   if (!races.length) return <Skeleton cards={3} />;
@@ -99,7 +96,7 @@ export default function RaceDetailApp({ initRk, initY }: { initRk?: string; init
           <div className="grid gap-4 lg:grid-cols-2">
             <Card title="你贏過多少%" hint="輸入你的完賽時間"><PercentileWidget rows={detail} /></Card>
             <Card title="完賽時間分布" hint="每 5 分鐘一桶"><RaceTimeHistogram rows={detail} /></Card>
-            {sel.multi_year && <Card title="跨年:變快了嗎" hint="冠軍與中位完賽時間"><CrossYearTrend rows={crossRows} /></Card>}
+            {sel.multi_year && <Card title="跨年:變快了嗎" hint="冠軍與中位完賽時間"><CrossYearTrend cy={crossYear[sel.rk] ?? []} /></Card>}
             {sel.has_team && <Card title="車隊戰力榜" hint="前 10 名人次"><TeamStrength rows={detail} /></Card>}
           </div>
           <RaceSeverity rk={sel.rk} year={sel.y} />

@@ -1,4 +1,5 @@
 import type { SlimRecord, RaceIndex, DetailRow, AthleteIndexEntry, AthleteDetail, AthleteFeature, ClimbProfile, ClimbVamEntry, Insights, OverseasRaceMeta, OverseasRow, Coverage, CourseRecordsFile, RaceDifficultyFile, RaceDnaFile, SeriesFile, TeamIndexEntry, TeamDetail } from "./types";
+import type { OverviewData, CrossYearMap } from "./overview";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
@@ -11,6 +12,22 @@ export async function loadRaces(): Promise<RaceIndex[]> {
   const r = await fetch(`${base}/data/races.json`);
   if (!r.ok) throw new Error(`races.json ${r.status}`);
   return r.json();
+}
+export async function loadOverview(): Promise<OverviewData> {
+  const r = await fetch(`${base}/data/overview.json`);
+  if (!r.ok) throw new Error(`overview.json ${r.status}`);
+  return r.json();
+}
+let _crossYearCache: Promise<CrossYearMap> | null = null;
+/** Per-race cross-year winner/median map. Cached per page session. */
+export async function loadCrossYear(): Promise<CrossYearMap> {
+  if (!_crossYearCache) {
+    _crossYearCache = fetch(`${base}/data/race_crossyear.json`).then((r) => {
+      if (!r.ok) throw new Error(`race_crossyear.json ${r.status}`);
+      return r.json();
+    });
+  }
+  return _crossYearCache;
 }
 export async function loadRaceDetail(file: string): Promise<DetailRow[]> {
   const r = await fetch(`${base}/data/race/${file}.json`);
