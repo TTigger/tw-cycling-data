@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { loadAthleteFeatures } from "../../lib/data-load";
 import { doppelgangers, fingerprintLean } from "../../lib/doppelganger";
+import { useInView } from "../../lib/useInView";
 import type { AthleteFeature, AthleteIndexEntry } from "../../lib/types";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
@@ -16,14 +17,18 @@ export default function Doppelganger(
 ) {
   const [feats, setFeats] = useState<AthleteFeature[] | null>(null);
   const [err, setErr] = useState(false);
+  // 騎乘分身 sits below the fold and needs the ~1MB athlete_features.json — only
+  // fetch it once the section scrolls near the viewport.
+  const [ref, inView] = useInView<HTMLElement>();
 
   useEffect(() => {
+    if (!inView) return;
     let live = true;
     loadAthleteFeatures()
       .then((f) => { if (live) setFeats(f); })
       .catch(() => { if (live) setErr(true); });
     return () => { live = false; };
-  }, []);
+  }, [inView]);
 
   const byId = useMemo(() => {
     const m = new Map<string, AthleteIndexEntry>();
@@ -46,7 +51,7 @@ export default function Doppelganger(
   const inPool = !!feats && featById.has(targetId);
 
   return (
-    <section className="rounded-xl border border-border bg-surface p-4">
+    <section ref={ref} className="rounded-xl border border-border bg-surface p-4">
       <h2 className="font-display text-lg text-ink">👯 騎乘分身</h2>
       <p className="mb-3 text-xs text-muted">
         以爬坡 / 平路 / 計時專長、整體實力與年齡帶組成「騎乘指紋」,在同性別選手中找出最相似的 6 位(相似度由指紋距離換算,僅供參考)。
