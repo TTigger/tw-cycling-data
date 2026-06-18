@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "../../lib/echarts-theme";
 import { loadRaces, loadCrossYear, loadRaceDetail } from "../../lib/data-load";
+import { raceHref } from "../../lib/race-url";
 import type { RaceIndex, DetailRow } from "../../lib/types";
 import type { CrossYearMap } from "../../lib/overview";
+import Tabs from "../Tabs";
 import RacePicker from "./RacePicker";
 import Leaderboard from "./Leaderboard";
 import PercentileWidget from "./PercentileWidget";
@@ -25,11 +27,15 @@ function Card({ title, hint, children }: { title: string; hint?: string; childre
   );
 }
 
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const RACE_TABS = [{ key: "results", label: "成績" }, { key: "analysis", label: "分析" }, { key: "dna", label: "賽事 DNA" }];
+
 export default function RaceDetailApp({ initRk, initY }: { initRk?: string; initY?: number } = {}) {
   const [races, setRaces] = useState<RaceIndex[]>([]);
   const [crossYear, setCrossYear] = useState<CrossYearMap>({});
   const [sel, setSel] = useState<RaceIndex | null>(null);
   const [detail, setDetail] = useState<DetailRow[] | null>(null);
+  const [tab, setTab] = useState("results");
   const [err, setErr] = useState<string | null>(null);
 
   useEffect(() => {
@@ -65,11 +71,21 @@ export default function RaceDetailApp({ initRk, initY }: { initRk?: string; init
   }, [races, sel, initRk, initY]);
 
   function pick(r: RaceIndex, pushUrl = true) {
-    setSel(r); setDetail(null);
+    setSel(r); setDetail(null); setTab("results");
     if (pushUrl) history.pushState(null, "", `?rk=${encodeURIComponent(r.rk)}&y=${r.y}`);
     loadRaceDetail(r.file).then(setDetail).catch((e) => setErr(String(e)));
   }
-
+  // back to the race list: SSG pages navigate; the SPA just deselects.
+  function back() {
+    if (initRk) { location.href = `${base}/race`; return; }
+    setSel(null); setDetail(null);
+    history.pushState(null, "", location.pathname);
+  }
+  // other years of the same race (for the year-switch pills)
+  const siblings = useMemo(
+    () => (sel ? races.filter((r) => r.rk === sel.rk).sort((a, b) => (a.y ?? 0) - (b.y ?? 0)) : []),
+    [races, sel],
+  );
 
   if (err) return <p className="text-accent">資料載入失敗:{err}</p>;
   if (!races.length) return <Skeleton cards={3} />;
@@ -77,33 +93,51 @@ export default function RaceDetailApp({ initRk, initY }: { initRk?: string; init
   if (!sel) return <RacePicker races={races} onPick={(r) => pick(r)} />;
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
+    <div className="space-y-5">
+      <button onClick={back} className="text-sm text-muted hover:text-accent">‹ 所有賽事</button>
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
           <h1 className="font-display text-2xl text-ink">{sel.y} {sel.rn}</h1>
           <p className="text-sm text-muted">{sel.s} · {sel.rows.toLocaleString()} 筆成績</p>
+          {siblings.length > 1 && (
+            <div className="mt-2 flex flex-wrap gap-1">
+              {siblings.map((r) => (r.file === sel.file ? (
+                <span key={r.file} className="rounded-full border border-accent bg-accent/10 px-2.5 py-1 text-xs text-accent">{r.y}</span>
+              ) : (
+                <a key={r.file} href={raceHref(r.rk, r.y)}
+                  className="rounded-full border border-border px-2.5 py-1 text-xs text-muted hover:border-accent hover:text-accent">{r.y}</a>
+              )))}
+            </div>
+          )}
         </div>
-        <div className="flex shrink-0 items-center gap-2">
-          {sel.y != null && <FavButton kind="race" item={{ rk: sel.rk, y: sel.y, rn: sel.rn }} />}
-          <button className="rounded-lg border border-border px-3 py-2 text-sm text-muted hover:text-accent"
-            onClick={() => { setSel(null); history.pushState(null, "", location.pathname); }}>← 換一場</button>
-        </div>
+        {sel.y != null && <FavButton kind="race" item={{ rk: sel.rk, y: sel.y, rn: sel.rn }} />}
       </div>
 
       {!detail ? <Skeleton bare cards={2} /> : (
         <>
-          <Card title="領獎台"><Podium rows={detail} /></Card>
-          <div className="grid gap-4 lg:grid-cols-2">
-            <Card title="你贏過多少%" hint="輸入你的完賽時間"><PercentileWidget rows={detail} /></Card>
-            <Card title="完賽時間分布" hint="每 5 分鐘一桶"><RaceTimeHistogram rows={detail} /></Card>
-            {sel.multi_year && <Card title="跨年:變快了嗎" hint="冠軍與中位完賽時間"><CrossYearTrend cy={crossYear[sel.rk] ?? []} /></Card>}
-            {sel.has_team && <Card title="車隊戰力榜" hint="前 10 名人次"><TeamStrength rows={detail} /></Card>}
-          </div>
-          <RaceSeverity rk={sel.rk} year={sel.y} />
-          <Card title="賽事 DNA" hint="六大特徵指紋,可選第二場並排比較">
-            <RaceDna rk={sel.rk} year={sel.y} name={sel.rn} />
-          </Card>
-          <Card title="排行榜"><Leaderboard rows={detail} /></Card>
+          <Tabs tabs={RACE_TABS} active={tab} onChange={setTab} />
+          {tab === "results" && (
+            <div className="space-y-4">
+              <Card title="領獎台"><Podium rows={detail} /></Card>
+              <Card title="你贏過多少%" hint="輸入你的完賽時間"><PercentileWidget rows={detail} /></Card>
+              <Card title="排行榜"><Leaderboard rows={detail} /></Card>
+            </div>
+          )}
+          {tab === "analysis" && (
+            <div className="space-y-4">
+              <div className="grid gap-4 lg:grid-cols-2">
+                <Card title="完賽時間分布" hint="每 5 分鐘一桶"><RaceTimeHistogram rows={detail} /></Card>
+                {sel.multi_year && <Card title="跨年:變快了嗎" hint="冠軍與中位完賽時間"><CrossYearTrend cy={crossYear[sel.rk] ?? []} /></Card>}
+                {sel.has_team && <Card title="車隊戰力榜" hint="前 10 名人次"><TeamStrength rows={detail} /></Card>}
+              </div>
+              <RaceSeverity rk={sel.rk} year={sel.y} />
+            </div>
+          )}
+          {tab === "dna" && (
+            <Card title="賽事 DNA" hint="六大特徵指紋,可選第二場並排比較">
+              <RaceDna rk={sel.rk} year={sel.y} name={sel.rn} />
+            </Card>
+          )}
         </>
       )}
     </div>

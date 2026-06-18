@@ -10,6 +10,7 @@ import Skeleton from "../Skeleton";
 const CONF_DOT: Record<string, string> = {
   high: "bg-emerald-400/70", med: "bg-amber-400/80", low: "bg-accent",
 };
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 export default function AthletesApp({ initId }: { initId?: string } = {}) {
   const [list, setList] = useState<AthleteIndexEntry[]>([]);
@@ -76,6 +77,7 @@ export default function AthletesApp({ initId }: { initId?: string } = {}) {
   }
 
   function back() {
+    if (initId) { location.href = `${base}/athletes`; return; }
     setSel(null); setCmp(null);
     history.pushState(null, "", location.pathname);
   }
@@ -86,7 +88,7 @@ export default function AthletesApp({ initId }: { initId?: string } = {}) {
   if (!list.length) return <Skeleton cards={3} />;
 
   if (sel && cmp) return <AthleteCompare a={sel} b={cmp} onBack={clearCompare} />;
-  if (sel) return <AthleteProfile d={sel} index={list} onBack={back} onCompare={pickCompare} />;
+  if (sel) return <AthleteProfile key={sel.id} d={sel} index={list} onBack={back} onCompare={pickCompare} />;
   if (loadingSel) return <Skeleton cards={2} />;
 
   return (
