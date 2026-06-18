@@ -28,6 +28,19 @@ export default function TeamsApp() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // keep the view in sync with the browser back/forward buttons.
+  useEffect(() => {
+    if (!list.length) return;
+    const onPop = () => {
+      const id = new URLSearchParams(location.search).get("id");
+      if (id) { if (!sel || sel.id !== id) pick(id, false); }
+      else setSel(null);
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [list, sel]);
+
   function pick(id: string, pushUrl = true) {
     setLoadingSel(true); setSel(null);
     if (pushUrl) history.pushState(null, "", `?id=${id}`);

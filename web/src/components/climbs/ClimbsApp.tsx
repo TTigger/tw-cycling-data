@@ -45,6 +45,20 @@ export default function ClimbsApp() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // keep the view in sync with the browser back/forward buttons.
+  useEffect(() => {
+    if (!climbs.length) return;
+    const onPop = () => {
+      const p = new URLSearchParams(location.search);
+      const rk = p.get("rk"), y = p.get("y");
+      const m = climbs.find((r) => r.rk === rk && String(r.y) === y) ?? climbs[0];
+      if (m && (!sel || sel.file !== m.file)) pick(m, false);
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [climbs, sel]);
+
   function pick(r: RaceIndex, pushUrl = true) {
     setSel(r); setDetail(null);
     if (pushUrl) history.pushState(null, "", `?rk=${encodeURIComponent(r.rk)}&y=${r.y}`);
