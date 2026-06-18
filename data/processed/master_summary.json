@@ -69,7 +69,7 @@
     "銅礦88經典挑戰賽": 322,
     "臺灣KOM太平洋經典賽": 78
   },
-  "distinct_races": 140,
+  "distinct_races": 126,
   "races": [
     {
       "race_key": "彰化經典百K",
@@ -356,6 +356,17 @@
       "rows": 858
     },
     {
+      "race_key": "扶輪盃陽明山自行車登山王挑戰",
+      "series": "臺灣KOM登山王挑戰",
+      "platform": "cyclist.org.tw",
+      "years": [
+        2020,
+        2021,
+        2023
+      ],
+      "rows": 829
+    },
+    {
       "race_key": "屏東四重溪溫泉自行車挑戰賽",
       "series": "屏東四重溪自行車挑戰賽",
       "platform": "bravelog.tw",
@@ -437,16 +448,6 @@
         2023
       ],
       "rows": 664
-    },
-    {
-      "race_key": "扶輪盃陽明山自行車登山王挑戰",
-      "series": "臺灣KOM登山王挑戰",
-      "platform": "cyclist.org.tw",
-      "years": [
-        2020,
-        2023
-      ],
-      "rows": 663
     },
     {
       "race_key": "96聯賽武嶺站挑戰組",
@@ -570,6 +571,16 @@
       "rows": 414
     },
     {
+      "race_key": "GravelFundo-台南玉井-迷你全地形賽",
+      "series": "GravelFundo 礫石越野系列",
+      "platform": "irunner.biji.co",
+      "years": [
+        2024,
+        2025
+      ],
+      "rows": 413
+    },
+    {
       "race_key": "LIVDAY初夏大山102寂寞公路挑戰活動",
       "series": "捷安特自行車嘉年華",
       "platform": "bravelog.tw",
@@ -679,6 +690,15 @@
       "rows": 349
     },
     {
+      "race_key": "115年桃園市運動會-市長盃自由車錦標賽暨國手積分賽",
+      "series": "自由車錦標賽/選拔",
+      "platform": "bravelog.tw",
+      "years": [
+        2026
+      ],
+      "rows": 338
+    },
+    {
       "race_key": "MarechalLAVATourdePingtung英友達環屏東自行車挑戰第一日",
       "series": "LAVA 落日飛車350",
       "platform": "bravelog.tw",
@@ -717,6 +737,15 @@
       "rows": 307
     },
     {
+      "race_key": "GravelFundo-台中老外林道-迷你全地形賽",
+      "series": "GravelFundo 礫石越野系列",
+      "platform": "irunner.biji.co",
+      "years": [
+        2026
+      ],
+      "rows": 305
+    },
+    {
       "race_key": "第六屆FTL車隊邀請賽『梅南橋計時賽』",
       "series": null,
       "platform": "tsu.com.tw",
@@ -733,6 +762,16 @@
         2025
       ],
       "rows": 299
+    },
+    {
+      "race_key": "GravelFundo-台南玉井-礫石車賽",
+      "series": "GravelFundo 礫石越野系列",
+      "platform": "irunner.biji.co",
+      "years": [
+        2024,
+        2025
+      ],
+      "rows": 284
     },
     {
       "race_key": "LAVA玩賽樂園350自行車挑戰Day2",
@@ -770,6 +809,16 @@
         2024
       ],
       "rows": 275
+    },
+    {
+      "race_key": "GravelFundo-彰化員林-礫石車賽",
+      "series": "GravelFundo 礫石越野系列",
+      "platform": "irunner.biji.co",
+      "years": [
+        2024,
+        2025
+      ],
+      "rows": 267
     },
     {
       "race_key": "花蓮太平洋自行車節",
@@ -856,15 +905,6 @@
       "rows": 203
     },
     {
-      "race_key": "115年桃園市運動會市長盃自由車錦標賽暨國手積分賽分齡組",
-      "series": "自由車錦標賽/選拔",
-      "platform": "bravelog.tw",
-      "years": [
-        2026
-      ],
-      "rows": 199
-    },
-    {
       "race_key": "【96聯賽】96CyclingRace台中站",
       "series": "96聯賽",
       "platform": "tsu.com.tw",
@@ -883,6 +923,26 @@
       "rows": 197
     },
     {
+      "race_key": "GravelFundo-彰化員林-越野林道賽",
+      "series": "GravelFundo 礫石越野系列",
+      "platform": "irunner.biji.co",
+      "years": [
+        2024,
+        2025
+      ],
+      "rows": 187
+    },
+    {
+      "race_key": "GravelFundo-台南玉井-越野林道賽",
+      "series": "GravelFundo 礫石越野系列",
+      "platform": "irunner.biji.co",
+      "years": [
+        2024,
+        2025
+      ],
+      "rows": 186
+    },
+    {
       "race_key": "年台灣登山大滿貫自行車系列賽陽明山站",
       "series": "台灣登山大滿貫(雪巴)",
       "platform": "bravelog.tw",
@@ -891,15 +951,6 @@
         2025
       ],
       "rows": 182
-    },
-    {
-      "race_key": "GravelFundoStage1台南玉井站【GravelRace礫石車賽】",
-      "series": "GravelFundo 礫石越野系列",
-      "platform": "irunner.biji.co",
-      "years": [
-        2024
-      ],
-      "rows": 181
     },
     {
       "race_key": "彩虹四季運動觀光系列活動環屏東自行車挑戰Day2",
@@ -929,24 +980,6 @@
       "rows": 167
     },
     {
-      "race_key": "扶輪盃陽明山自行車登山王",
-      "series": null,
-      "platform": "cyclist.org.tw",
-      "years": [
-        2021
-      ],
-      "rows": 166
-    },
-    {
-      "race_key": "GravelFundoStage2彰化員林站【GravelRace礫石車賽】",
-      "series": "GravelFundo 礫石越野系列",
-      "platform": "irunner.biji.co",
-      "years": [
-        2024
-      ],
-      "rows": 156
-    },
-    {
       "race_key": "冬季TCU台中城市繞圈賽",
       "series": "TCU 台中城市繞圈賽",
       "platform": "tsu.com.tw",
@@ -972,15 +1005,6 @@
         2024
       ],
       "rows": 144
-    },
-    {
-      "race_key": "115年桃園市運動會市長盃自由車錦標賽暨國手積分賽",
-      "series": "自由車錦標賽/選拔",
-      "platform": "bravelog.tw",
-      "years": [
-        2026
-      ],
-      "rows": 139
     },
     {
       "race_key": "第六屆FTL車隊邀請賽『石壁爬坡賽』",
@@ -1055,29 +1079,11 @@
       "rows": 113
     },
     {
-      "race_key": "GravelFundoStage1彰化員林站【GravelRace礫石車賽】",
-      "series": "GravelFundo 礫石越野系列",
-      "platform": "irunner.biji.co",
-      "years": [
-        2025
-      ],
-      "rows": 111
-    },
-    {
       "race_key": "102年全國自由車公路錦標賽成績總表",
       "series": null,
       "platform": "cycling.org.tw",
       "years": [
         2013
-      ],
-      "rows": 110
-    },
-    {
-      "race_key": "GravelFundoStage2彰化員林站【MTBXCORace越野林道賽】",
-      "series": "GravelFundo 礫石越野系列",
-      "platform": "irunner.biji.co",
-      "years": [
-        2024
       ],
       "rows": 110
     },
@@ -1100,15 +1106,6 @@
       "rows": 106
     },
     {
-      "race_key": "GravelFundoStage1台南玉井站【MTBXCORace越野林道賽】",
-      "series": "GravelFundo 礫石越野系列",
-      "platform": "irunner.biji.co",
-      "years": [
-        2024
-      ],
-      "rows": 105
-    },
-    {
       "race_key": "春季TCU台中城市繞圈賽",
       "series": "TCU 台中城市繞圈賽",
       "platform": "tsu.com.tw",
@@ -1118,47 +1115,11 @@
       "rows": 104
     },
     {
-      "race_key": "GravelFundoStage2台南玉井站【GravelRace礫石車賽】",
-      "series": "GravelFundo 礫石越野系列",
-      "platform": "irunner.biji.co",
-      "years": [
-        2025
-      ],
-      "rows": 103
-    },
-    {
-      "race_key": "GravelFundo年度系列Stage1台中老外林道站【MiniEnduro迷你全地形賽S1】",
-      "series": "GravelFundo 礫石越野系列",
-      "platform": "irunner.biji.co",
-      "years": [
-        2026
-      ],
-      "rows": 103
-    },
-    {
       "race_key": "TCU台中城市繞圈檢定男子組NoviceOpenMen",
       "series": "TCU 台中城市繞圈賽",
       "platform": "tsu.com.tw",
       "years": [
         2024
-      ],
-      "rows": 101
-    },
-    {
-      "race_key": "GravelFundo年度系列Stage1台中老外林道站【MiniEnduro迷你全地形賽】",
-      "series": "GravelFundo 礫石越野系列",
-      "platform": "irunner.biji.co",
-      "years": [
-        2026
-      ],
-      "rows": 101
-    },
-    {
-      "race_key": "GravelFundo年度系列Stage1台中老外林道站【MiniEnduro迷你全地形賽S2】",
-      "series": "GravelFundo 礫石越野系列",
-      "platform": "irunner.biji.co",
-      "years": [
-        2026
       ],
       "rows": 101
     },
@@ -1172,15 +1133,6 @@
       "rows": 95
     },
     {
-      "race_key": "GravelFundoStage2台南玉井站【MTBXCORace越野林道賽】",
-      "series": "GravelFundo 礫石越野系列",
-      "platform": "irunner.biji.co",
-      "years": [
-        2025
-      ],
-      "rows": 81
-    },
-    {
       "race_key": "臺灣KOM太平洋經典賽",
       "series": "臺灣KOM太平洋經典賽",
       "platform": "cyclist.org.tw",
@@ -1188,42 +1140,6 @@
         2025
       ],
       "rows": 78
-    },
-    {
-      "race_key": "GravelFundoStage1台南玉井站【MiniEnduroRace迷你全地形賽】S1",
-      "series": "GravelFundo 礫石越野系列",
-      "platform": "irunner.biji.co",
-      "years": [
-        2024
-      ],
-      "rows": 77
-    },
-    {
-      "race_key": "GravelFundoStage1台南玉井站【MiniEnduroRace迷你全地形賽】S2",
-      "series": "GravelFundo 礫石越野系列",
-      "platform": "irunner.biji.co",
-      "years": [
-        2024
-      ],
-      "rows": 77
-    },
-    {
-      "race_key": "GravelFundoStage1彰化員林站【MTBXCORace越野林道賽】",
-      "series": "GravelFundo 礫石越野系列",
-      "platform": "irunner.biji.co",
-      "years": [
-        2025
-      ],
-      "rows": 77
-    },
-    {
-      "race_key": "GravelFundoStage1台南玉井站【MiniEnduroRace迷你全地形賽】",
-      "series": "GravelFundo 礫石越野系列",
-      "platform": "irunner.biji.co",
-      "years": [
-        2024
-      ],
-      "rows": 76
     },
     {
       "race_key": "年第4季136檢定",
@@ -1244,38 +1160,11 @@
       "rows": 65
     },
     {
-      "race_key": "GravelFundoStage2台南玉井站【MiniEnduroRace迷你全地形賽】",
-      "series": "GravelFundo 礫石越野系列",
-      "platform": "irunner.biji.co",
-      "years": [
-        2025
-      ],
-      "rows": 58
-    },
-    {
-      "race_key": "GravelFundoStage2台南玉井站【MiniEnduroRace迷你全地形賽】S1",
-      "series": "GravelFundo 礫石越野系列",
-      "platform": "irunner.biji.co",
-      "years": [
-        2025
-      ],
-      "rows": 58
-    },
-    {
       "race_key": "TCU台中城市繞圈賽競賽組Racing",
       "series": "TCU 台中城市繞圈賽",
       "platform": "tsu.com.tw",
       "years": [
         2024
-      ],
-      "rows": 56
-    },
-    {
-      "race_key": "GravelFundoStage2台南玉井站【MiniEnduroRace迷你全地形賽】S2",
-      "series": "GravelFundo 礫石越野系列",
-      "platform": "irunner.biji.co",
-      "years": [
-        2025
       ],
       "rows": 56
     },
@@ -1350,15 +1239,6 @@
         2015
       ],
       "rows": 15
-    },
-    {
-      "race_key": "GravelFundoStage2台南玉井站【MiniEnduroRace迷你全地形賽】S3",
-      "series": "GravelFundo 礫石越野系列",
-      "platform": "irunner.biji.co",
-      "years": [
-        2025
-      ],
-      "rows": 11
     },
     {
       "race_key": "秋季TCU台中城市繞圈賽Y12組別",
