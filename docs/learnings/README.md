@@ -17,5 +17,6 @@ real time to (re)discover. Aimed at future contributors and coding agents.
 - [PDPA de-identification](./pdpa-deidentification.md) — only masked names are ever committed; real names are composited client-side only. Hard constraint.
 - [Client data loading & performance](./client-data-loading.md) — precompute aggregates, lazy-load below-the-fold, never ship raw row dumps (the 24.5MB `viz.json` lesson).
 - [SPA routing & SSG hybrid](./spa-routing.md) — query-param SPA + path SSG pages, the `popstate` requirement, base-URL handling.
+- [UI/UX patterns](./ui-ux-patterns.md) — when to use tabs (and when not), year-switch pills, the top-left back convention.
 - [Tailwind v4 dark mode](./tailwind-v4-dark-mode.md) — class-based dark mode tokens get stripped at build; the `@theme inline` + fallback pattern that works.
 - [Race-key normalization](./race-key-normalization.md) — curated canonical merge map + candidate generator + what must NOT be merged.
