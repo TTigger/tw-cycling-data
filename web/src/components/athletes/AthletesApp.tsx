@@ -20,15 +20,19 @@ export default function AthletesApp({ initId }: { initId?: string } = {}) {
   const [err, setErr] = useState<string | null>(null);
 
   useEffect(() => {
-    loadAthletes().then((l) => {
-      setList(l);
-      const p = new URLSearchParams(location.search);
-      // top-N popular riders are SSG'd at /athletes/<id> (id via props); the
-      // rest stay on the query-param SPA (/athletes?id=).
-      const id = initId ?? p.get("id"), vs = p.get("vs");
-      if (id) pick(id, false);
-      if (id && vs) loadAthlete(vs).then(setCmp).catch((e) => setErr(String(e)));
-    }).catch((e) => setErr(String(e)));
+    const p = new URLSearchParams(location.search);
+    // top-N popular riders are SSG'd at /athletes/<id> (id via props); the
+    // rest stay on the query-param SPA (/athletes?id=).
+    const id = initId ?? p.get("id"), vs = p.get("vs");
+    // Load the selected athlete's detail immediately — don't block it behind the
+    // 2.6MB index. On a deep-linked profile the index is only needed for search /
+    // compare / doppelganger, so defer it off the critical path; on the list view
+    // (no id) it's the content, so load it now.
+    if (id) pick(id, false);
+    if (id && vs) loadAthlete(vs).then(setCmp).catch((e) => setErr(String(e)));
+    const loadIdx = () => loadAthletes().then(setList).catch((e) => setErr(String(e)));
+    if (id && typeof requestIdleCallback !== "undefined") requestIdleCallback(loadIdx, { timeout: 4000 });
+    else loadIdx();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
