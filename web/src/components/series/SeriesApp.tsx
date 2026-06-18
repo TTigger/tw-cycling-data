@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { loadSeries } from "../../lib/data-load";
 import { seriesList } from "../../lib/series";
 import type { SeriesFile } from "../../lib/types";
+import { raceHref } from "../../lib/race-url";
 import Skeleton from "../Skeleton";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
@@ -59,7 +60,7 @@ export default function SeriesApp() {
             <h2 className="font-display text-lg text-ink">{activeYr} 賽季站別({season.stations.length} 站)</h2>
             <div className="mt-2 flex flex-wrap gap-2">
               {season.stations.map((st) => (
-                <a key={st.rk} href={`${base}/race?rk=${encodeURIComponent(st.rk)}&y=${activeYr}`}
+                <a key={st.rk} href={raceHref(st.rk, activeYr)}
                   className="rounded-lg border border-border bg-bg px-3 py-1.5 text-sm text-ink hover:border-accent">
                   {st.name}{st.n ? <span className="ml-1 num text-xs text-muted">{st.n}人</span> : null}
                 </a>

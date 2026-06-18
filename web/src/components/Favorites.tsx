@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { readFavs, type Favs } from "../lib/favorites";
+import { raceHref } from "../lib/race-url";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
@@ -23,7 +24,7 @@ export default function Favorites() {
             className="rounded-lg border border-border bg-bg px-3 py-1.5 text-sm text-ink hover:border-accent">👤 {a.nm}</a>
         ))}
         {f.races.map((r) => (
-          <a key={`${r.rk}-${r.y}`} href={`${base}/race?rk=${encodeURIComponent(r.rk)}&y=${r.y}`}
+          <a key={`${r.rk}-${r.y}`} href={raceHref(r.rk, r.y)}
             className="rounded-lg border border-border bg-bg px-3 py-1.5 text-sm text-ink hover:border-accent">🏁 {r.y} {r.rn}</a>
         ))}
       </div>

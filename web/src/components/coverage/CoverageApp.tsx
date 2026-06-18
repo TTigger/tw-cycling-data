@@ -1,13 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { loadCoverage, loadRaces } from "../../lib/data-load";
 import type { Coverage, RaceIndex } from "../../lib/types";
+import { raceHref } from "../../lib/race-url";
 import Skeleton from "../Skeleton";
 
 // Where contributions go. Set this to your preferred channel (GitHub Issues /
 // Google Form / community link). Defaults to the project's GitHub.
 const CONTRIBUTE_URL = "https://github.com/TTigger/tw-cycling-data";
-
-const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 function Card({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
   return (
@@ -80,7 +79,7 @@ export default function CoverageApp() {
               <h3 className="font-display text-sm text-muted">{series}</h3>
               <div className="mt-1 flex flex-wrap gap-2">
                 {list.map((r) => (
-                  <a key={r.rk} href={`${base}/race?rk=${encodeURIComponent(r.rk)}&y=${r.y1}`}
+                  <a key={r.rk} href={raceHref(r.rk, r.y1)}
                     className="rounded-lg border border-border bg-surface px-2.5 py-1 text-xs text-ink hover:border-accent hover:text-accent">
                     {r.rn} <span className="num text-muted">{r.y0 === r.y1 ? r.y0 : `${r.y0}–${r.y1}`}·{r.rows}</span>
                   </a>

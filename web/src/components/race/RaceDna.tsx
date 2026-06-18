@@ -4,8 +4,7 @@ import EChart from "../charts/EChart";
 import { loadRaceDna } from "../../lib/data-load";
 import { DNA_AXES, dnaFor, dnaRadarValues, dnaRaceList, similarRaces } from "../../lib/race-dna";
 import type { RaceDnaFile } from "../../lib/types";
-
-const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+import { raceHref } from "../../lib/race-url";
 
 export default function RaceDna(
   { rk, year, name }: { rk: string; year: number | null; name: string },
@@ -90,7 +89,7 @@ export default function RaceDna(
           <div className="flex flex-wrap gap-2">
             {similar.map((s) => (
               <a key={`${s.rk}-${s.year}`}
-                href={`${base}/race?rk=${encodeURIComponent(s.rk)}&y=${s.year}`}
+                href={raceHref(s.rk, s.year)}
                 className="rounded-lg border border-border bg-bg px-3 py-2 text-sm hover:border-accent">
                 <span className="text-ink">{s.year} {s.name}</span>
                 <span className="ml-2 num text-accent">{s.sim}%</span>

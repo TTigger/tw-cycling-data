@@ -4,8 +4,8 @@ import { careerSummary, progression } from "../../lib/athletes";
 import { compareAthletes } from "../../lib/compare";
 import { secondsToHMS } from "../../lib/format";
 import type { AthleteDetail } from "../../lib/types";
+import { raceHref } from "../../lib/race-url";
 
-const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const TRAIT_LABELS: Record<string, string> = { climb: "爬坡", road: "公路", crit: "繞圈", tt: "計時" };
 const TRAIT_ORDER = ["climb", "road", "crit", "tt"];
 const A_COLOR = "#D97757";
@@ -143,7 +143,7 @@ export default function AthleteCompare(
                     <td className="py-1.5 pr-3 num text-muted">{r.y}</td>
                     <td className="py-1.5 pr-3">
                       <a className="text-ink hover:text-accent"
-                        href={`${base}/race?rk=${encodeURIComponent(r.rk)}&y=${r.y}`}>{r.rn}</a>
+                        href={raceHref(r.rk, r.y)}>{r.rn}</a>
                     </td>
                     <td className="py-1.5 pr-3 num text-muted">
                       {r.aRank ?? "—"}<span className="ml-1 text-xs text-muted">({secondsToHMS(r.aT)})</span>

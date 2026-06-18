@@ -1,6 +1,6 @@
 import type { RaceRating } from "../../lib/types";
+import { raceHref } from "../../lib/race-url";
 
-const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const stars = (n: number) => "★".repeat(n) + "☆".repeat(5 - n);
 
 export default function RaceRatings({ ratings }: { ratings: RaceRating[] }) {
@@ -25,7 +25,7 @@ export default function RaceRatings({ ratings }: { ratings: RaceRating[] }) {
                   <td className="py-1.5 pr-3 text-accent" title={`score ${r.score}`}>{stars(r.stars)}</td>
                   <td className="py-1.5 pr-3">
                     <a className="text-ink hover:text-accent"
-                      href={`${base}/race?rk=${encodeURIComponent(r.race_key)}&y=${y}`}>{r.name}</a>
+                      href={raceHref(r.race_key, y)}>{r.name}</a>
                   </td>
                   <td className="py-1.5 pr-3 num text-muted">{r.med_field.toLocaleString()}</td>
                   <td className="py-1.5 pr-3 num text-muted">{r.editions}</td>

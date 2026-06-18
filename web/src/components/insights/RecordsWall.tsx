@@ -1,4 +1,5 @@
 import type { Records, RecordAthlete } from "../../lib/types";
+import { raceHref } from "../../lib/race-url";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const MEDAL = ["🥇", "🥈", "🥉"];
@@ -31,7 +32,7 @@ export default function RecordsWall({ records }: { records: Records }) {
     {
       title: "🏟️ 最大場面", hint: "單場(年)完賽人數",
       rows: records.biggest_field.map((r) => ({
-        key: `${r.rk}-${r.y}`, href: `${base}/race?rk=${encodeURIComponent(r.rk)}&y=${r.y}`,
+        key: `${r.rk}-${r.y}`, href: raceHref(r.rk, r.y),
         label: `${r.y} ${r.name}`, value: `${r.n.toLocaleString()} 人`,
       })),
     },
