@@ -237,12 +237,26 @@ def main():
         print(f"  {cal['name']}: {len(races)} 賽事,{len(miss)} 缺漏")
 
     out = os.path.join(OUT_DIR, "missing_races.json")
+    # Diff against the previous run so the radar can alert only on CHANGE: a race
+    # that appears now but wasn't here last time is genuinely new and needs triage.
+    prev_names = set()
+    if os.path.exists(out):
+        try:
+            prev_names = {p["race"] for p in json.load(open(out, encoding="utf-8"))}
+        except Exception:
+            pass
+    new_races = [m for m in all_missing if m["race"] not in prev_names]
+
     json.dump(all_missing, open(out, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
     print(f"\n=== 缺漏賽事 {len(all_missing)} 場(行事曆有、master 沒有;"
           f"另 {collected} 場已收錄,自動略過)===")
     for m in all_missing:
         tag = f" [{m['status']}]" if m.get("status") else ""
         print(f"  ✗ {m['race'][:40]:<40} → {m['guess_source']}{tag}")
+    if prev_names:  # skip on first-ever run (no baseline to diff against)
+        print(f"\n=== 🆕 本次新增 {len(new_races)} 場(上次沒有,需查驗/triage)===")
+        for m in new_races:
+            print(f"  🆕 {m['race'][:40]:<40} → {m['guess_source']}")
     print(f"\n  -> {os.path.relpath(out)}")
 
     # Deploy-ready coverage transparency file for the /coverage page.
