@@ -1,22 +1,21 @@
 # 資料新鮮度週報
 
-> 產生時間：2026-06-22 02:17 UTC（自動代理 auto-run）
->
-> ⚠️ 本次 discover.py 行事曆重掃失敗（RACE ON / 運動筆記 / ensage 全數回傳 HTTP 403，雲端 IP 被擋）。
-> 缺漏清單沿用上次本機成功掃描的結果（已提交於 `web/public/data/coverage.json`）。
+**產生時間（UTC）：** 2026-06-22 02:49 UTC
+
+**coverage.json 最後更新（UTC）：** 2026-06-22 02:21 UTC（本次 discover 約 28 分鐘前寫入）
 
 ---
 
-## 目前涵蓋摘要
+## 涵蓋摘要
 
 | 項目 | 數值 |
 |------|------|
 | 總成績筆數 | **116,953** |
-| 收錄場次 | **126** 場（race-key 數） |
-| 年份範圍 | **2009 – 2026** |
-| 海外成績 | 8,724 筆（runnet 日本站） |
+| 場次數 | **126** |
+| 年份範圍 | 2009 – 2026 |
+| 海外賽事筆數 | 8,724 |
 
-### 各平台成績筆數
+### 各來源筆數
 
 | 平台 | 筆數 |
 |------|------|
@@ -26,112 +25,94 @@
 | cyclist.org.tw | 12,265 |
 | cycling.org.tw | 349 |
 
----
-
-## 【待 ingest：已破解平台】✅ 可在本機執行（15 場）
-
-> 下列賽事行事曆有記錄、但尚未進 master。猜測來源欄為 Bravelog / cyclist / tsu，代表**已破解**的爬蟲可嘗試抓取。
-> 賽事成績需於賽後數天～數週才會公告，請確認來源頁面已有成績再執行 ingest。
-
-| # | 賽事名稱 | 猜測來源 | 行事曆 |
-|---|----------|----------|--------|
-| 1 | 瘋系列 無眠征途 夜騎日月潭限時挑戰賽 | Bravelog / cyclist / tsu | RACE ON 2026 |
-| 2 | 台灣瘋系列 小台灣縮時環島顛峰300K限時挑戰賽 | Bravelog / cyclist / tsu | RACE ON 2026 |
-| 3 | TIS桃園台南280KM雙城挑戰賽 | Bravelog / cyclist / tsu | RACE ON 2026 |
-| 4 | 瘋系列 八卦山傳奇100K限時挑戰賽 | Bravelog / cyclist / tsu | ensage 2026 |
-| 5 | 瘋系列 第二屆谷關雪見硬漢200K限時挑戰賽 | Bravelog / cyclist / tsu | ensage 2026 |
-| 6 | 9 騎士協會環海岸山脈220K | Bravelog / cyclist / tsu | ensage 2026 |
-| 7 | 騎士協會聯賽 S1 陽明山登山王 | Bravelog / cyclist / tsu | ensage 2026 |
-| 8 | 騎士協會聯賽 S2 春季登山王之路 | Bravelog / cyclist / tsu | ensage 2026 |
-| 9 | 騎士協會聯賽 S3-S4 環花東 | Bravelog / cyclist / tsu | ensage 2026 |
-| 10 | 明德競技 環湖饗宴-樂遊騎跑啟航 | Bravelog / cyclist / tsu | ensage 2026 |
-| 11 | 騎士協會聯賽 S5 太平山挑戰賽 | Bravelog / cyclist / tsu | ensage 2026 |
-| 12 | aYa 西進武嶺圓夢團（單日） | Bravelog / cyclist / tsu | ensage 2026 |
-| 13 | 南庄山水悠遊行／仙山KOM | Bravelog / cyclist / tsu | ensage 2026 |
-| 14 | 騎士協會 KOM 北進武嶺 | Bravelog / cyclist / tsu | ensage 2026 |
-| 15 | 騎士協會聯賽 S7 花蓮太平洋盃 | Bravelog / cyclist / tsu | ensage 2026 |
+行事曆來源：RACE ON 2026 自行車行事曆、運動筆記 自行車賽事行事曆、ensage 2026 自行車&三鐵行事曆
 
 ---
 
-## 【待人工／OCR】⛔ 需人工處理（33 場）
+## 缺漏清單（coverage.gaps，共 44 筆）
 
-> 來源為「未知（需查主辦頁）」，可能在主辦方自家網頁、FB 社團、iBodyGo 或 ATSport（IP 封鎖）。
-> 部分可能是輕鬆騎活動而非有正式成績的賽事。
-
-<details>
-<summary>展開完整清單（33 場）</summary>
-
-| # | 賽事名稱 | 行事曆 |
-|---|----------|--------|
-| 1 | 超越巔峰-中央山脈極致挑戰 | RACE ON 2026 |
-| 2 | 2026南投旅遊百K自行車挑戰 | RACE ON 2026 |
-| 3 | 第一屆極限東征_瘋911 | RACE ON 2026 |
-| 4 | Light One Bike 系列 - 生態遊程 | RACE ON 2026 |
-| 5 | 2026時代騎輪節 Wheels Ride Festival | RACE ON 2026 |
-| 6 | 瘋系列第七屆中雙塔 | RACE ON 2026 |
-| 7 | Light One Bike 系列 - 長距離挑戰 | RACE ON 2026 |
-| 8 | 屏東來義之心山嵐單車行 | 運動筆記 2025 |
-| 9 | 瘋系列 白毛山巔峰騎跡 | 運動筆記 2025 |
-| 10 | 南投旅遊百 K 挑戰 | 運動筆記 2025 |
-| 11 | 友誼萬歲〜關子嶺鐵馬行 | 運動筆記 2025 |
-| 12 | 雲林單車遊-梅好騎跡 咖啡探索之旅 | 運動筆記 2025 |
-| 13 | 友誼萬歲 關子嶺鐵馬行 | 運動筆記 2025 |
-| 14 | 雙潭騎跡 單車嘉義 | 運動筆記 2025 |
-| 15 | TWB台灣自行車協會 第4屆東三塔550 | ensage 2026 |
-| 16 | TWB台灣自行車協會 第4屆東雙塔470 | ensage 2026 |
-| 17 | 瘋系列 第七屆東三塔/東雙塔挑戰 | ensage 2026 |
-| 18 | TWB台灣自行車協會 彰化騎福 | ensage 2026 |
-| 19 | TBA中華民國自行車協會 第16屆雙主場輪霸西濱挑戰 | ensage 2026 |
-| 20 | 2026萬眾騎BIKE | ensage 2026 |
-| 21 | TWB台灣自行車協會 北高360 | ensage 2026 |
-| 22 | TWB東三塔＆雙塔 | ensage 2026 |
-| 23 | 瘋系列第六屆東三塔／東雙塔挑戰 | ensage 2026 |
-| 24 | 輪霸西濱 五大重點 | ensage 2026 |
-| 25 | Lydia & 欣欣「探索汐鴿」E起騎! | ensage 2026 |
-| 26 | 樂遊苗栗一騎跑 aYa 完封客十二宮 | ensage 2026 |
-| 27 | 樂遊苗栗一騎跑 VJ 綠光海風 鳴鳳古道 | ensage 2026 |
-| 28 | 中央山脈極致挑戰 | ensage 2026 |
-| 29 | 樂遊苗栗一騎跑 aYa 參探苗道 | ensage 2026 |
-| 30 | 樂遊苗栗一騎跑 樂享山海 一起練五宮 | ensage 2026 |
-| 31 | 樂遊苗栗一騎跑 御風泊客 獅山古道 | ensage 2026 |
-| 32 | 樂遊苗栗一騎跑 Doris 巨人之手 雪見 | ensage 2026 |
-| 33 | 樂遊苗栗一騎跑 Tracy 逐浪登炎 暢玩苗栗山海 | ensage 2026 |
-
-</details>
+> **說明：** 行事曆上有記錄但資料集尚未收錄的賽事。狀態分類：
+> - **無 status** = 尚未調查，**最需要優先處理**
+> - `NOT_HELD` = 尚未舉辦，辦完再查
+> - `NO_RANKING` = 已確認無逐筆排名，不可爬
+> - `OTHER_LEAGUE` = 行事曆誤標（實為其他聯賽）
 
 ---
 
-## 本機 ingest 提示
+### 【尚未調查（需處理）】— 共 33 場
 
-對上方「✅ 可在本機 ingest」的場次，在**維護者本機**依序執行：
-
-```bash
-# 1. 抓成績（依猜測平台選擇對應 scraper）
-python scrapers/bravelog_crawl.py    # Bravelog 系列
-python scrapers/cyclist_crawl.py     # cyclist.org.tw 系列
-python scrapers/tsu_crawl.py         # tsu.com.tw 系列
-
-# 2. 合併進 master
-python scrapers/merge.py
-
-# 3. 重建所有 web 公開檔
-python scrapers/build_viz.py
-python scrapers/build_athletes.py
-python scrapers/build_insights.py
-python scrapers/build_difficulty.py
-python scrapers/build_race_dna.py
-
-# 4. 驗證
-python scrapers/validate.py
-
-# 5. 提交並推送（只 commit web/public/data/*）
-git add web/public/data/
-git commit -m "feat(data): ingest <賽名> <年份>"
-git push
-```
-
-> **注意**：成績通常於賽後數天～數週才公告。清單上的場次不一定已有成績可爬，請先確認來源頁面再執行。
+| # | 賽事名稱 | 行事曆 | 猜測來源 |
+|---|---------|--------|---------|
+| 1 | 超越巔峰-中央山脈極致挑戰 | raceon2026 | 未知(需查主辦頁) |
+| 2 | 2026南投旅遊百K自行車挑戰 | raceon2026 | 未知(需查主辦頁) |
+| 3 | 第一屆極限東征_瘋911 | raceon2026 | 未知(需查主辦頁) |
+| 4 | Light One Bike 系列 - 生態遊程 | raceon2026 | 未知(需查主辦頁) |
+| 5 | 2026時代騎輪節 Wheels Ride Festival | raceon2026 | 未知(需查主辦頁) |
+| 6 | 瘋系列第七屆中雙塔 | raceon2026 | 未知(需查主辦頁) |
+| 7 | Light One Bike 系列 - 長距離挑戰 | raceon2026 | 未知(需查主辦頁) |
+| 8 | 屏東來義之心山嵐單車行 | biji2025 | 未知(需查主辦頁) |
+| 9 | 瘋系列 白毛山巔峰騎跡 | biji2025 | 未知(需查主辦頁) |
+| 10 | 南投旅遊百 K 挑戰 | biji2025 | 未知(需查主辦頁) |
+| 11 | 友誼萬歲〜關子嶺鐵馬行 | biji2025 | 未知(需查主辦頁) |
+| 12 | 雲林單車遊-梅好騎跡 咖啡探索之旅 | biji2025 | 未知(需查主辦頁) |
+| 13 | 友誼萬歲 關子嶺鐵馬行 | biji2025 | 未知(需查主辦頁) |
+| 14 | 雙潭騎跡 單車嘉義 | biji2025 | 未知(需查主辦頁) |
+| 15 | TWB台灣自行車協會 第4屆東三塔550 | ensage2026 | 未知(需查主辦頁) |
+| 16 | TWB台灣自行車協會 第4屆東雙塔470 | ensage2026 | 未知(需查主辦頁) |
+| 17 | 瘋系列 第七屆東三塔/東雙塔挑戰 五大重點 降低雨天騎乘風險 | ensage2026 | 未知(需查主辦頁) |
+| 18 | TWB台灣自行車協會 彰化騎福 | ensage2026 | 未知(需查主辦頁) |
+| 19 | TBA中華民國自行車協會 第16屆雙主場輪霸西濱挑戰 | ensage2026 | 未知(需查主辦頁) |
+| 20 | 2026萬眾騎BIKE | ensage2026 | 未知(需查主辦頁) |
+| 21 | TWB台灣自行車協會 北高360 | ensage2026 | 未知(需查主辦頁) |
+| 22 | TWB東三塔＆雙塔 | ensage2026 | 未知(需查主辦頁) |
+| 23 | 瘋系列第六屆東三塔／東雙塔挑 戰 | ensage2026 | 未知(需查主辦頁) |
+| 24 | 輪霸西濱 五大重點 降低雨天騎乘風險 | ensage2026 | 未知(需查主辦頁) |
+| 25 | Lydia & 欣欣「探索汐鴿」E起騎! | ensage2026 | 未知(需查主辦頁) |
+| 26 | 樂遊苗栗一騎跑 aYa 完封客十二宮 | ensage2026 | 未知(需查主辦頁) |
+| 27 | 樂遊苗栗一騎跑 VJ 綠光海風 鳴鳳古道 | ensage2026 | 未知(需查主辦頁) |
+| 28 | 中央山脈極致挑戰 | ensage2026 | 未知(需查主辦頁) |
+| 29 | 樂遊苗栗一騎跑 aYa 參探苗道：跑明德、騎爬向天湖山 | ensage2026 | 未知(需查主辦頁) |
+| 30 | 樂遊苗栗一騎跑 樂享山海 一起練五宮 | ensage2026 | 未知(需查主辦頁) |
+| 31 | 樂遊苗栗一騎跑 御風泊客 獅山古道 哈加縱走 | ensage2026 | 未知(需查主辦頁) |
+| 32 | 樂遊苗栗一騎跑 Doris 巨人之手 雪見 | ensage2026 | 未知(需查主辦頁) |
+| 33 | 樂遊苗栗一騎跑 Tracy 逐浪登炎 暢玩苗栗山海 | ensage2026 | 未知(需查主辦頁) |
 
 ---
 
-*自動代理產生，僅供盤點參考。不含任何 PII 或新爬取的成績資料。*
+### 【尚未舉辦 NOT_HELD】— 共 4 場
+
+| 賽事名稱 | 行事曆 | 備註 |
+|---------|--------|------|
+| 瘋系列 無眠征途 夜騎日月潭限時挑戰賽 | raceon2026 | 2026-07-18 未辦；瘋系列限時挑戰，完賽後恐無總排（屆時查驗） |
+| 台灣瘋系列 小台灣縮時環島顛峰300K限時挑戰賽 | raceon2026 | 2026-09-26 未辦；瘋系列 300K 限時挑戰，恐無總排 |
+| TIS桃園台南280KM雙城挑戰賽 | raceon2026 | 2026-10-31 未辦；往屆僅發完賽獎座/證書，恐無排名 |
+| 騎士協會聯賽 S7 花蓮太平洋盃 | ensage2026 | 2026-12-04~05 未辦；聯賽末站，辦完應有 cyclist.org.tw PDF 成績 |
+
+---
+
+### 【無排名 NO_RANKING】— 共 5 場
+
+| 賽事名稱 | 行事曆 | 備註 |
+|---------|--------|------|
+| 瘋系列 八卦山傳奇100K限時挑戰賽 | ensage2026 | 瘋系列：主辦明示「所有成績沒有總排」+ ATSport 計時 |
+| 瘋系列 第二屆台灣瘋系列 谷關雪見硬漢200K限時挑戰賽 | ensage2026 | 瘋系列：無總排 + ATSport（封鎖平台） |
+| 9 騎士協會環海岸山脈220K | ensage2026 | 挑戰/團騎，無逐筆排名 |
+| 明德競技 環湖饗宴-樂遊騎跑啟航 截止日：2/28 | ensage2026 | 明德競技 樂遊騎跑，休閒性質無排名（ctrun.com.tw） |
+| aYa 西進武嶺圓夢團(單日) | ensage2026 | aYa 嚮導團騎，非計時賽 |
+
+---
+
+### 【行事曆誤標 OTHER_LEAGUE】— 共 2 場
+
+| 賽事名稱 | 行事曆 | 備註 |
+|---------|--------|------|
+| 南庄山水悠遊行/仙山KOM | ensage2026 | 實為 96聯賽 苗栗站（96sporter.com），2026-10-18 尚未舉辦 |
+| 騎士協會 KOM 新版KOM 北進武嶺 | ensage2026 | 實為 96聯賽 武嶺站（96sporter.com），2026-09-07 尚未舉辦 |
+
+---
+
+## 說明
+
+- **行事曆偵查與成績 ingest 均在維護者本機進行。** master.json 含選手 PII，不上雲端；本雲端 IP 被三個賽事行事曆（RACE ON / 運動筆記 / ensage）以 HTTP 403 封鎖，`scrapers/discover.py` 須在本機執行。
+- 本報告僅反映上次本機 `discover.py` 寫入 `web/public/data/coverage.json` 的狀態，並非雲端即時偵查結果。
+- 若需更新缺漏清單：在本機執行 `python scrapers/discover.py`（Windows：`scrapers/freshness_local.ps1`），結果自動寫入 coverage.json 後 push 到 repo，下次週報即可反映最新狀態。
