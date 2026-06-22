@@ -162,12 +162,53 @@ def guess_source(name):
     return "未知(需查主辦頁)"
 
 
+# Curated triage for calendar races we've already investigated, so each run shows
+# WHY a race isn't ingested instead of re-surfacing it as a generic 查驗 candidate
+# every week. Match = substring in the calendar race name (first hit wins).
+#   COLLECTED    — already in master under a different canonical name (discover
+#                  fuzzy-match false positive); dropped from the gap list.
+#   NO_RANKING   — held, but organizer publishes no per-rider ranking (challenge/
+#                  tour ride, or 瘋系列 "無總排" + ATSport chip timing).
+#   OTHER_LEAGUE — calendar mis-tags it; actually belongs to another series.
+#   NOT_HELD     — event date still in the future; re-check after it runs.
+# Last verified 2026-06-22 (see also SOURCES.md). Extend as races are triaged.
+KNOWN_TRIAGE = [
+    # already in master under our canonical name (verified by row counts 2026-06-22)
+    ("陽明山登山王", "COLLECTED", "= 陽明山王公路賽(cyclist.org.tw, 2026 已收 665 筆)"),
+    ("春季登山王之路", "COLLECTED", "= 臺灣KOM登山王之路-春季(cyclist.org.tw, 2026 已收)"),
+    ("環花東", "COLLECTED", "= 環花東國際自行車賽(cyclist.org.tw, 2026 已收 580 筆)"),
+    ("太平山", "COLLECTED", "= 太平山王公路賽(cyclist.org.tw, 2026 已收)"),
+    # held but no scrapeable per-rider ranking
+    ("八卦山傳奇", "NO_RANKING", "瘋系列：主辦明示「所有成績沒有總排」+ ATSport 計時"),
+    ("谷關雪見", "NO_RANKING", "瘋系列：無總排 + ATSport(封鎖平台)"),
+    ("環海岸山脈", "NO_RANKING", "挑戰/團騎,無逐筆排名"),
+    ("環湖饗宴", "NO_RANKING", "明德競技 樂遊騎跑,休閒性質無排名(ctrun.com.tw)"),
+    ("西進武嶺圓夢團", "NO_RANKING", "aYa 嚮導團騎,非計時賽"),
+    # calendar mis-tag: these are 96聯賽 (96sporter.com), not 騎士協會, and not yet held
+    ("仙山KOM", "OTHER_LEAGUE", "實為 96聯賽 苗栗站(96sporter.com),2026-10-18 尚未舉辦"),
+    ("北進武嶺", "OTHER_LEAGUE", "實為 96聯賽 武嶺站(96sporter.com),2026-09-07 尚未舉辦"),
+    # not yet held — re-check after the date; remove from this list once ingested
+    ("無眠征途", "NOT_HELD", "2026-07-18 未辦;瘋系列限時挑戰,完賽後恐無總排(屆時查驗)"),
+    ("小台灣縮時環島", "NOT_HELD", "2026-09-26 未辦;瘋系列 300K 限時挑戰,恐無總排"),
+    ("TIS桃園台南", "NOT_HELD", "2026-10-31 未辦;往屆僅發完賽獎座/證書,恐無排名"),
+    ("花蓮太平洋盃", "NOT_HELD", "2026-12-04~05 未辦;聯賽末站,辦完應有 cyclist.org.tw PDF 成績"),
+]
+
+
+def triage(name):
+    """Return (status, note) if a curated verdict matches this race, else (None, None)."""
+    for sub, status, note in KNOWN_TRIAGE:
+        if sub in name:
+            return status, note
+    return None, None
+
+
 def main():
     recs = list(common.iter_records(MASTER))  # RAM-frugal streaming parse
     master_cores = {core(r.get("race_name_canonical")) for r in recs if r.get("race_name_canonical")}
     master_cores.discard("")
 
-    all_missing, seen = [], set()
+    all_missing, seen, collected = [], set(), 0
     for cal in CALENDARS:
         try:
             html = _fetch(cal["url"])
@@ -183,15 +224,25 @@ def main():
             if c in seen:
                 continue
             seen.add(c)
-            miss.append({"race": nm, "calendar": cal["id"], "guess_source": guess_source(nm)})
+            status, note = triage(nm)
+            if status == "COLLECTED":
+                collected += 1  # already in master under a canonical name — not a real gap
+                continue
+            rec = {"race": nm, "calendar": cal["id"], "guess_source": guess_source(nm)}
+            if status:
+                rec["status"] = status
+                rec["note"] = note
+            miss.append(rec)
         all_missing.extend(miss)
         print(f"  {cal['name']}: {len(races)} 賽事,{len(miss)} 缺漏")
 
     out = os.path.join(OUT_DIR, "missing_races.json")
     json.dump(all_missing, open(out, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
-    print(f"\n=== 缺漏賽事 {len(all_missing)} 場(行事曆有、master 沒有)===")
+    print(f"\n=== 缺漏賽事 {len(all_missing)} 場(行事曆有、master 沒有;"
+          f"另 {collected} 場已收錄,自動略過)===")
     for m in all_missing:
-        print(f"  ✗ {m['race'][:40]:<40} → {m['guess_source']}")
+        tag = f" [{m['status']}]" if m.get("status") else ""
+        print(f"  ✗ {m['race'][:40]:<40} → {m['guess_source']}{tag}")
     print(f"\n  -> {os.path.relpath(out)}")
 
     # Deploy-ready coverage transparency file for the /coverage page.
