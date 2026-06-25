@@ -73,7 +73,7 @@ export interface ComparableGroup {
   rows: DetailRow[]; count: number;
 }
 
-const GROUP_SEP = " ";
+const KEY_SEP = "\0";
 
 export function comparableGroups(rows: DetailRow[]): ComparableGroup[] {
   const labelsByCat = new Map<string, Set<string>>();
@@ -87,7 +87,7 @@ export function comparableGroups(rows: DetailRow[]): ComparableGroup[] {
   for (const r of rows) {
     const cat = r.cat ?? null;
     const label = r.label ?? null;
-    const key = `${cat ?? ""}${GROUP_SEP}${label ?? ""}`;
+    const key = `${cat ?? ""}${KEY_SEP}${label ?? ""}`;
     let g = byKey.get(key);
     if (!g) {
       let name: string;
