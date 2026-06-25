@@ -122,6 +122,7 @@ npm run build                           # static output to web/dist
 - **PDPA**: only `*.public.json` (no `name_raw`) is published; the UI shows masked names; the site footer states sources and a takedown note.
 - **Age-group normalization**: raw `age_group` mixes two schemes across sources (5-year-start codes 20/25/30… and explicit ranges 24-35/40-49); `normalize.age_band()` unifies them into coarse decade bands (`U19/19-29/30-39/40-49/50-59/60+/MASTER`) for the explore filter + boxplot, while the raw `age_group` is kept on each result.
 - **race_key / race-class** use conservative normalization; a curated race-name mapping table is still a refinement TODO (the three different "武嶺" races must not be merged; KOM Challenge ≠ KOM-no-michi).
+- **Leaderboard placing**: a competitive event's `category_raw` can lump several sub-events (road race + ITT) into one category, and source `rank_overall` is the within-sub-event placing, not an overall rank. The leaderboard therefore **groups by `(category, label)` and re-ranks 1..N by finish time within the group**, keeping the source rank in an `原始` column — so a displayed place may differ from the organizer's official result (the organizer's announcement governs). See [docs/learnings/race-leaderboard-ranking.md](docs/learnings/race-leaderboard-ranking.md).
 
 ## Athlete identity resolution (Phase 3)
 
