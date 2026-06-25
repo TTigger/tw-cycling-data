@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { comparableGroups, rerankByTime, distinctLabels } from "../../lib/racedetail";
 import { secondsToHMS } from "../../lib/format";
 import type { DetailRow } from "../../lib/types";
@@ -16,6 +16,13 @@ export default function Leaderboard({ rows }: { rows: DetailRow[] }) {
   );
   const [sel, setSel] = useState<string>(() => (multi && showAll ? ALL : groups[0]?.key ?? ""));
   const [page, setPage] = useState(0);
+
+  // re-pick the default group whenever a new race's rows arrive
+  useEffect(() => {
+    setSel(multi && showAll ? ALL : groups[0]?.key ?? "");
+    setPage(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rows]);
 
   const selectedRows = useMemo(() => {
     if (sel === ALL) return rows;
