@@ -1,6 +1,17 @@
 import { quantile } from "./aggregate";
 import type { DetailRow } from "./types";
 
+export interface RankedRow extends DetailRow { place: number | null; }
+
+export function rerankByTime(rows: DetailRow[]): RankedRow[] {
+  const withT = rows.filter((r) => r.t != null).sort((a, b) => (a.t as number) - (b.t as number));
+  const without = rows.filter((r) => r.t == null);
+  return [
+    ...withT.map((r, i) => ({ ...r, place: i + 1 })),
+    ...without.map((r) => ({ ...r, place: null })),
+  ];
+}
+
 export function categoriesOf(rows: DetailRow[]): string[] {
   return [...new Set(rows.map((r) => r.cat).filter((c): c is string => !!c))].sort();
 }

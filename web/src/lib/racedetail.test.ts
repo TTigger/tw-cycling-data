@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { categoriesOf, largestCategory, categoryPodium, teamStrength, crossYear } from "./racedetail";
+import { categoriesOf, largestCategory, categoryPodium, teamStrength, crossYear, rerankByTime } from "./racedetail";
 import type { DetailRow } from "./types";
 
 function d(p: Partial<DetailRow>): DetailRow {
@@ -57,5 +57,21 @@ describe("crossYear", () => {
     expect(cy[0]).toEqual({ y: 2024, winner: 400, median: 500, n: 2 });
     expect(cy[1].winner).toBe(100);
     expect(cy[1].median).toBe(200);
+  });
+});
+
+describe("rerankByTime", () => {
+  it("places by finish time ascending, 1..N", () => {
+    const rows = [d({ name: "丙", t: 1200 }), d({ name: "甲", t: 1000 }), d({ name: "乙", t: 1100 })];
+    const r = rerankByTime(rows);
+    expect(r.map((x) => x.name)).toEqual(["甲", "乙", "丙"]);
+    expect(r.map((x) => x.place)).toEqual([1, 2, 3]);
+  });
+  it("rows without time go last with null place; preserves source rank", () => {
+    const rows = [d({ name: "甲", t: 1000, rank: 5 }), d({ name: "無", t: null, rank: 9 })];
+    const r = rerankByTime(rows);
+    expect(r.map((x) => x.name)).toEqual(["甲", "無"]);
+    expect(r.map((x) => x.place)).toEqual([1, null]);
+    expect(r.map((x) => x.rank)).toEqual([5, 9]);
   });
 });
