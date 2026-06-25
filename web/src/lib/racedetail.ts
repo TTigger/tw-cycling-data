@@ -67,3 +67,51 @@ export function crossYear(rows: { y: number | null; t: number | null }[]): YearS
     })
     .sort((a, b) => a.y - b.y);
 }
+
+export interface ComparableGroup {
+  key: string; name: string; cat: string | null; label: string | null;
+  rows: DetailRow[]; count: number;
+}
+
+const GROUP_SEP = " ";
+
+export function comparableGroups(rows: DetailRow[]): ComparableGroup[] {
+  const labelsByCat = new Map<string, Set<string>>();
+  for (const r of rows) {
+    if (!r.label) continue;
+    const c = r.cat ?? "";
+    if (!labelsByCat.has(c)) labelsByCat.set(c, new Set());
+    labelsByCat.get(c)!.add(r.label);
+  }
+  const byKey = new Map<string, ComparableGroup>();
+  for (const r of rows) {
+    const cat = r.cat ?? null;
+    const label = r.label ?? null;
+    const key = `${cat ?? ""}${GROUP_SEP}${label ?? ""}`;
+    let g = byKey.get(key);
+    if (!g) {
+      let name: string;
+      if (cat) {
+        const multi = (labelsByCat.get(cat)?.size ?? 0) > 1;
+        name = multi && label ? `${cat} · ${label}` : cat;
+      } else if (label) {
+        name = label;
+      } else {
+        name = "未分組";
+      }
+      g = { key, name, cat, label, rows: [], count: 0 };
+      byKey.set(key, g);
+    }
+    g.rows.push(r);
+    g.count++;
+  }
+  return [...byKey.values()].sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+}
+
+export function distinctLabels(rows: DetailRow[]): number {
+  return new Set(rows.map((r) => r.label).filter((l): l is string => !!l)).size;
+}
+
+export function largestComparableGroup(rows: DetailRow[]): ComparableGroup | null {
+  return comparableGroups(rows)[0] ?? null;
+}
