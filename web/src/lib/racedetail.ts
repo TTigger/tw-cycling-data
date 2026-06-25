@@ -16,23 +16,6 @@ export function categoriesOf(rows: DetailRow[]): string[] {
   return [...new Set(rows.map((r) => r.cat).filter((c): c is string => !!c))].sort();
 }
 
-export interface PodiumEntry { rank: number; name: string | null; team: string | null; t: number | null; }
-
-export function largestCategory(rows: DetailRow[]): string | null {
-  const counts = new Map<string, number>();
-  for (const r of rows) { if (!r.cat) continue; counts.set(r.cat, (counts.get(r.cat) || 0) + 1); }
-  let best: string | null = null; let n = -1;
-  for (const [c, k] of counts) if (k > n) { n = k; best = c; }
-  return best;
-}
-
-export function categoryPodium(rows: DetailRow[], cat: string, n = 3): PodiumEntry[] {
-  return rows
-    .filter((r) => r.cat === cat && r.t != null)
-    .sort((a, b) => (a.t as number) - (b.t as number))
-    .slice(0, n)
-    .map((r, i) => ({ rank: i + 1, name: r.name, team: r.team, t: r.t }));
-}
 
 export interface TeamStat { team: string; top: number; podium: number; }
 export function teamStrength(rows: DetailRow[], topN = 10, cutoff = 10): TeamStat[] {

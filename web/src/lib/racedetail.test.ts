@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { categoriesOf, largestCategory, categoryPodium, teamStrength, crossYear, rerankByTime, comparableGroups, distinctLabels, largestComparableGroup } from "./racedetail";
+import { categoriesOf, teamStrength, crossYear, rerankByTime, comparableGroups, distinctLabels, largestComparableGroup } from "./racedetail";
 import type { DetailRow } from "./types";
 
 function d(p: Partial<DetailRow>): DetailRow {
@@ -12,25 +12,6 @@ describe("categoriesOf", () => {
   });
 });
 
-describe("largestCategory", () => {
-  it("returns the category with the most rows (ignoring null)", () => {
-    const rows = [d({ cat: "A" }), d({ cat: "B" }), d({ cat: "B" }), d({ cat: null })];
-    expect(largestCategory(rows)).toBe("B");
-  });
-});
-
-describe("categoryPodium", () => {
-  it("top-3 of a category by time, positioned 1-2-3", () => {
-    const rows = [
-      d({ cat: "M25", t: 1200, name: "丙" }), d({ cat: "M25", t: 1000, name: "甲" }),
-      d({ cat: "M25", t: 1100, name: "乙" }), d({ cat: "M25", t: 1300, name: "丁" }),
-      d({ cat: "其他", t: 500, name: "別組" }),
-    ];
-    const p = categoryPodium(rows, "M25", 3);
-    expect(p.map((e) => e.name)).toEqual(["甲", "乙", "丙"]);
-    expect(p.map((e) => e.rank)).toEqual([1, 2, 3]);
-  });
-});
 
 describe("teamStrength", () => {
   it("counts top-cutoff and podium per team, sorted", () => {
