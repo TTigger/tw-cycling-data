@@ -1,12 +1,14 @@
 {
-  "total_records": 118501,
+  "total_records": 147609,
   "by_platform": {
-    "bravelog.tw": 46553,
+    "bravelog.tw": 42052,
     "criterium.tw": 1957,
     "cyclist.org.tw": 12265,
     "cycling.org.tw": 349,
     "tsu.com.tw": 24515,
-    "irunner.biji.co": 32862
+    "twbike.org": 15405,
+    "irunner.biji.co": 32862,
+    "taiwanbike.org": 18204
   },
   "by_year": {
     "2009": 1062,
@@ -20,58 +22,58 @@
     "2019": 1229,
     "2020": 2763,
     "2021": 639,
-    "2022": 7863,
-    "2023": 18082,
-    "2024": 34284,
-    "2025": 32449,
-    "2026": 12147
+    "2022": 12387,
+    "2023": 29217,
+    "2024": 43401,
+    "2025": 36414,
+    "2026": 12514
   },
   "by_gender": {
-    "null": 55343,
-    "F": 10426,
-    "M": 52732
+    "null": 51263,
+    "F": 14917,
+    "M": 81429
   },
   "by_race_class": {
-    "未分類": 28554,
-    "女子": 632,
-    "挑戰": 43361,
+    "未分類": 29084,
+    "女子": 646,
+    "挑戰": 46200,
     "競賽": 7167,
     "電輔車": 218,
     "市民": 4901,
     "市民經典": 5267,
-    "認證": 4501,
     "團體計時": 826,
-    "分齡": 21301,
-    "青少年": 1773
+    "分齡": 31135,
+    "青少年": 1773,
+    "認證": 20392
   },
   "by_series": {
-    "null": 57233,
+    "null": 69839,
+    "TBA 長途認證": 20392,
     "96聯賽": 9457,
     "捷安特自行車嘉年華": 8756,
     "TIS崇越盃系列": 7722,
     "戀戀197": 6547,
-    "TBA 長途認證": 4501,
     "環大臺北自行車挑戰": 3520,
     "L'Étape 環法日月潭": 3248,
     "GravelFundo 礫石越野系列": 2260,
     "LAVA 落日飛車350": 2188,
-    "花蓮太平洋盃": 1667,
+    "花蓮太平洋盃": 1993,
     "臺灣KOM登山王之路": 1643,
     "臺灣自行車聯賽(TCL)": 1613,
     "臺灣KOM登山王挑戰": 1448,
+    "仙山單車挑戰賽": 1180,
     "環花東國際自行車賽": 1080,
     "台灣登山大滿貫(雪巴)": 965,
-    "仙山單車挑戰賽": 955,
     "屏東四重溪自行車挑戰賽": 819,
     "TCU 台中城市繞圈賽": 738,
     "瘋系列環台賽": 696,
     "自由車錦標賽/選拔": 623,
-    "世界自行車日": 422,
+    "世界自行車日": 482,
     "銅礦88經典挑戰賽": 322,
     "臺灣KOM太平洋經典賽": 78
   },
   "by_status": {
-    "null": 116544,
+    "null": 145652,
     "FIN": 823,
     "DNF": 586,
     "DNS": 238,
@@ -79,7 +81,7 @@
     "NYS": 13,
     "SRT": 222
   },
-  "distinct_races": 130,
+  "distinct_races": 161,
   "races": [
     {
       "race_key": "彰化經典百K",
@@ -134,15 +136,6 @@
       "rows": 5958
     },
     {
-      "race_key": "TBA北高360雙塔520四極602自行車認證",
-      "series": "TBA 長途認證",
-      "platform": "bravelog.tw",
-      "years": [
-        2025
-      ],
-      "rows": 4501
-    },
-    {
       "race_key": "環大臺北自行車挑戰成績",
       "series": "環大臺北自行車挑戰",
       "platform": "cyclist.org.tw",
@@ -186,6 +179,24 @@
       "rows": 3003
     },
     {
+      "race_key": "北高2024",
+      "series": null,
+      "platform": "twbike.org",
+      "years": [
+        2024
+      ],
+      "rows": 2894
+    },
+    {
+      "race_key": "北高3602023",
+      "series": "TBA 長途認證",
+      "platform": "twbike.org",
+      "years": [
+        2023
+      ],
+      "rows": 2883
+    },
+    {
       "race_key": "自行車嘉年華GIANTCUPLIVDAY",
       "series": "捷安特自行車嘉年華",
       "platform": "bravelog.tw",
@@ -205,6 +216,24 @@
       "rows": 2664
     },
     {
+      "race_key": "北高360認證成績表2025",
+      "series": "TBA 長途認證",
+      "platform": "taiwanbike.org",
+      "years": [
+        2025
+      ],
+      "rows": 2646
+    },
+    {
+      "race_key": "1118TBA北高360認證成績表2023",
+      "series": "TBA 長途認證",
+      "platform": "taiwanbike.org",
+      "years": [
+        2023
+      ],
+      "rows": 2513
+    },
+    {
       "race_key": "淡江大橋通車自行車活動",
       "series": null,
       "platform": "irunner.biji.co",
@@ -212,6 +241,24 @@
         2026
       ],
       "rows": 2477
+    },
+    {
+      "race_key": "北高360認證成績表2024",
+      "series": "TBA 長途認證",
+      "platform": "taiwanbike.org",
+      "years": [
+        2024
+      ],
+      "rows": 2273
+    },
+    {
+      "race_key": "北高2025",
+      "series": null,
+      "platform": "twbike.org",
+      "years": [
+        2025
+      ],
+      "rows": 2192
     },
     {
       "race_key": "TIS崇越盃武嶺自行車挑戰賽六月場次",
@@ -232,6 +279,15 @@
       "rows": 1775
     },
     {
+      "race_key": "1112TBA雙塔520認證成績表2022",
+      "series": "TBA 長途認證",
+      "platform": "taiwanbike.org",
+      "years": [
+        2022
+      ],
+      "rows": 1639
+    },
+    {
       "race_key": "第七屆經典新玉門關xEDWONDER公路自行車聯名賽",
       "series": null,
       "platform": "irunner.biji.co",
@@ -241,6 +297,24 @@
       "rows": 1636
     },
     {
+      "race_key": "1112TBA北高360認證成績表2022",
+      "series": "TBA 長途認證",
+      "platform": "taiwanbike.org",
+      "years": [
+        2022
+      ],
+      "rows": 1594
+    },
+    {
+      "race_key": "雙塔5202023",
+      "series": "TBA 長途認證",
+      "platform": "twbike.org",
+      "years": [
+        2023
+      ],
+      "rows": 1532
+    },
+    {
       "race_key": "第五屆武嶺盃「鐵馬高峰會」國際自行車大賽",
       "series": null,
       "platform": "tsu.com.tw",
@@ -248,6 +322,15 @@
         2013
       ],
       "rows": 1507
+    },
+    {
+      "race_key": "1118TBA雙塔520認證成績表2023",
+      "series": "TBA 長途認證",
+      "platform": "taiwanbike.org",
+      "years": [
+        2023
+      ],
+      "rows": 1458
     },
     {
       "race_key": "TIS崇越盃武嶺自行車挑戰賽九月場次",
@@ -266,6 +349,24 @@
         2024
       ],
       "rows": 1341
+    },
+    {
+      "race_key": "雙塔2024",
+      "series": null,
+      "platform": "twbike.org",
+      "years": [
+        2024
+      ],
+      "rows": 1326
+    },
+    {
+      "race_key": "西三塔2024",
+      "series": null,
+      "platform": "twbike.org",
+      "years": [
+        2024
+      ],
+      "rows": 1212
     },
     {
       "race_key": "【96聯賽第二站】NeverStop永不放棄塔塔加探索新中橫自行車活動",
@@ -299,6 +400,15 @@
       "rows": 1080
     },
     {
+      "race_key": "0828環大苗栗經典挑戰2022",
+      "series": null,
+      "platform": "taiwanbike.org",
+      "years": [
+        2022
+      ],
+      "rows": 1066
+    },
+    {
       "race_key": "LIVDAY仲夏田野花都魚藤坪挑戰活動",
       "series": "捷安特自行車嘉年華",
       "platform": "bravelog.tw",
@@ -306,6 +416,24 @@
         2023
       ],
       "rows": 1052
+    },
+    {
+      "race_key": "四極620認證成績表2025",
+      "series": "TBA 長途認證",
+      "platform": "taiwanbike.org",
+      "years": [
+        2025
+      ],
+      "rows": 972
+    },
+    {
+      "race_key": "西三6002023",
+      "series": null,
+      "platform": "twbike.org",
+      "years": [
+        2023
+      ],
+      "rows": 971
     },
     {
       "race_key": "仙山單車挑戰賽一輪盃3",
@@ -348,6 +476,15 @@
       "rows": 887
     },
     {
+      "race_key": "雙塔520認證成績表2024",
+      "series": "TBA 長途認證",
+      "platform": "taiwanbike.org",
+      "years": [
+        2024
+      ],
+      "rows": 868
+    },
+    {
       "race_key": "LIVDAY仲夏心騎天",
       "series": "捷安特自行車嘉年華",
       "platform": "bravelog.tw",
@@ -362,6 +499,15 @@
       "platform": "tsu.com.tw",
       "years": [
         2024
+      ],
+      "rows": 858
+    },
+    {
+      "race_key": "雙塔520認證成績表2025",
+      "series": "TBA 長途認證",
+      "platform": "taiwanbike.org",
+      "years": [
+        2025
       ],
       "rows": 858
     },
@@ -424,6 +570,15 @@
       "rows": 780
     },
     {
+      "race_key": "雙塔2025",
+      "series": null,
+      "platform": "twbike.org",
+      "years": [
+        2025
+      ],
+      "rows": 711
+    },
+    {
       "race_key": "96Heroes新竹站",
       "series": "96聯賽",
       "platform": "tsu.com.tw",
@@ -469,6 +624,15 @@
       "rows": 650
     },
     {
+      "race_key": "08272023環大苗栗107K挑戰成績2023",
+      "series": null,
+      "platform": "taiwanbike.org",
+      "years": [
+        2023
+      ],
+      "rows": 626
+    },
+    {
       "race_key": "LIVDAY初夏大山騎訪雙溪",
       "series": "捷安特自行車嘉年華",
       "platform": "bravelog.tw",
@@ -505,6 +669,15 @@
       "rows": 552
     },
     {
+      "race_key": "西三塔2025",
+      "series": null,
+      "platform": "twbike.org",
+      "years": [
+        2025
+      ],
+      "rows": 551
+    },
+    {
       "race_key": "96Heroes台中站",
       "series": "96聯賽",
       "platform": "tsu.com.tw",
@@ -512,6 +685,24 @@
         2024
       ],
       "rows": 549
+    },
+    {
+      "race_key": "四極620認證成績表2024",
+      "series": "TBA 長途認證",
+      "platform": "taiwanbike.org",
+      "years": [
+        2024
+      ],
+      "rows": 544
+    },
+    {
+      "race_key": "08242025環大苗栗107K挑戰成績2025",
+      "series": null,
+      "platform": "taiwanbike.org",
+      "years": [
+        2025
+      ],
+      "rows": 536
     },
     {
       "race_key": "【96Heroes挑戰組】桃竹站",
@@ -718,6 +909,15 @@
       "rows": 352
     },
     {
+      "race_key": "雙認證北高3602023",
+      "series": "TBA 長途認證",
+      "platform": "twbike.org",
+      "years": [
+        2023
+      ],
+      "rows": 351
+    },
+    {
       "race_key": "第14屆建大輪胎武嶺盃自行車大會師",
       "series": null,
       "platform": "tsu.com.tw",
@@ -753,6 +953,15 @@
         2025
       ],
       "rows": 331
+    },
+    {
+      "race_key": "1021亞洲太平洋盃國際自行車交流挑戰賽2023",
+      "series": "花蓮太平洋盃",
+      "platform": "taiwanbike.org",
+      "years": [
+        2023
+      ],
+      "rows": 326
     },
     {
       "race_key": "銅礦88經典自行車挑戰賽",
@@ -867,6 +1076,15 @@
       "rows": 267
     },
     {
+      "race_key": "雙認證雙塔5202023",
+      "series": "TBA 長途認證",
+      "platform": "twbike.org",
+      "years": [
+        2023
+      ],
+      "rows": 261
+    },
+    {
       "race_key": "台中春季繞圈賽第五屆",
       "series": null,
       "platform": "criterium.tw",
@@ -933,6 +1151,15 @@
       "rows": 225
     },
     {
+      "race_key": "1002苗栗仙山挑戰騎跡2022",
+      "series": "仙山單車挑戰賽",
+      "platform": "taiwanbike.org",
+      "years": [
+        2022
+      ],
+      "rows": 225
+    },
+    {
       "race_key": "【96聯賽第六站】96CyclingRace彰化站",
       "series": "96聯賽",
       "platform": "tsu.com.tw",
@@ -940,6 +1167,15 @@
         2024
       ],
       "rows": 208
+    },
+    {
+      "race_key": "東三塔5502026",
+      "series": null,
+      "platform": "twbike.org",
+      "years": [
+        2026
+      ],
+      "rows": 206
     },
     {
       "race_key": "114年全國自由車公路錦標賽暨選拔賽成績總表",
@@ -1024,6 +1260,15 @@
         2024
       ],
       "rows": 167
+    },
+    {
+      "race_key": "東三塔5502023",
+      "series": null,
+      "platform": "twbike.org",
+      "years": [
+        2023
+      ],
+      "rows": 162
     },
     {
       "race_key": "年台灣登山大滿貫自行車系列賽–阿里山站",
@@ -1143,6 +1388,15 @@
       "rows": 106
     },
     {
+      "race_key": "東雙塔4702026",
+      "series": null,
+      "platform": "twbike.org",
+      "years": [
+        2026
+      ],
+      "rows": 101
+    },
+    {
       "race_key": "秋季TCU台中城市繞圈賽",
       "series": "TCU 台中城市繞圈賽",
       "platform": "tsu.com.tw",
@@ -1197,6 +1451,15 @@
       "rows": 65
     },
     {
+      "race_key": "世界自行車日環大苗栗經典挑戰2026",
+      "series": "世界自行車日",
+      "platform": "taiwanbike.org",
+      "years": [
+        2026
+      ],
+      "rows": 60
+    },
+    {
       "race_key": "TAIWANSUMMITSERIES陽明山北海岸",
       "series": null,
       "platform": "cyclist.org.tw",
@@ -1249,6 +1512,24 @@
         2021
       ],
       "rows": 32
+    },
+    {
+      "race_key": "花屏3002023",
+      "series": null,
+      "platform": "twbike.org",
+      "years": [
+        2023
+      ],
+      "rows": 27
+    },
+    {
+      "race_key": "東二塔4702023",
+      "series": null,
+      "platform": "twbike.org",
+      "years": [
+        2023
+      ],
+      "rows": 25
     },
     {
       "race_key": "【96CyclingRace競賽組】台北站",
