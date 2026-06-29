@@ -192,6 +192,28 @@ KNOWN_TRIAGE = [
     ("小台灣縮時環島", "NOT_HELD", "2026-09-26 未辦;瘋系列 300K 限時挑戰,恐無總排"),
     ("TIS桃園台南", "NOT_HELD", "2026-10-31 未辦;往屆僅發完賽獎座/證書,恐無排名"),
     ("花蓮太平洋盃", "NOT_HELD", "2026-12-04~05 未辦;聯賽末站,辦完應有 cyclist.org.tw PDF 成績"),
+    # --- ranked per-rider results EXIST but on a platform we don't scrape yet ---
+    #     (verified 2026-06-29; future-source lead: add twbike.org/focusline parsing)
+    #     NOTE: "TWB" must stay above the 瘋系列 "東三塔" NO_RANKING rule below.
+    ("TWB", "BLOCKED", "台灣自行車協會 雙塔/三塔/北高360/騎福:成績在 twbike.org PDF + score.focusline(非可爬平台)"),
+    ("輪霸西濱", "BLOCKED", "TBA 中華民國自行車協會 西濱挑戰:成績為 taiwanbike.org Google Sheets(非可爬平台)"),
+    # --- 瘋系列 challenge: organizer states 無總排, timing on ATSport (blocked) ---
+    ("中雙塔", "NO_RANKING", "瘋系列:無總排 + ATSport(封鎖)"),
+    ("東三塔", "NO_RANKING", "瘋系列東三塔/東雙塔:無總排 + ATSport(封鎖)"),
+    ("白毛山", "NO_RANKING", "瘋系列白毛山巔峰騎跡:完賽獎牌制,無總排 + ATSport"),
+    ("瘋911", "NOT_HELD", "瘋系列 極限東征:2026-09-11 未辦;瘋系列恐無總排"),
+    # --- leisure / guided-tour / festival rides: no per-rider ranking (verified 2026-06-29) ---
+    ("樂遊苗栗", "NO_RANKING", "ensage 樂遊苗栗一騎跑:嚮導團騎/集點健康活動,無排名"),
+    ("Light One Bike", "NO_RANKING", "低碳慢遊生態團騎,明示非競賽,無排名(報名在伊貝特)"),
+    ("騎輪節", "NO_RANKING", "時代騎輪節 Wheels Ride Festival:明示非競賽,計時僅供參考"),
+    ("萬眾騎", "NO_RANKING", "萬眾騎BIKE:媽祖遶境群眾騎乘,非競賽"),
+    ("探索汐鴿", "NO_RANKING", "汐鴿休閒認證路線社交團騎,無排名"),
+    ("中央山脈極致挑戰", "NO_RANKING", "多日極致挑戰:僅完賽英雄榜/關門時間,無排名"),
+    ("南投旅遊百", "NO_RANKING", "南投旅遊百K:休閒小鎮漫遊,無排名"),
+    ("屏東來義", "NO_RANKING", "之心山嵐單車行:休閒團騎,查無成績頁"),
+    ("關子嶺鐵馬行", "NO_RANKING", "友誼萬歲 鐵馬行:休閒團騎(lohasnet),無排名"),
+    ("雲林單車遊", "NO_RANKING", "梅好騎跡咖啡探索:休閒團騎;2025 停辦"),
+    ("雙潭騎跡", "NO_RANKING", "單車嘉義休閒遊:免費計時查詢「不排名」"),
 ]
 
 
