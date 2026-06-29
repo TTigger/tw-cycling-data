@@ -26,6 +26,7 @@ export interface AthleteIndexEntry {
   id: string; nm: string; n: number; ny: number; nr: number;
   y0: number | null; y1: number | null; best: number | null;
   conf: Confidence; uci: boolean; rid: boolean;
+  tm?: string | null;  // most-recent representative team, for search disambiguation
 }
 export interface AthleteHistoryRow {
   y: number | null; rk: string; rn: string; cat: string | null;

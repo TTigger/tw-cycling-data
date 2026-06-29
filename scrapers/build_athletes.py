@@ -126,6 +126,25 @@ def confidence(is_anchored, distinct_teams, name_len, mixed_gender=False):
     return level
 
 
+# Placeholder/non-team values that shouldn't show as a rider's team in search.
+_JUNK_TEAM = {"—", "-", "–", "個人", "無", "自由車", "無車隊"}
+
+
+def representative_team(recs):
+    """The rider's most-recent real team, for the search hint — the current team
+    is the most recognizable disambiguator between same-masked-name riders.
+    Skips placeholder/junk values; None if the rider never lists a real team."""
+    best_year, team = None, None
+    for r in recs:
+        t = (r.get("team") or "").strip()
+        if not t or t in _JUNK_TEAM:
+            continue
+        y = r.get("year") or 0
+        if best_year is None or y >= best_year:
+            best_year, team = y, t
+    return team
+
+
 def _history_row(r, field=None):
     """One de-identified result in an athlete's career. `field` = number of
     finishers in that (race_key, year), so the UI can show a comparable
@@ -329,6 +348,7 @@ def build_athletes(records):
             "y0": years[0] if years else None, "y1": years[-1] if years else None,
             "best": min(ranks) if ranks else None,
             "conf": conf, "uci": is_uci, "rid": is_tsu,
+            "tm": representative_team(recs),  # most-recent team, search disambiguation
         })
     # most-tracked athletes first
     index.sort(key=lambda a: (-a["n"], -a["ny"], str(a["id"])))

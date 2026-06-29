@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { loadRaces, loadAthletes } from "../lib/data-load";
+import { searchAthletes } from "../lib/athletes";
 import type { RaceIndex, AthleteIndexEntry } from "../lib/types";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
@@ -64,11 +65,10 @@ export default function CommandPalette() {
       .map((r) => ({ kind: "賽事", label: `${r.y} ${r.rn}`, hint: `${r.rows} 筆`,
         // every race is pre-rendered, so link to the crawlable SSG page
         url: `/race/${encodeURIComponent(r.file)}` }));
-    const athItems: Item[] = (athletes ?? [])
-      .filter((a) => a.nm.includes(query))
-      .sort((a, b) => b.n - a.n)
-      .slice(0, 8)
-      .map((a) => ({ kind: "選手", label: a.nm, hint: `${a.y0}–${a.y1} · ${a.n} 場`,
+    const athItems: Item[] = searchAthletes(athletes ?? [], query, 8)
+      .map((a) => ({ kind: "選手", label: a.nm,
+        // team + UCI in the hint help tell same-masked-name riders apart
+        hint: `${a.tm ? a.tm + " · " : ""}${a.y0}–${a.y1} · ${a.n}場${a.uci ? " · UCI" : ""}`,
         url: `/athletes?id=${a.id}` }));
     return [...pages, ...raceItems, ...athItems];
   }, [q, races, athletes]);
