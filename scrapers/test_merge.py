@@ -21,3 +21,8 @@ def test_keeps_normal_finisher():
 
 def test_criterium_prefix_discovered():
     assert "criterium_" in merge.SOURCE_PREFIXES
+
+
+def test_focusline_and_taiwanbike_prefixes_discovered():
+    assert "focusline_" in merge.SOURCE_PREFIXES
+    assert "taiwanbike_" in merge.SOURCE_PREFIXES

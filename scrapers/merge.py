@@ -22,7 +22,8 @@ import normalize  # noqa: E402
 
 sys.stdout.reconfigure(encoding="utf-8")
 OUT = os.path.join(os.path.dirname(__file__), "..", "data", "processed")
-SOURCE_PREFIXES = ("criterium_", "cyclist_", "bravelog_", "cycling_", "irunner_")
+SOURCE_PREFIXES = ("criterium_", "cyclist_", "bravelog_", "cycling_", "irunner_",
+                   "focusline_", "taiwanbike_")
 
 
 def discover_sources():
