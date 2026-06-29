@@ -14,3 +14,8 @@ def test_classify():
     assert rt.classify(None) == "road"
     # climb wins over other keywords
     assert rt.classify("武嶺繞圈計時") == "climb"
+
+
+def test_criterium_name_classifies_as_crit():
+    import race_type
+    assert race_type.classify("苗栗繞圈賽（第七屆）") == "crit"
