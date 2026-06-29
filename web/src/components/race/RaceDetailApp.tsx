@@ -14,6 +14,7 @@ import CrossYearTrend from "./CrossYearTrend";
 import TeamStrength from "./TeamStrength";
 import RaceDna from "./RaceDna";
 import RaceSeverity from "./RaceSeverity";
+import Completion from "./Completion";
 import Skeleton from "../Skeleton";
 import FavButton from "../FavButton";
 
@@ -131,6 +132,7 @@ export default function RaceDetailApp({ initRk, initY }: { initRk?: string; init
                 {sel.has_team && <Card title="車隊戰力榜" hint="前 10 名人次"><TeamStrength rows={detail} /></Card>}
               </div>
               <RaceSeverity rk={sel.rk} year={sel.y} />
+              <Completion completion={sel.completion} />
             </div>
           )}
           {tab === "dna" && (
