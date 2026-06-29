@@ -10,29 +10,6 @@ Taiwan's cycling results are **scattered across 4+ platforms** and mostly only q
 
 Ten pages: **Overview** (the scene at a glance) · **Explore** (filter & analyze distributions) · **Race** (leaderboard + "what % did you beat" percentile + **Race DNA** 6-axis radar with side-by-side compare + **similar-race finder** + **severity/attrition estimate** + **completion rate** (FIN/DNF/DNS, criteriums) + race search) · **Series** (**multi-station season standings** for 96聯賽/捷安特/崇越/雪巴…) · **Athletes** (22,035 trackable riders: career history, progression, **season review**, **cross-year difficulty calibration**, climber-vs-rouleur radar, **riding doppelgangers**, **1v1 head-to-head**, rivals) · **Teams** (roster, team records, activity timeline; 805 teams) · **Climbs** (VAM climbing index + cross-race Climbing King + all-time course records) · **Insights** (peak-age curve, breakout stars, race star-ratings, result converter, geographic hotspots) · **Overseas** (kept separate) · **Coverage** (source transparency + missing-race worklist). The point: turn "scattered, query-only" results into a **searchable, career-trackable, comparable** community resource. PDPA-safe (masked names only). Coverage is disclosed honestly in **[SOURCES.md](SOURCES.md)**.
 
-## Status
-
-| Stage | State |
-|---|---|
-| Source reconnaissance (16-agent workflow) | ✅ `recon-report.md` / `recon-raw.json` |
-| Scrape feasibility PoC (cyclist + Bravelog) | ✅ `poc-findings.md` |
-| **Phase 1a: cyclist.org.tw pipeline (2024–26)** | ✅ **3,913 rows / 12 races** (competitive; gender 83% + age-group 95%) |
-| **Phase 1b: Bravelog pipeline (2018–26)** | ✅ **44,850 rows / 61 races** (citizen/challenge; triathlons excluded) |
-| **Phase 1d: cycling.org.tw national source** | ✅ National road championship **203 rows (2025, with UCI IDs)**; old wide-table years deferred |
-| **Phase 1e: tsu.com.tw results platform** | ✅ **24,925 rows / 2009–2025** (county criteriums/gravel/NeverStop Wuling/96 series; carries **TCU rider IDs**, fills the deepest history) |
-| **Phase 1f: cycling.org.tw old wide-table backfill** | ✅ `cycling_oldroad.py` recovers the 2013 national road championship **146 rows** (wide→long reshape; other years are 404) |
-| Normalization + merge + validation tooling | ✅ `normalize.py` / `merge.py` (year-agnostic, auto-discovers sources, cross-source dedup) / `validate.py` |
-| **★ Merged master dataset** | ✅ **116,953 rows / 2009–2026 / 126 races / 5 sources**, de-identified |
-| **Phase 2: interactive dashboard (4 pages)** | ✅ `web/` (Overview / Explore / Race / Climbs; Astro+React+ECharts, Claude aesthetic, responsive) |
-| **Vercel deployment** | ✅ Live (Root Directory=`web`; auto-deploys on push) |
-| **Phase 1c: historical backfill (cyclist 2014–23 + Bravelog 2018–23)** | ✅ +7,363 + historical Bravelog |
-| **Phase 3: per-athlete tracking (TCU/UCI-ID-anchored, name fallback)** | ✅ `/athletes` **21,842 trackable athletes** (≥2 results); progression + career table + homonym confidence flag |
-| **Phase 4: analytics features** | ✅ Athletes: **riding doppelganger** (fingerprint nearest-neighbor) + **cross-year difficulty calibration**; Race: **Race DNA** 6-axis radar — each with pytest/vitest, de-identified |
-| **Phase 5: more analytics** | ✅ **similar-race finder** (DNA NN), **athlete 1v1**, **series season standings** (`/series`), **race severity/attrition** proxy; **gender/age back-fill** (43%→52% M/F) |
-| **Phase 6: experience** | ✅ Mobile nav drawer, favorites (localStorage), dark mode, chart micro-interactions + table pagination, season review, teams page (`/teams`, 805 teams) |
-| **Phase 7: SSG + sharing** | ✅ Full-SSG race pages + pre-rendered popular athletes, per-page meta + OG share image (`build_og.py`); internal race links now point to the crawlable SSG pages |
-| **Phase 8: performance + polish** | ✅ Homepage/race pages no longer load the 24.5MB `viz.json` (precomputed `overview.json`/`race_crossyear.json`), athlete heavy files lazy-loaded; fixed browser Back (popstate) and a dark-mode build-strip bug; consistent a11y/loading/empty states; race-name review-batch merges (140→126) |
-
 ## Layout
 
 ```
