@@ -19,6 +19,13 @@ OUT = os.path.join(HERE, "..", "web", "public", "data")
 
 _DIST_RE = re.compile(r"(\d{2,3})\s*(?:公里|[KkＫ]\s*[Mm]?|公?里)")
 
+
+def is_finisher(r):
+    """A row that belongs in finisher-only views (leaderboards, histograms).
+    DNF/DNS rows (criterium.tw) carry no finish time and are excluded there;
+    they are still counted for completion in build_races_index."""
+    return r.get("status") not in ("DNF", "DNS")
+
 def extract_distance_km(category_raw, result_label, race_name):
     """Pull a race distance in km from any of the label fields. None if absent."""
     for field in (category_raw, result_label, race_name):
@@ -73,8 +80,10 @@ def slim_record(rec):
 
 
 def build_races_index(records):
-    """One entry per (race_key, year): name, series, count, multi-year flag, has_team."""
-    agg = defaultdict(lambda: {"rows": 0, "team": False})
+    """One entry per (race_key, year): name, series, count, multi-year flag,
+    has_team, and completion (fin/dnf/dns/rate) when status data exists."""
+    agg = defaultdict(lambda: {"rows": 0, "team": False,
+                               "fin": 0, "dnf": 0, "dns": 0, "status_rows": 0})
     years = defaultdict(set)
     meta = {}
     for r in records:
@@ -82,13 +91,22 @@ def build_races_index(records):
         a = agg[key]
         a["rows"] += 1
         a["team"] = a["team"] or bool(r.get("team"))
+        st = r.get("status")
+        if st in ("FIN", "DNF", "DNS"):
+            a["status_rows"] += 1
+            a[st.lower()] += 1
         years[r.get("race_key")].add(r.get("year"))
         meta[r.get("race_key")] = {"rn": r.get("race_name_canonical"), "s": r.get("series")}
     out = []
     for (rk, y), a in agg.items():
-        out.append({"rk": rk, "y": y, "rn": meta[rk]["rn"], "s": meta[rk]["s"],
-                    "rows": a["rows"], "multi_year": len([x for x in years[rk] if x]) > 1,
-                    "has_team": a["team"], "file": race_file_name(rk, y)})
+        entry = {"rk": rk, "y": y, "rn": meta[rk]["rn"], "s": meta[rk]["s"],
+                 "rows": a["rows"], "multi_year": len([x for x in years[rk] if x]) > 1,
+                 "has_team": a["team"], "file": race_file_name(rk, y)}
+        if a["status_rows"]:
+            total = a["fin"] + a["dnf"] + a["dns"]
+            entry["completion"] = {"fin": a["fin"], "dnf": a["dnf"], "dns": a["dns"],
+                                   "rate": round(a["fin"] / total, 3) if total else 0.0}
+        out.append(entry)
     return sorted(out, key=lambda x: (-(x["rows"]), str(x["rk"])))
 
 
@@ -217,8 +235,9 @@ def detail_record(rec):
 
 def main():
     records = list(common.iter_records(IN))  # RAM-frugal streaming parse
+    finishers = [r for r in records if is_finisher(r)]
     os.makedirs(os.path.join(OUT, "race"), exist_ok=True)
-    viz = [slim_record(r) for r in records]
+    viz = [slim_record(r) for r in finishers]
     with open(os.path.join(OUT, "viz.json"), "w", encoding="utf-8") as f:
         json.dump(viz, f, ensure_ascii=False, separators=(",", ":"))
     idx = build_races_index(records)
@@ -229,7 +248,7 @@ def main():
     with open(os.path.join(OUT, "race_crossyear.json"), "w", encoding="utf-8") as f:
         json.dump(build_crossyear(viz), f, ensure_ascii=False, separators=(",", ":"))
     groups = defaultdict(list)
-    for r in records:
+    for r in finishers:
         groups[race_file_name(r.get("race_key"), r.get("year"))].append(r)
     for fname, rows in groups.items():
         rows = sorted([detail_record(x) for x in rows],

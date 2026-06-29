@@ -92,3 +92,35 @@ def test_race_file_name():
     assert bv.race_file_name("taipingshan", 2026) == "taipingshan__2026"
     assert bv.race_file_name("【96】台北", 2025) == "96-台北__2025"
     assert bv.race_file_name("a/b c", 2024) == "a-b-c__2024"
+
+
+def test_completion_present_for_status_races():
+    import build_viz
+    recs = [
+        {"race_key": "苗栗繞圈賽第七屆", "year": 2026, "race_name_canonical": "苗栗繞圈賽（第七屆）",
+         "series": None, "team": None, "status": "FIN", "finish_seconds": 2858},
+        {"race_key": "苗栗繞圈賽第七屆", "year": 2026, "race_name_canonical": "苗栗繞圈賽（第七屆）",
+         "series": None, "team": None, "status": "DNF", "finish_seconds": None},
+        {"race_key": "苗栗繞圈賽第七屆", "year": 2026, "race_name_canonical": "苗栗繞圈賽（第七屆）",
+         "series": None, "team": None, "status": "DNS", "finish_seconds": None},
+    ]
+    idx = build_viz.build_races_index(recs)
+    entry = next(e for e in idx if e["rk"] == "苗栗繞圈賽第七屆")
+    assert entry["completion"] == {"fin": 1, "dnf": 1, "dns": 1, "rate": round(1 / 3, 3)}
+
+
+def test_completion_absent_without_status():
+    import build_viz
+    recs = [{"race_key": "彰化經典百K", "year": 2024, "race_name_canonical": "彰化經典百K",
+             "series": None, "team": None, "status": None, "finish_seconds": 3600}]
+    idx = build_viz.build_races_index(recs)
+    entry = next(e for e in idx if e["rk"] == "彰化經典百K")
+    assert "completion" not in entry
+
+
+def test_is_finisher():
+    import build_viz
+    assert build_viz.is_finisher({"status": "FIN"}) is True
+    assert build_viz.is_finisher({"status": None}) is True
+    assert build_viz.is_finisher({"status": "DNF"}) is False
+    assert build_viz.is_finisher({"status": "DNS"}) is False
