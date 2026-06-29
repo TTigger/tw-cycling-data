@@ -36,6 +36,11 @@ def discover_sources():
     return out
 
 
+# Races superseded by a better source — their rows are skipped at merge.
+# bravelog's combined 2025 TBA cert (北高360+雙塔520+四極602 in one race_key) is
+# replaced by taiwanbike.org's authoritative per-distance results.
+SUPERSEDED = {("bravelog.tw", "TBA北高360雙塔520四極602自行車認證")}
+
 iter_records = common.iter_records  # streaming JSON-array reader (RAM-frugal)
 
 
@@ -61,7 +66,7 @@ def main():
     # ~one source instead of the whole corpus (RAM-tight machines OOM'd otherwise).
     # Dedup keeps the first-loaded source (sources load in sorted-glob order, as before).
     seen = set()
-    n_out = n_zero = n_dup = 0
+    n_out = n_zero = n_dup = n_superseded = 0
     races = defaultdict(lambda: {"rows": 0, "years": set(), "series": None, "platform": None})
     by_platform, by_year, by_gender, by_class, by_series = (Counter() for _ in range(5))
     by_status = Counter()
@@ -81,6 +86,9 @@ def main():
                     continue
                 seen.add(k)
             normalize.enrich(r)
+            if (r["source_platform"], r["race_key"]) in SUPERSEDED:
+                n_superseded += 1
+                continue
             if r.get("name_raw"):               # re-mask at merge time (policy applied here)
                 r["name_masked"] = common.mask_name(r["name_raw"])
             rk = r["race_key"]
@@ -110,6 +118,8 @@ def main():
         print(f"  dropped {n_zero} zero-time (DNF/未計時) rows")
     if n_dup:
         print(f"  dropped {n_dup} cross-source exact-duplicate rows")
+    if n_superseded:
+        print(f"  dropped {n_superseded} superseded rows (bravelog races replaced by a better source)")
 
     summary = {
         "total_records": n_out,
