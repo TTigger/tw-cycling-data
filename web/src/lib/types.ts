@@ -6,9 +6,13 @@ export interface SlimRecord {
   dist: number | null; spd: number | null;
   plat: string | null; reg: string | null;
 }
+export interface Completion {
+  fin: number; dnf: number; dns: number; rate: number;
+}
 export interface RaceIndex {
   rk: string; y: number | null; rn: string; s: string | null;
   rows: number; multi_year: boolean; has_team: boolean; file: string;
+  completion?: Completion;
 }
 export interface DetailRow {
   rank: number | null; bib: string | null; name: string | null;
