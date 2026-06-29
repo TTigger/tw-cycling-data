@@ -77,3 +77,25 @@ def test_parse_race_meta():
     assert m["year"] == 2026
     assert m["region"] == "苗栗"
     assert m["event_ids"] == [4, 5]   # de-duped, in order
+
+
+def test_parse_event_page_malformed_time():
+    """Regression: malformed time like '00:47:38junk' should not pass fullmatch."""
+    malformed_html = (
+        '<h1>test</h1>'
+        '<table class="tbl"><thead><tr><th>#</th><th>BIB</th><th>姓名</th>'
+        '<th>分組</th><th>隊伍</th><th style="text-align:right">完賽時間</th>'
+        '<th style="text-align:right">圈數</th><th>狀態</th></tr></thead><tbody>'
+        '<tr class="row-link"><td class="rank"><span class="pos pos-1">01</span></td>'
+        '<td class="tnum">2</td><td>Test Rider</td>'
+        '<td class="tnum">M / M30</td><td>Test Team</td>'
+        '<td class="tnum">00:47:38junk</td><td class="tnum">35</td>'
+        '<td><span class="pill fin"><span class="dot"></span>FIN</span></td></tr>'
+        '</tbody></table>'
+    )
+    rows = cp.parse_event_page(malformed_html)
+    assert len(rows) == 1
+    row = rows[0]
+    assert row["name"] == "Test Rider"
+    assert row["finish_time"] is None  # malformed time must reject
+    assert row["status"] == "FIN"  # but status should still parse

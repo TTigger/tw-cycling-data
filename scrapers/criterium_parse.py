@@ -50,8 +50,9 @@ def parse_event_page(html):
         rank_s, bib, name, category, team, ftime, laps_s, status = cells[:8]
         rank = int(rank_s) if rank_s.isdigit() else None
         laps = int(laps_s) if laps_s.isdigit() else None
-        ftime = ftime if _TIME.match(ftime) else None
-        status = status.upper() if status.upper() in ('FIN', 'DNF', 'DNS') else None
+        ftime = ftime if _TIME.fullmatch(ftime) else None
+        st = status.upper()
+        status = st if st in ('FIN', 'DNF', 'DNS') else None
         out.append({"rank": rank, "bib": bib or None, "name": name or None,
                     "category": category or None, "team": team or None,
                     "finish_time": ftime, "laps": laps, "status": status})
