@@ -50,3 +50,23 @@ def test_map_row_prefers_chip_time_and_ignores_rank():
 
 def test_map_row_without_finish_time_is_none():
     assert tp.map_row(H3, R3) is None
+
+
+import taiwanbike_crawl as tc
+
+def test_records_from_sheet_maps_and_masks():
+    tabs = {"雙塔520選手總表": [
+        ["參加編號", "姓名", "隊名", "組別", "性別", "組別", "成績"],
+        ["6000", "蔡正一", "騎就對了", "2025TBA雙塔520", "男", "M25", "22:03:49"],
+        ["7", "李四", "", "x", "男", "M30", ""],          # no time -> dropped
+        ["8", "陳一", "隊B", "y", "男", "M40", "00:00:30"],  # placeholder <1h -> dropped
+    ]}
+    recs = tc.records_from_sheet(tabs, "2025雙塔520自行車認證", 2025, "2026-06-29T00:00:00Z")
+    assert len(recs) == 1
+    r = recs[0]
+    assert r["source_platform"] == "taiwanbike.org"
+    assert r["race_name_raw"] == "雙塔520自行車認證 2025"  # year stripped from title
+    assert r["team"] == "騎就對了" and r["category_raw"] == "M25"
+    assert r["rank_overall"] is None
+    assert r["finish_seconds"] == 22 * 3600 + 3 * 60 + 49
+    assert r["name_masked"] == "蔡○一"
