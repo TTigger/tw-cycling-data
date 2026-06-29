@@ -224,6 +224,7 @@ def make_record(**kw):
         "rank_overall": None, "bib": None, "uci_id": None, "tsu_rider_id": None,
         "name_raw": None, "name_masked": None, "nationality": None, "team": None,
         "finish_time": None, "finish_seconds": None, "splits": None,
+        "status": None, "laps": None,
         "scraped_at": None,
     }
     rec.update(kw)
