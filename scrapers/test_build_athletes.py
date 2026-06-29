@@ -251,3 +251,17 @@ def test_build_course_records_alltime_fastest():
     assert rows[0]["rank"] == 1 and rows[0]["vam"] == ba._vam(3000, 6000)  # record holder = A
     assert rows[1]["rank"] == 2
     assert rows[0]["link"] is True   # ≥2 results → trackable/linkable
+
+
+def test_representative_team_picks_most_recent_real_team():
+    recs = [
+        _rec("林冠宇", team="A隊", year=2022),
+        _rec("林冠宇", team="B隊", year=2024),
+        _rec("林冠宇", team="—", year=2025),      # junk in latest year -> skipped
+    ]
+    assert ba.representative_team(recs) == "B隊"
+
+
+def test_representative_team_none_when_no_real_team():
+    recs = [_rec("林冠宇", team="個人", year=2024), _rec("林冠宇", team=None, year=2025)]
+    assert ba.representative_team(recs) is None

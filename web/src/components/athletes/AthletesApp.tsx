@@ -113,6 +113,7 @@ export default function AthletesApp({ initId }: { initId?: string } = {}) {
               {a.y0}–{a.y1} · {a.n} 場 · {a.nr} 賽事{a.best ? ` · 最佳第 ${a.best}` : ""}
               {a.rid && " · TCU"}{a.uci && " · UCI"}
             </div>
+            {a.tm && <div className="mt-0.5 truncate text-xs text-muted/80" title={a.tm}>{a.tm}</div>}
           </button>
         ))}
         {!results.length && <p className="text-muted">查無符合的選手。</p>}

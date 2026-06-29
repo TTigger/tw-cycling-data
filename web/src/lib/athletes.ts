@@ -6,16 +6,30 @@ export function percentileInField(rank: number | null, field: number | null): nu
   return Math.round(((field - rank) / field) * 100);
 }
 
+/** Strip the PDPA mask glyph ○ and whitespace so a query of the *visible*
+ * characters ("林宇", "林", or "宇") matches a masked name ("林○宇") — otherwise
+ * users could only ever type the surname. Lowercased so id/latin matching works. */
+export function normalizeSearch(s: string): string {
+  return s.replace(/[○\s]/g, "").toLowerCase();
+}
+
 /**
- * Client-side athlete search over the (masked) name. Matches a substring of the
- * masked name (e.g. "王" or "王○明"); ranks more-tracked athletes first so the
- * most complete careers surface at the top. Empty query -> the top `limit`.
+ * Client-side athlete search over the (masked) name. The query and the masked
+ * name are both ○/whitespace-stripped, so "林宇"/"林"/"宇" all find "林○宇".
+ * A hex-looking query also matches an athlete id prefix (direct/shareable
+ * lookup). Ranks more-tracked athletes first. Empty query -> the top `limit`.
  */
 export function searchAthletes(
   list: AthleteIndexEntry[], query: string, limit = 60,
 ): AthleteIndexEntry[] {
   const q = query.trim();
-  const pool = q ? list.filter((a) => a.nm.includes(q)) : list;
+  const nq = normalizeSearch(q);
+  // Direct id lookup only for a hex-looking query, so an ordinary name search
+  // never floods with athletes whose random hex id happens to contain the text.
+  const idQuery = /^[0-9a-f]{4,}$/.test(nq);
+  const pool = q
+    ? list.filter((a) => normalizeSearch(a.nm).includes(nq) || (idQuery && a.id.startsWith(nq)))
+    : list;
   return [...pool]
     .sort((a, b) => b.n - a.n || b.ny - a.ny || (a.best ?? 9999) - (b.best ?? 9999))
     .slice(0, limit);
