@@ -17,12 +17,12 @@ _AGECODE = re.compile(r"^(?:[MWFmwf]\d{1,2}|U\d{1,2}|MASTER|[男女]\d{1,2})$")
 _TIME = re.compile(r"^\d{1,2}:\d{2}:\d{2}")
 
 # column-name synonyms (first match wins, scanning all columns)
-_BIB = ("參加編號", "選手編號", "號碼布", "號碼")
+_BIB = ("參加編號", "參賽編號", "選手編號", "號碼布", "號碼")
 _NAME = ("姓名",)
 _TEAM = ("隊名", "車隊", "隊伍")
 _GENDER = ("性別",)
 _GROUP = ("組別", "分組", "性別組")
-_FINISH = ("晶片成績", "大會成績", "總成績", "成績")   # priority order
+_FINISH = ("淨時間", "晶片成績", "大會成績", "總成績", "成績")   # priority order (淨時間= net/chip time)
 
 
 def extract_sheet_links(html):

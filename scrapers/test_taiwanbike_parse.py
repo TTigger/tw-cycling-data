@@ -25,6 +25,10 @@ R2 = ["1", "A12", "王大明", "M30", "1", "1", "03:10:00", "03:09:55"]
 H3 = ["參加編號", "姓名", "成績"]
 R3 = ["7", "李四", ""]
 
+# 2022 TBA cert sheet (雙塔520/北高360 認證) with 參賽編號 and 淨時間
+H4 = ["參賽編號", "姓名", "組別", "總排", "分排", "淨時間", "出發時間(富貴角)", "完成時間(鵝鑾鼻)"]
+R4 = ["1171", "陳亞倫", "男子組", "1", "1.0", "15:21:08.000", "2022-11-12 06:00:00", "2022-11-12 21:21:08"]
+
 
 def test_extract_sheet_links_filters_to_2022plus_sheets():
     links = tp.extract_sheet_links(LISTING)
@@ -50,6 +54,16 @@ def test_map_row_prefers_chip_time_and_ignores_rank():
 
 def test_map_row_without_finish_time_is_none():
     assert tp.map_row(H3, R3) is None
+
+
+def test_map_row_2022_tba_cert_sheet_with_cert_number_and_net_time():
+    """Regression: recover 2022 TBA cert sheets with 參賽編號 and 淨時間 columns."""
+    m = tp.map_row(H4, R4)
+    assert m["bib"] == "1171"
+    assert m["name"] == "陳亞倫"
+    assert m["category"] == "男子組"
+    assert m["gender"] == "M"  # inferred from category prefix
+    assert m["finish_time"] == "15:21:08.000"  # net/chip time with .000 suffix
 
 
 import taiwanbike_crawl as tc
