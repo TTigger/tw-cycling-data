@@ -32,6 +32,20 @@ describe("searchAthletes", () => {
     const r = searchAthletes(list, "王");
     expect(r.map((x) => x.id)).toEqual(["1", "2"]);
   });
+  it("ignores the mask glyph ○ so visible head+tail matches", () => {
+    expect(searchAthletes(list, "王明").map((x) => x.id)).toEqual(["1"]);
+  });
+  it("ignores whitespace in the query", () => {
+    expect(searchAthletes(list, " 王 明 ").map((x) => x.id)).toEqual(["1"]);
+  });
+  it("matches by athlete id prefix for a hex-looking query", () => {
+    const r = searchAthletes([a({ id: "ef4d545a69", nm: "林○宇" })], "ef4d54");
+    expect(r.map((x) => x.id)).toEqual(["ef4d545a69"]);
+  });
+  it("a normal name query never floods via id match", () => {
+    // "李" is not hex → only the name path runs → just the 李○ entry
+    expect(searchAthletes(list, "李").map((x) => x.id)).toEqual(["3"]);
+  });
   it("empty query returns all, most-tracked first", () => {
     expect(searchAthletes(list, "").map((x) => x.id)).toEqual(["3", "1", "2"]);
   });
