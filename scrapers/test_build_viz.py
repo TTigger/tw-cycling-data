@@ -106,7 +106,31 @@ def test_completion_present_for_status_races():
     ]
     idx = build_viz.build_races_index(recs)
     entry = next(e for e in idx if e["rk"] == "苗栗繞圈賽第七屆")
-    assert entry["completion"] == {"fin": 1, "dnf": 1, "dns": 1, "rate": round(1 / 3, 3)}
+    assert entry["completion"] == {"fin": 1, "total": 3, "rate": round(1 / 3, 3),
+                                   "counts": {"FIN": 1, "DNF": 1, "DNS": 1}}
+
+
+def test_completion_dq_srt_nys_count_but_not_fin():
+    import build_viz
+    recs = [
+        {"race_key": "test_race", "year": 2026, "race_name_canonical": "Test Race",
+         "series": None, "team": None, "status": "FIN", "finish_seconds": 2858},
+        {"race_key": "test_race", "year": 2026, "race_name_canonical": "Test Race",
+         "series": None, "team": None, "status": "DQ", "finish_seconds": None},
+        {"race_key": "test_race", "year": 2026, "race_name_canonical": "Test Race",
+         "series": None, "team": None, "status": "SRT", "finish_seconds": None},
+        {"race_key": "test_race", "year": 2026, "race_name_canonical": "Test Race",
+         "series": None, "team": None, "status": "NYS", "finish_seconds": None},
+    ]
+    idx = build_viz.build_races_index(recs)
+    entry = next(e for e in idx if e["rk"] == "test_race")
+    c = entry["completion"]
+    assert c["total"] == 4          # all 4 rows count in total
+    assert c["fin"] == 1            # only FIN counts as finisher
+    assert c["counts"]["DQ"] == 1
+    assert c["counts"]["SRT"] == 1
+    assert c["counts"]["NYS"] == 1
+    assert c["rate"] == round(1 / 4, 3)
 
 
 def test_completion_absent_without_status():
@@ -124,3 +148,6 @@ def test_is_finisher():
     assert build_viz.is_finisher({"status": None}) is True
     assert build_viz.is_finisher({"status": "DNF"}) is False
     assert build_viz.is_finisher({"status": "DNS"}) is False
+    assert build_viz.is_finisher({"status": "DQ"}) is False
+    assert build_viz.is_finisher({"status": "SRT"}) is False
+    assert build_viz.is_finisher({"status": "NYS"}) is False

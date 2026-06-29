@@ -7,7 +7,7 @@ export interface SlimRecord {
   plat: string | null; reg: string | null;
 }
 export interface Completion {
-  fin: number; dnf: number; dns: number; rate: number;
+  fin: number; total: number; rate: number; counts: Record<string, number>;
 }
 export interface RaceIndex {
   rk: string; y: number | null; rn: string; s: string | null;

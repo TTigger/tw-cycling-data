@@ -23,6 +23,21 @@ EVENT_HTML = (
     '<td class="tnum">M<!-- --> / ELITE</td><td>MSG CYCLING TEAM 衝線單車</td>'
     '<td class="tnum">—</td><td class="tnum">0</td>'
     '<td><span class="pill dnf"><span class="dot"></span>DNS</span></td></tr>'
+    '<tr class="row-link"><td class="rank"><span class="pos">—</span></td>'
+    '<td class="tnum">7</td><td>林大明<!-- --> </td>'
+    '<td class="tnum">M<!-- --> / M40</td><td>Test Team A</td>'
+    '<td class="tnum">—</td><td class="tnum">10</td>'
+    '<td><span class="pill dnf"><span class="dot"></span>DQ</span></td></tr>'
+    '<tr class="row-link"><td class="rank"><span class="pos">—</span></td>'
+    '<td class="tnum">8</td><td>陳小華<!-- --> </td>'
+    '<td class="tnum">M<!-- --> / M50</td><td>Test Team B</td>'
+    '<td class="tnum">—</td><td class="tnum">0</td>'
+    '<td><span class="pill "><span class="dot"></span>SRT</span></td></tr>'
+    '<tr class="row-link"><td class="rank"><span class="pos">—</span></td>'
+    '<td class="tnum">9</td><td>王阿強<!-- --> </td>'
+    '<td class="tnum">M<!-- --> / U17</td><td>Test Team C</td>'
+    '<td class="tnum">—</td><td class="tnum">0</td>'
+    '<td><span class="pill "><span class="dot"></span>NYS</span></td></tr>'
     '</tbody></table>'
 )
 
@@ -43,7 +58,7 @@ def test_event_name():
 
 def test_parse_event_page_fin_row():
     rows = cp.parse_event_page(EVENT_HTML)
-    assert len(rows) == 3
+    assert len(rows) == 6
     fin = rows[0]
     assert fin["rank"] == 1
     assert fin["bib"] == "2"
@@ -77,6 +92,20 @@ def test_parse_race_meta():
     assert m["year"] == 2026
     assert m["region"] == "苗栗"
     assert m["event_ids"] == [4, 5]   # de-duped, in order
+
+
+def test_parse_event_page_dq_srt_nys():
+    rows = cp.parse_event_page(EVENT_HTML)
+    dq, srt, nys = rows[3], rows[4], rows[5]
+    # DQ: disqualified — pill class "dnf" but text is "DQ"
+    assert dq["status"] == "DQ" and dq["rank"] is None
+    assert dq["finish_time"] is None
+    # SRT: started but retired early — pill class has trailing space "pill "
+    assert srt["status"] == "SRT" and srt["rank"] is None
+    assert srt["finish_time"] is None
+    # NYS: not yet started — pill class has trailing space "pill "
+    assert nys["status"] == "NYS" and nys["rank"] is None
+    assert nys["finish_time"] is None
 
 
 def test_parse_event_page_malformed_time():

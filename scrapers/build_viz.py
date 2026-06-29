@@ -8,7 +8,7 @@ import json
 import os
 import re
 import sys
-from collections import defaultdict
+from collections import defaultdict, Counter
 
 sys.path.insert(0, os.path.dirname(__file__))
 import common  # noqa: E402
@@ -22,9 +22,9 @@ _DIST_RE = re.compile(r"(\d{2,3})\s*(?:公里|[KkＫ]\s*[Mm]?|公?里)")
 
 def is_finisher(r):
     """A row that belongs in finisher-only views (leaderboards, histograms).
-    DNF/DNS rows (criterium.tw) carry no finish time and are excluded there;
+    Non-FIN status rows (criterium.tw) carry no finish time and are excluded there;
     they are still counted for completion in build_races_index."""
-    return r.get("status") not in ("DNF", "DNS")
+    return r.get("status") in (None, "FIN")
 
 def extract_distance_km(category_raw, result_label, race_name):
     """Pull a race distance in km from any of the label fields. None if absent."""
@@ -81,9 +81,9 @@ def slim_record(rec):
 
 def build_races_index(records):
     """One entry per (race_key, year): name, series, count, multi-year flag,
-    has_team, and completion (fin/dnf/dns/rate) when status data exists."""
+    has_team, and completion (fin/total/rate/counts) when status data exists."""
     agg = defaultdict(lambda: {"rows": 0, "team": False,
-                               "fin": 0, "dnf": 0, "dns": 0, "status_rows": 0})
+                               "fin": 0, "status_rows": 0, "counts": Counter()})
     years = defaultdict(set)
     meta = {}
     for r in records:
@@ -92,9 +92,11 @@ def build_races_index(records):
         a["rows"] += 1
         a["team"] = a["team"] or bool(r.get("team"))
         st = r.get("status")
-        if st in ("FIN", "DNF", "DNS"):
+        if st:
             a["status_rows"] += 1
-            a[st.lower()] += 1
+            a["counts"][st] += 1
+            if st == "FIN":
+                a["fin"] += 1
         years[r.get("race_key")].add(r.get("year"))
         meta[r.get("race_key")] = {"rn": r.get("race_name_canonical"), "s": r.get("series")}
     out = []
@@ -103,9 +105,13 @@ def build_races_index(records):
                  "rows": a["rows"], "multi_year": len([x for x in years[rk] if x]) > 1,
                  "has_team": a["team"], "file": race_file_name(rk, y)}
         if a["status_rows"]:
-            total = a["fin"] + a["dnf"] + a["dns"]
-            entry["completion"] = {"fin": a["fin"], "dnf": a["dnf"], "dns": a["dns"],
-                                   "rate": round(a["fin"] / total, 3) if total else 0.0}
+            total = a["status_rows"]
+            entry["completion"] = {
+                "fin": a["fin"],
+                "total": total,
+                "rate": round(a["fin"] / total, 3) if total else 0.0,
+                "counts": dict(a["counts"]),
+            }
         out.append(entry)
     return sorted(out, key=lambda x: (-(x["rows"]), str(x["rk"])))
 

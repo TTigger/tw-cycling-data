@@ -1,8 +1,11 @@
 import type { Completion } from "./types";
 
-/** Derive display parts from a prebuilt completion object. */
+/** Derive display parts from a prebuilt completion object. Groups the six
+ * status codes: not-finished = DNF+DQ+SRT, not-started = DNS+NYS. */
 export function completionParts(c: Completion) {
-  const total = c.fin + c.dnf + c.dns;
-  return { fin: c.fin, dnf: c.dnf, dns: c.dns, total,
-           ratePct: Math.round(c.rate * 100) };
+  const n = (k: string) => c.counts[k] || 0;
+  const notFinished = n("DNF") + n("DQ") + n("SRT");
+  const notStarted = n("DNS") + n("NYS");
+  return { fin: c.fin, total: c.total, ratePct: Math.round(c.rate * 100),
+           notFinished, notStarted };
 }
