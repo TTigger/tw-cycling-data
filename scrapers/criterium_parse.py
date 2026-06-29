@@ -23,6 +23,8 @@ _LDJSON = re.compile(r'<script type="application/ld\+json">(.*?)</script>', re.S
 _EVENT_HREF = re.compile(r'/races/\d+/events/(\d+)')
 _TIME = re.compile(r'\d{1,2}:\d{2}:\d{2}')
 
+STATUS_CODES = ("FIN", "DNF", "DNS", "DQ", "SRT", "NYS")
+
 
 def _text(frag):
     """Strip HTML comments + tags + record-marker stars, collapse whitespace."""
@@ -52,7 +54,7 @@ def parse_event_page(html):
         laps = int(laps_s) if laps_s.isdigit() else None
         ftime = ftime if _TIME.fullmatch(ftime) else None
         st = status.upper()
-        status = st if st in ('FIN', 'DNF', 'DNS') else None
+        status = st if st in STATUS_CODES else None
         out.append({"rank": rank, "bib": bib or None, "name": name or None,
                     "category": category or None, "team": team or None,
                     "finish_time": ftime, "laps": laps, "status": status})
