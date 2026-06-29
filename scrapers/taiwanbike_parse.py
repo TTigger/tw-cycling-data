@@ -12,7 +12,7 @@ import re
 _SHEET = re.compile(
     r'<a\s+href="https://docs\.google\.com/spreadsheets/d/([\w-]+)[^"]*"[^>]*>(.*?)</a>',
     re.S)
-_YEAR = re.compile(r"(20[12]\d)")
+_YEAR = re.compile(r"(20\d{2})")
 _AGECODE = re.compile(r"^(?:[MWFmwf]\d{1,2}|U\d{1,2}|MASTER|[男女]\d{1,2})$")
 _TIME = re.compile(r"^\d{1,2}:\d{2}:\d{2}")
 

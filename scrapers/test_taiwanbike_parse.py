@@ -9,6 +9,7 @@ LISTING = (
     '<a href="https://drive.google.com/file/d/9zzz/view">2019雙塔520</a>'  # not a sheet -> skip
     '<a href="https://docs.google.com/spreadsheets/d/1-BBB/edit">2026環大苗栗107K</a>'
     '<a href="https://docs.google.com/spreadsheets/d/1-CCC/edit">2018北高360</a>'  # <2022 -> skip
+    '<a href="https://docs.google.com/spreadsheets/d/1-DDD/edit">2030環台</a>'
 )
 
 # 雙塔520 (duplicate 組別 header: event-name col + age-group col)
@@ -27,7 +28,7 @@ R3 = ["7", "李四", ""]
 
 def test_extract_sheet_links_filters_to_2022plus_sheets():
     links = tp.extract_sheet_links(LISTING)
-    assert [(l["year"], l["sheet_id"]) for l in links] == [(2025, "1-OSl9p_AAA"), (2026, "1-BBB")]
+    assert [(l["year"], l["sheet_id"]) for l in links] == [(2025, "1-OSl9p_AAA"), (2026, "1-BBB"), (2030, "1-DDD")]
 
 
 def test_map_row_dual_group_picks_age_code_and_chip_time():
