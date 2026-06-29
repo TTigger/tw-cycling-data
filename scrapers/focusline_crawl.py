@@ -70,6 +70,8 @@ def crawl(session=None):
         print(f"  {a.get('actCode')} {year} {a.get('actName')}")
         for c in (a.get("categories") or []):
             number, cat = c.get("number"), c.get("name")
+            if "接力" in (cat or ""):
+                continue  # YAGNI: team-relay categories have different time semantics
             page = 1
             while True:
                 url = (f"{BASE}/api/Member/focusline?code={a['actCode']}"
