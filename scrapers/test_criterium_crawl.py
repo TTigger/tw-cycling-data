@@ -10,6 +10,8 @@ ROWS = [
      "team": "宇都宮車隊", "finish_time": "00:47:38", "laps": 35, "status": "FIN"},
     {"rank": None, "bib": "21", "name": "洪稟詠", "category": "M / U23",
      "team": "TEAM CYTO TRIGON", "finish_time": None, "laps": 25, "status": "DNF"},
+    {"rank": None, "bib": "99", "name": "王小明", "category": "M / M35",
+     "team": "Solo", "finish_time": None, "laps": 0, "status": "DNS"},
 ]
 
 
@@ -37,3 +39,13 @@ def test_build_records_dnf_has_no_time():
     assert dnf["status"] == "DNF"
     assert dnf["finish_time"] is None and dnf["finish_seconds"] is None
     assert dnf["laps"] == 25
+
+
+def test_build_records_dns():
+    recs = cc.build_records(ROWS, META, "男子A組", "u", "t")
+    dns = recs[2]
+    assert dns["status"] == "DNS"
+    assert dns["finish_time"] is None and dns["finish_seconds"] is None
+    assert dns["rank_overall"] is None
+    assert dns["bib"] == "99"
+    assert dns["laps"] == 0

@@ -50,7 +50,7 @@ def crawl(race_ids, session=None):
         meta = cp.parse_race_meta(ov)
         print(f"  race {rid}: {meta.get('name')} ({meta.get('date')}) "
               f"events={meta.get('event_ids')}")
-        for n in meta["event_ids"]:
+        for n in (meta.get("event_ids") or []):
             url = f"{BASE}/races/{rid}/events/{n}"
             html = common.polite_get(session, url).text
             rows = cp.parse_event_page(html)
@@ -60,7 +60,8 @@ def crawl(race_ids, session=None):
 
 def main():
     recs = crawl(SEED_RACE_IDS)
-    json.dump(recs, open(OUT, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    with open(OUT, "w", encoding="utf-8") as f:
+        json.dump(recs, f, ensure_ascii=False, indent=1)
     print(f"\n  {len(recs)} rows -> {os.path.relpath(OUT)}")
 
 
