@@ -22,7 +22,7 @@ import normalize  # noqa: E402
 
 sys.stdout.reconfigure(encoding="utf-8")
 OUT = os.path.join(os.path.dirname(__file__), "..", "data", "processed")
-SOURCE_PREFIXES = ("cyclist_", "bravelog_", "cycling_", "irunner_")
+SOURCE_PREFIXES = ("criterium_", "cyclist_", "bravelog_", "cycling_", "irunner_")
 
 
 def discover_sources():
@@ -36,6 +36,15 @@ def discover_sources():
 
 
 iter_records = common.iter_records  # streaming JSON-array reader (RAM-frugal)
+
+
+def should_drop_zero_time(r):
+    """Drop genuine zero/negative-time noise, but KEEP explicit DNF/DNS rows —
+    criterium.tw reports non-finishers, which legitimately have no finish time."""
+    if r.get("status") in ("DNF", "DNS"):
+        return False
+    fs = r.get("finish_seconds")
+    return fs is not None and fs <= 0
 
 
 def main():
@@ -54,13 +63,14 @@ def main():
     n_out = n_zero = n_dup = 0
     races = defaultdict(lambda: {"rows": 0, "years": set(), "series": None, "platform": None})
     by_platform, by_year, by_gender, by_class, by_series = (Counter() for _ in range(5))
+    by_status = Counter()
 
     for p in discover_sources():
         src_n = 0
         for r in iter_records(p):
             src_n += 1
             fs = r.get("finish_seconds")
-            if fs is not None and fs <= 0:      # drop zero-time DNF/未計時 noise
+            if should_drop_zero_time(r):      # zero-time noise, but keep DNF/DNS
                 n_zero += 1
                 continue
             if r.get("name_raw") and fs:        # cross-source exact-dup dedup
@@ -82,6 +92,7 @@ def main():
             by_gender[r["gender"]] += 1
             by_class[r["race_class"]] += 1
             by_series[r["series"]] += 1
+            by_status[r.get("status")] += 1
             sep = ",\n" if n_out else ""
             mf.write(sep)
             json.dump(r, mf, ensure_ascii=False)
@@ -106,6 +117,7 @@ def main():
         "by_gender": dict(by_gender),
         "by_race_class": dict(by_class),
         "by_series": dict(by_series.most_common()),
+        "by_status": dict(by_status),
         "distinct_races": len(races),
         "races": [
             {"race_key": k, "series": v["series"], "platform": v["platform"],

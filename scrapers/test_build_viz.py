@@ -92,3 +92,84 @@ def test_race_file_name():
     assert bv.race_file_name("taipingshan", 2026) == "taipingshan__2026"
     assert bv.race_file_name("【96】台北", 2025) == "96-台北__2025"
     assert bv.race_file_name("a/b c", 2024) == "a-b-c__2024"
+
+
+def test_completion_present_for_status_races():
+    import build_viz
+    recs = [
+        {"race_key": "苗栗繞圈賽第七屆", "year": 2026, "race_name_canonical": "苗栗繞圈賽（第七屆）",
+         "series": None, "team": None, "status": "FIN", "finish_seconds": 2858},
+        {"race_key": "苗栗繞圈賽第七屆", "year": 2026, "race_name_canonical": "苗栗繞圈賽（第七屆）",
+         "series": None, "team": None, "status": "DNF", "finish_seconds": None},
+        {"race_key": "苗栗繞圈賽第七屆", "year": 2026, "race_name_canonical": "苗栗繞圈賽（第七屆）",
+         "series": None, "team": None, "status": "DNS", "finish_seconds": None},
+    ]
+    idx = build_viz.build_races_index(recs)
+    entry = next(e for e in idx if e["rk"] == "苗栗繞圈賽第七屆")
+    assert entry["completion"] == {"fin": 1, "total": 3, "rate": round(1 / 3, 3),
+                                   "counts": {"FIN": 1, "DNF": 1, "DNS": 1}}
+
+
+def test_completion_dq_srt_nys_count_but_not_fin():
+    import build_viz
+    recs = [
+        {"race_key": "test_race", "year": 2026, "race_name_canonical": "Test Race",
+         "series": None, "team": None, "status": "FIN", "finish_seconds": 2858},
+        {"race_key": "test_race", "year": 2026, "race_name_canonical": "Test Race",
+         "series": None, "team": None, "status": "DQ", "finish_seconds": None},
+        {"race_key": "test_race", "year": 2026, "race_name_canonical": "Test Race",
+         "series": None, "team": None, "status": "SRT", "finish_seconds": None},
+        {"race_key": "test_race", "year": 2026, "race_name_canonical": "Test Race",
+         "series": None, "team": None, "status": "NYS", "finish_seconds": None},
+    ]
+    idx = build_viz.build_races_index(recs)
+    entry = next(e for e in idx if e["rk"] == "test_race")
+    c = entry["completion"]
+    assert c["total"] == 4          # all 4 rows count in total
+    assert c["fin"] == 1            # only FIN counts as finisher
+    assert c["counts"]["DQ"] == 1
+    assert c["counts"]["SRT"] == 1
+    assert c["counts"]["NYS"] == 1
+    assert c["rate"] == round(1 / 4, 3)
+
+
+def test_completion_absent_without_status():
+    import build_viz
+    recs = [{"race_key": "彰化經典百K", "year": 2024, "race_name_canonical": "彰化經典百K",
+             "series": None, "team": None, "status": None, "finish_seconds": 3600}]
+    idx = build_viz.build_races_index(recs)
+    entry = next(e for e in idx if e["rk"] == "彰化經典百K")
+    assert "completion" not in entry
+
+
+def test_is_finisher():
+    import build_viz
+    assert build_viz.is_finisher({"status": "FIN"}) is True
+    assert build_viz.is_finisher({"status": None}) is True
+    assert build_viz.is_finisher({"status": "DNF"}) is False
+    assert build_viz.is_finisher({"status": "DNS"}) is False
+    assert build_viz.is_finisher({"status": "DQ"}) is False
+    assert build_viz.is_finisher({"status": "SRT"}) is False
+    assert build_viz.is_finisher({"status": "NYS"}) is False
+
+
+def test_rows_equals_finisher_count_not_status_total():
+    """rows must equal the finisher count (FIN + no-status), NOT the all-status total.
+    This invariant keeps races.json consistent with the leaderboard file row count
+    and prevents ResultConverter from dividing percentile by an inflated denominator."""
+    import build_viz
+    recs = [
+        {"race_key": "criterium_test", "year": 2026, "race_name_canonical": "Criterium Test",
+         "series": None, "team": None, "status": "FIN", "finish_seconds": 2000},
+        {"race_key": "criterium_test", "year": 2026, "race_name_canonical": "Criterium Test",
+         "series": None, "team": None, "status": "DNF", "finish_seconds": None},
+        {"race_key": "criterium_test", "year": 2026, "race_name_canonical": "Criterium Test",
+         "series": None, "team": None, "status": "DNS", "finish_seconds": None},
+    ]
+    idx = build_viz.build_races_index(recs)
+    entry = next(e for e in idx if e["rk"] == "criterium_test")
+    # rows counts only the FIN finisher, not DNF/DNS
+    assert entry["rows"] == 1
+    # completion.total still captures all 3 status rows
+    assert entry["completion"]["total"] == 3
+    assert entry["completion"]["fin"] == 1
