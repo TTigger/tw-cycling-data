@@ -89,7 +89,8 @@ def build_races_index(records):
     for r in records:
         key = (r.get("race_key"), r.get("year"))
         a = agg[key]
-        a["rows"] += 1
+        if is_finisher(r):
+            a["rows"] += 1
         a["team"] = a["team"] or bool(r.get("team"))
         st = r.get("status")
         if st:

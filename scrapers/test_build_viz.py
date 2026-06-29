@@ -151,3 +151,25 @@ def test_is_finisher():
     assert build_viz.is_finisher({"status": "DQ"}) is False
     assert build_viz.is_finisher({"status": "SRT"}) is False
     assert build_viz.is_finisher({"status": "NYS"}) is False
+
+
+def test_rows_equals_finisher_count_not_status_total():
+    """rows must equal the finisher count (FIN + no-status), NOT the all-status total.
+    This invariant keeps races.json consistent with the leaderboard file row count
+    and prevents ResultConverter from dividing percentile by an inflated denominator."""
+    import build_viz
+    recs = [
+        {"race_key": "criterium_test", "year": 2026, "race_name_canonical": "Criterium Test",
+         "series": None, "team": None, "status": "FIN", "finish_seconds": 2000},
+        {"race_key": "criterium_test", "year": 2026, "race_name_canonical": "Criterium Test",
+         "series": None, "team": None, "status": "DNF", "finish_seconds": None},
+        {"race_key": "criterium_test", "year": 2026, "race_name_canonical": "Criterium Test",
+         "series": None, "team": None, "status": "DNS", "finish_seconds": None},
+    ]
+    idx = build_viz.build_races_index(recs)
+    entry = next(e for e in idx if e["rk"] == "criterium_test")
+    # rows counts only the FIN finisher, not DNF/DNS
+    assert entry["rows"] == 1
+    # completion.total still captures all 3 status rows
+    assert entry["completion"]["total"] == 3
+    assert entry["completion"]["fin"] == 1
