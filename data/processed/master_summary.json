@@ -1,10 +1,11 @@
 {
-  "total_records": 116953,
+  "total_records": 118501,
   "by_platform": {
     "bravelog.tw": 46553,
+    "criterium.tw": 1957,
     "cyclist.org.tw": 12265,
     "cycling.org.tw": 349,
-    "tsu.com.tw": 24924,
+    "tsu.com.tw": 24515,
     "irunner.biji.co": 32862
   },
   "by_year": {
@@ -21,30 +22,30 @@
     "2021": 639,
     "2022": 7863,
     "2023": 18082,
-    "2024": 33665,
-    "2025": 32029,
-    "2026": 11638
+    "2024": 34284,
+    "2025": 32449,
+    "2026": 12147
   },
   "by_gender": {
-    "null": 55634,
-    "F": 10298,
-    "M": 51021
+    "null": 55343,
+    "F": 10426,
+    "M": 52732
   },
   "by_race_class": {
-    "未分類": 26977,
+    "未分類": 28554,
     "女子": 632,
     "挑戰": 43361,
-    "競賽": 6836,
+    "競賽": 7167,
     "電輔車": 218,
     "市民": 4901,
     "市民經典": 5267,
     "認證": 4501,
     "團體計時": 826,
-    "分齡": 21419,
-    "青少年": 2015
+    "分齡": 21301,
+    "青少年": 1773
   },
   "by_series": {
-    "null": 55778,
+    "null": 57233,
     "96聯賽": 9457,
     "捷安特自行車嘉年華": 8756,
     "TIS崇越盃系列": 7722,
@@ -62,14 +63,23 @@
     "台灣登山大滿貫(雪巴)": 965,
     "仙山單車挑戰賽": 955,
     "屏東四重溪自行車挑戰賽": 819,
+    "TCU 台中城市繞圈賽": 738,
     "瘋系列環台賽": 696,
-    "TCU 台中城市繞圈賽": 645,
     "自由車錦標賽/選拔": 623,
     "世界自行車日": 422,
     "銅礦88經典挑戰賽": 322,
     "臺灣KOM太平洋經典賽": 78
   },
-  "distinct_races": 126,
+  "by_status": {
+    "null": 116544,
+    "FIN": 823,
+    "DNF": 586,
+    "DNS": 238,
+    "DQ": 75,
+    "NYS": 13,
+    "SRT": 222
+  },
+  "distinct_races": 130,
   "races": [
     {
       "race_key": "彰化經典百K",
@@ -513,6 +523,15 @@
       "rows": 511
     },
     {
+      "race_key": "苗栗繞圈賽第七屆",
+      "series": null,
+      "platform": "criterium.tw",
+      "years": [
+        2026
+      ],
+      "rows": 509
+    },
+    {
       "race_key": "臺灣KOM登山王之路春季",
       "series": "臺灣KOM登山王之路",
       "platform": "cyclist.org.tw",
@@ -524,6 +543,15 @@
         2026
       ],
       "rows": 509
+    },
+    {
+      "race_key": "台中城市繞圈賽2024",
+      "series": "TCU 台中城市繞圈賽",
+      "platform": "criterium.tw",
+      "years": [
+        2024
+      ],
+      "rows": 502
     },
     {
       "race_key": "96聯賽武嶺站競賽組及市民競賽組",
@@ -622,6 +650,15 @@
       "platform": "bravelog.tw",
       "years": [
         2021
+      ],
+      "rows": 383
+    },
+    {
+      "race_key": "台中冬季繞圈賽第六屆",
+      "series": null,
+      "platform": "criterium.tw",
+      "years": [
+        2025
       ],
       "rows": 383
     },
@@ -737,6 +774,15 @@
       "rows": 307
     },
     {
+      "race_key": "台中冬季繞圈賽第四屆",
+      "series": null,
+      "platform": "criterium.tw",
+      "years": [
+        2024
+      ],
+      "rows": 305
+    },
+    {
       "race_key": "GravelFundo-台中老外林道-迷你全地形賽",
       "series": "GravelFundo 礫石越野系列",
       "platform": "irunner.biji.co",
@@ -821,6 +867,15 @@
       "rows": 267
     },
     {
+      "race_key": "台中春季繞圈賽第五屆",
+      "series": null,
+      "platform": "criterium.tw",
+      "years": [
+        2025
+      ],
+      "rows": 258
+    },
+    {
       "race_key": "花蓮太平洋自行車節",
       "series": null,
       "platform": "cyclist.org.tw",
@@ -876,15 +931,6 @@
         2025
       ],
       "rows": 225
-    },
-    {
-      "race_key": "秋季TCU台中城市繞圈賽",
-      "series": "TCU 台中城市繞圈賽",
-      "platform": "tsu.com.tw",
-      "years": [
-        2025
-      ],
-      "rows": 210
     },
     {
       "race_key": "【96聯賽第六站】96CyclingRace彰化站",
@@ -978,15 +1024,6 @@
         2024
       ],
       "rows": 167
-    },
-    {
-      "race_key": "冬季TCU台中城市繞圈賽",
-      "series": "TCU 台中城市繞圈賽",
-      "platform": "tsu.com.tw",
-      "years": [
-        2024
-      ],
-      "rows": 148
     },
     {
       "race_key": "年台灣登山大滿貫自行車系列賽–阿里山站",
@@ -1106,22 +1143,13 @@
       "rows": 106
     },
     {
-      "race_key": "春季TCU台中城市繞圈賽",
+      "race_key": "秋季TCU台中城市繞圈賽",
       "series": "TCU 台中城市繞圈賽",
       "platform": "tsu.com.tw",
       "years": [
         2025
       ],
-      "rows": 104
-    },
-    {
-      "race_key": "TCU台中城市繞圈檢定男子組NoviceOpenMen",
-      "series": "TCU 台中城市繞圈賽",
-      "platform": "tsu.com.tw",
-      "years": [
-        2024
-      ],
-      "rows": 101
+      "rows": 97
     },
     {
       "race_key": "TCU三發國王盃中寮KOM單車挑戰賽",
@@ -1131,6 +1159,15 @@
         2025
       ],
       "rows": 95
+    },
+    {
+      "race_key": "冬季TCU台中城市繞圈賽",
+      "series": "TCU 台中城市繞圈賽",
+      "platform": "tsu.com.tw",
+      "years": [
+        2024
+      ],
+      "rows": 79
     },
     {
       "race_key": "臺灣KOM太平洋經典賽",
@@ -1160,15 +1197,6 @@
       "rows": 65
     },
     {
-      "race_key": "TCU台中城市繞圈賽競賽組Racing",
-      "series": "TCU 台中城市繞圈賽",
-      "platform": "tsu.com.tw",
-      "years": [
-        2024
-      ],
-      "rows": 56
-    },
-    {
       "race_key": "TAIWANSUMMITSERIES陽明山北海岸",
       "series": null,
       "platform": "cyclist.org.tw",
@@ -1194,6 +1222,15 @@
         2025
       ],
       "rows": 48
+    },
+    {
+      "race_key": "TCU台中城市繞圈檢定男子組NoviceOpenMen",
+      "series": "TCU 台中城市繞圈賽",
+      "platform": "tsu.com.tw",
+      "years": [
+        2024
+      ],
+      "rows": 46
     },
     {
       "race_key": "全國自由車【公路】菁英排名賽二成績總表",
@@ -1223,15 +1260,6 @@
       "rows": 19
     },
     {
-      "race_key": "TCU台中城市繞圈檢定女子組NoviceOpenWomen",
-      "series": "TCU 台中城市繞圈賽",
-      "platform": "tsu.com.tw",
-      "years": [
-        2024
-      ],
-      "rows": 16
-    },
-    {
       "race_key": "全國俱樂部聯賽第4站宜蘭牛鬥公路賽",
       "series": null,
       "platform": "cyclist.org.tw",
@@ -1241,13 +1269,13 @@
       "rows": 15
     },
     {
-      "race_key": "秋季TCU台中城市繞圈賽Y12組別",
+      "race_key": "TCU台中城市繞圈檢定女子組NoviceOpenWomen",
       "series": "TCU 台中城市繞圈賽",
       "platform": "tsu.com.tw",
       "years": [
-        2025
+        2024
       ],
-      "rows": 10
+      "rows": 8
     },
     {
       "race_key": "全國俱樂部聯賽第3站淡海公路繞圈賽",
@@ -1257,6 +1285,24 @@
         2015
       ],
       "rows": 8
+    },
+    {
+      "race_key": "秋季TCU台中城市繞圈賽Y12組別",
+      "series": "TCU 台中城市繞圈賽",
+      "platform": "tsu.com.tw",
+      "years": [
+        2025
+      ],
+      "rows": 5
+    },
+    {
+      "race_key": "春季TCU台中城市繞圈賽",
+      "series": "TCU 台中城市繞圈賽",
+      "platform": "tsu.com.tw",
+      "years": [
+        2025
+      ],
+      "rows": 1
     }
   ]
 }
