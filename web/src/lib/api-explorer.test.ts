@@ -30,6 +30,13 @@ describe("endpointPreview", () => {
     expect(endpointPreview([]).summary).toContain("0");
     expect(() => endpointPreview(null)).not.toThrow();
   });
+  it("caps the object summary key list", () => {
+    const big: Record<string, number> = {};
+    for (let i = 0; i < 50; i++) big[`k${i}`] = i;
+    const r = endpointPreview(big);
+    expect(r.summary).toContain("共 50 鍵");
+    expect(r.summary).not.toContain("k20");   // only first 12 keys listed
+  });
 });
 
 describe("examples", () => {

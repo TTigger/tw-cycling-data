@@ -22,8 +22,11 @@ export function endpointPreview(
   }
   if (data && typeof data === "object") {
     const keys = Object.keys(data as Record<string, unknown>);
-    return { summary: `物件,鍵:${keys.join(", ")}`,
-             body: truncate(JSON.stringify(data, null, 2), maxChars) };
+    const shown = keys.slice(0, 12).join(", ");
+    const summary = keys.length > 12
+      ? `物件,鍵:${shown} …(共 ${keys.length} 鍵)`
+      : `物件,鍵:${shown}`;
+    return { summary, body: truncate(JSON.stringify(data, null, 2), maxChars) };
   }
   return { summary: "(無資料)", body: truncate(JSON.stringify(data ?? null, null, 2), maxChars) };
 }
