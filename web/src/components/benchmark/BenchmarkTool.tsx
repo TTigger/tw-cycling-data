@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import type { BenchmarkFile } from "../../lib/types";
 import { loadBenchmarks } from "../../lib/data-load";
-import { availableCohorts, pickDefaultCohort } from "../../lib/benchmark";
-import { percentileBeaten, hmsToSeconds, secondsToHMS } from "../../lib/format";
+import { availableCohorts, pickDefaultCohort, parseFinishTime } from "../../lib/benchmark";
+import { percentileBeaten, secondsToHMS } from "../../lib/format";
 import Skeleton from "../Skeleton";
 
 function Tool({ data }: { data: BenchmarkFile }) {
@@ -22,7 +22,7 @@ function Tool({ data }: { data: BenchmarkFile }) {
   const activeKey = cohortKey && race?.cohorts[cohortKey] ? cohortKey
     : race ? pickDefaultCohort(race) : "";
   const cohort = race?.cohorts[activeKey];
-  const secs = hmsToSeconds(time);
+  const secs = parseFinishTime(time);
   const beat = cohort && secs != null ? percentileBeaten(secs, cohort.bp) : null;
 
   const onPickRace = (v: string) => { setRk(v); setCohortKey(""); };
@@ -35,7 +35,7 @@ function Tool({ data }: { data: BenchmarkFile }) {
           className="w-full max-w-md rounded-lg border border-border bg-surface px-3 py-2 text-ink">
           <option value="">選擇賽事…</option>
           {races.map(([k, r]) => (
-            <option key={k} value={k}>{r.rn}（{r.years.at(0)}–{r.years.at(-1)}, {r.cohorts.all?.n ?? 0} 人）</option>
+            <option key={k} value={k}>{r.rn}（{r.years.length > 1 ? `${r.years.at(0)}–${r.years.at(-1)}` : r.years[0]}, {r.cohorts.all?.n ?? 0} 人）</option>
           ))}
         </select>
       </label>
@@ -57,7 +57,7 @@ function Tool({ data }: { data: BenchmarkFile }) {
       {cohort && (
         <label className="block">
           <span className="text-muted">③ 你的完賽時間</span>
-          <input value={time} onChange={(e) => setTime(e.target.value)} placeholder="HH:MM:SS"
+          <input value={time} onChange={(e) => setTime(e.target.value)} placeholder="HH:MM:SS 或 MM:SS"
             className="w-full max-w-md rounded-lg border border-border bg-surface px-3 py-2 text-ink outline-none focus:border-accent" />
         </label>
       )}

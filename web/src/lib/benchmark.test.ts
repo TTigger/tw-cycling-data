@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { availableCohorts, pickDefaultCohort } from "./benchmark";
+import { availableCohorts, pickDefaultCohort, parseFinishTime } from "./benchmark";
 import type { BenchmarkRace } from "./types";
 
 const race: BenchmarkRace = {
@@ -11,6 +11,16 @@ const race: BenchmarkRace = {
     "cat:菁英": { n: 30, type: "cat", label: "菁英", bp: [] },
   },
 };
+
+describe("parseFinishTime", () => {
+  it("accepts HH:MM:SS, MM:SS, and plain seconds; rejects junk", () => {
+    expect(parseFinishTime("01:00:00")).toBe(3600);
+    expect(parseFinishTime("45:30")).toBe(2730);
+    expect(parseFinishTime("90")).toBe(90);
+    expect(parseFinishTime("nope")).toBeNull();
+    expect(parseFinishTime("")).toBeNull();
+  });
+});
 
 describe("benchmark cohort selection", () => {
   it("orders cohorts: age|gender, age, cat, all", () => {
