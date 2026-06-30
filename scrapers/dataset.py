@@ -36,8 +36,16 @@ DROP_COLUMNS = ["uci_id", "tsu_rider_id", "source_url", "bib", "nationality",
 
 
 def project_row(row):
-    """Whitelist projection: only PUBLISH_COLUMNS, fixed order, missing -> None."""
-    return {c: row.get(c) for c in PUBLISH_COLUMNS}
+    """Whitelist projection: only PUBLISH_COLUMNS, fixed order, missing -> None.
+    Public-dataset name safeguard: emit a masked name only when it is actually
+    masked (contains the ○ glyph). Upstream mask_name only masks CJK names, so
+    romanized names ("ABBY R.") and scraping junk ("<span c.", "1.") arrive
+    UNmasked — blank them here so no real given name leaks into the release."""
+    out = {c: row.get(c) for c in PUBLISH_COLUMNS}
+    nm = out.get("name_masked")
+    if nm is not None and "○" not in nm:
+        out["name_masked"] = None
+    return out
 
 
 def csv_value(v):
