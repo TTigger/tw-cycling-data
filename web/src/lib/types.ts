@@ -150,3 +150,7 @@ export interface Insights {
   geo: GeoRegion[];
   records: Records;
 }
+
+export interface Cohort { n: number; type: "all" | "age" | "cat"; label: string; bp: number[]; }
+export interface BenchmarkRace { rn: string; years: number[]; cohorts: Record<string, Cohort>; }
+export type BenchmarkFile = Record<string, BenchmarkRace>;
