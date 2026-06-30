@@ -12,11 +12,12 @@ def test_project_row_keeps_only_publish_columns():
     for c in D.DROP_COLUMNS:
         raw[c] = "SENSITIVE"
     raw["name_raw"] = "王大明"   # must never appear
+    raw["future_unknown_col"] = "LEAK"  # unknown to BOTH lists: whitelist must block it
     out = D.project_row(raw)
     assert list(out.keys()) == D.PUBLISH_COLUMNS          # exact set + order
-    for c in D.DROP_COLUMNS + ["name_raw"]:
+    for c in D.DROP_COLUMNS + ["name_raw", "future_unknown_col"]:
         assert c not in out                               # safety gate
-    assert "SENSITIVE" not in out.values()
+    assert "SENSITIVE" not in out.values() and "LEAK" not in out.values()
 
 
 def test_drop_columns_cover_the_reidentifiers():
