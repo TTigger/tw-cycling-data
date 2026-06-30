@@ -73,7 +73,7 @@ export default function CoverageApp() {
             return (
               <span key={src} className="rounded-lg border border-border bg-bg px-3 py-1">
                 {info.url
-                  ? <a href={info.url} target="_blank" rel="noopener" className="text-ink hover:text-accent">{info.name}</a>
+                  ? <a href={info.url} target="_blank" rel="noopener noreferrer" className="text-ink hover:text-accent">{info.name}</a>
                   : <span className="text-ink">{info.name}</span>}
                 <span className="num ml-1 text-muted">{n.toLocaleString()}</span>
                 <span className="ml-1 text-xs text-muted">{src}</span>
@@ -83,7 +83,7 @@ export default function CoverageApp() {
         </div>
       </Card>
 
-      <Card title={`✅ 已收錄賽事(${s.races} 場)`} hint="點賽事看排行榜與分析;以系列分組">
+      <Card title={`✅ 已收錄賽事(${ov.kpi.races} 場)`} hint="點賽事看排行榜與分析;以系列分組">
         <div className="space-y-3">
           {bySeries.map(([series, list]) => (
             <div key={series}>
