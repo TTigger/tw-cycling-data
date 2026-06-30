@@ -38,9 +38,11 @@ DROP_COLUMNS = ["uci_id", "tsu_rider_id", "source_url", "bib", "nationality",
 def project_row(row):
     """Whitelist projection: only PUBLISH_COLUMNS, fixed order, missing -> None.
     Public-dataset name safeguard: emit a masked name only when it is actually
-    masked (contains the ○ glyph). Upstream mask_name only masks CJK names, so
-    romanized names ("ABBY R.") and scraping junk ("<span c.", "1.") arrive
-    UNmasked — blank them here so no real given name leaks into the release."""
+    masked (contains the ○ glyph). Upstream mask_name now masks ALL names
+    (CJK and latin/romanized) to initial+○ form, so romanized names arrive as
+    e.g. "A○ D○" and pass this check. The ○-guard here is defense-in-depth: it
+    blanks anything still lacking ○ (future/unexpected unmasked values or junk)
+    so no real name ever leaks into the release."""
     out = {c: row.get(c) for c in PUBLISH_COLUMNS}
     nm = out.get("name_masked")
     if nm is not None and "○" not in nm:
