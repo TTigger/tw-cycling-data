@@ -173,3 +173,45 @@ def test_rows_equals_finisher_count_not_status_total():
     # completion.total still captures all 3 status rows
     assert entry["completion"]["total"] == 3
     assert entry["completion"]["fin"] == 1
+
+
+# ---------------------------------------------------------------------------
+# Task 1: longitudinal aggregation tests
+# ---------------------------------------------------------------------------
+
+def _viz(**kw):
+    base = {"rk": "R", "y": 2024, "mon": 5, "s": "S", "rc": None, "cat": None,
+            "g": None, "ag": None, "t": 3600, "dist": None, "plat": "p"}
+    base.update(kw)
+    return base
+
+
+def test_build_crossyear_adds_band_and_count():
+    rows = ([_viz(y=2023, t=t) for t in (100, 200, 300, 400, 500)]
+            + [_viz(y=2024, t=t) for t in (110, 210, 310)])
+    cy = bv.build_crossyear(rows)["R"]
+    y2023 = next(r for r in cy if r["y"] == 2023)
+    assert y2023["winner"] == 100 and y2023["n"] == 5
+    assert y2023["p25"] <= y2023["median"] <= y2023["p75"]
+    assert y2023["median"] == 300                 # _quantile(...,0.5) of 100..500
+    y2024 = next(r for r in cy if r["y"] == 2024)
+    assert y2024["n"] == 3 and y2024["winner"] == 110
+
+
+def test_gender_trend_counts_known_only():
+    rows = [_viz(y=2023, g="M"), _viz(y=2023, g="F"), _viz(y=2023, g=None),
+            _viz(y=2024, g="F")]
+    gt = bv._gender_trend(rows, [2023, 2024])
+    assert gt["years"] == [2023, 2024]
+    assert gt["f"] == [1, 1] and gt["known"] == [2, 1]   # None excluded from known
+
+
+def test_age_trend_pct_excludes_master_and_unaged():
+    rows = [_viz(y=2024, ag="30-39"), _viz(y=2024, ag="30-39"),
+            _viz(y=2024, ag="40-49"), _viz(y=2024, ag="MASTER"),
+            _viz(y=2024, ag=None)]
+    at = bv._age_trend(rows, [2024])
+    assert at["bands"] == bv.AGE_BANDS
+    bi = at["bands"].index("30-39"); bj = at["bands"].index("40-49")
+    # denominator = in-band aged only = 3 (MASTER + None excluded)
+    assert at["pct"][bi][0] == 67 and at["pct"][bj][0] == 33

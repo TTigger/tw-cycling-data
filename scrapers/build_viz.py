@@ -138,6 +138,42 @@ def _quantile(sorted_vals, q):
     return sorted_vals[base] + rest * (nxt - sorted_vals[base]) if nxt is not None else sorted_vals[base]
 
 
+AGE_BANDS = ["U19", "19-29", "30-39", "40-49", "50-59", "60+"]
+
+
+def _gender_trend(viz, years):
+    """Per-year female count and known-gender total (M/F only)."""
+    yi = {y: i for i, y in enumerate(years)}
+    f = [0] * len(years)
+    known = [0] * len(years)
+    for r in viz:
+        if r["y"] is None or r["g"] not in ("M", "F"):
+            continue
+        i = yi[r["y"]]
+        known[i] += 1
+        if r["g"] == "F":
+            f[i] += 1
+    return {"years": years, "f": f, "known": known}
+
+
+def _age_trend(viz, years):
+    """Per-year age-band composition as % of that year's aged finishers
+    (only AGE_BANDS count; MASTER and unaged excluded from numerator+denominator)."""
+    yi = {y: i for i, y in enumerate(years)}
+    band_i = {b: i for i, b in enumerate(AGE_BANDS)}
+    counts = [[0] * len(years) for _ in AGE_BANDS]
+    totals = [0] * len(years)
+    for r in viz:
+        if r["y"] is None or r["ag"] not in band_i:
+            continue
+        yj = yi[r["y"]]
+        counts[band_i[r["ag"]]][yj] += 1
+        totals[yj] += 1
+    pct = [[round(100 * counts[b][j] / totals[j]) if totals[j] else 0
+            for j in range(len(years))] for b in range(len(AGE_BANDS))]
+    return {"years": years, "bands": AGE_BANDS, "pct": pct}
+
+
 def build_overview(viz, top_n=8, women_min=50):
     """Precompute the homepage aggregates so the landing page no longer downloads
     the full 24MB viz.json. Mirrors web/src/lib/overview.ts (kpiStats /
@@ -211,7 +247,9 @@ def build_overview(viz, top_n=8, women_min=50):
                    "unknown": [cg[c]["u"] for c in classes]}
 
     return {"kpi": kpi, "heat": heat, "trend": trend, "women": women,
-            "composition": composition}
+            "composition": composition,
+            "genderTrend": _gender_trend(viz, years),
+            "ageTrend": _age_trend(viz, years)}
 
 
 def build_crossyear(viz):
@@ -228,7 +266,11 @@ def build_crossyear(viz):
         rows = []
         for y in sorted(years):
             ts = sorted(years[y])
-            rows.append({"y": y, "winner": ts[0], "median": round(_quantile(ts, 0.5))})
+            rows.append({"y": y, "winner": ts[0],
+                         "median": round(_quantile(ts, 0.5)),
+                         "p25": round(_quantile(ts, 0.25)),
+                         "p75": round(_quantile(ts, 0.75)),
+                         "n": len(ts)})
         out[rk] = rows
     return out
 
