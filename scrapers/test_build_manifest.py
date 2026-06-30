@@ -26,7 +26,8 @@ def test_compute_manifest_derives_stats_from_products(tmp_path):
     assert m["stats"]["records"] == 146475
     assert m["stats"]["sources"] == 8
     assert m["stats"]["year_min"] == 2009 and m["stats"]["year_max"] == 2026
-    assert m["stats"]["races"] == 2          # len(races.json)
+    assert m["stats"]["races"] == 161        # distinct races (from overview kpi)
+    assert m["stats"]["race_editions"] == 2  # per-year editions (len races.json)
     assert m["stats"]["athletes"] == 3       # len(athletes.json)
     assert m["stats"]["teams"] == 1          # len(teams.json)
     # 端點目錄涵蓋明細樣板路徑
