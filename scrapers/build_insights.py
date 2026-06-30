@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Build aggregate analytics datasets (the /insights page) from the master
-dataset. Emits web/public/data/insights.json with de-identified sections.
+dataset. Emits web/public/data/v1/insights.json with de-identified sections.
 
 Reads master.json (internal) so identity-based sections can group an athlete's
 career via build_athletes' TCU/UCI/name grouping; output carries only masked

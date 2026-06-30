@@ -2,7 +2,7 @@
 """Build cross-year race difficulty coefficients (Feature ②).
 
 Reads  data/processed/master.public.json   (de-identified — only times needed)
-Writes web/public/data/race_difficulty.json
+Writes web/public/data/v1/race_difficulty.json
 
 For each race (race_key), the difficulty of a given year is that year's median
 finish time relative to the race's typical year:

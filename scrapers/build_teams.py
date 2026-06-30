@@ -2,8 +2,8 @@
 """Build per-team rosters & records (Feature 🚴 車隊頁).
 
 Reads  data/processed/master.json      (INTERNAL — name_raw for identity grouping)
-Writes web/public/data/teams.json      (lean team index — de-identified)
-       web/public/data/team/<id>.json  (per-team roster + record — de-identified)
+Writes web/public/data/v1/teams.json      (lean team index — de-identified)
+       web/public/data/v1/team/<id>.json  (per-team roster + record — de-identified)
 
 A "team" is the free-text team field on a result row (coverage ~46%). We group
 its rows by the SAME rider identity as build_athletes (tsu/UCI/name), so a team's
