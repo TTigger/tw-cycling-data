@@ -152,7 +152,7 @@ def mask_name(name):
     CJK: keep head+tail char, mask the middle -> 2-char '李○', 3-char '王○明',
     4+ '歐○○菲' (owner-chosen rule: surname + last given-name char stay visible,
     enough to disambiguate homonyms in athlete tracking without exposing full name).
-    Latin: keep first token + initial -> 'Alex D.'."""
+    Latin/other: order-agnostic — every token -> first letter + ○ (e.g. 'A○ D○'); junk -> ''."""
     if not name:
         return name
     name = name.strip()
@@ -163,11 +163,21 @@ def mask_name(name):
         if len(chars) == 2:
             return chars[0] + "○"
         return chars[0] + "○" * (len(chars) - 2) + chars[-1]
-    # latin name -> "Alex D."
-    parts = name.split()
-    if len(parts) == 1:
-        return parts[0][0] + "." if parts[0] else name
-    return parts[0] + " " + parts[1][0] + "."
+    # latin / other scripts -> order-agnostic: EVERY token -> first letter + ○.
+    # Hides every given name regardless of name order (Surname-first, "Surname,
+    # Given", and Western are all safe). Output contains ○ so it is recognisably
+    # masked (and kept by the dataset safeguard). Scraping junk (< or > anywhere,
+    # or tokens with no letters) -> empty string.
+    if "<" in name or ">" in name:
+        return ""
+    masked = []
+    for token in name.split():
+        first = next((c for c in token if c.isalpha()), None)
+        if first:
+            masked.append(first + "○")
+    if not masked:
+        return ""
+    return " ".join(masked)
 
 
 _TIME_RE = re.compile(r"(\d{1,2}):(\d{2}):(\d{2})(?:\.(\d{1,2}))?")
