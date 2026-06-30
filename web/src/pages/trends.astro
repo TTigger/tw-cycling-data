@@ -1,0 +1,9 @@
+---
+import Base from "../layouts/Base.astro";
+import TrendsApp from "../components/trends/TrendsApp.tsx";
+---
+<Base title="長期趨勢 | 台灣公路車賽事成績儀表板">
+  <h1 class="font-display text-3xl">長期趨勢</h1>
+  <p class="mt-2 mb-6 text-muted">2009–2026 的縱貫演變:女性參與、分齡組成,以及同一賽事跨年的完賽時間分布。皆為去識別化聚合,標註涵蓋限制。</p>
+  <TrendsApp client:only="react" />
+</Base>
