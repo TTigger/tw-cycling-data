@@ -135,3 +135,13 @@ export async function loadBenchmarks(): Promise<import("./types").BenchmarkFile>
   if (!r.ok) throw new Error(`benchmarks.json ${r.status}`);
   return r.json();
 }
+export async function loadManifest(): Promise<import("./types").Manifest> {
+  const r = await fetch(`${API}/manifest.json`);
+  if (!r.ok) throw new Error(`manifest.json ${r.status}`);
+  return r.json();
+}
+export async function fetchEndpoint(path: string): Promise<unknown> {
+  const r = await fetch(`${API}/${path}`);
+  if (!r.ok) throw new Error(`${path} ${r.status}`);
+  return r.json();
+}
