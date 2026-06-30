@@ -52,13 +52,18 @@
 - `resources[0].schema.fields`:每欄 `{name, type, description}`(type:string/integer/number/…;PUBLISH_COLUMNS 全部)。
 - `count`(總筆數)。
 
-### 4. `DATASET.md`(committed,人讀)
+### 4. `DATASET.md`(中文)+ `DATASET.en.md`(英文全文)+ `CITATION.cff`(committed,人讀/引用)
+`DATASET.md`(中文,主文件):
 - 一句話定位 + 規模(147,609 筆、年份範圍、來源平台數)。
 - 欄位表(name / type / 說明)。
-- **授權**:CC BY 4.0;引用方式(BibTeX/文字皆可)。
+- **授權**:CC BY 4.0;引用方式(文字 + 指向 CITATION.cff)。
 - **隱私聲明**:已公開賽事成績之去識別化彙整、供研究用;已刪除外部識別碼;**opt-out**:到 GitHub Issues(`https://github.com/TTigger/tw-cycling-data/issues`)申請移除。
 - **載入範例**:`pandas.read_csv("tw-cycling-results.csv.gz")` 一段。
 - **發布流程**(供 owner):`python scrapers/build_dataset.py` → `gh release create dataset-vYYYY.MM.DD data/dist/* --title … --notes …`。
+
+`DATASET.en.md`(英文全文):與 `DATASET.md` 內容平行的英文版(定位/規模/欄位表/授權/隱私+opt-out/載入範例),供國際研究者;`DATASET.md` 與 `README` 互連 `DATASET.en.md`。
+
+`CITATION.cff`(標準引用 metadata,GitHub 顯示「Cite this repository」):`cff-version`、`title`、`authors`、`license: CC-BY-4.0`、`url`(repo)、`type: dataset`、`version`(日期式)、`date-released`。直接服務「被引用」目標。
 
 ### 5. README「Open Dataset」區段(committed)
 - 連到 `DATASET.md` + 最新 Release;一句授權 + 規模。中英文 README 各一段。
@@ -87,7 +92,7 @@
 
 ## YAGNI(不做)
 
-- Parquet;Vercel 直連一份;自動發布;增量/差異發布;多語 DATASET.md(README 已雙語,DATASET.md 以中文為主、必要英文摘要一段)。
+- Parquet;Vercel 直連一份;自動發布;增量/差異發布。(DATASET 中英文皆出 + CITATION.cff,見元件 4。)
 
 ## 未來待辦(本次不做,記錄備查)
 
