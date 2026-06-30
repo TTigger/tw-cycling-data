@@ -3,9 +3,13 @@ import type { SlimRecord } from "./types";
 /** Shape of the precomputed homepage payload (scrapers/build_viz.build_overview)
  * — lets the landing page skip the 24MB viz.json. The functions below still
  * document & test the same aggregations (used by overview.test.ts). */
-export interface OverviewData { kpi: Kpi; heat: Heat; trend: Trend; women: WomenShare[]; composition: Composition; }
-/** Per-race-key cross-year winner/median (scrapers/build_viz.build_crossyear). */
-export type CrossYearMap = Record<string, { y: number; winner: number; median: number }[]>;
+export interface CrossYearPoint { y: number; winner: number; median: number; p25: number; p75: number; n: number; }
+export type CrossYearMap = Record<string, CrossYearPoint[]>;
+
+export interface GenderTrend { years: number[]; f: number[]; known: number[]; }
+export interface AgeTrend { years: number[]; bands: string[]; pct: number[][]; }
+
+export interface OverviewData { kpi: Kpi; heat: Heat; trend: Trend; women: WomenShare[]; composition: Composition; genderTrend: GenderTrend; ageTrend: AgeTrend; }
 
 export interface Kpi { records: number; races: number; series: number; minYear: number | null; maxYear: number | null; }
 export function kpiStats(rows: SlimRecord[]): Kpi {
