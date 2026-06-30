@@ -62,6 +62,11 @@
    "description": "Race series aggregates."
   },
   {
+   "path": "benchmarks.json",
+   "kind": "index",
+   "description": "Per-race finish-time percentile breakpoints by age/gender/category cohort."
+  },
+  {
    "path": "coverage.json",
    "kind": "meta",
    "description": "Source/calendar coverage and gap triage."
