@@ -31,11 +31,19 @@ def list_races_impl(client, year, race_type, q, limit):
     return _query_module.filter_races(client.races_index(), year, race_type, q, limit)
 
 
-def get_race_impl(client, race_key):
-    # races_index 的 file 欄位是明細檔名;找不到就直接以 race_key 當檔名嘗試
+def get_race_impl(client, race_key, year=None):
     idx = client.races_index()
-    hit = next((r for r in idx if r.get("rk") == race_key), None)
-    return client.race(hit["file"] if hit else race_key)
+    # A direct file-stem match (the value list_races returns in `file`) wins.
+    if any(r.get("file") == race_key for r in idx):
+        return client.race(race_key)
+    matches = [r for r in idx if r.get("rk") == race_key]
+    if year is not None:
+        matches = [r for r in matches if r.get("y") == year]
+    if matches:
+        # A race_key can span multiple years; default to the latest edition.
+        chosen = max(matches, key=lambda r: (r.get("y") or 0))
+        return client.race(chosen["file"])
+    return client.race(race_key)  # fallback: treat the input as a file stem
 
 
 def get_team_impl(client, team_id):
@@ -69,9 +77,11 @@ def list_races(year: int = None, race_type: str = None, query: str = None, limit
 
 
 @mcp.tool()
-def get_race(race_key: str) -> dict:
-    """One race leaderboard (re-ranked by category + finish time)."""
-    return get_race_impl(_client, race_key)
+def get_race(race_key: str, year: int = None) -> dict:
+    """One race leaderboard (re-ranked by category + finish time). A race_key can
+    span multiple years; without `year` the latest edition is returned. For an
+    exact edition, pass `year`, or pass the `file` value from list_races as race_key."""
+    return get_race_impl(_client, race_key, year)
 
 
 @mcp.tool()

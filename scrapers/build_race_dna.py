@@ -3,7 +3,7 @@
 
 Reads  data/processed/master.json   (INTERNAL — needs identity grouping for the
                                       regulars / repeat-rate axes)
-Writes web/public/data/race_dna.json (aggregate-only — de-identified)
+Writes web/public/data/v1/race_dna.json (aggregate-only — de-identified)
 
 Six axes, each percentile-normalized 0–100 across all qualifying race-years so a
 radar compares any two races on the same scale:

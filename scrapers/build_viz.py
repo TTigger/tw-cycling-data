@@ -2,7 +2,7 @@
 """Build browser-ready data files from the master public dataset.
 
 Reads  data/processed/master.public.json
-Writes web/public/data/{viz.json, races.json, race/<race_key>__<year>.json}
+Writes web/public/data/v1/{viz.json, races.json, race/<race_key>__<year>.json}
 """
 import json
 import os
