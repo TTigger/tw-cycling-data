@@ -28,7 +28,8 @@ def cohort_keys(row):
 
 def percentile_breakpoints(sorted_seconds):
     """101 breakpoints: bp[p] = time at percentile p (0=fastest..100=slowest).
-    Input must be ascending. Length always 101; monotonic non-decreasing."""
+    Input must be ascending. Returns [] for empty input; otherwise length is
+    always 101, monotonic non-decreasing."""
     n = len(sorted_seconds)
     if n == 0:
         return []

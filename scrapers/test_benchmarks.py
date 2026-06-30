@@ -47,6 +47,16 @@ def test_build_index_filters_small_cohorts_and_shapes_output():
     assert idx["R"]["rn"] == "賽事R"
 
 
+def test_build_index_excludes_non_finishers():
+    rows = [{"race_key": "R", "year": 2024, "age_band": None, "gender": None,
+             "category_raw": None, "finish_seconds": 3600 + i,
+             "race_name_canonical": "賽事R",
+             "status": ("DNF" if i % 5 == 0 else "FIN")} for i in range(25)]
+    idx = B.build_index(rows, min_n=20)
+    # 5 DNF excluded -> 20 finishers remain (still meets min_n)
+    assert idx["R"]["cohorts"]["all"]["n"] == 20
+
+
 def test_build_index_drops_race_without_enough_finishers():
     rows = [{"race_key": "TINY", "year": 2024, "age_band": None, "gender": None,
              "category_raw": None, "finish_seconds": 3600, "race_name_canonical": "小賽",
