@@ -29,7 +29,7 @@ H = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0 Safar
      "Accept-Language": "zh-TW"}
 MASTER = os.path.join(os.path.dirname(__file__), "..", "data", "processed", "master.public.json")
 OUT_DIR = os.path.join(os.path.dirname(__file__), "..", "data", "processed", "_discover")
-WEB_DIR = os.path.join(os.path.dirname(__file__), "..", "web", "public", "data")
+WEB_DIR = common.PUBLIC_DATA_DIR
 os.makedirs(OUT_DIR, exist_ok=True)
 
 # Public calendars to mine (listable). Each: id, name, url, parser key.

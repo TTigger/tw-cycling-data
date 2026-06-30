@@ -1,7 +1,7 @@
 ---
 import Base from "../../layouts/Base.astro";
 import AthletesApp from "../../components/athletes/AthletesApp.tsx";
-import athletes from "../../../public/data/athletes.json";
+import athletes from "../../../public/data/v1/athletes.json";
 
 // Partial SSG (折衷): with ~22k riders we only pre-render the most-raced TOP_N as
 // crawlable /athletes/<id> pages with per-rider meta. Everyone else stays on the

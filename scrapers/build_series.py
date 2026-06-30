@@ -2,7 +2,7 @@
 """Build multi-station series standings (Feature 🏆 賽事系列總標).
 
 Reads  data/processed/master.json   (INTERNAL — needs identity grouping)
-Writes web/public/data/series.json  (aggregate + masked names — de-identified)
+Writes web/public/data/v1/series.json  (aggregate + masked names — de-identified)
 
 A "series" (96聯賽 / 捷安特自行車嘉年華 / TIS崇越盃 / 臺灣自行車聯賽 …) runs several
 stations a season. We give each rider a season total = the sum of their best
@@ -24,7 +24,7 @@ from build_athletes import build_group_keys, athlete_id, MIN_RESULTS  # noqa: E4
 
 HERE = os.path.dirname(__file__)
 IN = os.path.join(HERE, "..", "data", "processed", "master.json")
-OUT = os.path.join(HERE, "..", "web", "public", "data")
+OUT = common.PUBLIC_DATA_DIR
 
 MIN_STATIONS = 2
 TOP_N = 50

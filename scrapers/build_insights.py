@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Build aggregate analytics datasets (the /insights page) from the master
-dataset. Emits web/public/data/insights.json with de-identified sections.
+dataset. Emits web/public/data/v1/insights.json with de-identified sections.
 
 Reads master.json (internal) so identity-based sections can group an athlete's
 career via build_athletes' TCU/UCI/name grouping; output carries only masked
@@ -19,7 +19,7 @@ from build_athletes import build_group_keys, athlete_id, MIN_RESULTS, confidence
 sys.stdout.reconfigure(encoding="utf-8")
 HERE = os.path.dirname(__file__)
 IN = os.path.join(HERE, "..", "data", "processed", "master.json")
-OUT = os.path.join(HERE, "..", "web", "public", "data")
+OUT = common.PUBLIC_DATA_DIR
 
 AGE_ORDER = ["U19", "19-29", "30-39", "40-49", "50-59", "60+"]
 

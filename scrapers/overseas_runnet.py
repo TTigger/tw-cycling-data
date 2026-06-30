@@ -25,7 +25,7 @@ sys.stdout.reconfigure(encoding="utf-8")
 # internal (has name_raw) stays under data/processed (gitignored); the
 # de-identified public copy goes to web/public/data/overseas (deploy artifact).
 OUT_DIR = os.path.join(os.path.dirname(__file__), "..", "data", "processed", "_overseas")
-PUB_DIR = os.path.join(os.path.dirname(__file__), "..", "web", "public", "data", "overseas")
+PUB_DIR = os.path.join(common.PUBLIC_DATA_DIR, "overseas")
 os.makedirs(OUT_DIR, exist_ok=True)
 os.makedirs(PUB_DIR, exist_ok=True)
 
@@ -91,7 +91,7 @@ def main():
     print(f"  categories={len(raw.get('data', []))} gender={dict(Counter(r['gender'] for r in recs))}")
     print(f"  sample: {recs[0]['name_masked']} [{recs[0]['category_raw']}] "
           f"{recs[0]['finish_time']} rank={recs[0]['rank_overall']}")
-    print(f"  -> {os.path.relpath(full)} (internal) + web/public/data/overseas/runnet_"
+    print(f"  -> {os.path.relpath(full)} (internal) + web/public/data/v1/overseas/runnet_"
           f"{race_id}.json (public) — SEPARATE from Taiwan master")
 
 

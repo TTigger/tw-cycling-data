@@ -33,3 +33,7 @@ Thumbs.db
 data/_fonts_src/
 
 .playwright-mcp/
+
+# agent/session scratch
+.claude/
+.superpowers/

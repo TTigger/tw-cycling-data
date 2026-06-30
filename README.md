@@ -4,6 +4,10 @@
 
 收集、清洗、正規化台灣公路車賽事成績(2009–2026),做成資料庫 → 互動視覺化儀表板,已部署為 Vercel 靜態網頁。
 
+## Public API
+
+唯讀 JSON API(CC BY 4.0,去識別化)。Base:`https://tw-cycling-data.vercel.app/data/v1`,入口 [`manifest.json`](https://tw-cycling-data.vercel.app/data/v1/manifest.json)。端點與 schema 見 [`docs/API.md`](docs/API.md)。也提供 Python MCP server(見 [`mcp-server/`](mcp-server/))。
+
 ## 這個專案是什麼、給誰用(Why)
 
 台灣的公路車成績**散落在 4 個以上的平台**,而且大多「只能逐場/逐筆查」,沒有一個地方能跨賽事比較、追蹤一位選手的生涯。本專案把這些公開成績**彙整、去識別化、正規化**,做成**免費、開源、互動**的成績探索站——目前是**全台唯一**把分散資料整合起來、還能分析的工具(現有 **118,501 筆 / 130 場 / 2009–2026 / 6 來源**,另收海外賽)。

@@ -1,0 +1,70 @@
+{
+ "api_version": "v1",
+ "dataset": "tw-cycling-data",
+ "homepage": "https://tw-cycling-data.vercel.app/",
+ "license": "CC-BY-4.0",
+ "attribution": "tw-cycling-data (https://github.com/TTigger/tw-cycling-data)",
+ "stats": {
+  "records": 146475,
+  "races": 161,
+  "race_editions": 214,
+  "series": 23,
+  "athletes": 27309,
+  "teams": 1015,
+  "sources": 8,
+  "year_min": 2009,
+  "year_max": 2026
+ },
+ "endpoints": [
+  {
+   "path": "manifest.json",
+   "kind": "meta",
+   "description": "This file: version, stats, endpoint catalog."
+  },
+  {
+   "path": "overview.json",
+   "kind": "meta",
+   "description": "Dataset KPIs, heatmap, trend, gender composition."
+  },
+  {
+   "path": "races.json",
+   "kind": "index",
+   "description": "Race index: race_key, year, name, series, finisher rows."
+  },
+  {
+   "path": "race/{race_key}.json",
+   "kind": "detail",
+   "description": "One race leaderboard (re-ranked by category + finish time)."
+  },
+  {
+   "path": "athletes.json",
+   "kind": "index",
+   "description": "Athlete index (>=2 results): masked name, team, counts."
+  },
+  {
+   "path": "athlete/{athlete_id}.json",
+   "kind": "detail",
+   "description": "One athlete's de-identified result history."
+  },
+  {
+   "path": "teams.json",
+   "kind": "index",
+   "description": "Team index: id, name, roster size."
+  },
+  {
+   "path": "team/{team_id}.json",
+   "kind": "detail",
+   "description": "One team's roster + record."
+  },
+  {
+   "path": "series.json",
+   "kind": "index",
+   "description": "Race series aggregates."
+  },
+  {
+   "path": "coverage.json",
+   "kind": "meta",
+   "description": "Source/calendar coverage and gap triage."
+  }
+ ]
+}

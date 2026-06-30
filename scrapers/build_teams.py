@@ -2,8 +2,8 @@
 """Build per-team rosters & records (Feature 🚴 車隊頁).
 
 Reads  data/processed/master.json      (INTERNAL — name_raw for identity grouping)
-Writes web/public/data/teams.json      (lean team index — de-identified)
-       web/public/data/team/<id>.json  (per-team roster + record — de-identified)
+Writes web/public/data/v1/teams.json      (lean team index — de-identified)
+       web/public/data/v1/team/<id>.json  (per-team roster + record — de-identified)
 
 A "team" is the free-text team field on a result row (coverage ~46%). We group
 its rows by the SAME rider identity as build_athletes (tsu/UCI/name), so a team's
@@ -25,7 +25,7 @@ from build_athletes import build_group_keys, athlete_id, MIN_RESULTS  # noqa: E4
 
 HERE = os.path.dirname(__file__)
 IN = os.path.join(HERE, "..", "data", "processed", "master.json")
-OUT = os.path.join(HERE, "..", "web", "public", "data")
+OUT = common.PUBLIC_DATA_DIR
 
 _SALT = "twcd-team-v1"
 MIN_TEAM_RIDERS = 4          # fewer distinct riders than this isn't really a "team"
