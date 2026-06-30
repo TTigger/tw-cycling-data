@@ -179,6 +179,7 @@ def build_overview(viz, top_n=8, women_min=50):
     the full 24MB viz.json. Mirrors web/src/lib/overview.ts (kpiStats /
     monthYearHeat / trendByYearSeries / womenShareBySeries / compositionByClass)."""
     races, series, sources_seen = set(), set(), set()
+    src_counts = Counter()
     mn, mx = None, None
     for r in viz:
         if r["rk"]:
@@ -189,6 +190,8 @@ def build_overview(viz, top_n=8, women_min=50):
             mn = r["y"] if mn is None else min(mn, r["y"])
             mx = r["y"] if mx is None else max(mx, r["y"])
         sources_seen.add(r.get("plat"))
+        if r.get("plat"):
+            src_counts[r["plat"]] += 1
     kpi = {"records": len(viz), "races": len(races), "series": len(series),
            "minYear": mn, "maxYear": mx}
     kpi["sources"] = len([s for s in sources_seen if s])
@@ -249,7 +252,8 @@ def build_overview(viz, top_n=8, women_min=50):
     return {"kpi": kpi, "heat": heat, "trend": trend, "women": women,
             "composition": composition,
             "genderTrend": _gender_trend(viz, years),
-            "ageTrend": _age_trend(viz, years)}
+            "ageTrend": _age_trend(viz, years),
+            "by_source": dict(src_counts.most_common())}
 
 
 def build_crossyear(viz):
