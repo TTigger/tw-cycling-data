@@ -1,6 +1,5 @@
 import csv
 import gzip
-import io
 import json
 import os
 import build_dataset as B
