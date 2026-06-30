@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import { loadCoverage, loadRaces } from "../../lib/data-load";
+import { loadCoverage, loadRaces, loadOverview } from "../../lib/data-load";
 import type { Coverage, RaceIndex } from "../../lib/types";
+import type { OverviewData } from "../../lib/overview";
+import { sourceInfo } from "../../lib/sources";
 import { raceHref } from "../../lib/race-url";
 import Skeleton from "../Skeleton";
 
@@ -23,11 +25,12 @@ interface CoveredRace { rk: string; rn: string; s: string; y0: number; y1: numbe
 export default function CoverageApp() {
   const [cov, setCov] = useState<Coverage | null>(null);
   const [races, setRaces] = useState<RaceIndex[]>([]);
+  const [ov, setOv] = useState<OverviewData | null>(null);
   const [err, setErr] = useState<string | null>(null);
 
   useEffect(() => {
-    Promise.all([loadCoverage(), loadRaces()])
-      .then(([c, rs]) => { setCov(c); setRaces(rs); })
+    Promise.all([loadCoverage(), loadRaces(), loadOverview()])
+      .then(([c, rs, o]) => { setCov(c); setRaces(rs); setOv(o); })
       .catch((e) => setErr(String(e)));
   }, []);
 
@@ -48,13 +51,14 @@ export default function CoverageApp() {
   }, [races]);
 
   if (err) return <p className="text-accent">資料載入失敗:{err}</p>;
-  if (!cov) return <Skeleton cards={3} />;
+  if (!cov || !ov) return <Skeleton cards={3} />;
   const s = cov.summary;
 
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        {[["成績筆數", s.rows.toLocaleString()], ["賽事", s.races], ["年份", `${s.y0}–${s.y1}`],
+        {[["成績筆數", ov.kpi.records.toLocaleString()], ["賽事", ov.kpi.races],
+          ["年份", `${ov.kpi.minYear}–${ov.kpi.maxYear}`],
           ["海外賽(另計)", s.overseas.toLocaleString()]].map(([k, v]) => (
           <div key={k} className="rounded-lg border border-border bg-surface px-3 py-2">
             <div className="num text-xl text-ink">{v}</div><div className="text-xs text-muted">{k}</div>
@@ -64,11 +68,18 @@ export default function CoverageApp() {
 
       <Card title="✅ 已收錄的來源" hint="有公開成績系統的競技賽事,大多已收齊">
         <div className="flex flex-wrap gap-2 text-sm">
-          {Object.entries(s.by_source).map(([src, n]) => (
-            <span key={src} className="rounded-lg border border-border bg-bg px-3 py-1">
-              {src} <span className="num text-muted">{n.toLocaleString()}</span>
-            </span>
-          ))}
+          {Object.entries(ov.by_source).map(([src, n]) => {
+            const info = sourceInfo(src);
+            return (
+              <span key={src} className="rounded-lg border border-border bg-bg px-3 py-1">
+                {info.url
+                  ? <a href={info.url} target="_blank" rel="noopener" className="text-ink hover:text-accent">{info.name}</a>
+                  : <span className="text-ink">{info.name}</span>}
+                <span className="num ml-1 text-muted">{n.toLocaleString()}</span>
+                <span className="ml-1 text-xs text-muted">{src}</span>
+              </span>
+            );
+          })}
         </div>
       </Card>
 
