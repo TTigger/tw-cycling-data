@@ -1,0 +1,9 @@
+---
+import Base from "../layouts/Base.astro";
+import ApiExplorer from "../components/api/ApiExplorer.tsx";
+---
+<Base title="API | 台灣公路車賽事成績儀表板">
+  <h1 class="font-display text-3xl">公開 API</h1>
+  <p class="mt-2 mb-6 text-muted">唯讀 JSON API(去識別化,CC BY 4.0)。看規模、點開端點預覽真實資料、複製即用範例。完整規格見 docs/API.md。</p>
+  <ApiExplorer client:only="react" />
+</Base>
