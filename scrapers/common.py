@@ -5,12 +5,17 @@ HTTP session, division/category normalization, name de-identification (PDPA),
 time parsing, and the unified result-record builder.
 """
 import json
+import os
 import re
 import time
 import requests
 
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/124.0 Safari/537.36")
+
+# Single source of truth for the versioned public API output directory.
+# All build_*/discover/overseas scripts write here; the frontend reads /data/v1/.
+PUBLIC_DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "web", "public", "data", "v1")
 
 
 def iter_records(path, chunk=1 << 18):

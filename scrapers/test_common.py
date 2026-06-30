@@ -16,3 +16,11 @@ def test_make_record_carries_status_and_laps():
     assert r["status"] == "DNF"
     assert r["laps"] == 25
     assert r["finish_seconds"] is None  # DNF has no time
+
+
+def test_public_data_dir_points_at_v1():
+    # 必須指向 web/public/data/v1(版本化命名空間)
+    parts = os.path.normpath(common.PUBLIC_DATA_DIR).split(os.sep)
+    assert parts[-3:] == ["public", "data", "v1"], parts
+    # 必須以 scrapers/ 為基準回推到 repo 的 web/ 底下
+    assert "web" in parts

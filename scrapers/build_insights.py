@@ -19,7 +19,7 @@ from build_athletes import build_group_keys, athlete_id, MIN_RESULTS, confidence
 sys.stdout.reconfigure(encoding="utf-8")
 HERE = os.path.dirname(__file__)
 IN = os.path.join(HERE, "..", "data", "processed", "master.json")
-OUT = os.path.join(HERE, "..", "web", "public", "data")
+OUT = common.PUBLIC_DATA_DIR
 
 AGE_ORDER = ["U19", "19-29", "30-39", "40-49", "50-59", "60+"]
 

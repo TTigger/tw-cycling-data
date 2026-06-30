@@ -15,7 +15,7 @@ import common  # noqa: E402
 
 HERE = os.path.dirname(__file__)
 IN = os.path.join(HERE, "..", "data", "processed", "master.public.json")
-OUT = os.path.join(HERE, "..", "web", "public", "data")
+OUT = common.PUBLIC_DATA_DIR
 
 _DIST_RE = re.compile(r"(\d{2,3})\s*(?:公里|[KkＫ]\s*[Mm]?|公?里)")
 
