@@ -39,3 +39,55 @@ def filter_races(index, year=None, race_type=None, query=None, limit=50):
             continue
         out.append(r)
     return out[:limit]
+
+
+def hms_to_seconds(s):
+    """Parse 'HH:MM:SS' / 'MM:SS' / plain seconds -> int, or None if unparseable."""
+    s = (s or "").strip()
+    if not s:
+        return None
+    try:
+        if ":" in s:
+            parts = [int(p) for p in s.split(":")]
+            if len(parts) == 3:
+                h, m, sec = parts
+            elif len(parts) == 2:
+                h, m, sec = 0, parts[0], parts[1]
+            else:
+                return None
+            return h * 3600 + m * 60 + sec
+        return int(s)
+    except (TypeError, ValueError):
+        return None
+
+
+def percentile_beaten(seconds, sorted_times):
+    """Percent of the cohort strictly slower than `seconds` (ties not counted)."""
+    if not sorted_times:
+        return 0
+    slower = sum(1 for t in sorted_times if t > seconds)
+    return round(slower / len(sorted_times) * 100)
+
+
+def benchmark_lookup(benchmarks, race_key, seconds, age_band=None, gender=None):
+    """Pick the most-specific available cohort (age|gender -> age -> all) and
+    return the percentile the given finish time beats."""
+    race = benchmarks.get(race_key)
+    if not race:
+        return {"error": f"no benchmark for race_key '{race_key}'"}
+    cohorts = race["cohorts"]
+    candidates = []
+    if age_band and gender:
+        candidates.append(f"age:{age_band}|g:{gender}")
+    if age_band:
+        candidates.append(f"age:{age_band}")
+    candidates.append("all")
+    key = next((k for k in candidates if k in cohorts), None)
+    if key is None:
+        return {"error": f"no usable cohort for race '{race_key}'"}
+    c = cohorts[key]
+    return {
+        "race_key": race_key, "rn": race["rn"], "years": race["years"],
+        "cohort_label": c["label"], "cohort_type": c["type"], "n": c["n"],
+        "percentile_beat": percentile_beaten(seconds, c["bp"]),
+    }

@@ -20,6 +20,10 @@ class FakeClient:
     def team(self, tid):
         return {"id": tid}
 
+    def benchmarks(self):
+        return {"R": {"rn": "賽事R", "years": [2024], "cohorts": {
+            "all": {"n": 100, "type": "all", "label": "全部完賽者", "bp": [60, 70, 80, 90, 100]}}}}
+
 
 def test_tool_impls_use_query_and_client():
     c = FakeClient()
@@ -50,10 +54,16 @@ def test_get_race_resolves_latest_year_and_year_param():
     assert server.get_race_impl(c, "lianlian197__2022")["file"] == "lianlian197__2022"
 
 
-def test_server_registers_six_tools():
+def test_race_benchmark_impl_and_registration():
+    c = FakeClient()
+    r = server.race_benchmark_impl(c, "R", "00:01:05", None, None)  # 65s
+    assert r["percentile_beat"] == 80 and r["cohort_label"] == "全部完賽者"
+
+
+def test_server_registers_seven_tools():
     # FastMCP 實例存在且註冊了預期工具名
     names = server.tool_names()
     assert set(names) == {
         "dataset_overview", "search_athletes", "get_athlete",
-        "list_races", "get_race", "get_team",
+        "list_races", "get_race", "get_team", "race_benchmark",
     }
