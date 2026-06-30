@@ -4,6 +4,10 @@
 
 Collect, clean, and normalize Taiwan road-cycling race results (2009–2026) into a unified dataset, then an interactive visualization dashboard, deployed as a static site on Vercel.
 
+## Public API
+
+Read-only JSON API (CC BY 4.0, de-identified). Base: `https://tw-cycling-data.vercel.app/data/v1`, entry [`manifest.json`](https://tw-cycling-data.vercel.app/data/v1/manifest.json). Endpoints and schema in [`docs/API.md`](docs/API.md). A Python MCP server is also provided (see [`mcp-server/`](mcp-server/)).
+
 ## What this is & who it's for (Why)
 
 Taiwan's cycling results are **scattered across 4+ platforms** and mostly only queryable race-by-race — there's no single place to compare across races or follow a rider's career. This project aggregates, de-identifies and normalizes those public results into a **free, open, interactive** explorer — currently the **only** unified, analyzable view of Taiwan road-cycling results (**118,501 rows / 130 races / 2009–2026 / 6 sources**, plus an overseas collection).
