@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { isTemplated, endpointPreview, curlExample, pythonExample } from "./api-explorer";
+import { isTemplated, endpointPreview, curlExample, pythonExample, jsExample } from "./api-explorer";
 
 describe("isTemplated", () => {
   it("flags templated detail paths", () => {
@@ -44,5 +44,15 @@ describe("examples", () => {
     const base = "https://tw-cycling-data.vercel.app/data/v1";
     expect(curlExample(base, "races.json")).toContain(`${base}/races.json`);
     expect(pythonExample(base, "races.json")).toContain(`${base}/races.json`);
+  });
+});
+
+describe("jsExample", () => {
+  it("embeds base + path in a fetch().then(r=>r.json()) snippet", () => {
+    const base = "https://tw-cycling-data.vercel.app/data/v1";
+    const s = jsExample(base, "races.json");
+    expect(s).toContain(`${base}/races.json`);
+    expect(s).toContain("fetch(");
+    expect(s).toContain(".json()");
   });
 });
