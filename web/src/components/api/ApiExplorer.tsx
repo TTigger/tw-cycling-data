@@ -44,7 +44,12 @@ function EndpointRow({ ep }: { ep: ManifestEndpoint }) {
         <td className="py-2 pr-3">{ep.description}</td>
         <td className="py-2 whitespace-nowrap">
           {templated ? (
-            <span className="text-xs text-muted">需 id(見 races/athletes/teams.json)</span>
+            <span className="text-xs text-muted">
+              需 id(見 {" "}
+              <a className="hover:text-accent" href={`${BASE}/races.json`} target="_blank" rel="noopener">races.json</a>{" / "}
+              <a className="hover:text-accent" href={`${BASE}/athletes.json`} target="_blank" rel="noopener">athletes.json</a>{" / "}
+              <a className="hover:text-accent" href={`${BASE}/teams.json`} target="_blank" rel="noopener">teams.json</a>)
+            </span>
           ) : (
             <span className="flex gap-2">
               <button type="button" onClick={onPreview}
