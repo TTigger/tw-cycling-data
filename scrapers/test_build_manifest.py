@@ -35,3 +35,4 @@ def test_compute_manifest_derives_stats_from_products(tmp_path):
     assert "athlete/{athlete_id}.json" in paths
     assert "race/{race_key}.json" in paths
     assert "manifest.json" in paths
+    assert "benchmarks.json" in paths
