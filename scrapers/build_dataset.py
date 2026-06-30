@@ -5,7 +5,6 @@ Whitelist projection via dataset.project_row. Does NOT publish a release."""
 import csv
 import gzip
 import hashlib
-import io
 import json
 import os
 import sys
