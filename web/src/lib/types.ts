@@ -154,3 +154,13 @@ export interface Insights {
 export interface Cohort { n: number; type: "all" | "age" | "cat"; label: string; bp: number[]; }
 export interface BenchmarkRace { rn: string; years: number[]; cohorts: Record<string, Cohort>; }
 export type BenchmarkFile = Record<string, BenchmarkRace>;
+
+export interface ManifestEndpoint { path: string; kind: string; description: string; }
+export interface ManifestStats {
+  records: number; races: number; race_editions: number; series: number;
+  athletes: number; teams: number; sources: number; year_min: number; year_max: number;
+}
+export interface Manifest {
+  api_version: string; dataset: string; homepage: string; license: string;
+  attribution: string; stats: ManifestStats; endpoints: ManifestEndpoint[];
+}
