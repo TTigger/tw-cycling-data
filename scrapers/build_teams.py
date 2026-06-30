@@ -25,7 +25,7 @@ from build_athletes import build_group_keys, athlete_id, MIN_RESULTS  # noqa: E4
 
 HERE = os.path.dirname(__file__)
 IN = os.path.join(HERE, "..", "data", "processed", "master.json")
-OUT = os.path.join(HERE, "..", "web", "public", "data")
+OUT = common.PUBLIC_DATA_DIR
 
 _SALT = "twcd-team-v1"
 MIN_TEAM_RIDERS = 4          # fewer distinct riders than this isn't really a "team"

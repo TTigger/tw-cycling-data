@@ -24,7 +24,7 @@ from build_athletes import build_group_keys, athlete_id, MIN_RESULTS  # noqa: E4
 
 HERE = os.path.dirname(__file__)
 IN = os.path.join(HERE, "..", "data", "processed", "master.json")
-OUT = os.path.join(HERE, "..", "web", "public", "data")
+OUT = common.PUBLIC_DATA_DIR
 
 MIN_STATIONS = 2
 TOP_N = 50

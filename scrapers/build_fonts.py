@@ -17,6 +17,9 @@ import os
 import subprocess
 import sys
 
+sys.path.insert(0, os.path.dirname(__file__))
+import common  # noqa: E402
+
 HERE = os.path.dirname(__file__)
 ROOT = os.path.join(HERE, "..")
 SRC = os.path.join(ROOT, "data", "_fonts_src")
@@ -35,7 +38,7 @@ def is_cjk(cp):
 
 def collect_chars():
     chars = set(BASE)
-    pats = [os.path.join(ROOT, "web", "public", "data", "**", "*.json")]
+    pats = [os.path.join(common.PUBLIC_DATA_DIR, "**", "*.json")]
     for ext in ("*.astro", "*.tsx", "*.ts"):
         pats.append(os.path.join(ROOT, "web", "src", "**", ext))
     for pat in pats:

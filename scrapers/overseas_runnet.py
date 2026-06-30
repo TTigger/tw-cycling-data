@@ -25,7 +25,7 @@ sys.stdout.reconfigure(encoding="utf-8")
 # internal (has name_raw) stays under data/processed (gitignored); the
 # de-identified public copy goes to web/public/data/overseas (deploy artifact).
 OUT_DIR = os.path.join(os.path.dirname(__file__), "..", "data", "processed", "_overseas")
-PUB_DIR = os.path.join(os.path.dirname(__file__), "..", "web", "public", "data", "overseas")
+PUB_DIR = os.path.join(common.PUBLIC_DATA_DIR, "overseas")
 os.makedirs(OUT_DIR, exist_ok=True)
 os.makedirs(PUB_DIR, exist_ok=True)
 

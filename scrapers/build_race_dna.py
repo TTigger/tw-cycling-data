@@ -30,7 +30,7 @@ from build_viz import extract_distance_km, avg_speed_kmh  # noqa: E402
 
 HERE = os.path.dirname(__file__)
 IN = os.path.join(HERE, "..", "data", "processed", "master.json")
-OUT = os.path.join(HERE, "..", "web", "public", "data")
+OUT = common.PUBLIC_DATA_DIR
 
 MIN_FINISHERS = 20            # a race-year needs this many finishers to qualify
 REGULAR_MIN_RACE_YEARS = 3    # raced in this many distinct race-years = a regular

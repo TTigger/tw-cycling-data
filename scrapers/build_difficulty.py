@@ -29,7 +29,7 @@ import common  # noqa: E402
 
 HERE = os.path.dirname(__file__)
 IN = os.path.join(HERE, "..", "data", "processed", "master.public.json")
-OUT = os.path.join(HERE, "..", "web", "public", "data")
+OUT = common.PUBLIC_DATA_DIR
 
 MIN_FINISHERS = 20  # a year needs this many timed finishers for a stable median
 
