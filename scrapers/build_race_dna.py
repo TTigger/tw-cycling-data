@@ -3,7 +3,7 @@
 
 Reads  data/processed/master.json   (INTERNAL — needs identity grouping for the
                                       regulars / repeat-rate axes)
-Writes web/public/data/race_dna.json (aggregate-only — de-identified)
+Writes web/public/data/v1/race_dna.json (aggregate-only — de-identified)
 
 Six axes, each percentile-normalized 0–100 across all qualifying race-years so a
 radar compares any two races on the same scale:
@@ -30,7 +30,7 @@ from build_viz import extract_distance_km, avg_speed_kmh  # noqa: E402
 
 HERE = os.path.dirname(__file__)
 IN = os.path.join(HERE, "..", "data", "processed", "master.json")
-OUT = os.path.join(HERE, "..", "web", "public", "data")
+OUT = common.PUBLIC_DATA_DIR
 
 MIN_FINISHERS = 20            # a race-year needs this many finishers to qualify
 REGULAR_MIN_RACE_YEARS = 3    # raced in this many distinct race-years = a regular

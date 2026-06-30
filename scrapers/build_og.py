@@ -11,11 +11,15 @@ PDPA: no personal data — brand + aggregate counts only.
 """
 import json
 import os
+import sys
+
+sys.path.insert(0, os.path.dirname(__file__))
+import common  # noqa: E402
 
 from PIL import Image, ImageDraw, ImageFont
 
 HERE = os.path.dirname(__file__)
-DATA = os.path.join(HERE, "..", "web", "public", "data")
+DATA = common.PUBLIC_DATA_DIR
 OUT = os.path.join(HERE, "..", "web", "public", "og.png")
 
 # brand palette = dark theme tokens (tokens.css)

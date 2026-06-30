@@ -3,8 +3,8 @@
 
 Reads  data/processed/master.json          (INTERNAL — has name_raw, needed to
                                              link the same person across races)
-Writes web/public/data/athletes.json       (de-identified athlete index, >=2 results)
-       web/public/data/athlete/<id>.json    (de-identified per-athlete history)
+Writes web/public/data/v1/athletes.json       (de-identified athlete index, >=2 results)
+       web/public/data/v1/athlete/<id>.json    (de-identified per-athlete history)
 
 Identity resolution (owner-approved policy):
   * Primary grouping is by name_raw, so a rider's whole career stays in ONE
@@ -30,7 +30,7 @@ from race_type import classify as race_type
 
 HERE = os.path.dirname(__file__)
 IN = os.path.join(HERE, "..", "data", "processed", "master.json")
-OUT = os.path.join(HERE, "..", "web", "public", "data")
+OUT = common.PUBLIC_DATA_DIR
 
 # Fixed project salt so athlete ids are not a plain sha1(name) rainbow lookup.
 _SALT = "twcd-athlete-v1"
