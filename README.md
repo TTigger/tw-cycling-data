@@ -8,9 +8,13 @@
 
 唯讀 JSON API(CC BY 4.0,去識別化)。Base:`https://tw-cycling-data.vercel.app/data/v1`,入口 [`manifest.json`](https://tw-cycling-data.vercel.app/data/v1/manifest.json)。端點與 schema 見 [`docs/API.md`](docs/API.md)。也提供 Python MCP server(見 [`mcp-server/`](mcp-server/))。
 
+## Open Dataset
+
+去識別化逐筆成績(147,609 筆,2009–2026,CC BY 4.0)可下載:見 [Releases](https://github.com/TTigger/tw-cycling-data/releases) 與 [DATASET.md](DATASET.md)。已刪除外部識別碼;當事人可於 [Issues](https://github.com/TTigger/tw-cycling-data/issues) 申請移除。
+
 ## 這個專案是什麼、給誰用(Why)
 
-台灣的公路車成績**散落在 4 個以上的平台**,而且大多「只能逐場/逐筆查」,沒有一個地方能跨賽事比較、追蹤一位選手的生涯。本專案把這些公開成績**彙整、去識別化、正規化**,做成**免費、開源、互動**的成績探索站——目前是**全台唯一**把分散資料整合起來、還能分析的工具(現有 **118,501 筆 / 130 場 / 2009–2026 / 6 來源**,另收海外賽)。
+台灣的公路車成績**散落在 4 個以上的平台**,而且大多「只能逐場/逐筆查」,沒有一個地方能跨賽事比較、追蹤一位選手的生涯。本專案把這些公開成績**彙整、去識別化、正規化**,做成**免費、開源、互動**的成績探索站——目前是**全台唯一**把分散資料整合起來、還能分析的工具(現有 **147,609 筆 / 130 場 / 2009–2026 / 8 來源**,另收海外賽)。
 
 **十頁各自的作用:**
 
