@@ -38,3 +38,6 @@ class ApiClient:
 
     def team(self, team_id):
         return self._get(f"team/{team_id}.json")
+
+    def benchmarks(self):
+        return self._get("benchmarks.json")

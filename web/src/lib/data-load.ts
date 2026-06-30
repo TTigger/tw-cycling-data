@@ -130,3 +130,8 @@ export async function loadCoverage(): Promise<Coverage> {
   if (!r.ok) throw new Error(`coverage.json ${r.status}`);
   return r.json();
 }
+export async function loadBenchmarks(): Promise<import("./types").BenchmarkFile> {
+  const r = await fetch(`${API}/benchmarks.json`);
+  if (!r.ok) throw new Error(`benchmarks.json ${r.status}`);
+  return r.json();
+}

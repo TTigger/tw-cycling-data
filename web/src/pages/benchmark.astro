@@ -1,0 +1,9 @@
+---
+import Base from "../layouts/Base.astro";
+import BenchmarkTool from "../components/benchmark/BenchmarkTool.tsx";
+---
+<Base title="分齡對標 | 台灣公路車賽事成績儀表板">
+  <h1 class="font-display text-3xl">分齡對標</h1>
+  <p class="mt-2 mb-6 text-muted">選一場賽事、你的分齡/性別組,輸入完賽時間,看你在同組裡的位置。分齡組僅競技型賽事有,其餘以報名組別對標。</p>
+  <BenchmarkTool client:only="react" />
+</Base>
