@@ -6,7 +6,8 @@
  "attribution": "tw-cycling-data (https://github.com/TTigger/tw-cycling-data)",
  "stats": {
   "records": 146475,
-  "races": 214,
+  "races": 161,
+  "race_editions": 214,
   "series": 23,
   "athletes": 27309,
   "teams": 1015,

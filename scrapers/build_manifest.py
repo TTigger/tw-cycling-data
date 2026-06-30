@@ -38,7 +38,8 @@ def compute_manifest(data_dir):
         "attribution": "tw-cycling-data (https://github.com/TTigger/tw-cycling-data)",
         "stats": {
             "records": kpi["records"],
-            "races": len(races),
+            "races": kpi["races"],            # distinct races (matches overview kpi)
+            "race_editions": len(races),      # per-year editions (= len races.json)
             "series": kpi.get("series"),
             "athletes": len(athletes),
             "teams": len(teams),
