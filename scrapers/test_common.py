@@ -42,6 +42,7 @@ def test_mask_name_romanized_hides_given_keeps_surname():
 def test_mask_name_junk_becomes_empty():
     assert common.mask_name("<span c.") == ""
     assert common.mask_name("Gilles <.") == ""
+    assert common.mask_name("Robert>") == ""   # '>' guard, symmetric with '<'
     assert common.mask_name("1.") == ""
 
 
