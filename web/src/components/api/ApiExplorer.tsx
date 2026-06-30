@@ -11,7 +11,7 @@ function CopyButton({ text, label = "複製" }: { text: string; label?: string }
   const [done, setDone] = useState(false);
   return (
     <button type="button" aria-label={label} title={label}
-      onClick={() => { navigator.clipboard?.writeText(text); setDone(true); setTimeout(() => setDone(false), 1200); }}
+      onClick={async () => { try { await navigator.clipboard?.writeText(text); } catch { return; } setDone(true); setTimeout(() => setDone(false), 1200); }}
       className="rounded border border-border p-1 text-muted hover:text-accent">
       {done ? (
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
@@ -53,7 +53,8 @@ function EndpointRow({ ep }: { ep: ManifestEndpoint }) {
         <td className="py-2 pr-3 text-xs text-muted">{ep.kind}</td>
         <td className="py-2 pr-3">{ep.description}</td>
         <td className="py-2 whitespace-nowrap">
-          <button type="button" onClick={() => setOpen((o) => !o)}
+          <button type="button"
+            onClick={() => { if (open) { setState("idle"); setPreview(null); } setOpen((o) => !o); }}
             className="rounded border border-border px-2 py-0.5 text-xs hover:text-accent">
             {open ? "收合" : "範例"}
           </button>
@@ -108,8 +109,9 @@ export default function ApiExplorer() {
   if (!m) return <Skeleton cards={2} />;
 
   const s = m.stats;
+  const heroSnippet = jsExample(BASE, "races.json");
   const badge = (label: string, v: number | string) => (
-    <span key={label} className="rounded-full border border-border bg-surface px-2.5 py-1 text-xs">
+    <span className="rounded-full border border-border bg-surface px-2.5 py-1 text-xs">
       <span className="num text-ink">{v}</span> <span className="text-muted">{label}</span>
     </span>
   );
@@ -126,9 +128,9 @@ export default function ApiExplorer() {
         <div>
           <div className="flex items-center gap-2">
             <span className="text-xs font-medium text-muted">10 秒上手</span>
-            <CopyButton text={jsExample(BASE, "races.json")} label="複製範例" />
+            <CopyButton text={heroSnippet} label="複製範例" />
           </div>
-          <pre className="mt-1 overflow-auto rounded bg-surface p-2 text-xs">{jsExample(BASE, "races.json")}</pre>
+          <pre className="mt-1 overflow-auto rounded bg-surface p-2 text-xs">{heroSnippet}</pre>
         </div>
       </section>
 
