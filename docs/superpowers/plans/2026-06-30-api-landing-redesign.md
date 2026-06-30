@@ -1,3 +1,110 @@
+# /api 改套件 landing page 實作計畫
+
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+
+**Goal:** 把 `/api` 改成套件 landing 樣式:快速上手 hero + 規模 badge、端點表格每列展開顯示該端點 curl/Python/JS 範例、複製改 icon 按鈕。
+
+**Architecture:** 純前端,改 `ApiExplorer.tsx` 一個元件 + 在 `api-explorer.ts` 加一個純函式 `jsExample`。重用既有 `curlExample/pythonExample/isTemplated/endpointPreview` 與 `loadManifest/fetchEndpoint`。
+
+**Tech Stack:** Astro + React island + TypeScript + vitest。
+
+## Global Constraints
+
+- 純前端、不動資料/後端;仍只讀 `/data/v1/manifest.json`(+ 點預覽時 `fetchEndpoint`)。
+- 預覽維持**有界**(`endpointPreview`:摘要 + 第 1 筆 + 截斷,大檔不爆 DOM)。
+- 複製按鈕為 **icon**(剪貼簿 SVG,複製後顯示 ✓),有 `aria-label`。
+- 每端點展開列顯示 **curl / Python / JS** 三段,各有複製 icon;樣板端點(`isTemplated`)以樣板路徑 + 「需 id」連結替代頁內預覽。
+- 錯誤狀態不為永久 skeleton(manifest 失敗顯示訊息)。
+- 既有 vitest 保留綠;build 產出 /api。
+
+## 已確認的現況
+
+- `web/src/lib/api-explorer.ts`:有 `isTemplated`、`endpointPreview`、`curlExample(base,path)`、`pythonExample(base,path)`;`api-explorer.test.ts` 已有 6+ 測試。
+- `web/src/components/api/ApiExplorer.tsx`:現為規模卡 + 端點表(path/kind/desc/preview)+ 單一全域 curl/python 範例(文字「複製」鈕)+ 底部連結。`BASE`/`GH` 常數在檔內。
+- `manifest.stats` 欄位:records/races/race_editions/athletes/teams/sources/year_min/year_max;`m.license`/`m.attribution`。
+
+---
+
+## File Structure
+
+**修改:** `web/src/lib/api-explorer.ts`(加 `jsExample`)、`web/src/lib/api-explorer.test.ts`(加斷言)、`web/src/components/api/ApiExplorer.tsx`(改版)
+
+---
+
+## Task 1: `jsExample` 純函式
+
+逐端點 JS fetch 範例。交付物:`jsExample` + 測試。
+
+**Files:**
+- Modify: `web/src/lib/api-explorer.ts`
+- Test: `web/src/lib/api-explorer.test.ts`
+
+**Interfaces:**
+- Produces:`jsExample(base: string, path: string): string`。
+
+- [ ] **Step 1: Add the failing test**
+
+在 `web/src/lib/api-explorer.test.ts` 既有 `describe("examples", ...)`(或檔末)加:
+
+```ts
+import { jsExample } from "./api-explorer";
+
+describe("jsExample", () => {
+  it("embeds base + path in a fetch().then(r=>r.json()) snippet", () => {
+    const base = "https://tw-cycling-data.vercel.app/data/v1";
+    const s = jsExample(base, "races.json");
+    expect(s).toContain(`${base}/races.json`);
+    expect(s).toContain("fetch(");
+    expect(s).toContain(".json()");
+  });
+});
+```
+(若該檔頂部已 `import { ... } from "./api-explorer"`,把 `jsExample` 併入既有 import,勿重複 import 區塊。)
+
+- [ ] **Step 2: Run test to verify it fails**
+
+Run: `cd web && npx vitest run src/lib/api-explorer.test.ts`
+Expected: FAIL(`jsExample` 未匯出)
+
+- [ ] **Step 3: Implement `jsExample` in `web/src/lib/api-explorer.ts`**
+
+於檔末(`pythonExample` 之後)新增:
+
+```ts
+export function jsExample(base: string, path: string): string {
+  return `fetch("${base}/${path}")\n  .then(r => r.json())\n  .then(console.log);`;
+}
+```
+
+- [ ] **Step 4: Run test to verify it passes**
+
+Run: `cd web && npx vitest run src/lib/api-explorer.test.ts`
+Expected: PASS
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add web/src/lib/api-explorer.ts web/src/lib/api-explorer.test.ts
+git commit -m "feat(api-page): jsExample fetch snippet helper"
+```
+
+---
+
+## Task 2: `ApiExplorer.tsx` 改版
+
+套件 landing 版面 + icon 複製 + 逐端點範例。交付物:/api 改版,build 綠 + 瀏覽器抽查。
+
+**Files:**
+- Modify: `web/src/components/api/ApiExplorer.tsx`(整檔改版)
+
+**Interfaces:**
+- Consumes:`loadManifest`/`fetchEndpoint`、`isTemplated`/`endpointPreview`/`curlExample`/`pythonExample`/`jsExample`(Task 1)、`Manifest`/`ManifestEndpoint` 型別、`Skeleton`。
+
+- [ ] **Step 1: Replace `web/src/components/api/ApiExplorer.tsx` with the redesigned component**
+
+整檔換成:
+
+```tsx
 import { useEffect, useState } from "react";
 import { loadManifest, fetchEndpoint } from "../../lib/data-load";
 import { isTemplated, endpointPreview, curlExample, pythonExample, jsExample } from "../../lib/api-explorer";
@@ -11,7 +118,7 @@ function CopyButton({ text, label = "複製" }: { text: string; label?: string }
   const [done, setDone] = useState(false);
   return (
     <button type="button" aria-label={label} title={label}
-      onClick={async () => { try { await navigator.clipboard?.writeText(text); } catch { return; } setDone(true); setTimeout(() => setDone(false), 1200); }}
+      onClick={() => { navigator.clipboard?.writeText(text); setDone(true); setTimeout(() => setDone(false), 1200); }}
       className="rounded border border-border p-1 text-muted hover:text-accent">
       {done ? (
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
@@ -53,8 +160,7 @@ function EndpointRow({ ep }: { ep: ManifestEndpoint }) {
         <td className="py-2 pr-3 text-xs text-muted">{ep.kind}</td>
         <td className="py-2 pr-3">{ep.description}</td>
         <td className="py-2 whitespace-nowrap">
-          <button type="button"
-            onClick={() => { if (open) { setState("idle"); setPreview(null); } setOpen((o) => !o); }}
+          <button type="button" onClick={() => setOpen((o) => !o)}
             className="rounded border border-border px-2 py-0.5 text-xs hover:text-accent">
             {open ? "收合" : "範例"}
           </button>
@@ -109,9 +215,8 @@ export default function ApiExplorer() {
   if (!m) return <Skeleton cards={2} />;
 
   const s = m.stats;
-  const heroSnippet = jsExample(BASE, "races.json");
   const badge = (label: string, v: number | string) => (
-    <span className="rounded-full border border-border bg-surface px-2.5 py-1 text-xs">
+    <span key={label} className="rounded-full border border-border bg-surface px-2.5 py-1 text-xs">
       <span className="num text-ink">{v}</span> <span className="text-muted">{label}</span>
     </span>
   );
@@ -128,9 +233,9 @@ export default function ApiExplorer() {
         <div>
           <div className="flex items-center gap-2">
             <span className="text-xs font-medium text-muted">10 秒上手</span>
-            <CopyButton text={heroSnippet} label="複製範例" />
+            <CopyButton text={jsExample(BASE, "races.json")} label="複製範例" />
           </div>
-          <pre className="mt-1 overflow-auto rounded bg-surface p-2 text-xs">{heroSnippet}</pre>
+          <pre className="mt-1 overflow-auto rounded bg-surface p-2 text-xs">{jsExample(BASE, "races.json")}</pre>
         </div>
       </section>
 
@@ -168,3 +273,35 @@ export default function ApiExplorer() {
     </div>
   );
 }
+```
+
+- [ ] **Step 2: Build + browser-verify**
+
+Run: `npm --prefix web run build`
+Expected: 成功,`/api/index.html` 產出。瀏覽器抽查 `/api`:
+- Hero:Base URL + 複製 icon、10 秒上手 snippet + 複製 icon。
+- 規模 badge 列顯示真實數字。
+- 端點表點「範例」→ 展開顯示 curl / Python / JS 三段,各有複製 icon(點擊變 ✓);索引端點有「即時預覽」(點開顯示摘要 + 第 1 筆);樣板端點(`race/{race_key}.json`)顯示佔位說明 + 連結,無預覽鈕。
+- 複製 icon 點擊真的寫入剪貼簿(可貼上驗證)。
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add web/src/components/api/ApiExplorer.tsx
+git commit -m "feat(api-page): package landing layout — hero, badges, per-endpoint curl/Python/JS, icon copy"
+```
+
+---
+
+## Self-Review
+
+**1. Spec coverage:** hero/快速上手 + Base URL 複製 → Task 2 §hero ✅;規模 badge → §badge ✅;端點表格保留 + 展開逐端點 curl/Python/JS → EndpointRow ✅;複製 icon(✓ 回饋)→ CopyButton ✅;即時預覽有界 → endpointPreview ✅;樣板端點佔位 + 連結 → templated 分支 ✅;`jsExample` → Task 1 ✅;底部連結 → §footer ✅;純前端不動資料 → 只讀 manifest/fetchEndpoint ✅。
+
+**2. Placeholder scan:** 無 TBD;Task 2 提供整檔完整程式。
+
+**3. Type consistency:** `jsExample(base,path)`(Task 1)被 ApiExplorer 引用一致;`curlExample/pythonExample/isTemplated/endpointPreview` 簽名沿用既有;`Manifest`/`ManifestEndpoint`/`manifest.stats` 欄位沿用既有(records/races/race_editions/athletes/teams/sources/year_min/year_max/license/attribution)。
+
+---
+
+## 執行順序
+Task 1(jsExample)→ Task 2(改版,依賴 jsExample)。

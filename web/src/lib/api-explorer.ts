@@ -38,3 +38,7 @@ export function curlExample(base: string, path: string): string {
 export function pythonExample(base: string, path: string): string {
   return `import requests\nr = requests.get("${base}/${path}")\ndata = r.json()`;
 }
+
+export function jsExample(base: string, path: string): string {
+  return `fetch("${base}/${path}")\n  .then(r => r.json())\n  .then(console.log);`;
+}
