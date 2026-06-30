@@ -8,9 +8,13 @@ Collect, clean, and normalize Taiwan road-cycling race results (2009–2026) int
 
 Read-only JSON API (CC BY 4.0, de-identified). Base: `https://tw-cycling-data.vercel.app/data/v1`, entry [`manifest.json`](https://tw-cycling-data.vercel.app/data/v1/manifest.json). Endpoints and schema in [`docs/API.md`](docs/API.md). A Python MCP server is also provided (see [`mcp-server/`](mcp-server/)).
 
+## Open Dataset
+
+De-identified row-level results (147,609 rows, 2009–2026, CC BY 4.0) are downloadable: see [Releases](https://github.com/TTigger/tw-cycling-data/releases) and [DATASET.en.md](DATASET.en.md). External identifiers are removed; data subjects can request removal via [Issues](https://github.com/TTigger/tw-cycling-data/issues).
+
 ## What this is & who it's for (Why)
 
-Taiwan's cycling results are **scattered across 4+ platforms** and mostly only queryable race-by-race — there's no single place to compare across races or follow a rider's career. This project aggregates, de-identifies and normalizes those public results into a **free, open, interactive** explorer — currently the **only** unified, analyzable view of Taiwan road-cycling results (**118,501 rows / 130 races / 2009–2026 / 6 sources**, plus an overseas collection).
+Taiwan's cycling results are **scattered across 4+ platforms** and mostly only queryable race-by-race — there's no single place to compare across races or follow a rider's career. This project aggregates, de-identifies and normalizes those public results into a **free, open, interactive** explorer — currently the **only** unified, analyzable view of Taiwan road-cycling results (**147,609 rows / 130 races / 2009–2026 / 8 sources**, plus an overseas collection).
 
 Ten pages: **Overview** (the scene at a glance) · **Explore** (filter & analyze distributions) · **Race** (leaderboard + "what % did you beat" percentile + **Race DNA** 6-axis radar with side-by-side compare + **similar-race finder** + **severity/attrition estimate** + **completion rate** (FIN/DNF/DNS, criteriums) + race search) · **Series** (**multi-station season standings** for 96聯賽/捷安特/崇越/雪巴…) · **Athletes** (22,035 trackable riders: career history, progression, **season review**, **cross-year difficulty calibration**, climber-vs-rouleur radar, **riding doppelgangers**, **1v1 head-to-head**, rivals) · **Teams** (roster, team records, activity timeline; 805 teams) · **Climbs** (VAM climbing index + cross-race Climbing King + all-time course records) · **Insights** (peak-age curve, breakout stars, race star-ratings, result converter, geographic hotspots) · **Overseas** (kept separate) · **Coverage** (source transparency + missing-race worklist). The point: turn "scattered, query-only" results into a **searchable, career-trackable, comparable** community resource. PDPA-safe (masked names only). Coverage is disclosed honestly in **[SOURCES.md](SOURCES.md)**.
 
