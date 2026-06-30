@@ -215,3 +215,11 @@ def test_age_trend_pct_excludes_master_and_unaged():
     bi = at["bands"].index("30-39"); bj = at["bands"].index("40-49")
     # denominator = in-band aged only = 3 (MASTER + None excluded)
     assert at["pct"][bi][0] == 67 and at["pct"][bj][0] == 33
+
+
+def test_build_overview_by_source_counts():
+    rows = ([_viz(s="S", plat="bravelog.tw") for _ in range(3)]
+            + [_viz(s="S", plat="tsu.com.tw") for _ in range(2)]
+            + [_viz(s="S", plat=None)])          # None excluded
+    ov = bv.build_overview(rows)
+    assert ov["by_source"] == {"bravelog.tw": 3, "tsu.com.tw": 2}
