@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+title: "tw-cycling-data: Taiwan road-cycling race results (de-identified)"
+message: "If you use this dataset, please cite it."
+type: dataset
+authors:
+  - name: "tw-cycling-data contributors"
+url: "https://github.com/TTigger/tw-cycling-data"
+repository-code: "https://github.com/TTigger/tw-cycling-data"
+license: CC-BY-4.0
+version: "2026.06.30"
+date-released: "2026-06-30"

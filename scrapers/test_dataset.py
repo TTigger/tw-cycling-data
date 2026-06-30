@@ -35,3 +35,22 @@ def test_csv_value_handles_list_and_none():
     assert D.csv_value(None) == ""
     assert D.csv_value(123) == "123"
     assert D.csv_value([{"k": 10}]) == '[{"k": 10}]'      # JSON, ensure_ascii off
+
+
+import os
+
+_ROOT = os.path.join(os.path.dirname(__file__), "..")
+
+
+def test_dataset_docs_list_every_column_and_license():
+    for fn in ("DATASET.md", "DATASET.en.md"):
+        text = open(os.path.join(_ROOT, fn), encoding="utf-8").read()
+        for c in D.PUBLISH_COLUMNS:
+            assert c in text, f"{fn} missing column {c}"
+        assert "CC BY 4.0" in text or "CC-BY-4.0" in text
+        assert "issues" in text                       # opt-out link present
+
+
+def test_citation_cff_has_license_and_type_dataset():
+    cff = open(os.path.join(_ROOT, "CITATION.cff"), encoding="utf-8").read()
+    assert "cff-version" in cff and "CC-BY-4.0" in cff and "dataset" in cff
