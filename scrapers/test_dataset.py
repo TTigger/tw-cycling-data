@@ -35,6 +35,16 @@ def test_project_row_fills_missing_with_none():
     assert out["year"] == 2024 and out["name_masked"] is None
 
 
+def test_project_row_blanks_names_that_are_not_actually_masked():
+    # properly masked CJK name (contains ○) is kept
+    assert D.project_row({"name_masked": "李○明"})["name_masked"] == "李○明"
+    # romanized name leaking a given name -> blanked
+    assert D.project_row({"name_masked": "ABBY R."})["name_masked"] is None
+    # scraping junk -> blanked
+    assert D.project_row({"name_masked": "<span c."})["name_masked"] is None
+    assert D.project_row({"name_masked": "1."})["name_masked"] is None
+
+
 def test_csv_value_handles_list_and_none():
     assert D.csv_value(None) == ""
     assert D.csv_value(123) == "123"
