@@ -9,24 +9,26 @@
    Tailwind's color namespace, so bg-*/text-*/border-* utilities emit
    var(--bg, <light>) and flip automatically when .dark sets --bg. */
 html {
-  --bg: #FAF9F5;
+  --bg: #EFF1EE;
   --surface: #FFFFFF;
-  --border: #E8E3D9;
-  --ink: #1F1E1D;
-  --muted: #6B6760;
-  --accent: #D97757;
-  --series-blue: #5B7B8A;
-  --series-sage: #7C8C6B;
+  --border: #D2D8D3;
+  --ink: #12181A;
+  --muted: #5A6560;
+  --accent: #D23120;
+  --summit: #C98A1E;
+  --series-blue: #3F6B78;
+  --series-sage: #5C7355;
 }
 html.dark {
-  --bg: #18171A;
-  --surface: #211F24;
-  --border: #34303A;
-  --ink: #ECE9E3;
-  --muted: #9C968C;
-  --accent: #E8916F;
-  --series-blue: #7FA0B0;
-  --series-sage: #9BAE89;
+  --bg: #0E1315;
+  --surface: #161D20;
+  --border: #2A3538;
+  --ink: #ECEFEC;
+  --muted: #84908A;
+  --accent: #EC3A2B;
+  --summit: #F2B84B;
+  --series-blue: #7FA9B6;
+  --series-sage: #9BB089;
 }
 html { color-scheme: light; }
 html.dark { color-scheme: dark; }
@@ -34,14 +36,15 @@ html.dark { color-scheme: dark; }
 /* Exposes: bg-bg, bg-surface, text-ink, text-muted, text-accent, border-border,
    text-series-blue, text-series-sage (each flips via the --* override above). */
 @theme inline {
-  --color-bg: var(--bg, #FAF9F5);
+  --color-bg: var(--bg, #EFF1EE);
   --color-surface: var(--surface, #FFFFFF);
-  --color-border: var(--border, #E8E3D9);
-  --color-ink: var(--ink, #1F1E1D);
-  --color-muted: var(--muted, #6B6760);
-  --color-accent: var(--accent, #D97757);
-  --color-series-blue: var(--series-blue, #5B7B8A);
-  --color-series-sage: var(--series-sage, #7C8C6B);
+  --color-border: var(--border, #D2D8D3);
+  --color-ink: var(--ink, #12181A);
+  --color-muted: var(--muted, #5A6560);
+  --color-accent: var(--accent, #D23120);
+  --color-summit: var(--summit, #C98A1E);
+  --color-series-blue: var(--series-blue, #3F6B78);
+  --color-series-sage: var(--series-sage, #5C7355);
 }
 
 /* Fonts never flip — a normal @theme emits --font-* to :root and keeps
@@ -52,9 +55,16 @@ html.dark { color-scheme: dark; }
   --font-mono: "Spline Sans Mono", ui-monospace, monospace;
 }
 
-html { background: var(--bg, #FAF9F5); color: var(--ink, #1F1E1D); font-family: var(--font-body); }
+html { background: var(--bg, #EFF1EE); color: var(--ink, #12181A); font-family: var(--font-body); }
 h1, h2, h3, .display { font-family: var(--font-display); }
 .num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+/* Ridgeline design language: type scale + section rhythm helpers. */
+.section { padding-block: clamp(4rem, 10vh, 8rem); }
+.display-xl { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.02em; line-height: 1.02; font-size: clamp(2.75rem, 6vw, 5.5rem); }
+.eyebrow { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.8125rem; color: var(--muted, #5A6560); }
+.stat { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1; }
+.hairline { border: none; height: 1px; background: var(--border, #D2D8D3); }
 
 /* Horizontal scroll affordance for wide data tables (each is a table inside an
    overflow-x-auto div). Edge shadows appear only when the table overflows and

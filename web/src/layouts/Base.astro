@@ -46,7 +46,7 @@ const ogImageUrl = new URL(ogImage, Astro.site).href;
   <body class="bg-bg text-ink font-body">
     <header class="border-b border-border px-4 py-3 sm:px-6 sm:py-4">
       <div class="flex items-center justify-between gap-3">
-        <a href="/" class="font-display text-lg text-ink sm:text-xl">{siteTitle}</a>
+        <a href="/" class="font-mono text-sm font-medium uppercase tracking-[0.12em] text-ink sm:text-base">TW·CYCLING·DATA</a>
         <div class="flex items-center gap-2">
           <CommandPalette client:load />
           <button id="themeToggle" type="button" aria-label="切換深色模式"
@@ -64,6 +64,7 @@ const ogImageUrl = new URL(ogImage, Astro.site).href;
         <a href="/api" class="py-1 hover:text-accent">API</a>
         <a href="/overseas" class="py-1 hover:text-accent">海外賽</a><a href="/coverage" class="py-1 hover:text-accent">資料涵蓋</a>
       </nav>
+      <div class="mt-2 h-px w-full bg-border"></div>
     </header>
     <script is:inline>
       (() => {
@@ -87,11 +88,17 @@ const ogImageUrl = new URL(ogImage, Astro.site).href;
       })();
     </script>
     <main class="mx-auto min-h-[80vh] max-w-6xl px-4 py-6 sm:px-6 sm:py-8"><slot /></main>
-    <footer class="mt-12 border-t border-border px-4 py-6 text-xs text-muted sm:px-6">
-      <div class="mx-auto max-w-6xl space-y-1">
-        <p>資料來源:中華民國自行車騎士協會(cyclist.org.tw)、Bravelog 運動趣(bravelog.tw)、中華民國自由車協會(cycling.org.tw)公開賽事成績,涵蓋 2009–2026。</p>
-        <p>選手姓名已去識別化(僅顯示首尾字,如 林○宇)。本站為非營利之資料整理與視覺化;如為當事人欲將成績下架,請與本站聯絡。</p>
+    <footer class="mt-16 border-t border-border px-4 py-8 text-xs text-muted sm:px-6">
+      <div class="mx-auto max-w-6xl space-y-2">
+        <p class="font-mono uppercase tracking-[0.08em] text-muted">TW·CYCLING·DATA · 2009–2026 · CC BY 4.0</p>
+        <p>資料來源:中華民國自行車騎士協會(cyclist.org.tw)、Bravelog 運動趣(bravelog.tw)、中華民國自由車協會(cycling.org.tw)等公開賽事成績。</p>
+        <p>選手姓名已去識別化(僅顯示首尾字,如 林○宇)。本站為非營利之資料整理與視覺化;當事人如欲下架,請與本站聯絡。</p>
         <p>成績僅供參考,實際以各主辦單位公告為準。</p>
+        <p class="font-mono">
+          <a class="hover:text-accent" href="/api">API</a> ·
+          <a class="hover:text-accent" href="/coverage">資料涵蓋</a> ·
+          <a class="hover:text-accent" href="https://github.com/TTigger/tw-cycling-data">GitHub</a>
+        </p>
       </div>
     </footer>
   </body>

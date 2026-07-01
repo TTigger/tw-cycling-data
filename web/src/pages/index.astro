@@ -1,9 +1,49 @@
 ---
 import Base from "../layouts/Base.astro";
+import HomeHero from "../components/home/HomeHero.tsx";
 import OverviewApp from "../components/overview/OverviewApp.tsx";
+
+const cards = [
+  { t: "我這場成績在同齡排第幾?", href: "/benchmark", k: "分齡對標" },
+  { t: "這場賽事多年來變快了嗎?", href: "/trends", k: "長期趨勢" },
+  { t: "這場難度有多高?", href: "/climbs", k: "傳奇爬坡" },
+];
 ---
 <Base>
-  <h1 class="font-display text-3xl">總覽</h1>
-  <p class="mt-2 mb-6 text-muted">台灣公路車賽事成績資料探索 · 2009–2026</p>
-  <OverviewApp client:only="react" />
+  <HomeHero client:load />
+
+  <hr class="hairline my-12" />
+
+  <section>
+    <p class="eyebrow">你可以…</p>
+    <div class="mt-4 grid gap-4 sm:grid-cols-3">
+      {cards.map((c) => (
+        <a href={c.href} class="group rounded-xl border border-border bg-surface p-6 hover:border-accent">
+          <p class="font-mono text-xs uppercase tracking-[0.08em] text-muted">{c.k}</p>
+          <p class="mt-2 text-lg text-ink">{c.t}</p>
+          <span class="mt-4 inline-block text-accent">→</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <hr class="hairline my-12" />
+
+  <section class="rounded-2xl border border-border bg-surface p-6 sm:p-8">
+    <p class="eyebrow">自由取用</p>
+    <h2 class="mt-2 font-display text-2xl text-ink">開放資料 · 唯讀 API · CC BY 4.0</h2>
+    <p class="mt-2 max-w-[52ch] text-muted">帶 CORS 的版本化 JSON,可直接跨網域 fetch;附 Python MCP server 與可下載資料集。</p>
+    <pre class="scroll-x mt-4 rounded-lg bg-bg p-3 font-mono text-xs text-ink">fetch("https://<your-domain>/data/v1/races.json").then(r =&gt; r.json())</pre>
+    <div class="mt-4 flex flex-wrap gap-3 font-mono text-sm">
+      <a class="text-accent hover:underline" href="/api">API 文件 →</a>
+      <a class="text-accent hover:underline" href="/coverage">資料涵蓋 →</a>
+    </div>
+  </section>
+
+  <hr class="hairline my-12" />
+
+  <section>
+    <p class="eyebrow">完整總覽</p>
+    <div class="mt-4"><OverviewApp client:only="react" /></div>
+  </section>
 </Base>
