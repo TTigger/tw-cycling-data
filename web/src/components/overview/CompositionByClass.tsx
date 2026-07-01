@@ -16,7 +16,7 @@ export default function CompositionByClass({ composition: c }: { composition: Co
     series: [
       { name: "男", type: "bar", stack: "g", data: c.male, itemStyle: { color: colors.secondary } },
       { name: "女", type: "bar", stack: "g", data: c.female, itemStyle: { color: colors.accent } },
-      { name: "未標示", type: "bar", stack: "g", data: c.unknown, itemStyle: { color: "#C9C2B5" } },
+      { name: "未標示", type: "bar", stack: "g", data: c.unknown, itemStyle: { color: colors.muted } },
     ],
   };
   return <EChart option={option} height={300} />;
