@@ -15,15 +15,22 @@ export default function HomeHero() {
     <section className="relative">
       <div className="relative h-[240px] w-full sm:h-[300px]">
         <Ridgeline variant="hero" data={nodes} height={300} ariaLabel="旗艦賽事中位完賽時間剖面" />
-        {/* peak labels overlaid in HTML so text is not stretched by the SVG */}
+        {/* peak labels overlaid in HTML so text is not stretched by the SVG.
+            left aligns to Ridgeline's padded node scale (pad 14 of 1000 -> 1.4%),
+            clamped to [5,95]% so edge labels do not clip; long/messy upstream
+            names are truncated with the full name on hover. */}
         <div className="pointer-events-none absolute inset-0">
-          {nodes.map((nd) => (
-            <span key={nd.label}
-              className="absolute -translate-x-1/2 translate-y-1 font-mono text-[11px] text-muted"
-              style={{ left: `${(nd.x / Math.max(nodes.length - 1, 1)) * 100}%`, bottom: 0 }}>
-              {nd.label}
-            </span>
-          ))}
+          {nodes.map((nd) => {
+            const frac = nd.x / Math.max(nodes.length - 1, 1);
+            const left = Math.min(95, Math.max(5, 1.4 + frac * 97.2));
+            return (
+              <span key={nd.x} title={nd.label}
+                className="absolute max-w-[84px] -translate-x-1/2 translate-y-1 truncate font-mono text-[11px] text-muted"
+                style={{ left: `${left}%`, bottom: 0 }}>
+                {nd.label}
+              </span>
+            );
+          })}
         </div>
       </div>
       <p className="eyebrow mt-6">TAIWAN ROAD CYCLING · 完賽數據</p>
