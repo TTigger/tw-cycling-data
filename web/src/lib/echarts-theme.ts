@@ -5,16 +5,17 @@ import * as echarts from "echarts/core";
 import { LineChart, BarChart, ScatterChart, BoxplotChart, HeatmapChart, RadarChart } from "echarts/charts";
 import {
   GridComponent, TooltipComponent, LegendComponent, TitleComponent,
-  VisualMapComponent, AxisPointerComponent,
+  VisualMapComponent, AxisPointerComponent, MarkLineComponent,
 } from "echarts/components";
 import { CanvasRenderer } from "echarts/renderers";
 
 echarts.use([
   // series used: line, bar, scatter, boxplot, heatmap, radar
   LineChart, BarChart, ScatterChart, BoxplotChart, HeatmapChart, RadarChart,
-  // option blocks used: grid, tooltip, legend, title, visualMap, axisPointer
+  // option blocks used: grid, tooltip, legend, title, visualMap, axisPointer,
+  // markLine (DistributionRidge's median/winner markers)
   GridComponent, TooltipComponent, LegendComponent, TitleComponent,
-  VisualMapComponent, AxisPointerComponent,
+  VisualMapComponent, AxisPointerComponent, MarkLineComponent,
   CanvasRenderer,
 ]);
 
