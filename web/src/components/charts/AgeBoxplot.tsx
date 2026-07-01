@@ -4,9 +4,11 @@ import ChartEmpty from "./ChartEmpty";
 import { boxByGroup } from "../../lib/aggregate";
 import { secondsToHMS } from "../../lib/format";
 import { setFilter } from "../../lib/filter-store";
+import { useChartColors } from "../../lib/chart-colors";
 import type { SlimRecord } from "../../lib/types";
 
 export default function AgeBoxplot({ rows }: { rows: SlimRecord[] }) {
+  const colors = useChartColors();
   const boxes = boxByGroup(rows.map((r) => ({ ag: r.ag, t: r.t })), 8);
   if (!boxes.length) {
     return <ChartEmpty height={320}>此條件下無分齡資料(僅競技型賽事有分齡組)</ChartEmpty>;
@@ -26,7 +28,7 @@ export default function AgeBoxplot({ rows }: { rows: SlimRecord[] }) {
     series: [{
       type: "boxplot",
       data: boxes.map((b) => [b.min, b.q1, b.median, b.q3, b.max]),
-      itemStyle: { color: "#FBEFE9", borderColor: "#D97757" },
+      itemStyle: { color: "transparent", borderColor: colors.accent },
     }],
   };
   const onEvents = {

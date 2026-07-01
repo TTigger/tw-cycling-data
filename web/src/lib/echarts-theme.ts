@@ -20,7 +20,7 @@ echarts.use([
 
 // Claude warm palette, registered once and referenced by name "claude".
 echarts.registerTheme("claude", {
-  color: ["#D23120", "#3F6B78", "#5C7355", "#C98A1E", "#8A6D9C", "#A0564B"],
+  color: ["#1E8A56", "#B8791C", "#3F6B78", "#5C7355", "#8A6D9C", "#A0564B"],
   backgroundColor: "transparent",
   animationDuration: 700, animationEasing: "cubicOut",
   textStyle: { fontFamily: "Spline Sans Mono, Hanken Grotesk, Noto Sans TC, system-ui, sans-serif", color: "#12181A" },
@@ -49,7 +49,7 @@ echarts.registerTheme("claude", {
 
 // Dark variant — same warm palette, light text + darker grid for dark mode.
 echarts.registerTheme("claude-dark", {
-  color: ["#EC3A2B", "#7FA9B6", "#9BB089", "#F2B84B", "#B597BA", "#C2766A"],
+  color: ["#3DBB7A", "#F2B84B", "#7FA9B6", "#9BB089", "#B597BA", "#C2766A"],
   backgroundColor: "transparent",
   animationDuration: 700, animationEasing: "cubicOut",
   textStyle: { fontFamily: "Spline Sans Mono, Hanken Grotesk, Noto Sans TC, system-ui, sans-serif", color: "#ECEFEC" },
