@@ -1,8 +1,10 @@
 import type { EChartsOption } from "echarts";
 import EChart from "../charts/EChart";
 import type { GeoRegion } from "../../lib/types";
+import { useChartColors } from "../../lib/chart-colors";
 
 export default function GeoHotspots({ regions }: { regions: GeoRegion[] }) {
+  const colors = useChartColors();
   if (!regions.length) return <p className="text-muted">無資料</p>;
   const top = [...regions].slice(0, 15).reverse();   // ECharts y-axis bottom-up
   const option: EChartsOption = {
@@ -18,7 +20,7 @@ export default function GeoHotspots({ regions }: { regions: GeoRegion[] }) {
     yAxis: { type: "category", data: top.map((r) => r.region) },
     series: [{
       type: "bar", data: top.map((r) => r.rows), barWidth: "62%",
-      itemStyle: { color: "#D97757" },
+      itemStyle: { color: colors.accent },
       label: { show: true, position: "right",
         formatter: (p: any) => top[p.dataIndex].races + " 場" },
     }],
