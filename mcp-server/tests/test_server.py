@@ -21,8 +21,9 @@ class FakeClient:
         return {"id": tid}
 
     def benchmarks(self):
-        return {"R": {"rn": "賽事R", "years": [2024], "cohorts": {
-            "all": {"n": 100, "type": "all", "label": "全部完賽者", "bp": [60, 70, 80, 90, 100]}}}}
+        return {"R": {"rn": "賽事R", "groups": {
+            "130K": {"years": [2024], "cohorts": {
+                "all": {"n": 100, "type": "all", "label": "全部完賽者", "bp": [60, 70, 80, 90, 100]}}}}}}
 
 
 def test_tool_impls_use_query_and_client():
@@ -56,8 +57,8 @@ def test_get_race_resolves_latest_year_and_year_param():
 
 def test_race_benchmark_impl_and_registration():
     c = FakeClient()
-    r = server.race_benchmark_impl(c, "R", "00:01:05", None, None)  # 65s
-    assert r["percentile_beat"] == 80 and r["cohort_label"] == "全部完賽者"
+    r = server.race_benchmark_impl(c, "R", "00:01:05", None, None, None)  # 65s
+    assert r["percentile_beat"] == 80 and r["cohort_label"] == "全部完賽者" and r["group"] == "130K"
 
 
 def test_server_registers_seven_tools():
