@@ -140,6 +140,12 @@ export async function loadManifest(): Promise<import("./types").Manifest> {
   if (!r.ok) throw new Error(`manifest.json ${r.status}`);
   return r.json();
 }
+export interface HomeRidgeline { unit: string; nodes: { label: string; x: number; y: number; median: number; finishers: number }[]; }
+export async function loadHomeRidgeline(): Promise<HomeRidgeline> {
+  const r = await fetch(`${API}/home_ridgeline.json`);
+  if (!r.ok) throw new Error(`home_ridgeline.json ${r.status}`);
+  return r.json();
+}
 export async function fetchEndpoint(path: string): Promise<unknown> {
   const r = await fetch(`${API}/${path}`);
   if (!r.ok) throw new Error(`${path} ${r.status}`);
