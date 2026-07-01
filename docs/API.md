@@ -41,18 +41,21 @@
 
 ## benchmarks.json
 
-對標工具的資料。鍵為 `race_key`;每場跨所有年份彙整。
+對標工具的資料。鍵為 `race_key`;每場跨所有年份彙整。`groups` 依 `result_label`(距離/項目)分層——同一賽事的不同距離/項目**不混比**;cohort(all/age/cat)在**各群組內**計算。
 
 ```jsonc
 {
   "<race_key>": {
-    "rn": "雙塔520",
-    "years": [2022, 2023, 2024, 2025],
-    "cohorts": {
-      "all":           { "n": 831, "type": "all", "label": "全部完賽者",  "bp": [t0, …, t100] },
-      "age:40-49":     { "n": 240, "type": "age", "label": "40-49 歲",    "bp": [...] },
-      "age:40-49|g:M": { "n": 205, "type": "age", "label": "40-49 歲 男", "bp": [...] },
-      "cat:男子菁英":   { "n": 88,  "type": "cat", "label": "男子菁英",     "bp": [...] }
+    "rn": "桃園繞圈賽",
+    "groups": {
+      "公路繞圈賽": {
+        "years": [2023, 2024],
+        "cohorts": {
+          "all":           { "n": 129, "type": "all", "label": "全部完賽者",  "bp": [t0, …, t100] },
+          "age:40-49":     { "n": 40,  "type": "age", "label": "40-49 歲",    "bp": [...] }
+        }
+      },
+      "個人計時賽": { "years": [...], "cohorts": { "all": { ... } } }
     }
   }
 }

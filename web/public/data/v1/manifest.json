@@ -64,7 +64,7 @@
   {
    "path": "benchmarks.json",
    "kind": "index",
-   "description": "Per-race finish-time percentile breakpoints by age/gender/category cohort."
+   "description": "Per-race finish-time percentile breakpoints, grouped by distance/event (result_label) then age/gender/category cohort."
   },
   {
    "path": "coverage.json",

@@ -16,7 +16,7 @@ ENDPOINTS = [
     {"path": "teams.json", "kind": "index", "description": "Team index: id, name, roster size."},
     {"path": "team/{team_id}.json", "kind": "detail", "description": "One team's roster + record."},
     {"path": "series.json", "kind": "index", "description": "Race series aggregates."},
-    {"path": "benchmarks.json", "kind": "index", "description": "Per-race finish-time percentile breakpoints by age/gender/category cohort."},
+    {"path": "benchmarks.json", "kind": "index", "description": "Per-race finish-time percentile breakpoints, grouped by distance/event (result_label) then age/gender/category cohort."},
     {"path": "coverage.json", "kind": "meta", "description": "Source/calendar coverage and gap triage."},
 ]
 
