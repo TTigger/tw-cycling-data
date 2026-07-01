@@ -26,6 +26,11 @@ export function histogram(values: number[], binSeconds: number): Bin[] {
   return bins;
 }
 
+/** Histogram reshaped for a density ridgeline: [binCenterSeconds, count] pairs. */
+export function densityRidge(values: number[], binSeconds: number): [number, number][] {
+  return histogram(values, binSeconds).map((b) => [(b.x0 + b.x1) / 2, b.count]);
+}
+
 export interface Box { group: string; min: number; q1: number; median: number; q3: number; max: number; n: number; }
 export function boxByGroup(rows: { ag: string | null; t: number | null }[], minN = 8): Box[] {
   const groups = new Map<string, number[]>();
