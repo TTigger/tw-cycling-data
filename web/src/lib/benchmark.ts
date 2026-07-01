@@ -1,13 +1,35 @@
-import type { BenchmarkRace } from "./types";
+import type { BenchmarkRace, BenchmarkGroup } from "./types";
 
-/** Cohorts a user can pick, most-specific first: age|gender, age, cat, all. */
-export function availableCohorts(race: BenchmarkRace) {
+/** Distance/event groups within a race, largest (by `all` count) first. */
+export function availableGroups(race: BenchmarkRace) {
+  return Object.entries(race.groups)
+    .map(([label, group]) => ({ label, group, n: group.cohorts.all?.n ?? 0 }))
+    .sort((a, b) => b.n - a.n);
+}
+
+/** Default group: the largest one. */
+export function pickDefaultGroup(race: BenchmarkRace): string {
+  return availableGroups(race)[0]?.label ?? "";
+}
+
+/** Cohorts within a group, most-specific first: age|gender, age, cat, all. */
+export function availableCohorts(group: BenchmarkGroup) {
   const rank = (key: string, type: string) =>
     type === "age" && key.includes("|g:") ? 0 : type === "age" ? 1 : type === "cat" ? 2 : 3;
-  return Object.entries(race.cohorts)
+  return Object.entries(group.cohorts)
     .map(([key, cohort]) => ({ key, cohort }))
     .sort((a, b) => rank(a.key, a.cohort.type) - rank(b.key, b.cohort.type)
       || b.cohort.n - a.cohort.n);
+}
+
+/** Default cohort key within a group: plain age band, else category, else all. */
+export function pickDefaultCohort(group: BenchmarkGroup): string {
+  const c = group.cohorts;
+  const plainAge = Object.keys(c).find((k) => c[k].type === "age" && !k.includes("|g:"));
+  if (plainAge) return plainAge;
+  const cat = Object.keys(c).find((k) => c[k].type === "cat");
+  if (cat) return cat;
+  return "all";
 }
 
 /** Parse a finish time the user typed: HH:MM:SS, MM:SS, or plain seconds.
@@ -25,14 +47,4 @@ export function parseFinishTime(s: string): number | null {
   }
   const n = Number(t);
   return Number.isInteger(n) && n >= 0 ? n : null;
-}
-
-/** Default cohort key: a plain age band if present, else a category, else all. */
-export function pickDefaultCohort(race: BenchmarkRace): string {
-  const c = race.cohorts;
-  const plainAge = Object.keys(c).find((k) => c[k].type === "age" && !k.includes("|g:"));
-  if (plainAge) return plainAge;
-  const cat = Object.keys(c).find((k) => c[k].type === "cat");
-  if (cat) return cat;
-  return "all";
 }

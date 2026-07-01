@@ -256,26 +256,31 @@ def build_overview(viz, top_n=8, women_min=50):
             "by_source": dict(src_counts.most_common())}
 
 
-def build_crossyear(viz):
-    """Per-race cross-year winner/median finish time, so the race page no longer
-    loads the full viz.json just to chart one race. Mirrors racedetail.crossYear."""
-    by = defaultdict(lambda: defaultdict(list))   # rk -> y -> [t]
-    for r in viz:
-        if r["rk"] and r["y"] is not None and r["t"] is not None:
-            by[r["rk"]][r["y"]].append(r["t"])
-    out = {}
-    for rk, years in by.items():
-        if len(years) < 2:                        # cross-year card needs >=2 years
+def build_crossyear(records):
+    """Per (race_key, result_label) cross-year winner/median/quartiles. Grouping
+    by result_label (the distance/event) so a race that mixes distances (e.g. TT
+    vs road) never blends unlike groups. Reads finisher records (which carry
+    result_label; the slim viz rows do not)."""
+    by = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))  # rk -> group -> y -> [t]
+    for r in records:
+        rk, y, t = r.get("race_key"), r.get("year"), r.get("finish_seconds")
+        if not rk or y is None or t is None:
             continue
-        rows = []
-        for y in sorted(years):
-            ts = sorted(years[y])
-            rows.append({"y": y, "winner": ts[0],
-                         "median": round(_quantile(ts, 0.5)),
-                         "p25": round(_quantile(ts, 0.25)),
-                         "p75": round(_quantile(ts, 0.75)),
-                         "n": len(ts)})
-        out[rk] = rows
+        group = r.get("result_label") or "全部"
+        by[rk][group][y].append(int(t))
+    out = {}
+    for rk, groups in by.items():
+        gout = {}
+        for group, years in groups.items():
+            if len(years) < 2:                     # each group needs >=2 years
+                continue
+            gout[group] = [{"y": y, "winner": (ts := sorted(years[y]))[0],
+                            "median": round(_quantile(ts, 0.5)),
+                            "p25": round(_quantile(ts, 0.25)),
+                            "p75": round(_quantile(ts, 0.75)),
+                            "n": len(ts)} for y in sorted(years)]
+        if gout:
+            out[rk] = gout
     return out
 
 
@@ -301,7 +306,7 @@ def main():
     with open(os.path.join(OUT, "overview.json"), "w", encoding="utf-8") as f:
         json.dump(build_overview(viz), f, ensure_ascii=False, separators=(",", ":"))
     with open(os.path.join(OUT, "race_crossyear.json"), "w", encoding="utf-8") as f:
-        json.dump(build_crossyear(viz), f, ensure_ascii=False, separators=(",", ":"))
+        json.dump(build_crossyear(finishers), f, ensure_ascii=False, separators=(",", ":"))
     groups = defaultdict(list)
     for r in finishers:
         groups[race_file_name(r.get("race_key"), r.get("year"))].append(r)

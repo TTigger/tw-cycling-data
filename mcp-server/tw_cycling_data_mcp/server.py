@@ -50,11 +50,11 @@ def get_team_impl(client, team_id):
     return client.team(team_id)
 
 
-def race_benchmark_impl(client, race_key, finish_time, age_band, gender):
+def race_benchmark_impl(client, race_key, finish_time, result_label, age_band, gender):
     seconds = _query_module.hms_to_seconds(finish_time)
     if seconds is None:
         return {"error": f"could not parse finish_time '{finish_time}' (use HH:MM:SS / MM:SS / seconds)"}
-    return _query_module.benchmark_lookup(client.benchmarks(), race_key, seconds, age_band, gender)
+    return _query_module.benchmark_lookup(client.benchmarks(), race_key, seconds, result_label, age_band, gender)
 
 
 # ---- MCP tools ----
@@ -98,11 +98,12 @@ def get_team(team_id: str) -> dict:
 
 
 @mcp.tool()
-def race_benchmark(race_key: str, finish_time: str, age_band: str = None, gender: str = None) -> dict:
-    """Percentile a finish time beats within a race's age/gender/category cohort.
-    finish_time accepts HH:MM:SS / MM:SS / seconds; age_band like '40-49'; gender 'M'/'F'.
-    PDPA: aggregate only."""
-    return race_benchmark_impl(_client, race_key, finish_time, age_band, gender)
+def race_benchmark(race_key: str, finish_time: str, result_label: str = None,
+                   age_band: str = None, gender: str = None) -> dict:
+    """Percentile a finish time beats within a race's distance/event group and
+    age/gender/category cohort. result_label picks the distance group (default:
+    the largest); finish_time accepts HH:MM:SS / MM:SS / seconds. PDPA: aggregate only."""
+    return race_benchmark_impl(_client, race_key, finish_time, result_label, age_band, gender)
 
 
 def tool_names() -> list[str]:
