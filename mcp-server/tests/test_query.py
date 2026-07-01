@@ -48,21 +48,21 @@ def test_percentile_beaten_counts_strictly_slower():
     assert query.percentile_beaten(100, bp) == 0   # slower than/equal all
 
 
-def test_benchmark_lookup_picks_cohort_with_fallback():
-    bm = {"R": {"rn": "賽事R", "years": [2024],
-                "cohorts": {
-                    "all": {"n": 100, "type": "all", "label": "全部完賽者", "bp": [60, 70, 80, 90, 100]},
-                    "age:40-49": {"n": 60, "type": "age", "label": "40-49 歲", "bp": [50, 60, 70, 80, 90]},
-                    "age:40-49|g:M": {"n": 50, "type": "age", "label": "40-49 歲 男", "bp": [40, 50, 60, 70, 80]},
-                }}}
-    # most specific available
-    r = query.benchmark_lookup(bm, "R", 55, age_band="40-49", gender="M")
-    assert r["cohort_label"] == "40-49 歲 男" and r["n"] == 50
-    # gender absent in data -> fall back to age band
-    r2 = query.benchmark_lookup(bm, "R", 55, age_band="40-49", gender="F")
-    assert r2["cohort_label"] == "40-49 歲"
-    # no age -> all
-    r3 = query.benchmark_lookup(bm, "R", 75)
-    assert r3["cohort_label"] == "全部完賽者" and "percentile_beat" in r3
+def test_benchmark_lookup_group_and_cohort_fallback():
+    bm = {"R": {"rn": "賽事R", "groups": {
+        "130K": {"years": [2024], "cohorts": {
+            "all": {"n": 100, "type": "all", "label": "全部完賽者", "bp": [60, 70, 80, 90, 100]},
+            "age:40-49": {"n": 60, "type": "age", "label": "40-49 歲", "bp": [50, 60, 70, 80, 90]}}},
+        "50K": {"years": [2024], "cohorts": {
+            "all": {"n": 40, "type": "all", "label": "全部完賽者", "bp": [30, 40, 50, 60, 70]}}}}}}
+    # explicit group + cohort
+    r = query.benchmark_lookup(bm, "R", 55, result_label="130K", age_band="40-49")
+    assert r["group"] == "130K" and r["cohort_label"] == "40-49 歲" and r["n"] == 60
+    # no group given -> default largest (130K, all.n=100)
+    r2 = query.benchmark_lookup(bm, "R", 75)
+    assert r2["group"] == "130K" and r2["cohort_label"] == "全部完賽者"
+    # explicit smaller group
+    r3 = query.benchmark_lookup(bm, "R", 45, result_label="50K")
+    assert r3["group"] == "50K" and r3["percentile_beat"] == 60
     # unknown race
     assert "error" in query.benchmark_lookup(bm, "NOPE", 75)

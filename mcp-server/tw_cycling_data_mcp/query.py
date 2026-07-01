@@ -69,13 +69,18 @@ def percentile_beaten(seconds, sorted_times):
     return round(slower / len(sorted_times) * 100)
 
 
-def benchmark_lookup(benchmarks, race_key, seconds, age_band=None, gender=None):
-    """Pick the most-specific available cohort (age|gender -> age -> all) and
-    return the percentile the given finish time beats."""
+def benchmark_lookup(benchmarks, race_key, seconds, result_label=None, age_band=None, gender=None):
+    """Pick a distance/event group (given, else the largest by `all` count) then
+    the most-specific available cohort (age|gender -> age -> all) within it."""
     race = benchmarks.get(race_key)
     if not race:
         return {"error": f"no benchmark for race_key '{race_key}'"}
-    cohorts = race["cohorts"]
+    groups = race["groups"]
+    if result_label and result_label in groups:
+        group_key = result_label
+    else:
+        group_key = max(groups, key=lambda g: groups[g]["cohorts"].get("all", {}).get("n", 0))
+    cohorts = groups[group_key]["cohorts"]
     candidates = []
     if age_band and gender:
         candidates.append(f"age:{age_band}|g:{gender}")
@@ -84,10 +89,9 @@ def benchmark_lookup(benchmarks, race_key, seconds, age_band=None, gender=None):
     candidates.append("all")
     key = next((k for k in candidates if k in cohorts), None)
     if key is None:
-        return {"error": f"no usable cohort for race '{race_key}'"}
+        return {"error": f"no usable cohort for race '{race_key}' group '{group_key}'"}
     c = cohorts[key]
-    return {
-        "race_key": race_key, "rn": race["rn"], "years": race["years"],
-        "cohort_label": c["label"], "cohort_type": c["type"], "n": c["n"],
-        "percentile_beat": percentile_beaten(seconds, c["bp"]),
-    }
+    return {"race_key": race_key, "rn": race["rn"], "group": group_key,
+            "years": groups[group_key]["years"], "cohort_label": c["label"],
+            "cohort_type": c["type"], "n": c["n"],
+            "percentile_beat": percentile_beaten(seconds, c["bp"])}
