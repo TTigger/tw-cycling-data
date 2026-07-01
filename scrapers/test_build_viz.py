@@ -186,16 +186,44 @@ def _viz(**kw):
     return base
 
 
+def _fin(rk, y, t, label):
+    return {"race_key": rk, "year": y, "finish_seconds": t, "result_label": label,
+            "status": None}
+
+
 def test_build_crossyear_adds_band_and_count():
-    rows = ([_viz(y=2023, t=t) for t in (100, 200, 300, 400, 500)]
-            + [_viz(y=2024, t=t) for t in (110, 210, 310)])
-    cy = bv.build_crossyear(rows)["R"]
+    rows = ([_fin("R", 2023, t, None) for t in (100, 200, 300, 400, 500)]
+            + [_fin("R", 2024, t, None) for t in (110, 210, 310)])
+    cy = bv.build_crossyear(rows)["R"]["全部"]
     y2023 = next(r for r in cy if r["y"] == 2023)
     assert y2023["winner"] == 100 and y2023["n"] == 5
     assert y2023["p25"] <= y2023["median"] <= y2023["p75"]
     assert y2023["median"] == 300                 # _quantile(...,0.5) of 100..500
     y2024 = next(r for r in cy if r["y"] == 2024)
     assert y2024["n"] == 3 and y2024["winner"] == 110
+
+
+def test_build_crossyear_groups_by_result_label():
+    rows = ([_fin("R", 2023, t, "TT") for t in (80, 90, 100)]
+            + [_fin("R", 2024, t, "TT") for t in (82, 92)]
+            + [_fin("R", 2023, t, "公路") for t in (900, 1000, 1100)]
+            + [_fin("R", 2024, t, "公路") for t in (950, 1050)])
+    cy = bv.build_crossyear(rows)["R"]
+    assert set(cy) == {"TT", "公路"}
+    tt2023 = next(p for p in cy["TT"] if p["y"] == 2023)
+    assert tt2023["winner"] == 80 and tt2023["median"] == 90 and tt2023["n"] == 3
+    rd2023 = next(p for p in cy["公路"] if p["y"] == 2023)
+    assert rd2023["winner"] == 900 and rd2023["median"] == 1000
+    # a group with <2 years is dropped
+    rows2 = [_fin("S", 2024, t, "只有一年") for t in (100, 200, 300)]
+    assert "S" not in bv.build_crossyear(rows2)
+
+
+def test_build_crossyear_missing_label_is_all_group():
+    rows = ([_fin("R", 2023, t, None) for t in (100, 200)]
+            + [_fin("R", 2024, t, None) for t in (110, 210)])
+    cy = bv.build_crossyear(rows)["R"]
+    assert set(cy) == {"全部"}
 
 
 def test_gender_trend_counts_known_only():
