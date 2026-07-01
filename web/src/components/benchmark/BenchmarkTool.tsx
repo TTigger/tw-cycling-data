@@ -7,6 +7,8 @@ import {
 } from "../../lib/benchmark";
 import { percentileBeaten, secondsToHMS } from "../../lib/format";
 import Skeleton from "../Skeleton";
+import DistributionRidge from "../charts/DistributionRidge";
+import { useChartColors } from "../../lib/chart-colors";
 
 /** Latest year across all groups in a race. */
 function raceMaxYear(r: BenchmarkFile[string]): number {
@@ -57,6 +59,14 @@ function Tool({ data }: { data: BenchmarkFile }) {
 
   const secs = parseFinishTime(time);
   const beat = cohort && secs != null ? percentileBeaten(secs, cohort.bp) : null;
+
+  const colors = useChartColors();
+  const ridgeMarkers = cohort ? [
+    { value: cohort.bp[50], label: "中位", color: colors.secondary },
+    ...(secs != null && beat != null
+      ? [{ value: secs, label: "你", color: colors.accent, labelColor: colors.accent }]
+      : []),
+  ] : [];
 
   const onPickRace = (v: string) => { setRk(v); setGroupKey(""); setCohortKey(""); };
 
@@ -117,16 +127,15 @@ function Tool({ data }: { data: BenchmarkFile }) {
         </label>
       )}
 
+      {cohort && (
+        <DistributionRidge values={cohort.bp} height={200} markers={ridgeMarkers} />
+      )}
+
       {cohort && beat != null && (
         <div className="space-y-2 rounded-lg border border-accent/40 bg-accent/10 px-3 py-3 text-ink">
           <div>在「{cohort.label}」({cohort.n} 人),你贏過 <b className="num text-accent">{beat}%</b> 的人。</div>
           <div className="text-xs text-muted">
             最快 {secondsToHMS(cohort.bp[0])}・中位 {secondsToHMS(cohort.bp[50])}・最慢 {secondsToHMS(cohort.bp[100])}
-          </div>
-          {/* distribution bar: P0..P100 with your marker */}
-          <div className="relative h-2 rounded bg-border">
-            <div className="absolute top-0 h-2 w-0.5 bg-accent"
-              style={{ left: `${Math.min(100, Math.max(0, 100 - beat))}%` }} aria-hidden />
           </div>
           {cohort.n < 50 && <div className="text-xs text-accent">樣本較少({cohort.n} 人),僅供參考。</div>}
         </div>
