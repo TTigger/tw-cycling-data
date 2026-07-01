@@ -55,7 +55,7 @@ html.dark { color-scheme: dark; }
   --font-mono: "Spline Sans Mono", ui-monospace, monospace;
 }
 
-html { background: var(--bg, #FAF9F5); color: var(--ink, #1F1E1D); font-family: var(--font-body); }
+html { background: var(--bg, #EFF1EE); color: var(--ink, #12181A); font-family: var(--font-body); }
 h1, h2, h3, .display { font-family: var(--font-display); }
 .num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
 
