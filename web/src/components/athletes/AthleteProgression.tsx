@@ -34,7 +34,7 @@ export default function AthleteProgression({ history }: { history: AthleteHistor
         data: pts.map((p) => p.pct), itemStyle: { color: colors.accent },
         areaStyle: { color: colors.accent, opacity: 0.10 } },
       { name: "出賽場次", type: "bar", yAxisIndex: 1, barWidth: "36%",
-        data: pts.map((p) => p.races), itemStyle: { color: "rgba(91,123,138,0.45)" } },
+        data: pts.map((p) => p.races), itemStyle: { color: colors.secondary, opacity: 0.45 } },
     ],
   };
   return <EChart option={option} height={260} />;

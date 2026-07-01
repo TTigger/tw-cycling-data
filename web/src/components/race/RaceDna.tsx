@@ -47,7 +47,7 @@ export default function RaceDna(
     radar: {
       indicator: DNA_AXES.map((a) => ({ name: a.label, max: 100 })),
       radius: "62%", axisName: { fontSize: 11 },
-      splitArea: { areaStyle: { color: ["rgba(0,0,0,0)", "rgba(217,119,87,0.04)"] } },
+      splitArea: { areaStyle: { color: ["rgba(0,0,0,0)", "rgba(128,128,128,0.05)"] } },
     },
     legend: { bottom: 0, data: series.map((s) => s.name) },
     tooltip: {
