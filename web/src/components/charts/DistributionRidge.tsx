@@ -5,7 +5,7 @@ import { densityRidge } from "../../lib/aggregate";
 import { secondsToHMS } from "../../lib/format";
 import { useChartColors } from "../../lib/chart-colors";
 
-export interface RidgeMarker { value: number; label: string; color?: string; }
+export interface RidgeMarker { value: number; label: string; color?: string; labelColor?: string; }
 
 /** Finish-time distribution as a smooth density ridge (accent line + faint fill),
  * with optional vertical markers (median / winner / your time). Theme-aware. */
@@ -35,7 +35,7 @@ export default function DistributionRidge({
         symbol: "none",
         data: markers.map((m) => ({
           xAxis: m.value,
-          label: { formatter: m.label, color: colors.ink, position: "insideEndTop" as const },
+          label: { formatter: m.label, color: m.labelColor ?? colors.ink, position: "insideEndTop" as const },
           lineStyle: { color: m.color ?? colors.secondary, type: "dashed" as const },
         })),
       } : undefined,
