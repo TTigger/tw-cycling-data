@@ -66,3 +66,12 @@ def test_benchmark_lookup_group_and_cohort_fallback():
     assert r3["group"] == "50K" and r3["percentile_beat"] == 60
     # unknown race
     assert "error" in query.benchmark_lookup(bm, "NOPE", 75)
+
+
+def test_benchmark_lookup_age_gender_within_group():
+    bm = {"R": {"rn": "R", "years": [2024], "groups": {"g1": {"years": [2024], "cohorts": {
+        "all": {"n": 100, "type": "all", "label": "全部", "bp": [60, 70, 80, 90, 100]},
+        "age:40-49": {"n": 60, "type": "age", "label": "40-49", "bp": [50, 60, 70, 80, 90]},
+        "age:40-49|g:M": {"n": 50, "type": "age", "label": "40-49 男", "bp": [40, 50, 60, 70, 80]}}}}}}
+    r = query.benchmark_lookup(bm, "R", 55, age_band="40-49", gender="M")
+    assert r["cohort_label"] == "40-49 男" and r["group"] == "g1"

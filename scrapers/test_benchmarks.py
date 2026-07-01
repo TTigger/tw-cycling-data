@@ -89,3 +89,16 @@ def test_build_index_drops_group_without_enough_finishers():
              "category_raw": None, "finish_seconds": 3600, "result_label": "tiny",
              "race_name_canonical": "賽事R", "status": None}]
     assert "R" not in B.build_index(rows, min_n=20)  # only 1 finisher in the only group
+
+
+def test_build_index_keeps_race_when_one_group_qualifies():
+    # one group meets n>=20, a sibling group does not -> race kept, only the
+    # qualifying group appears (final-review coverage gap).
+    rows = [{"race_key": "R", "year": 2024, "age_band": None, "gender": None,
+             "category_raw": None, "finish_seconds": 3600 + i, "result_label": "big",
+             "race_name_canonical": "賽事R", "status": None} for i in range(25)]
+    rows += [{"race_key": "R", "year": 2024, "age_band": None, "gender": None,
+              "category_raw": None, "finish_seconds": 1800 + i, "result_label": "small",
+              "race_name_canonical": "賽事R", "status": None} for i in range(5)]
+    idx = B.build_index(rows, min_n=20)
+    assert set(idx["R"]["groups"]) == {"big"}
