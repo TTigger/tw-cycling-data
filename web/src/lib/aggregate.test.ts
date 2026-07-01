@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { quantile, histogram, boxByGroup, raceSpread, distSpeedPoints, facetOptions } from "./aggregate";
+import { quantile, histogram, boxByGroup, raceSpread, distSpeedPoints, facetOptions, densityRidge } from "./aggregate";
 
 describe("quantile", () => {
   it("odd/even/edges", () => {
@@ -70,6 +70,16 @@ describe("distSpeedPoints", () => {
       { dist: 50, spd: null, rc: "市民" },
     ]);
     expect(pts).toEqual([{ dist: 100, spd: 30, rc: "競賽" }]);
+  });
+});
+
+describe("densityRidge", () => {
+  it("returns [binCenter, count] pairs from the histogram (300s bins)", () => {
+    // 3 values in bin [0,300) center 150; 2 values in bin [300,600) center 450
+    expect(densityRidge([10, 20, 30, 350, 360], 300)).toEqual([[150, 3], [450, 2]]);
+  });
+  it("empty input -> []", () => {
+    expect(densityRidge([], 300)).toEqual([]);
   });
 });
 
