@@ -3,9 +3,11 @@ import EChart from "../charts/EChart";
 import ChartEmpty from "../charts/ChartEmpty";
 import { histogram } from "../../lib/aggregate";
 import { secondsToHMS } from "../../lib/format";
+import { useChartColors } from "../../lib/chart-colors";
 import type { DetailRow } from "../../lib/types";
 
 export default function RaceTimeHistogram({ rows }: { rows: DetailRow[] }) {
+  const colors = useChartColors();
   const values = rows.map((r) => r.t).filter((t): t is number => t != null);
   const bins = histogram(values, 300);
   if (!bins.length) return <ChartEmpty height={280}>無時間資料</ChartEmpty>;
@@ -18,7 +20,7 @@ export default function RaceTimeHistogram({ rows }: { rows: DetailRow[] }) {
     xAxis: { type: "category", data: bins.map((b) => secondsToHMS(b.x0)),
       axisLabel: { interval: Math.max(0, Math.floor(bins.length / 8)) } },
     yAxis: { type: "value", name: "人數" },
-    series: [{ type: "bar", data: bins.map((b) => b.count), itemStyle: { color: "#D97757" }, barWidth: "90%" }],
+    series: [{ type: "bar", data: bins.map((b) => b.count), itemStyle: { color: colors.accent }, barWidth: "90%" }],
   };
   return <EChart option={option} height={280} />;
 }

@@ -2,9 +2,11 @@ import type { EChartsOption } from "echarts";
 import EChart from "../charts/EChart";
 import ChartEmpty from "../charts/ChartEmpty";
 import { teamStrength } from "../../lib/racedetail";
+import { useChartColors } from "../../lib/chart-colors";
 import type { DetailRow } from "../../lib/types";
 
 export default function TeamStrength({ rows }: { rows: DetailRow[] }) {
+  const colors = useChartColors();
   const teams = teamStrength(rows, 12, 10);
   if (!teams.length) return <ChartEmpty height={300}>無車隊資料</ChartEmpty>;
   const option: EChartsOption = {
@@ -14,7 +16,7 @@ export default function TeamStrength({ rows }: { rows: DetailRow[] }) {
     xAxis: { type: "value", name: "前 10 名人次" },
     yAxis: { type: "category", inverse: true, data: teams.map((t) => t.team),
       axisLabel: { width: 150, overflow: "truncate" } },
-    series: [{ type: "bar", data: teams.map((t) => t.top), itemStyle: { color: "#7C8C6B" }, barWidth: "70%" }],
+    series: [{ type: "bar", data: teams.map((t) => t.top), itemStyle: { color: colors.accent }, barWidth: "70%" }],
   };
   return <EChart option={option} height={300} />;
 }

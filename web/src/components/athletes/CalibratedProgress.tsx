@@ -4,9 +4,11 @@ import EChart from "../charts/EChart";
 import { loadRaceDifficulty } from "../../lib/data-load";
 import { calibratableRaces, calibratedSeries } from "../../lib/difficulty";
 import { secondsToHMS } from "../../lib/format";
+import { useChartColors } from "../../lib/chart-colors";
 import type { AthleteHistoryRow, RaceDifficultyFile } from "../../lib/types";
 
 export default function CalibratedProgress({ history }: { history: AthleteHistoryRow[] }) {
+  const colors = useChartColors();
   const [diffFile, setDiffFile] = useState<RaceDifficultyFile | null>(null);
   const [err, setErr] = useState(false);
   const [rk, setRk] = useState<string | null>(null);
@@ -54,7 +56,7 @@ export default function CalibratedProgress({ history }: { history: AthleteHistor
           { name: "原始完賽", type: "line", smooth: true, data: series.map((s) => s.raw),
             itemStyle: { color: "rgba(91,123,138,0.7)" }, lineStyle: { type: "dashed" } },
           { name: "難度校正後", type: "line", smooth: true, data: series.map((s) => s.calibrated),
-            itemStyle: { color: "#D97757" }, areaStyle: { color: "rgba(217,119,87,0.10)" } },
+            itemStyle: { color: colors.accent }, areaStyle: { color: colors.accent, opacity: 0.10 } },
         ],
       }
     : null;
