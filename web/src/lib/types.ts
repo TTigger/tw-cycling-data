@@ -152,7 +152,8 @@ export interface Insights {
 }
 
 export interface Cohort { n: number; type: "all" | "age" | "cat"; label: string; bp: number[]; }
-export interface BenchmarkRace { rn: string; years: number[]; cohorts: Record<string, Cohort>; }
+export interface BenchmarkGroup { years: number[]; cohorts: Record<string, Cohort>; }
+export interface BenchmarkRace { rn: string; groups: Record<string, BenchmarkGroup>; }
 export type BenchmarkFile = Record<string, BenchmarkRace>;
 
 export interface ManifestEndpoint { path: string; kind: string; description: string; }

@@ -4,7 +4,7 @@ import type { SlimRecord } from "./types";
  * — lets the landing page skip the 24MB viz.json. The functions below still
  * document & test the same aggregations (used by overview.test.ts). */
 export interface CrossYearPoint { y: number; winner: number; median: number; p25: number; p75: number; n: number; }
-export type CrossYearMap = Record<string, CrossYearPoint[]>;
+export type CrossYearMap = Record<string, Record<string, CrossYearPoint[]>>;
 
 export interface GenderTrend { years: number[]; f: number[]; known: number[]; }
 export interface AgeTrend { years: number[]; bands: string[]; pct: number[][]; }
