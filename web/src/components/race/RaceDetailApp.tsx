@@ -128,7 +128,7 @@ export default function RaceDetailApp({ initRk, initY }: { initRk?: string; init
             <div className="space-y-4">
               <div className="grid gap-4 lg:grid-cols-2">
                 <Card title="完賽時間分布" hint="每 5 分鐘一桶"><RaceTimeHistogram rows={detail} /></Card>
-                {sel.multi_year && <Card title="跨年:變快了嗎" hint="冠軍、中位與 P25–P75 分布"><CrossYearTrend cy={crossYear[sel.rk] ?? []} /></Card>}
+                {sel.multi_year && <Card title="跨年:變快了嗎" hint="冠軍、中位與 P25–P75 分布"><CrossYearTrend cy={crossYear[sel.rk] ?? {}} /></Card>}
                 {sel.has_team && <Card title="車隊戰力榜" hint="前 10 名人次"><TeamStrength rows={detail} /></Card>}
               </div>
               <RaceSeverity rk={sel.rk} year={sel.y} />
