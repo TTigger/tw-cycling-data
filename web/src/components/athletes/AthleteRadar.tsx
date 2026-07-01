@@ -32,7 +32,7 @@ export default function AthleteRadar({ traits }: { traits: Record<string, Athlet
         radar: {
           indicator: types.map((t) => ({ name: `${LABELS[t]}\n(${traits[t].n})`, max: 100 })),
           radius: "62%", axisName: { fontSize: 11 },
-          splitArea: { areaStyle: { color: ["rgba(0,0,0,0)", "rgba(217,119,87,0.04)"] } },
+          splitArea: { areaStyle: { color: ["rgba(0,0,0,0)", "rgba(128,128,128,0.05)"] } },
         },
         tooltip: {},
         series: [{

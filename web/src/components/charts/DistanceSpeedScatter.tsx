@@ -2,9 +2,11 @@ import type { EChartsOption } from "echarts";
 import EChart from "./EChart";
 import ChartEmpty from "./ChartEmpty";
 import { distSpeedPoints } from "../../lib/aggregate";
+import { useChartColors } from "../../lib/chart-colors";
 import type { SlimRecord } from "../../lib/types";
 
 export default function DistanceSpeedScatter({ rows }: { rows: SlimRecord[] }) {
+  const colors = useChartColors();
   const pts = distSpeedPoints(rows.map((r) => ({ dist: r.dist, spd: r.spd, rc: r.rc })));
   if (!pts.length) {
     return <ChartEmpty height={320}>此條件下無距離/速度資料(約涵蓋 48% 賽事)</ChartEmpty>;
@@ -17,7 +19,7 @@ export default function DistanceSpeedScatter({ rows }: { rows: SlimRecord[] }) {
     series: [{
       type: "scatter", symbolSize: 6,
       data: pts.map((p) => [p.dist, p.spd]),
-      itemStyle: { color: "rgba(217,119,87,0.5)" },
+      itemStyle: { color: colors.accent, opacity: 0.5 },
     }],
   };
   return <EChart option={option} />;
