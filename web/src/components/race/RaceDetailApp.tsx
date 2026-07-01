@@ -9,7 +9,9 @@ import RacePicker from "./RacePicker";
 import Leaderboard from "./Leaderboard";
 import PercentileWidget from "./PercentileWidget";
 import Podium from "./Podium";
-import RaceTimeHistogram from "./RaceTimeHistogram";
+import DistributionRidge from "../charts/DistributionRidge";
+import { quantile } from "../../lib/aggregate";
+import { useChartColors } from "../../lib/chart-colors";
 import CrossYearTrend from "./CrossYearTrend";
 import TeamStrength from "./TeamStrength";
 import RaceDna from "./RaceDna";
@@ -38,6 +40,7 @@ export default function RaceDetailApp({ initRk, initY }: { initRk?: string; init
   const [detail, setDetail] = useState<DetailRow[] | null>(null);
   const [tab, setTab] = useState("results");
   const [err, setErr] = useState<string | null>(null);
+  const colors = useChartColors();
 
   useEffect(() => {
     Promise.all([loadRaces(), loadCrossYear()]).then(([rs, cy]) => {
@@ -127,7 +130,17 @@ export default function RaceDetailApp({ initRk, initY }: { initRk?: string; init
           {tab === "analysis" && (
             <div className="space-y-4">
               <div className="grid gap-4 lg:grid-cols-2">
-                <Card title="完賽時間分布" hint="每 5 分鐘一桶"><RaceTimeHistogram rows={detail} /></Card>
+                <Card title="完賽時間分布" hint="每 5 分鐘一桶 · 中位與冠軍標於稜線">
+                  {(() => {
+                    const ts = detail.map((r) => r.t).filter((t): t is number => t != null);
+                    const sorted = [...ts].sort((a, b) => a - b);
+                    const markers = sorted.length ? [
+                      { value: quantile(sorted, 0.5), label: "中位", color: colors.secondary },
+                      { value: sorted[0], label: "冠軍", color: colors.ink },
+                    ] : [];
+                    return <DistributionRidge values={ts} markers={markers} />;
+                  })()}
+                </Card>
                 {sel.multi_year && <Card title="跨年:變快了嗎" hint="冠軍、中位與 P25–P75 分布"><CrossYearTrend cy={crossYear[sel.rk] ?? {}} /></Card>}
                 {sel.has_team && <Card title="車隊戰力榜" hint="前 10 名人次"><TeamStrength rows={detail} /></Card>}
               </div>
