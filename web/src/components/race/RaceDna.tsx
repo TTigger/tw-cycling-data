@@ -3,12 +3,14 @@ import type { EChartsOption } from "echarts";
 import EChart from "../charts/EChart";
 import { loadRaceDna } from "../../lib/data-load";
 import { DNA_AXES, dnaFor, dnaRadarValues, dnaRaceList, similarRaces } from "../../lib/race-dna";
+import { useChartColors } from "../../lib/chart-colors";
 import type { RaceDnaFile } from "../../lib/types";
 import { raceHref } from "../../lib/race-url";
 
 export default function RaceDna(
   { rk, year, name }: { rk: string; year: number | null; name: string },
 ) {
+  const colors = useChartColors();
   const [file, setFile] = useState<RaceDnaFile | null>(null);
   const [err, setErr] = useState(false);
   const [cmp, setCmp] = useState<string>(""); // index into `options` of the compare pick
@@ -54,7 +56,7 @@ export default function RaceDna(
         `${p.name}<br/>` +
         DNA_AXES.map((a, i) => `${a.label}:${p.value[i]}`).join("<br/>"),
     },
-    color: ["#D97757", "#5B7B8A"],
+    color: [colors.accent, colors.secondary],
     series: [{
       type: "radar", data: series,
       areaStyle: { opacity: 0.12 }, lineStyle: { width: 2 },

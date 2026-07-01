@@ -1,5 +1,6 @@
 import type { EChartsOption } from "echarts";
 import EChart from "../charts/EChart";
+import { useChartColors } from "../../lib/chart-colors";
 import type { AthleteTrait } from "../../lib/types";
 
 const LABELS: Record<string, string> = { climb: "爬坡", crit: "繞圈", tt: "計時", road: "公路" };
@@ -18,6 +19,7 @@ function specialty(traits: Record<string, AthleteTrait>): string | null {
 }
 
 export default function AthleteRadar({ traits }: { traits: Record<string, AthleteTrait> }) {
+  const colors = useChartColors();
   const types = ORDER.filter((t) => traits[t] && traits[t].n >= 2);
   const label = specialty(traits);
 
@@ -36,7 +38,7 @@ export default function AthleteRadar({ traits }: { traits: Record<string, Athlet
         series: [{
           type: "radar",
           data: [{ value: types.map((t) => traits[t].pct), name: "贏過全場 %" }],
-          itemStyle: { color: "#D97757" }, areaStyle: { color: "rgba(217,119,87,0.18)" },
+          itemStyle: { color: colors.accent }, areaStyle: { color: colors.accent, opacity: 0.18 },
         }],
       };
       return <EChart option={option} height={280} />;

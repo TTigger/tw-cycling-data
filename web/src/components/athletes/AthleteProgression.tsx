@@ -2,9 +2,11 @@ import type { EChartsOption } from "echarts";
 import EChart from "../charts/EChart";
 import ChartEmpty from "../charts/ChartEmpty";
 import { progression } from "../../lib/athletes";
+import { useChartColors } from "../../lib/chart-colors";
 import type { AthleteHistoryRow } from "../../lib/types";
 
 export default function AthleteProgression({ history }: { history: AthleteHistoryRow[] }) {
+  const colors = useChartColors();
   const pts = progression(history).filter((p) => p.pct != null);
   if (pts.length < 2)
     return <ChartEmpty height={260}>資料不足,無法畫進步曲線</ChartEmpty>;
@@ -29,8 +31,8 @@ export default function AthleteProgression({ history }: { history: AthleteHistor
     ],
     series: [
       { name: "最佳同場勝過%", type: "line", smooth: true, yAxisIndex: 0,
-        data: pts.map((p) => p.pct), itemStyle: { color: "#D97757" },
-        areaStyle: { color: "rgba(217,119,87,0.10)" } },
+        data: pts.map((p) => p.pct), itemStyle: { color: colors.accent },
+        areaStyle: { color: colors.accent, opacity: 0.10 } },
       { name: "出賽場次", type: "bar", yAxisIndex: 1, barWidth: "36%",
         data: pts.map((p) => p.races), itemStyle: { color: "rgba(91,123,138,0.45)" } },
     ],
