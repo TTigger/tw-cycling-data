@@ -237,6 +237,7 @@ git commit -m "feat(palette): athletes/ + race/ charts use theme-aware colors"
 
 | 檔案:行 | 舊 | 新 |
 |---|---|---|
+| insights/AgeCurve.tsx:37 | `areaStyle: { color: "rgba(217,119,87,0.12)" }` | `areaStyle: { color: colors.accent, opacity: 0.12 }` |
 | insights/AgeCurve.tsx:40 | `itemStyle: { color: "#D97757" }` | `itemStyle: { color: colors.accent }` |
 | insights/GeoHotspots.tsx:21 | `itemStyle: { color: "#D97757" }` | `itemStyle: { color: colors.accent }` |
 | trends/GenderShareTrend.tsx:25 | `itemStyle: { color: "#D97757" }` | `itemStyle: { color: colors.accent }` |
@@ -258,6 +259,42 @@ git commit -m "feat(palette): insights/ + trends/ charts use theme-aware colors"
 
 ---
 
+## Task 5b: rgba 形式舊色掃除 + DistanceSpeedScatter
+
+> 原盤點只 grep hex,漏了 rgba() 形式與 `DistanceSpeedScatter`。本 task 掃掉所有殘留 rgba 舊色。
+
+**Files:** Modify `web/src/components/charts/DistanceSpeedScatter.tsx`; `web/src/components/athletes/AthleteCompare.tsx`, `AthleteRadar.tsx`, `AthleteProgression.tsx`, `CalibratedProgress.tsx`; `web/src/components/race/RaceDna.tsx`
+
+**Interfaces:** Consumes `useChartColors`。
+
+- [ ] **Step 1: 依表換色**
+
+| 檔案:行 | 舊 | 新 |
+|---|---|---|
+| charts/DistanceSpeedScatter.tsx:20 | `itemStyle: { color: "rgba(217,119,87,0.5)" }` | `itemStyle: { color: colors.accent, opacity: 0.5 }`(需先加 `const colors = useChartColors();` + import) |
+| athletes/AthleteProgression.tsx:37 | `itemStyle: { color: "rgba(91,123,138,0.45)" }` | `itemStyle: { color: colors.secondary, opacity: 0.45 }` |
+| athletes/CalibratedProgress.tsx:57 | `itemStyle: { color: "rgba(91,123,138,0.7)" }` | `itemStyle: { color: colors.secondary, opacity: 0.7 }` |
+| athletes/AthleteCompare.tsx:38 | `splitArea: { areaStyle: { color: ["rgba(0,0,0,0)", "rgba(217,119,87,0.04)"] } }` | `splitArea: { areaStyle: { color: ["rgba(0,0,0,0)", "rgba(128,128,128,0.05)"] } }` |
+| athletes/AthleteRadar.tsx:35 | 同上 splitArea rgba(217…) | `["rgba(0,0,0,0)", "rgba(128,128,128,0.05)"]` |
+| race/RaceDna.tsx:50 | 同上 splitArea rgba(217…) | `["rgba(0,0,0,0)", "rgba(128,128,128,0.05)"]` |
+
+> `splitArea` 只是交替淡帶,改中性灰(兩模式皆適用、不需 accent)。translucent 數列填色改 `colors.accent/secondary` + `opacity`。AthleteProgression/CalibratedProgress/AthleteCompare/AthleteRadar/RaceDna 這些檔已有 `const colors = useChartColors();`(Task 4);DistanceSpeedScatter 需新加 hook + import。
+
+- [ ] **Step 2: build + 驗證無殘留 + commit**
+
+Run:
+```bash
+npm --prefix web run build 2>&1 | tail -2
+grep -rnE "rgba\(217,\s*119,\s*87|rgba\(91,\s*123,\s*138" web/src/components
+```
+Expected:build 成功;grep 為空(元件內無殘留舊 rgba)。瀏覽器抽查 /explore 或含散點的頁深/淺翻色。
+```bash
+git add web/src/components/charts/DistanceSpeedScatter.tsx web/src/components/athletes/ web/src/components/race/
+git commit -m "feat(palette): sweep remaining rgba old-orange/blue + DistanceSpeedScatter"
+```
+
+---
+
 ## Task 6: `share-card.ts` 基礎 palette 換色
 
 **Files:** Modify `web/src/lib/share-card.ts`
@@ -268,7 +305,11 @@ git commit -m "feat(palette): insights/ + trends/ charts use theme-aware colors"
 ```ts
 const C = { paper: "#EFF1EE", accent: "#1E8A56", ink: "#12181A", muted: "#5A6560", border: "#D2D8D3" };
 ```
-(OG/分享卡維持淺底,只換為新冷紙 + 松綠 accent。**不動** platinum/gold/silver/bronze 的 tier 色。)
+並把同檔另兩處寫死的舊橘 canvas 填色換成新綠(OG 卡為淺底,直接用淺綠 rgba):
+- line 246:`ctx.fillStyle = "rgba(217,119,87,0.12)"` → `ctx.fillStyle = "rgba(30,138,86,0.12)"`
+- line 277:`ctx.fillStyle = "rgba(217,119,87,0.12)"` → `ctx.fillStyle = "rgba(30,138,86,0.12)"`
+
+(OG/分享卡維持淺底,只換為新冷紙 + 松綠 accent;`rgba(30,138,86)` = 淺綠 `#1E8A56`。**不動** platinum/gold/silver/bronze 的 tier 色。)
 
 - [ ] **Step 2: build + 抽查 + commit**
 
