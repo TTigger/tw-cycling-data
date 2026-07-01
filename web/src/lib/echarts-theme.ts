@@ -20,55 +20,57 @@ echarts.use([
 
 // Claude warm palette, registered once and referenced by name "claude".
 echarts.registerTheme("claude", {
-  color: ["#D97757", "#5B7B8A", "#7C8C6B", "#C99A6B", "#9A7AA0", "#A0564B"],
+  color: ["#D23120", "#3F6B78", "#5C7355", "#C98A1E", "#8A6D9C", "#A0564B"],
   backgroundColor: "transparent",
   animationDuration: 700, animationEasing: "cubicOut",
-  textStyle: { fontFamily: "Hanken Grotesk, Noto Sans TC, system-ui, sans-serif", color: "#1F1E1D" },
-  title: { textStyle: { color: "#1F1E1D", fontFamily: "Fraunces, Noto Serif TC, serif" } },
+  textStyle: { fontFamily: "Spline Sans Mono, Hanken Grotesk, Noto Sans TC, system-ui, sans-serif", color: "#12181A" },
+  title: { textStyle: { color: "#12181A", fontFamily: "Fraunces, Noto Serif TC, serif" } },
   categoryAxis: {
-    axisLine: { lineStyle: { color: "#E8E3D9" } }, axisTick: { lineStyle: { color: "#E8E3D9" } },
-    axisLabel: { color: "#6B6760" }, splitLine: { show: false },
+    axisLine: { lineStyle: { color: "#D2D8D3" } }, axisTick: { lineStyle: { color: "#D2D8D3" } },
+    axisLabel: { color: "#5A6560", fontFamily: "Spline Sans Mono, monospace" }, splitLine: { show: false },
   },
   valueAxis: {
-    axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: "#6B6760" },
-    splitLine: { lineStyle: { color: "#E8E3D9", type: "dashed" } },
+    axisLine: { show: false }, axisTick: { show: false },
+    axisLabel: { color: "#5A6560", fontFamily: "Spline Sans Mono, monospace" },
+    splitLine: { lineStyle: { color: "#D2D8D3", type: "dashed" } },
   },
-  legend: { textStyle: { color: "#6B6760" } },
+  legend: { textStyle: { color: "#5A6560" } },
   // radar is its own coordinate system (not category/value axis) — theme it so
   // charts don't hard-code light colors that break in dark mode.
   radar: {
-    axisName: { color: "#6B6760" }, splitArea: { show: false },
-    axisLine: { lineStyle: { color: "#E8E3D9" } }, splitLine: { lineStyle: { color: "#E8E3D9" } },
+    axisName: { color: "#5A6560" }, splitArea: { show: false },
+    axisLine: { lineStyle: { color: "#D2D8D3" } }, splitLine: { lineStyle: { color: "#D2D8D3" } },
   },
   tooltip: {
-    backgroundColor: "#FFFFFF", borderColor: "#E8E3D9",
-    textStyle: { color: "#1F1E1D", fontFamily: "Hanken Grotesk, Noto Sans TC, sans-serif" },
+    backgroundColor: "#FFFFFF", borderColor: "#D2D8D3",
+    textStyle: { color: "#12181A", fontFamily: "Spline Sans Mono, Hanken Grotesk, sans-serif" },
   },
 });
 
 // Dark variant — same warm palette, light text + darker grid for dark mode.
 echarts.registerTheme("claude-dark", {
-  color: ["#E8916F", "#7FA0B0", "#9BAE89", "#D6B083", "#B597BA", "#C2766A"],
+  color: ["#EC3A2B", "#7FA9B6", "#9BB089", "#F2B84B", "#B597BA", "#C2766A"],
   backgroundColor: "transparent",
   animationDuration: 700, animationEasing: "cubicOut",
-  textStyle: { fontFamily: "Hanken Grotesk, Noto Sans TC, system-ui, sans-serif", color: "#ECE9E3" },
-  title: { textStyle: { color: "#ECE9E3", fontFamily: "Fraunces, Noto Serif TC, serif" } },
+  textStyle: { fontFamily: "Spline Sans Mono, Hanken Grotesk, Noto Sans TC, system-ui, sans-serif", color: "#ECEFEC" },
+  title: { textStyle: { color: "#ECEFEC", fontFamily: "Fraunces, Noto Serif TC, serif" } },
   categoryAxis: {
-    axisLine: { lineStyle: { color: "#34303A" } }, axisTick: { lineStyle: { color: "#34303A" } },
-    axisLabel: { color: "#9C968C" }, splitLine: { show: false },
+    axisLine: { lineStyle: { color: "#2A3538" } }, axisTick: { lineStyle: { color: "#2A3538" } },
+    axisLabel: { color: "#84908A", fontFamily: "Spline Sans Mono, monospace" }, splitLine: { show: false },
   },
   valueAxis: {
-    axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: "#9C968C" },
-    splitLine: { lineStyle: { color: "#2C2932", type: "dashed" } },
+    axisLine: { show: false }, axisTick: { show: false },
+    axisLabel: { color: "#84908A", fontFamily: "Spline Sans Mono, monospace" },
+    splitLine: { lineStyle: { color: "#222B2E", type: "dashed" } },
   },
-  legend: { textStyle: { color: "#9C968C" } },
+  legend: { textStyle: { color: "#84908A" } },
   radar: {
-    axisName: { color: "#9C968C" }, splitArea: { show: false },
-    axisLine: { lineStyle: { color: "#34303A" } }, splitLine: { lineStyle: { color: "#34303A" } },
+    axisName: { color: "#84908A" }, splitArea: { show: false },
+    axisLine: { lineStyle: { color: "#2A3538" } }, splitLine: { lineStyle: { color: "#2A3538" } },
   },
   tooltip: {
-    backgroundColor: "#211F24", borderColor: "#34303A",
-    textStyle: { color: "#ECE9E3", fontFamily: "Hanken Grotesk, Noto Sans TC, sans-serif" },
+    backgroundColor: "#161D20", borderColor: "#2A3538",
+    textStyle: { color: "#ECEFEC", fontFamily: "Spline Sans Mono, Hanken Grotesk, sans-serif" },
   },
 });
 
