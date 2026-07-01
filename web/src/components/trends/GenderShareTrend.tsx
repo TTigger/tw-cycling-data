@@ -2,10 +2,12 @@ import type { EChartsOption } from "echarts";
 import EChart from "../charts/EChart";
 import ChartEmpty from "../charts/ChartEmpty";
 import type { GenderTrend } from "../../lib/overview";
+import { useChartColors } from "../../lib/chart-colors";
 
 const MIN_KNOWN = 30; // years with fewer known-gender finishers are not plotted
 
 export default function GenderShareTrend({ gt }: { gt: GenderTrend }) {
+  const colors = useChartColors();
   const pts = gt.years.map((y, i) =>
     gt.known[i] >= MIN_KNOWN ? Math.round((100 * gt.f[i]) / gt.known[i]) : null);
   if (pts.every((p) => p == null)) return <ChartEmpty height={260}>已知性別樣本不足</ChartEmpty>;
@@ -22,7 +24,7 @@ export default function GenderShareTrend({ gt }: { gt: GenderTrend }) {
     xAxis: { type: "category", data: gt.years.map(String) },
     yAxis: { type: "value", name: "女性 %", max: 100, axisLabel: { formatter: "{value}%" } },
     series: [{ name: "女性比例", type: "line", smooth: true, connectNulls: false,
-      itemStyle: { color: "#D97757" }, data: pts }],
+      itemStyle: { color: colors.accent }, data: pts }],
   };
   return <EChart option={option} height={260} />;
 }

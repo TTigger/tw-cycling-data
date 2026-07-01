@@ -3,20 +3,21 @@ import EChart from "../charts/EChart";
 import { careerSummary, progression } from "../../lib/athletes";
 import { compareAthletes } from "../../lib/compare";
 import { secondsToHMS } from "../../lib/format";
+import { useChartColors } from "../../lib/chart-colors";
 import type { AthleteDetail } from "../../lib/types";
 import { raceHref } from "../../lib/race-url";
 
 const TRAIT_LABELS: Record<string, string> = { climb: "爬坡", road: "公路", crit: "繞圈", tt: "計時" };
 const TRAIT_ORDER = ["climb", "road", "crit", "tt"];
-const A_COLOR = "#D97757";
-const B_COLOR = "#5B7B8A";
 
-function StatRow({ label, a, b }: { label: string; a: string | number; b: string | number }) {
+function StatRow(
+  { label, a, b, bColor }: { label: string; a: string | number; b: string | number; bColor: string },
+) {
   return (
     <tr className="border-t border-border/60">
       <td className="py-1.5 num text-right text-accent">{a}</td>
       <td className="py-1.5 text-center text-xs text-muted">{label}</td>
-      <td className="py-1.5 num" style={{ color: B_COLOR }}>{b}</td>
+      <td className="py-1.5 num" style={{ color: bColor }}>{b}</td>
     </tr>
   );
 }
@@ -24,6 +25,7 @@ function StatRow({ label, a, b }: { label: string; a: string | number; b: string
 export default function AthleteCompare(
   { a, b, onBack }: { a: AthleteDetail; b: AthleteDetail; onBack: () => void },
 ) {
+  const colors = useChartColors();
   const cmp = compareAthletes(a, b);
   const sa = careerSummary(a), sb = careerSummary(b);
 
@@ -33,10 +35,10 @@ export default function AthleteCompare(
     radar: {
       indicator: types.map((t) => ({ name: TRAIT_LABELS[t], max: 100 })),
       radius: "62%", axisName: { fontSize: 11 },
-      splitArea: { areaStyle: { color: ["rgba(0,0,0,0)", "rgba(217,119,87,0.04)"] } },
+      splitArea: { areaStyle: { color: ["rgba(0,0,0,0)", "rgba(128,128,128,0.05)"] } },
     },
     legend: { bottom: 0, data: [a.nm, b.nm] },
-    color: [A_COLOR, B_COLOR],
+    color: [colors.accent, colors.secondary],
     tooltip: { trigger: "item" },
     series: [{
       type: "radar", areaStyle: { opacity: 0.12 }, lineStyle: { width: 2 },
@@ -54,7 +56,7 @@ export default function AthleteCompare(
   const trend: EChartsOption | null = years.length >= 2 ? {
     grid: { left: 44, right: 16, top: 28, bottom: 36 },
     legend: { top: 0, data: [a.nm, b.nm] },
-    color: [A_COLOR, B_COLOR],
+    color: [colors.accent, colors.secondary],
     tooltip: { trigger: "axis" },
     xAxis: { type: "category", data: years.map(String) },
     yAxis: { type: "value", min: 0, max: 100, name: "勝過%", axisLabel: { formatter: "{value}%" } },
@@ -68,7 +70,7 @@ export default function AthleteCompare(
     }),
   } : null;
 
-  const lead = cmp.aWins > cmp.bWins ? A_COLOR : cmp.aWins < cmp.bWins ? B_COLOR : "#6B6760";
+  const lead = cmp.aWins > cmp.bWins ? colors.accent : cmp.aWins < cmp.bWins ? colors.secondary : colors.muted;
 
   return (
     <div className="space-y-6">
@@ -76,7 +78,7 @@ export default function AthleteCompare(
         <h1 className="font-display text-2xl text-ink">
           <span className="text-accent">{a.nm}</span>
           <span className="mx-2 text-muted">vs</span>
-          <span style={{ color: B_COLOR }}>{b.nm}</span>
+          <span style={{ color: colors.secondary }}>{b.nm}</span>
         </h1>
         <button className="shrink-0 rounded-lg border border-border px-3 py-2 text-sm text-muted hover:text-accent"
           onClick={onBack}>← 返回</button>
@@ -87,7 +89,7 @@ export default function AthleteCompare(
         <div className="mt-1 font-display text-3xl" style={{ color: lead }}>
           <span className="text-accent">{cmp.aWins}</span>
           <span className="mx-2 text-muted">–</span>
-          <span style={{ color: B_COLOR }}>{cmp.bWins}</span>
+          <span style={{ color: colors.secondary }}>{cmp.bWins}</span>
         </div>
         <div className="text-xs text-muted">共 {cmp.meets} 場同場較勁{cmp.meets > cmp.aWins + cmp.bWins ? `(含 ${cmp.meets - cmp.aWins - cmp.bWins} 場同名次)` : ""}</div>
         <div className="mt-1 text-xs text-muted">以雙方每場每年最佳成績比較;名次較前者勝(與「宿敵」欄位的逐組計法略有不同)。</div>
@@ -97,11 +99,11 @@ export default function AthleteCompare(
         <h2 className="mb-2 font-display text-lg text-ink">生涯數據</h2>
         <table className="w-full text-sm">
           <tbody>
-            <StatRow label="出賽場次" a={sa.races} b={sb.races} />
-            <StatRow label="涵蓋年數" a={sa.years} b={sb.years} />
-            <StatRow label="冠軍" a={sa.wins} b={sb.wins} />
-            <StatRow label="前三名" a={sa.podiums} b={sb.podiums} />
-            <StatRow label="最佳名次" a={sa.bestRank ?? "—"} b={sb.bestRank ?? "—"} />
+            <StatRow label="出賽場次" a={sa.races} b={sb.races} bColor={colors.secondary} />
+            <StatRow label="涵蓋年數" a={sa.years} b={sb.years} bColor={colors.secondary} />
+            <StatRow label="冠軍" a={sa.wins} b={sb.wins} bColor={colors.secondary} />
+            <StatRow label="前三名" a={sa.podiums} b={sb.podiums} bColor={colors.secondary} />
+            <StatRow label="最佳名次" a={sa.bestRank ?? "—"} b={sb.bestRank ?? "—"} bColor={colors.secondary} />
           </tbody>
         </table>
       </section>
@@ -133,7 +135,7 @@ export default function AthleteCompare(
                 <tr className="text-left text-xs text-muted">
                   <th className="py-1 pr-3">年</th><th className="py-1 pr-3">賽事</th>
                   <th className="py-1 pr-3 num text-accent">{a.nm}</th>
-                  <th className="py-1 pr-3 num" style={{ color: B_COLOR }}>{b.nm}</th>
+                  <th className="py-1 pr-3 num" style={{ color: colors.secondary }}>{b.nm}</th>
                   <th className="py-1 pr-3">勝</th>
                 </tr>
               </thead>
@@ -153,7 +155,7 @@ export default function AthleteCompare(
                     </td>
                     <td className="py-1.5 pr-3">
                       {r.winner === "a" ? <span className="text-accent">◀ {a.nm}</span>
-                        : r.winner === "b" ? <span style={{ color: B_COLOR }}>{b.nm} ▶</span>
+                        : r.winner === "b" ? <span style={{ color: colors.secondary }}>{b.nm} ▶</span>
                         : <span className="text-muted">平</span>}
                     </td>
                   </tr>

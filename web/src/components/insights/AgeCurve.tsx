@@ -3,10 +3,12 @@ import type { EChartsOption } from "echarts";
 import EChart from "../charts/EChart";
 import ChartEmpty from "../charts/ChartEmpty";
 import type { AgeCurvePoint } from "../../lib/types";
+import { useChartColors } from "../../lib/chart-colors";
 
 const ORDER = ["U19", "19-29", "30-39", "40-49", "50-59", "60+"];
 
 export default function AgeCurve({ points }: { points: AgeCurvePoint[] }) {
+  const colors = useChartColors();
   const [g, setG] = useState<"all" | "M" | "F">("all");
   const rows = useMemo(
     () => ORDER.map((b) => points.find((p) => p.band === b && p.g === g)).filter(Boolean) as AgeCurvePoint[],
@@ -34,10 +36,10 @@ export default function AgeCurve({ points }: { points: AgeCurvePoint[] }) {
         lineStyle: { opacity: 0 }, symbol: "none", silent: true },
       { name: "iqr", type: "line", stack: "band", data: rows.map((r) => r.p75 - r.p25),
         lineStyle: { opacity: 0 }, symbol: "none", silent: true,
-        areaStyle: { color: "rgba(217,119,87,0.12)" } },
+        areaStyle: { color: colors.accent, opacity: 0.12 } },
       // p50 median line on top (not stacked)
       { name: "中位 %", type: "line", data: rows.map((r) => r.p50), smooth: true,
-        itemStyle: { color: "#D97757" }, lineStyle: { width: 3 },
+        itemStyle: { color: colors.accent }, lineStyle: { width: 3 },
         label: { show: true, formatter: "{c}%", position: "top" } },
     ],
   };

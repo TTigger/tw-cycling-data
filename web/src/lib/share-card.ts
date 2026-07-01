@@ -205,7 +205,7 @@ export function powerModel(d: AthleteDetail, vam: ClimbVamEntry[] = []): PowerMo
 const W = 1080;
 const PAD = 112;
 const IW = W - PAD * 2;
-const C = { paper: "#FAF9F5", accent: "#D97757", ink: "#2A2722", muted: "#7A7367", border: "#E7E2DA" };
+const C = { paper: "#EFF1EE", accent: "#1E8A56", ink: "#12181A", muted: "#5A6560", border: "#D2D8D3" };
 
 function fit(ctx: CanvasRenderingContext2D, text: string, maxW: number): string {
   if (ctx.measureText(text).width <= maxW) return text;
@@ -243,7 +243,7 @@ function drawSpark(ctx: CanvasRenderingContext2D, vals: number[], x: number, y: 
   pts.forEach((p) => ctx.lineTo(p[0], p[1]));
   ctx.lineTo(pts[pts.length - 1][0], y + h);
   ctx.closePath();
-  ctx.fillStyle = "rgba(217,119,87,0.12)";
+  ctx.fillStyle = "rgba(30,138,86,0.12)";
   ctx.fill();
   ctx.beginPath();
   pts.forEach((p, i) => (i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])));
@@ -274,7 +274,7 @@ export async function drawCard(canvas: HTMLCanvasElement, m: CardModel): Promise
   if (m.tag) {
     ctx.font = `600 30px ${SANS}`;
     const tw = ctx.measureText(m.tag).width + 44;
-    ctx.fillStyle = "rgba(217,119,87,0.12)";
+    ctx.fillStyle = "rgba(30,138,86,0.12)";
     ctx.beginPath(); ctx.roundRect(PAD, 384, tw, 50, 25); ctx.fill();
     ctx.fillStyle = C.accent; ctx.textBaseline = "middle";
     ctx.fillText(m.tag, PAD + 22, 410); ctx.textBaseline = "alphabetic";
