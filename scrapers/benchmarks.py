@@ -41,10 +41,10 @@ def _is_finisher(row):
 
 
 def build_index(rows, min_n=MIN_COHORT_N):
-    """Group finishers by race_key, accumulate per-cohort finish seconds, then
-    emit only cohorts with n>=min_n. A race_key is kept only if its `all`
-    cohort reaches min_n."""
-    races = {}
+    """Group finishers by (race_key, result_label); within each group accumulate
+    per-cohort finish seconds; emit only cohorts with n>=min_n. A group is kept
+    only if its `all` cohort reaches min_n; a race is kept if it has >=1 group."""
+    races = {}   # rk -> {rn, groups: {group: {years:set, cohorts:{key:{type,label,_secs}}}}}
     for r in rows:
         rk = r.get("race_key")
         fs = r.get("finish_seconds")
@@ -54,25 +54,30 @@ def build_index(rows, min_n=MIN_COHORT_N):
             fs = int(fs)
         except (TypeError, ValueError):
             continue
+        group = r.get("result_label") or "全部"
         race = races.setdefault(rk, {
-            "rn": r.get("race_name_canonical") or r.get("race_name_raw") or rk,
-            "years": set(), "cohorts": {}})
+            "rn": r.get("race_name_canonical") or r.get("race_name_raw") or rk, "groups": {}})
+        grp = race["groups"].setdefault(group, {"years": set(), "cohorts": {}})
         if r.get("year") is not None:
-            race["years"].add(r["year"])
+            grp["years"].add(r["year"])
         for key, ctype, label in cohort_keys(r):
-            c = race["cohorts"].setdefault(key, {"type": ctype, "label": label, "_secs": []})
+            c = grp["cohorts"].setdefault(key, {"type": ctype, "label": label, "_secs": []})
             c["_secs"].append(fs)
 
     out = {}
     for rk, race in races.items():
-        cohorts = {}
-        for key, c in race["cohorts"].items():
-            if len(c["_secs"]) < min_n:
+        groups = {}
+        for group, grp in race["groups"].items():
+            cohorts = {}
+            for key, c in grp["cohorts"].items():
+                if len(c["_secs"]) < min_n:
+                    continue
+                secs = sorted(c["_secs"])
+                cohorts[key] = {"n": len(secs), "type": c["type"], "label": c["label"],
+                                "bp": percentile_breakpoints(secs)}
+            if "all" not in cohorts:            # group too small
                 continue
-            secs = sorted(c["_secs"])
-            cohorts[key] = {"n": len(secs), "type": c["type"], "label": c["label"],
-                            "bp": percentile_breakpoints(secs)}
-        if "all" not in cohorts:        # race itself too small
-            continue
-        out[rk] = {"rn": race["rn"], "years": sorted(race["years"]), "cohorts": cohorts}
+            groups[group] = {"years": sorted(grp["years"]), "cohorts": cohorts}
+        if groups:
+            out[rk] = {"rn": race["rn"], "groups": groups}
     return out

@@ -20,8 +20,9 @@ def main():
     with open(OUT, "w", encoding="utf-8") as f:
         json.dump(idx, f, ensure_ascii=False, separators=(",", ":"))
     races = len(idx)
-    cohorts = sum(len(r["cohorts"]) for r in idx.values())
-    print(f"benchmarks: races={races} cohorts={cohorts} -> {os.path.relpath(OUT)}")
+    groups = sum(len(r["groups"]) for r in idx.values())
+    cohorts = sum(len(g["cohorts"]) for r in idx.values() for g in r["groups"].values())
+    print(f"benchmarks: races={races} groups={groups} cohorts={cohorts} -> {os.path.relpath(OUT)}")
 
 
 if __name__ == "__main__":
