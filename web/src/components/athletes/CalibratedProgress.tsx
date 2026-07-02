@@ -66,7 +66,7 @@ export default function CalibratedProgress({ history }: { history: AthleteHistor
     <section className="rounded-xl border border-border bg-surface p-4">
       <h2 className="font-display text-lg text-ink">跨年難度校正</h2>
       <p className="mb-2 text-xs text-muted">
-        每年完賽時間除以「難度係數」(該年中位數 ÷ 該賽事歷年中位數),排除「那年好騎/難騎」的影響,看絕對實力是否真的進步(校正後時間越低越好;僅供參考)。
+        每年完賽時間除以「難度係數」(該年中位數 ÷ 該賽事歷年中位數),排除「那年好騎/難騎」的影響,看絕對實力是否真的進步(校正後時間越低越好;僅供參考)。依你所屬距離/組別各自校正;該組未覆蓋的年份不顯示。
       </p>
       {races.length > 1 && (
         <div className="mb-3 flex flex-wrap gap-2">
