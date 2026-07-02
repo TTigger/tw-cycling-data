@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { percentileInField, searchAthletes, careerSummary, progression } from "./athletes";
+import { percentileInField, searchAthletes, careerSummary, progression, careerSymbolSizes } from "./athletes";
 import type { AthleteIndexEntry, AthleteDetail, AthleteHistoryRow } from "./types";
 
 function a(p: Partial<AthleteIndexEntry>): AthleteIndexEntry {
@@ -84,5 +84,17 @@ describe("progression", () => {
     expect(p[1].pct).toBe(90);
     expect(p[1].races).toBe(2);
     expect(p[1].bestRank).toBe(10);
+  });
+});
+
+describe("careerSymbolSizes", () => {
+  it("maps race counts linearly to [min, max] px", () => {
+    expect(careerSymbolSizes([1, 3, 5], 6, 16)).toEqual([6, 11, 16]);
+  });
+  it("all-equal counts -> midpoint size", () => {
+    expect(careerSymbolSizes([4, 4, 4], 6, 16)).toEqual([11, 11, 11]);
+  });
+  it("empty -> []", () => {
+    expect(careerSymbolSizes([], 6, 16)).toEqual([]);
   });
 });
