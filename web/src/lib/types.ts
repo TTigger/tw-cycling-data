@@ -51,9 +51,8 @@ export interface SeriesInfo { name: string; seasons: Record<string, SeriesSeason
 export type SeriesFile = Record<string, SeriesInfo>;
 
 export interface YearDifficulty { median: number; coeff: number; n: number; }
-export interface RaceDifficulty {
-  name: string | null; baseline: number; years: Record<string, YearDifficulty>;
-}
+export interface DifficultyGroup { baseline: number; years: Record<string, YearDifficulty>; }
+export interface RaceDifficulty { name: string | null; groups: Record<string, DifficultyGroup>; }
 export type RaceDifficultyFile = Record<string, RaceDifficulty>;
 
 export interface RaceDnaAxes {

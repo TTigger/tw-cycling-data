@@ -9,9 +9,10 @@ export interface CalibPoint {
 
 /**
  * A rider's per-year raw vs difficulty-calibrated finish time for one race.
- * Only years present in both the rider's history (with a time) and the race's
- * difficulty table. If a rider has several rows in the same race-year, the
- * fastest is kept. Sorted by year.
+ * Each row is calibrated against its OWN group/distance (`h.label ?? "全部"`) —
+ * a year the row's group doesn't cover is strictly skipped (no cross-group
+ * fallback). If a rider has several rows in the same race-year, the fastest
+ * is kept. Sorted by year.
  */
 export function calibratedSeries(
   history: AthleteHistoryRow[], rk: string, diff: RaceDifficulty | undefined,
@@ -20,7 +21,8 @@ export function calibratedSeries(
   const best = new Map<number, CalibPoint>();
   for (const h of history) {
     if (h.rk !== rk || h.y == null || !h.t) continue;
-    const yd = diff.years[String(h.y)];
+    const g = h.label ?? "全部";
+    const yd = diff.groups[g]?.years[String(h.y)];
     if (!yd || !yd.coeff) continue;
     const pt: CalibPoint = {
       y: h.y, raw: h.t, calibrated: Math.round(h.t / yd.coeff), coeff: yd.coeff,
@@ -34,6 +36,7 @@ export function calibratedSeries(
 export type SeverityVerdict = "嚴苛" | "偏難" | "正常" | "偏易";
 export interface RaceSeverity {
   year: number;
+  group: string;         // the dominant group whose series this severity is read from
   n: number;             // finishers that year
   baselineN: number;     // median finishers across the race's covered years
   finisherDelta: number; // % vs baseline (negative = fewer finishers than usual)
@@ -48,20 +51,36 @@ function median(xs: number[]): number {
   return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
 }
 
+/** The race's largest group (by total finishers across covered years) —
+ * severity reads this one series so its composition stays stable. */
+export function dominantGroup(diff: RaceDifficulty | undefined): string | null {
+  if (!diff) return null;
+  let best: string | null = null, bestN = -1;
+  for (const [g, grp] of Object.entries(diff.groups)) {
+    const n = Object.values(grp.years).reduce((a, y) => a + y.n, 0);
+    if (n > bestN) { best = g; bestN = n; }
+  }
+  return best;
+}
+
 /**
  * Attrition/severity proxy for one race-year. We have ONLY finishers (no DNF or
  * registration data), so we compare against the race's own history: far fewer
  * finishers than usual AND slower-than-usual times suggests a brutal edition
  * (weather/conditions). Verdict: 嚴苛 = both fewer & slower; 偏難 = one of them;
- * 偏易 = more finishers & faster; else 正常. null if the year isn't covered.
+ * 偏易 = more finishers & faster; else 正常. Reads the race's dominant group
+ * (largest by total n) so the series composition stays stable across years.
+ * null if the year isn't covered.
  */
 export function raceSeverity(
   diff: RaceDifficulty | undefined, year: number | string | null,
 ): RaceSeverity | null {
   if (!diff || year == null) return null;
-  const yd = diff.years[String(year)];
-  if (!yd) return null;
-  const baselineN = median(Object.values(diff.years).map((y) => y.n));
+  const gk = dominantGroup(diff);
+  const grp = gk ? diff.groups[gk] : undefined;
+  const yd = grp?.years[String(year)];
+  if (!gk || !grp || !yd) return null;
+  const baselineN = median(Object.values(grp.years).map((y) => y.n));
   const finisherDelta = baselineN > 0 ? Math.round((yd.n / baselineN - 1) * 100) : 0;
   const timeDelta = Math.round((yd.coeff - 1) * 100);
   const fewer = finisherDelta <= -20, slower = timeDelta >= 5;
@@ -69,13 +88,19 @@ export function raceSeverity(
   if (fewer && slower) verdict = "嚴苛";
   else if (fewer || slower) verdict = "偏難";
   else if (finisherDelta >= 0 && timeDelta <= -5) verdict = "偏易";
-  return { year: Number(year), n: yd.n, baselineN, finisherDelta, coeff: yd.coeff, timeDelta, verdict };
+  return {
+    year: Number(year), group: gk, n: yd.n, baselineN, finisherDelta,
+    coeff: yd.coeff, timeDelta, verdict,
+  };
 }
 
-/** Severity for every covered year of a race, newest first. */
+/** Severity for every covered year of a race's dominant group, newest first. */
 export function raceSeverityAll(diff: RaceDifficulty | undefined): RaceSeverity[] {
   if (!diff) return [];
-  return Object.keys(diff.years)
+  const gk = dominantGroup(diff);
+  const grp = gk ? diff.groups[gk] : undefined;
+  if (!grp) return [];
+  return Object.keys(grp.years)
     .map((y) => raceSeverity(diff, y) as RaceSeverity)
     .sort((a, b) => b.year - a.year);
 }
