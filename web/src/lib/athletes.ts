@@ -90,3 +90,12 @@ export function progression(history: AthleteHistoryRow[]): ProgressionPoint[] {
 export const CONF_LABEL: Record<string, string> = {
   high: "身分明確", med: "可能含同名", low: "高同名風險",
 };
+
+/** Career ridge marker sizes: races-per-year mapped linearly to [min, max] px.
+ * Equal counts collapse to the midpoint; empty input stays empty. */
+export function careerSymbolSizes(races: number[], min = 6, max = 16): number[] {
+  if (!races.length) return [];
+  const lo = Math.min(...races), hi = Math.max(...races);
+  if (hi === lo) return races.map(() => (min + max) / 2);
+  return races.map((r) => min + ((r - lo) / (hi - lo)) * (max - min));
+}
