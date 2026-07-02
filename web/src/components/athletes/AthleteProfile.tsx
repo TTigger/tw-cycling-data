@@ -114,7 +114,7 @@ export default function AthleteProfile(
           <SeasonReview d={d} />
           <section className="rounded-xl border border-border bg-surface p-4">
             <h2 className="font-display text-lg text-ink">進步軌跡</h2>
-            <p className="mb-2 text-xs text-muted">每年最佳「同場贏過 % 」(名次/該場人數),跨賽事可比;長條為當年出賽場次。</p>
+            <p className="mb-2 text-xs text-muted">每年最佳「同場贏過 % 」(名次/該場人數),跨賽事可比;點的大小為當年出賽場次,虛線標生涯最佳年。</p>
             <AthleteProgression history={d.history} />
           </section>
         </div>
