@@ -45,6 +45,9 @@ export default function RaceSeverity({ rk, year }: { rk: string; year: number | 
 
       <div className="flex flex-wrap items-center gap-3">
         <span className={`rounded-full border px-3 py-1 text-sm ${VERDICT_STYLE[sev.verdict]}`}>{sev.verdict}</span>
+        {sev.group !== "全部" && (
+          <span className="ml-2 text-xs text-muted">(以「{sev.group}」組為準)</span>
+        )}
         <div className="text-sm text-ink">
           完賽 <span className="num">{sev.n}</span> 人
           <span className="text-muted">(較歷年中位 {sev.baselineN} 人 <span className="num">{pct(sev.finisherDelta)}</span>)</span>
