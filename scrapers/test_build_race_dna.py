@@ -4,9 +4,9 @@ sys.path.insert(0, os.path.dirname(__file__))
 import build_race_dna as rd
 
 
-def _rec(rk, year, sec, g="M", cat=None, rn=None):
-    return {"race_key": rk, "year": year, "finish_seconds": sec, "gender": g,
-            "category_raw": cat, "result_label": None,
+def _rec(rk, year, sec, g=None, cat=None, rn=None, label=None, gender=None):
+    return {"race_key": rk, "year": year, "finish_seconds": sec, "gender": gender or g,
+            "category_raw": cat, "result_label": label,
             "race_name_canonical": rn or rk}
 
 
@@ -41,7 +41,9 @@ def test_raw_axes_values():
     assert a["women"] == 25.0                       # 1 of 4
     assert a["prest"] == 25.0                       # g1 is the only regular
     assert a["repeat"] == 25.0                      # g1 rode A in another year
-    assert abs(a["sel"] - (1118.033988749895 / 2500)) < 1e-9
+    # sel is now n-weighted mean of within-group CoV over groups with
+    # >=SEL_GROUP_MIN(10) timed rows; here the only group has 4 rows -> None
+    assert a["sel"] is None
     assert a["climb"] is None                       # no distance labels -> no speed
 
 
@@ -64,3 +66,38 @@ def test_build_race_dna_normalizes_0_100():
     # neither race has a derivable climb -> both neutral 50
     assert av["climb"] == 50 and bv["climb"] == 50
     assert av["n"] == 4
+
+
+def test_sel_is_group_weighted_cov_not_blended():
+    # two tight groups with very different scales: blended CoV would be huge,
+    # weighted per-group CoV stays small
+    rows = ([_rec("R", 2024, 3600 + i, label="50K") for i in range(-10, 10)]
+            + [_rec("R", 2024, 18000 + i, label="130K") for i in range(-10, 10)])
+    gks = ["g%d" % i for i in range(len(rows))]
+    raw = rd.raw_axes(rows, gks, min_finishers=20)
+    sel = raw[("R", 2024)]["sel"]
+    import statistics
+    blended = statistics.pstdev([r["finish_seconds"] for r in rows]) / statistics.mean(
+        [r["finish_seconds"] for r in rows])
+    assert sel is not None and sel < blended / 10   # grouped CoV ~0.16%, blended ~67%
+
+
+def test_sel_none_when_no_group_reaches_min():
+    rows = [_rec("R", 2024, 3600 + i, label=("A" if i % 3 == 0 else "B" if i % 3 == 1 else "C"))
+            for i in range(21)]  # 21 finishers split 7/7/7 — no group >=10
+    gks = ["g%d" % i for i in range(len(rows))]
+    raw = rd.raw_axes(rows, gks, min_finishers=20)
+    assert raw[("R", 2024)]["sel"] is None
+
+
+def test_women_none_below_known_gender_coverage():
+    rows = [_rec("R", 2024, 3600 + i) for i in range(20)]
+    for i in range(5):                      # 25% known (<30%) -> None
+        rows[i]["gender"] = "F" if i < 2 else "M"
+    gks = ["g%d" % i for i in range(len(rows))]
+    raw = rd.raw_axes(rows, gks, min_finishers=20)
+    assert raw[("R", 2024)]["women"] is None
+    for i in range(5, 7):                   # now 35% known -> computed
+        rows[i]["gender"] = "M"
+    raw = rd.raw_axes(rows, gks, min_finishers=20)
+    assert raw[("R", 2024)]["women"] == round(2 / 7 * 100, 10) or abs(raw[("R", 2024)]["women"] - 2/7*100) < 1e-6
