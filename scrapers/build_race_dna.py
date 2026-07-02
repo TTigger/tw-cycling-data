@@ -88,8 +88,6 @@ def raw_axes(records, group_keys, min_finishers=MIN_FINISHERS):
         n = len(items)
         if n < min_finishers:
             continue
-        secs = [r["finish_seconds"] for r, _ in items
-                if r.get("finish_seconds") and r["finish_seconds"] > 0]
         speeds = []
         for r, _ in items:
             d = extract_distance_km(r.get("category_raw"), r.get("result_label"),
