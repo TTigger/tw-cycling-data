@@ -34,6 +34,8 @@ OUT = common.PUBLIC_DATA_DIR
 
 MIN_FINISHERS = 20            # a race-year needs this many finishers to qualify
 REGULAR_MIN_RACE_YEARS = 3    # raced in this many distinct race-years = a regular
+SEL_GROUP_MIN = 10        # a distance/event group needs this many timed rows for its CoV
+GENDER_KNOWN_MIN = 0.30   # women axis needs known-gender coverage of at least this share
 AXES = ["sel", "size", "climb", "prest", "repeat", "women"]
 
 _UNRESOLVED = ("n:", "u:", "t:")
@@ -102,14 +104,32 @@ def raw_axes(records, group_keys, min_finishers=MIN_FINISHERS):
         # climbiness only when a fifth (and >=5) of the field has a parseable
         # distance — too few labels and the median speed isn't representative.
         climb = -statistics.median(speeds) if len(speeds) >= max(5, n * 0.2) else None
+        # selectivity: n-weighted mean of WITHIN-group CoV, so mixed-distance
+        # races do not read as selective merely for mixing 50K with 130K
+        group_secs = defaultdict(list)
+        for r, _ in items:
+            s = r.get("finish_seconds")
+            if s and s > 0:
+                group_secs[r.get("result_label") or "全部"].append(s)
+        covs = []
+        for v in group_secs.values():
+            if len(v) >= SEL_GROUP_MIN:
+                c = _cov(v)
+                if c is not None:
+                    covs.append((c, len(v)))
+        sel = (sum(c * w for c, w in covs) / sum(w for _, w in covs)) if covs else None
+        # women share only when enough of the field carries a gender at all —
+        # below that the axis reads source coverage, not participation
+        women = (sum(1 for g in genders if g == "F") / len(genders) * 100
+                 if genders and len(genders) / n >= GENDER_KNOWN_MIN else None)
         out[(rk, y)] = {
             "name": names.get(rk), "n": n,
-            "sel": _cov(secs),
+            "sel": sel,
             "size": float(n),
             "climb": climb,
             "prest": reg_here / len(distinct) * 100 if distinct else None,
             "repeat": repeaters / len(distinct) * 100 if distinct else None,
-            "women": sum(1 for g in genders if g == "F") / len(genders) * 100 if genders else None,
+            "women": women,
         }
     return out
 
