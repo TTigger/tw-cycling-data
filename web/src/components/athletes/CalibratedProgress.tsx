@@ -54,7 +54,8 @@ export default function CalibratedProgress({ history }: { history: AthleteHistor
         },
         series: [
           { name: "原始完賽", type: "line", smooth: true, data: series.map((s) => s.raw),
-            itemStyle: { color: colors.secondary, opacity: 0.7 }, lineStyle: { type: "dashed" } },
+            itemStyle: { color: colors.secondary, opacity: 0.7 },
+            lineStyle: { color: colors.secondary, opacity: 0.7, type: "dashed" } },
           { name: "難度校正後", type: "line", smooth: true, data: series.map((s) => s.calibrated),
             itemStyle: { color: colors.accent }, areaStyle: { color: colors.accent, opacity: 0.10 } },
         ],
