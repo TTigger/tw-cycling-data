@@ -21,7 +21,7 @@ export function calibratedSeries(
   const best = new Map<number, CalibPoint>();
   for (const h of history) {
     if (h.rk !== rk || h.y == null || !h.t) continue;
-    const g = h.label ?? "全部";
+    const g = h.label || "全部";  // || so an empty-string label maps to 全部, matching the builder
     const yd = diff.groups[g]?.years[String(h.y)];
     if (!yd || !yd.coeff) continue;
     const pt: CalibPoint = {
@@ -55,6 +55,7 @@ function median(xs: number[]): number {
  * severity reads this one series so its composition stays stable. */
 export function dominantGroup(diff: RaceDifficulty | undefined): string | null {
   if (!diff) return null;
+  // ties resolve to the first-encountered group (JSON insertion order)
   let best: string | null = null, bestN = -1;
   for (const [g, grp] of Object.entries(diff.groups)) {
     const n = Object.values(grp.years).reduce((a, y) => a + y.n, 0);
