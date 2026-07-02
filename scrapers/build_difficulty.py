@@ -14,9 +14,13 @@ A slow ("hard") year has coeff > 1; an easy year coeff < 1. The frontend
 calibrates a rider's time as raw / coeff, so an easy year no longer flatters and
 a hard year no longer penalizes — isolating absolute fitness from conditions.
 
-Tradeoffs (owner-approved): the median is over ALL timed finishers (coeff is a
-relative ratio, so category-mix differences mostly cancel year to year); only
-races with >=2 years that each have enough timed finishers qualify.
+Tradeoffs (owner-approved): a race_key can mix distance/category groups (e.g.
+50K vs 130K under one event), and the group mix can shift from year to year —
+so coefficients are computed WITHIN each (race_key, result_label) group, each
+with its own baseline, mirroring the shape used by benchmarks.json. Groups
+fall back to 全部 when result_label is missing; only groups with >=2 years
+that each have enough timed finishers qualify, and a race is kept iff it has
+at least one qualifying group.
 """
 import json
 import os
@@ -35,35 +39,41 @@ MIN_FINISHERS = 20  # a year needs this many timed finishers for a stable median
 
 
 def race_difficulty(records, min_finishers=MIN_FINISHERS):
-    """{race_key: {name, baseline, years: {year: {median, coeff, n}}}} for every
-    race with >=2 years that each have >=min_finishers timed finishers."""
-    by_ry = defaultdict(list)   # (race_key, year) -> [finish_seconds]
+    """{race_key: {name, groups: {group_label: {baseline, years}}}} — coefficients
+    are computed WITHIN each (race_key, result_label) group so year-to-year
+    group-mix shifts (e.g. more 130K finishers one year) never read as
+    difficulty changes. group_label falls back to 全部 for unlabeled rows.
+    A group needs >=2 years each with >=min_finishers timed finishers."""
+    by_rgy = defaultdict(list)   # (race_key, group, year) -> [finish_seconds]
     names = {}
     for r in records:
         sec = r.get("finish_seconds")
         rk, y = r.get("race_key"), r.get("year")
         if not rk or not y or not sec or sec <= 0:
             continue
-        by_ry[(rk, y)].append(sec)
+        g = r.get("result_label") or "全部"
+        by_rgy[(rk, g, y)].append(sec)
         names.setdefault(rk, r.get("race_name_canonical") or r.get("race_name_raw"))
 
-    year_med = defaultdict(dict)   # race_key -> {year: (median, n)}
-    for (rk, y), secs in by_ry.items():
+    year_med = defaultdict(lambda: defaultdict(dict))  # rk -> g -> {y: (median, n)}
+    for (rk, g, y), secs in by_rgy.items():
         if len(secs) >= min_finishers:
-            year_med[rk][y] = (statistics.median(secs), len(secs))
+            year_med[rk][g][y] = (statistics.median(secs), len(secs))
 
     out = {}
-    for rk, ym in year_med.items():
-        if len(ym) < 2:
-            continue
-        baseline = statistics.median([m for m, _ in ym.values()])
-        if baseline <= 0:
-            continue
-        years = {
-            str(y): {"median": round(m), "coeff": round(m / baseline, 4), "n": n}
-            for y, (m, n) in sorted(ym.items())
-        }
-        out[rk] = {"name": names.get(rk), "baseline": round(baseline), "years": years}
+    for rk, groups in year_med.items():
+        gout = {}
+        for g, ym in groups.items():
+            if len(ym) < 2:
+                continue
+            baseline = statistics.median([m for m, _ in ym.values()])
+            if baseline <= 0:
+                continue
+            gout[g] = {"baseline": round(baseline), "years": {
+                str(y): {"median": round(m), "coeff": round(m / baseline, 4), "n": n}
+                for y, (m, n) in sorted(ym.items())}}
+        if gout:
+            out[rk] = {"name": names.get(rk), "groups": gout}
     return out
 
 
@@ -73,7 +83,7 @@ def main():
     os.makedirs(OUT, exist_ok=True)
     with open(os.path.join(OUT, "race_difficulty.json"), "w", encoding="utf-8") as f:
         json.dump(diff, f, ensure_ascii=False, separators=(",", ":"))
-    total_years = sum(len(d["years"]) for d in diff.values())
+    total_years = sum(len(g["years"]) for d in diff.values() for g in d["groups"].values())
     print(f"race_difficulty={len(diff)} races ({total_years} race-years) "
           f"-> {os.path.relpath(OUT)}")
 
