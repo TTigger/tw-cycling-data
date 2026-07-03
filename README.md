@@ -86,7 +86,7 @@ scrapers/
   overseas_runnet.py   海外賽(runnet headless)→ web/public/data/overseas(獨立別集,不進 master)
   race_type.py         賽事類型分類(爬坡/繞圈/計時/公路;含 pytest)
   summarize.py         產生單一資料集統計摘要
-  *_poc.py / *_inspect.py / *_probe.py / bravelog_parse.py   PoC/探勘一次性腳本(保留參考)
+  archive/             一次性 PoC/探勘腳本(保留參考,不被管線呼叫)
 data/processed/
   master.public.json     ★ 去識別化合併資料(供前端)
   *_summary.json                   統計摘要
