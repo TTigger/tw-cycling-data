@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 
 import react from '@astrojs/react';
+import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
@@ -9,7 +10,7 @@ export default defineConfig({
   // Absolute origin for canonical + OpenGraph URLs (production deploy on Vercel).
   // Update here if the site moves to a custom domain.
   site: 'https://tw-cycling-data.vercel.app',
-  integrations: [react()],
+  integrations: [react(), sitemap()],
 
   vite: {
     plugins: [tailwindcss()],
