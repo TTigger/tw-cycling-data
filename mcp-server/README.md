@@ -17,7 +17,10 @@ cd mcp-server && uv run tw-cycling-data-mcp
 
 ## Tools
 
-`dataset_overview`、`search_athletes(query, limit)`、`get_athlete(athlete_id)`、`list_races(year?, race_type?, query?, limit)`、`get_race(race_key)`、`get_team(team_id)`。
+<!-- gen:tools:begin -->
+7 個工具:`dataset_overview()`、`search_athletes(query, limit?)`、`get_athlete(athlete_id)`、`list_races(year?, race_type?, query?, limit?)`、`get_race(race_key, year?)`、`get_team(team_id)`、`race_benchmark(race_key, finish_time, result_label?, age_band?, gender?)`。
+(本區塊由 `scrapers/gen_docs_stats.py` 生成,勿手改。)
+<!-- gen:tools:end -->
 
 ## 在 Claude Desktop 設定
 
