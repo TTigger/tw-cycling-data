@@ -4,10 +4,14 @@ Shared helpers for the TW cycling data pipeline:
 HTTP session, division/category normalization, name de-identification (PDPA),
 time parsing, and the unified result-record builder.
 """
+import gzip
+import hashlib
 import json
 import os
 import re
 import time
+from urllib.parse import urlparse
+
 import requests
 
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -73,7 +77,46 @@ def polite_get(session, url, delay=0.6, **kw):
     kw.setdefault("timeout", 40)
     r = session.get(url, **kw)
     _last["t"] = time.monotonic()
+    if r.ok:
+        archive_response(url, r.content)
     return r
+
+
+# ---- raw archive (roadmap D5) ------------------------------------------------
+# Source sites take old results down; the parsers improve over time. Keeping the
+# raw bytes of every successful fetch means history can always be re-parsed.
+# Layout: data/raw_archive/<netloc>/<YYYY-MM-DD>/<sha1-12>.gz + manifest.jsonl
+# (one line per fetch event; identical payloads dedupe to one blob per day).
+# Off-site sync to R2 is backup.py's job. Opt out with TWCD_RAW_ARCHIVE=0.
+
+RAW_ARCHIVE_DIR = os.environ.get(
+    "TWCD_RAW_ARCHIVE_DIR",
+    os.path.join(os.path.dirname(__file__), "..", "data", "raw_archive"),
+)
+
+
+def archive_response(url, content, when=None):
+    """Persist one fetched payload; returns the blob path or None if disabled."""
+    if os.environ.get("TWCD_RAW_ARCHIVE", "1") == "0":
+        return None
+    if not content:
+        return None
+    if isinstance(content, str):
+        content = content.encode("utf-8")
+    source = urlparse(url).netloc or "unknown"
+    day = time.strftime("%Y-%m-%d", time.localtime(when))
+    sha = hashlib.sha1(content).hexdigest()[:12]
+    day_dir = os.path.join(RAW_ARCHIVE_DIR, source, day)
+    os.makedirs(day_dir, exist_ok=True)
+    blob = os.path.join(day_dir, sha + ".gz")
+    if not os.path.exists(blob):
+        with gzip.open(blob, "wb") as f:
+            f.write(content)
+    entry = {"ts": int(when if when is not None else time.time()),
+             "url": url, "sha1": sha, "bytes": len(content)}
+    with open(os.path.join(day_dir, "manifest.jsonl"), "a", encoding="utf-8") as m:
+        m.write(json.dumps(entry, ensure_ascii=False) + "\n")
+    return blob
 
 
 # ---- normalization ----------------------------------------------------------
