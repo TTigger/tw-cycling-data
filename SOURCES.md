@@ -1,11 +1,14 @@
 # 資料來源登錄表(Sources Registry)
 
 > 本檔是**活的登錄表**:每次新增來源、發現新阻擋、或解開某個卡點,都要回來更新。
-> 最後更新:2026-06-16
+> 最後更新:2026-07-03(統計區塊自此由 `scrapers/gen_docs_stats.py` 自動生成)
 
-主資料集 master:**116,953 筆 / 2009–2026 / 140 場 / 5 來源**(海外賽另計;賽名正規化合併 7 組同活動後)。
+<!-- gen:stats:begin -->
+主資料集 master:**147,609 筆 / 2009–2026 / 161 場 / 8 來源**(海外賽另計)。
 
-> 各來源現況筆數(master 內,跨源去重後):bravelog 46,553・irunner 32,862・tsu 24,924・cyclist 12,265・cycling 349。
+> 各來源現況筆數(master 內,跨源去重後):bravelog 42,052・irunner 32,862・tsu 24,515・taiwanbike 18,204・twbike 15,405・cyclist 12,265・criterium 1,957・cycling 349。
+> (本區塊由 `scrapers/gen_docs_stats.py` 生成,勿手改。)
+<!-- gen:stats:end -->
 
 ---
 
