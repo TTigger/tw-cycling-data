@@ -6,7 +6,7 @@ import criterium_crawl as cc
 META = {"name": "苗栗繞圈賽（第七屆）", "date": "2026-06-28",
         "year": 2026, "region": "苗栗", "event_ids": [4]}
 ROWS = [
-    {"rank": 1, "bib": "2", "name": "馮俊凱", "category": "M / M30",
+    {"rank": 1, "bib": "2", "name": "陳大文", "category": "M / M30",
      "team": "宇都宮車隊", "finish_time": "00:47:38", "laps": 35, "status": "FIN"},
     {"rank": None, "bib": "21", "name": "洪稟詠", "category": "M / U23",
      "team": "TEAM CYTO TRIGON", "finish_time": None, "laps": 25, "status": "DNF"},
@@ -30,7 +30,7 @@ def test_build_records_fin():
     assert fin["rank_overall"] == 1 and fin["bib"] == "2"
     assert fin["status"] == "FIN" and fin["laps"] == 35
     assert fin["finish_seconds"] == 47 * 60 + 38
-    assert fin["name_masked"] == "馮○凱" and "name_raw" in fin
+    assert fin["name_masked"] == "陳○文" and "name_raw" in fin
 
 
 def test_build_records_dnf_has_no_time():

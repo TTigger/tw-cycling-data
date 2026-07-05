@@ -87,7 +87,7 @@ def is_result_table(lines):
 
 
 def split_name_team(mid):
-    """'杜志濠 Team Bahrain Victorious' -> ('杜志濠', 'Team Bahrain Victorious').
+    """'陳大文 Team Bahrain Victorious' -> ('陳大文', 'Team Bahrain Victorious').
     Chinese names are a single whitespace-free token; team is the rest."""
     parts = mid.split(None, 1)
     if not parts:
