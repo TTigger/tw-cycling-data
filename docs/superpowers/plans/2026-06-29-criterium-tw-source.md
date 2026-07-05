@@ -110,7 +110,7 @@ EVENT_HTML = (
     '<th>分組</th><th>隊伍</th><th style="text-align:right">完賽時間</th>'
     '<th style="text-align:right">圈數</th><th>狀態</th></tr></thead><tbody>'
     '<tr class="row-link"><td class="rank"><span class="pos pos-1">01</span></td>'
-    '<td class="tnum">2</td><td>馮俊凱<!-- --> <span class="mono">★</span></td>'
+    '<td class="tnum">2</td><td>陳大文<!-- --> <span class="mono">★</span></td>'
     '<td class="tnum">M<!-- --> / M30</td><td>.UTSUNOMIYA BLITZEN 宇都宮車隊</td>'
     '<td class="tnum">00:47:38</td><td class="tnum">35</td>'
     '<td><span class="pill fin"><span class="dot"></span>FIN</span></td></tr>'
@@ -148,7 +148,7 @@ def test_parse_event_page_fin_row():
     fin = rows[0]
     assert fin["rank"] == 1
     assert fin["bib"] == "2"
-    assert fin["name"] == "馮俊凱"        # ★ marker stripped
+    assert fin["name"] == "陳大文"        # ★ marker stripped
     assert fin["category"] == "M / M30"
     assert fin["team"] == ".UTSUNOMIYA BLITZEN 宇都宮車隊"
     assert fin["finish_time"] == "00:47:38"
@@ -340,7 +340,7 @@ import criterium_crawl as cc
 META = {"name": "苗栗繞圈賽（第七屆）", "date": "2026-06-28",
         "year": 2026, "region": "苗栗", "event_ids": [4]}
 ROWS = [
-    {"rank": 1, "bib": "2", "name": "馮俊凱", "category": "M / M30",
+    {"rank": 1, "bib": "2", "name": "陳大文", "category": "M / M30",
      "team": "宇都宮車隊", "finish_time": "00:47:38", "laps": 35, "status": "FIN"},
     {"rank": None, "bib": "21", "name": "洪稟詠", "category": "M / U23",
      "team": "TEAM CYTO TRIGON", "finish_time": None, "laps": 25, "status": "DNF"},
@@ -362,7 +362,7 @@ def test_build_records_fin():
     assert fin["rank_overall"] == 1 and fin["bib"] == "2"
     assert fin["status"] == "FIN" and fin["laps"] == 35
     assert fin["finish_seconds"] == 47 * 60 + 38
-    assert fin["name_masked"] == "馮○凱" and "name_raw" in fin
+    assert fin["name_masked"] == "陳○文" and "name_raw" in fin
 
 
 def test_build_records_dnf_has_no_time():
@@ -456,7 +456,7 @@ if __name__ == "__main__":
 - [ ] **Step 4: Run test to verify it passes**
 
 Run: `python -m pytest scrapers/test_criterium_crawl.py -v`
-Expected: PASS (2 passed). (`馮俊凱` masks to `馮○凱` per `common.mask_name`.)
+Expected: PASS (2 passed). (`陳大文` masks to `陳○文` per `common.mask_name`.)
 
 - [ ] **Step 5: Commit**
 

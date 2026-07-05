@@ -9,7 +9,7 @@ EVENT_HTML = (
     '<th>分組</th><th>隊伍</th><th style="text-align:right">完賽時間</th>'
     '<th style="text-align:right">圈數</th><th>狀態</th></tr></thead><tbody>'
     '<tr class="row-link"><td class="rank"><span class="pos pos-1">01</span></td>'
-    '<td class="tnum">2</td><td>馮俊凱<!-- --> <span class="mono">★</span></td>'
+    '<td class="tnum">2</td><td>陳大文<!-- --> <span class="mono">★</span></td>'
     '<td class="tnum">M<!-- --> / M30</td><td>.UTSUNOMIYA BLITZEN 宇都宮車隊</td>'
     '<td class="tnum">00:47:38</td><td class="tnum">35</td>'
     '<td><span class="pill fin"><span class="dot"></span>FIN</span></td></tr>'
@@ -62,7 +62,7 @@ def test_parse_event_page_fin_row():
     fin = rows[0]
     assert fin["rank"] == 1
     assert fin["bib"] == "2"
-    assert fin["name"] == "馮俊凱"        # ★ marker stripped
+    assert fin["name"] == "陳大文"        # ★ marker stripped
     assert fin["category"] == "M / M30"
     assert fin["team"] == ".UTSUNOMIYA BLITZEN 宇都宮車隊"
     assert fin["finish_time"] == "00:47:38"

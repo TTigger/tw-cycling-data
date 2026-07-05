@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import Ridgeline from "../site/Ridgeline";
 import { loadHomeRidgeline, loadManifest, type HomeRidgeline } from "../../lib/data-load";
+import type { ManifestStats } from "../../lib/types";
 
 export default function HomeHero() {
   const [rl, setRl] = useState<HomeRidgeline | null>(null);
-  const [stats, setStats] = useState<Record<string, number> | null>(null);
+  const [stats, setStats] = useState<ManifestStats | null>(null);
   useEffect(() => {
     loadHomeRidgeline().then(setRl).catch(() => setRl({ unit: "", nodes: [] }));
     loadManifest().then((m) => setStats(m.stats)).catch(() => setStats(null));
