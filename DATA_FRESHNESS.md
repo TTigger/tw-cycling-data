@@ -1,9 +1,9 @@
 # 🩺 資料新鮮度週報
 
-**產生時間：** 2026-07-20 01:05 UTC
-**coverage.json 最後更新：** 2026-07-06 13:31 UTC（距今約 **13 天**）
+**產生時間：** 2026-07-23 01:05 UTC
+**coverage.json 最後更新：** 2026-07-06 13:31 UTC（距今約 **16 天**）
 
-> **⚠️ 維護者可能太久沒在本機跑 freshness 排程，coverage 已過期 13 天；請在本機執行 `python scrapers/discover.py`（雲端無法代跑，IP 被 403）。**
+> **⚠️ 維護者可能太久沒在本機跑 freshness 排程，coverage 已過期 16 天；請在本機執行 `python scrapers/discover.py`（雲端無法代跑，IP 被 403）。**
 >
 > 另注：`瘋系列 無眠征途 夜騎日月潭限時挑戰賽`（coverage 標 NOT_HELD / 2026-07-18）已過預定日期，如已舉辦應重新查驗成績。
 
