@@ -1,11 +1,11 @@
 # 🩺 台灣公路車賽事資料新鮮度週報
 
-**報告產生時間 (UTC):** 2026-08-03 01:05 UTC  
+**報告產生時間 (UTC):** 2026-08-06 01:09 UTC  
 **coverage.json 最後更新:** 2026-07-06 13:31 UTC (本機 discover 寫入)
 
 ---
 
-> **⚠️ 維護者可能太久沒在本機跑 freshness 排程，coverage 已過期 28 天；**  
+> **⚠️ 維護者可能太久沒在本機跑 freshness 排程，coverage 已過期 30 天；**  
 > **請在本機執行 `python scrapers/discover.py`（雲端無法代跑，IP 被 403 封鎖）。**
 
 ---
