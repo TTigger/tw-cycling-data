@@ -79,10 +79,22 @@ def slim_record(rec):
     }
 
 
+RACE_DATES = os.path.join(os.path.dirname(__file__), "..", "data", "raw", "race_dates.json")
+
+
+def load_race_dates():
+    """Curated race days for race-years whose source rows carry no date."""
+    try:
+        d = json.load(open(RACE_DATES, encoding="utf-8"))
+    except FileNotFoundError:
+        return {}
+    return {k: v for k, v in d.items() if not k.startswith("_")}
+
+
 def build_races_index(records):
     """One entry per (race_key, year): name, series, count, multi-year flag,
     has_team, and completion (fin/total/rate/counts) when status data exists."""
-    agg = defaultdict(lambda: {"rows": 0, "team": False,
+    agg = defaultdict(lambda: {"rows": 0, "team": False, "date": None,
                                "fin": 0, "status_rows": 0, "counts": Counter()})
     years = defaultdict(set)
     meta = {}
@@ -92,6 +104,9 @@ def build_races_index(records):
         if is_finisher(r):
             a["rows"] += 1
         a["team"] = a["team"] or bool(r.get("team"))
+        d = (r.get("date") or "")[:10]
+        if re.fullmatch(r"\d{4}-\d{2}-\d{2}", d) and (a["date"] is None or d < a["date"]):
+            a["date"] = d                   # race day = earliest date seen (multi-day events)
         st = r.get("status")
         if st:
             a["status_rows"] += 1
@@ -100,11 +115,14 @@ def build_races_index(records):
                 a["fin"] += 1
         years[r.get("race_key")].add(r.get("year"))
         meta[r.get("race_key")] = {"rn": r.get("race_name_canonical"), "s": r.get("series")}
+    overrides = load_race_dates()
     out = []
     for (rk, y), a in agg.items():
+        if a["date"] is None and f"{rk}|{y}" in overrides:
+            a["date"] = overrides[f"{rk}|{y}"]["d"]
         entry = {"rk": rk, "y": y, "rn": meta[rk]["rn"], "s": meta[rk]["s"],
                  "rows": a["rows"], "multi_year": len([x for x in years[rk] if x]) > 1,
-                 "has_team": a["team"], "file": race_file_name(rk, y)}
+                 "has_team": a["team"], "file": race_file_name(rk, y), "d": a["date"]}
         if a["status_rows"]:
             total = a["status_rows"]
             entry["completion"] = {

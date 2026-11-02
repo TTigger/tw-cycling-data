@@ -16,6 +16,7 @@ html {
   --muted: #5A6560;
   --accent: #1E8A56;
   --summit: #C98A1E;
+  --warn: #B4532A;
   --series-blue: #3F6B78;
   --series-sage: #5C7355;
 }
@@ -27,6 +28,7 @@ html.dark {
   --muted: #84908A;
   --accent: #3DBB7A;
   --summit: #F2B84B;
+  --warn: #E58A60;
   --series-blue: #7FA9B6;
   --series-sage: #9BB089;
 }
@@ -43,6 +45,7 @@ html.dark { color-scheme: dark; }
   --color-muted: var(--muted, #5A6560);
   --color-accent: var(--accent, #1E8A56);
   --color-summit: var(--summit, #C98A1E);
+  --color-warn: var(--warn, #B4532A);
   --color-series-blue: var(--series-blue, #3F6B78);
   --color-series-sage: var(--series-sage, #5C7355);
 }

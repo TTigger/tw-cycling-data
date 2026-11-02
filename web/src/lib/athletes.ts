@@ -99,3 +99,32 @@ export function careerSymbolSizes(races: number[], min = 6, max = 16): number[] 
   if (hi === lo) return races.map(() => (min + max) / 2);
   return races.map((r) => min + ((r - lo) / (hi - lo)) * (max - min));
 }
+
+export interface HighlightRace { rk: string; rn: string; y: number | null; pct: number; rank: number; field: number; }
+export interface AthleteHighlights {
+  /** Best single result by share of the field beaten (ties -> most recent). */
+  best: HighlightRace | null;
+  /** Most recent ranked result. */
+  latest: HighlightRace | null;
+  /** Ranked results, newest first (for the "recent results" list). */
+  recent: (HighlightRace & { d: string | null; t: number | null })[];
+}
+
+/** Answer-first summary of a rider's history: the best and the latest result
+ * as "beat N% of the field", plus the recent ranked results. */
+export function athleteHighlights(d: AthleteDetail, recentN = 5): AthleteHighlights {
+  const order = (r: AthleteHistoryRow) => `${r.d ?? `${r.y ?? 0}-00-00`}`;
+  const ranked = d.history
+    .map((r) => ({ r, pct: percentileInField(r.rank, r.field) }))
+    .filter((x): x is { r: AthleteHistoryRow; pct: number } => x.pct != null)
+    .sort((a, b) => (order(b.r) < order(a.r) ? -1 : order(b.r) > order(a.r) ? 1 : 0));   // newest first
+  const toH = ({ r, pct }: { r: AthleteHistoryRow; pct: number }) =>
+    ({ rk: r.rk, rn: r.rn, y: r.y, pct, rank: r.rank as number, field: r.field as number });
+  let best: { r: AthleteHistoryRow; pct: number } | null = null;
+  for (const x of ranked) if (!best || x.pct > best.pct) best = x;   // strict: keeps the newest on ties
+  return {
+    best: best ? toH(best) : null,
+    latest: ranked.length ? toH(ranked[0]) : null,
+    recent: ranked.slice(0, recentN).map((x) => ({ ...toH(x), d: x.r.d, t: x.r.t })),
+  };
+}

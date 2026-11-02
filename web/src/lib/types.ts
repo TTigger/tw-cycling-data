@@ -12,6 +12,8 @@ export interface Completion {
 export interface RaceIndex {
   rk: string; y: number | null; rn: string; s: string | null;
   rows: number; multi_year: boolean; has_team: boolean; file: string;
+  /** Race day (YYYY-MM-DD, earliest date in the race-year), null when the source gives none. */
+  d?: string | null;
   completion?: Completion;
 }
 export interface DetailRow {
@@ -125,7 +127,11 @@ export interface TeamDetail extends TeamIndexEntry {
   highlights: TeamHighlight[];
 }
 
-export interface CoverageGap { race: string; calendar: string; guess_source: string; }
+export interface CoverageGap {
+  race: string; calendar: string; guess_source: string;
+  /** discover.py triage: NOT_INGESTED / HELD_UNCHECKED / BLOCKED / NOT_HELD / NO_RANKING … */
+  status?: string; date?: string; note?: string; stale?: boolean;
+}
 export interface Coverage {
   summary: {
     rows: number; races: number; by_source: Record<string, number>;

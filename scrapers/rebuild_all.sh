@@ -53,7 +53,7 @@ EOF
     irunner)
       [ -f data/raw/irunner_events.json ] || $PY scrapers/irunner_crawl.py discover $IRUNNER_LO $IRUNNER_HI
       ids=$($PY -c "import json;print(' '.join(str(e['track_id']) for e in json.load(open('data/raw/irunner_events.json',encoding='utf-8'))))")
-      $PY scrapers/irunner_crawl.py fetch $ids && $PY scrapers/irunner_crawl.py build ;;
+      $PY scrapers/irunner_crawl.py fetch $ids && $PY scrapers/irunner_crawl.py dates && $PY scrapers/irunner_crawl.py build ;;
     criterium)  $PY scrapers/criterium_crawl.py ;;
     focusline)  $PY scrapers/focusline_crawl.py ;;
     taiwanbike) $PY scrapers/taiwanbike_crawl.py ;;
