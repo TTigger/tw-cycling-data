@@ -19,3 +19,11 @@ This is a non-negotiable privacy rule for the project, not a style preference.
 
 When adding any feature that touches names: confirm the committed artifact has
 only masked names, and any real-name handling stays in the browser session.
+
+## Team field can hold a real name (fixed 2026-11-02)
+Riders sometimes type a person's name (their own, or a friend's) as their
+"team". The team field is published unmasked, so 532 rows leaked real names via
+`team`. `merge.py` now masks any team value that is exactly some rider's real
+name (`mask_person_team`). The PDPA scan to run before publishing: every 3–4 char
+CJK string in `web/public/data/v1/**` must not equal any `name_raw` in master.json.
+
