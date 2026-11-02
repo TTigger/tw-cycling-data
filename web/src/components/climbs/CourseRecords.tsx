@@ -10,7 +10,7 @@ const GENDERS: { key: GenderFilter; label: string }[] = [
   { key: "all", label: "全部" }, { key: "M", label: "男" }, { key: "F", label: "女" },
 ];
 
-export default function CourseRecords() {
+export default function CourseRecords({ embedded = false }: { embedded?: boolean }) {
   const [file, setFile] = useState<CourseRecordsFile | null>(null);
   const [rk, setRk] = useState<string>("");
   const [g, setG] = useState<GenderFilter>("all");
@@ -34,8 +34,8 @@ export default function CourseRecords() {
   if (!boards.length) return null;
 
   return (
-    <section className="rounded-xl border border-border bg-surface p-4">
-      <h2 className="font-display text-lg text-ink">🏁 場地最速榜(歷代紀錄)</h2>
+    <section className={embedded ? "" : "rounded-xl border border-border bg-surface p-4"}>
+      {!embedded && <h2 className="font-display text-lg text-ink">🏁 場地最速榜(歷代紀錄)</h2>}
       <p className="mb-3 text-xs text-muted">
         僅收錄路線經查證穩定的爬坡賽,跨 2009–2026 所有屆次的最速完賽;每位車手取生涯最佳一次。
         不同組別總距離或有差異,長距離組的完賽時間天生較慢,請對照組別判讀。

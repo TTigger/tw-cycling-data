@@ -22,7 +22,7 @@ export default function GenderShareTrend({ gt }: { gt: GenderTrend }) {
       },
     },
     xAxis: { type: "category", data: gt.years.map(String) },
-    yAxis: { type: "value", name: "女性 %", max: 100, axisLabel: { formatter: "{value}%" } },
+    yAxis: { type: "value", name: "女性 %", min: 0, axisLabel: { formatter: "{value}%" } },
     series: [{ name: "女性比例", type: "line", smooth: true, connectNulls: false,
       itemStyle: { color: colors.accent }, data: pts }],
   };
