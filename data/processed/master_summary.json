@@ -1,13 +1,13 @@
 {
-  "total_records": 147609,
+  "total_records": 159930,
   "by_platform": {
-    "bravelog.tw": 42052,
+    "bravelog.tw": 43423,
     "criterium.tw": 1957,
-    "cyclist.org.tw": 12265,
+    "cyclist.org.tw": 13636,
     "cycling.org.tw": 349,
     "tsu.com.tw": 24515,
-    "twbike.org": 15405,
-    "irunner.biji.co": 32862,
+    "twbike.org": 15404,
+    "irunner.biji.co": 42442,
     "taiwanbike.org": 18204
   },
   "by_year": {
@@ -21,79 +21,76 @@
     "2018": 1124,
     "2019": 1229,
     "2020": 2763,
-    "2021": 639,
-    "2022": 12387,
-    "2023": 29217,
-    "2024": 43401,
-    "2025": 36414,
-    "2026": 12514
+    "2021": 989,
+    "2022": 20280,
+    "2023": 29945,
+    "2024": 44752,
+    "2025": 36595,
+    "2026": 14332
   },
   "by_gender": {
-    "null": 51263,
-    "F": 14917,
-    "M": 81429
+    "null": 53481,
+    "F": 16350,
+    "M": 90099
   },
   "by_race_class": {
-    "未分類": 29084,
-    "女子": 646,
-    "挑戰": 46200,
-    "競賽": 7167,
-    "電輔車": 218,
-    "市民": 4901,
-    "市民經典": 5267,
-    "團體計時": 826,
-    "分齡": 31135,
-    "青少年": 1773,
+    "未分類": 30260,
+    "女子": 807,
+    "挑戰": 55811,
+    "競賽": 7615,
+    "電輔車": 238,
+    "市民": 4990,
+    "市民經典": 5269,
+    "團體計時": 1104,
+    "分齡": 31446,
+    "青少年": 1998,
     "認證": 20392
   },
   "by_series": {
-    "null": 69839,
+    "null": 80046,
     "TBA 長途認證": 20392,
-    "96聯賽": 9457,
-    "捷安特自行車嘉年華": 8756,
-    "TIS崇越盃系列": 7722,
-    "戀戀197": 6547,
+    "96聯賽": 9458,
+    "捷安特自行車嘉年華": 8755,
+    "TIS崇越盃系列": 7721,
+    "戀戀197": 6546,
     "環大臺北自行車挑戰": 3520,
+    "GravelFundo 礫石越野系列": 3442,
     "L'Étape 環法日月潭": 3248,
-    "GravelFundo 礫石越野系列": 2260,
+    "花蓮太平洋盃": 2549,
     "LAVA 落日飛車350": 2188,
-    "花蓮太平洋盃": 1993,
-    "臺灣KOM登山王之路": 1643,
+    "臺灣KOM登山王之路": 1728,
     "臺灣自行車聯賽(TCL)": 1613,
-    "臺灣KOM登山王挑戰": 1448,
+    "臺灣KOM登山王挑戰": 1467,
     "仙山單車挑戰賽": 1180,
     "環花東國際自行車賽": 1080,
     "台灣登山大滿貫(雪巴)": 965,
     "屏東四重溪自行車挑戰賽": 819,
-    "TCU 台中城市繞圈賽": 738,
+    "TCU 台中城市繞圈賽": 737,
     "瘋系列環台賽": 696,
     "自由車錦標賽/選拔": 623,
-    "世界自行車日": 482,
-    "銅礦88經典挑戰賽": 322,
+    "銅礦88經典挑戰賽": 577,
+    "世界自行車日": 502,
     "臺灣KOM太平洋經典賽": 78
   },
   "by_status": {
-    "null": 145652,
+    "null": 157973,
     "FIN": 823,
-    "DNF": 586,
-    "DNS": 238,
-    "DQ": 75,
-    "NYS": 13,
-    "SRT": 222
+    "NF": 1134
   },
-  "distinct_races": 161,
+  "distinct_races": 174,
   "races": [
     {
       "race_key": "彰化經典百K",
       "series": null,
       "platform": "irunner.biji.co",
       "years": [
+        2022,
         2023,
         2024,
         2025,
         2026
       ],
-      "rows": 19910
+      "rows": 25137
     },
     {
       "race_key": "建大武嶺盃",
@@ -114,6 +111,18 @@
       "rows": 10210
     },
     {
+      "race_key": "美利達盃單車嘉年華",
+      "series": null,
+      "platform": "irunner.biji.co",
+      "years": [
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "rows": 8009
+    },
+    {
       "race_key": "戀戀197",
       "series": "戀戀197",
       "platform": "bravelog.tw",
@@ -122,18 +131,19 @@
         2023,
         2024
       ],
-      "rows": 6547
+      "rows": 6546
     },
     {
-      "race_key": "美利達盃單車嘉年華",
+      "race_key": "輪躍台南單車嘉年華",
       "series": null,
       "platform": "irunner.biji.co",
       "years": [
+        2022,
         2023,
         2024,
         2025
       ],
-      "rows": 5958
+      "rows": 4133
     },
     {
       "race_key": "環大臺北自行車挑戰成績",
@@ -141,6 +151,7 @@
       "platform": "cyclist.org.tw",
       "years": [
         2018,
+        2021,
         2022,
         2023,
         2025
@@ -156,17 +167,6 @@
         2025
       ],
       "rows": 3248
-    },
-    {
-      "race_key": "輪躍台南單車嘉年華",
-      "series": null,
-      "platform": "irunner.biji.co",
-      "years": [
-        2023,
-        2024,
-        2025
-      ],
-      "rows": 3189
     },
     {
       "race_key": "崇越盃武嶺挑戰賽",
@@ -240,7 +240,7 @@
       "years": [
         2026
       ],
-      "rows": 2477
+      "rows": 2503
     },
     {
       "race_key": "北高360認證成績表2024",
@@ -276,7 +276,16 @@
       "years": [
         2024
       ],
-      "rows": 1775
+      "rows": 1852
+    },
+    {
+      "race_key": "第七屆經典新玉門關xEDWONDER公路自行車聯名賽",
+      "series": null,
+      "platform": "irunner.biji.co",
+      "years": [
+        2025
+      ],
+      "rows": 1661
     },
     {
       "race_key": "1112TBA雙塔520認證成績表2022",
@@ -286,15 +295,6 @@
         2022
       ],
       "rows": 1639
-    },
-    {
-      "race_key": "第七屆經典新玉門關xEDWONDER公路自行車聯名賽",
-      "series": null,
-      "platform": "irunner.biji.co",
-      "years": [
-        2025
-      ],
-      "rows": 1636
     },
     {
       "race_key": "1112TBA北高360認證成績表2022",
@@ -339,7 +339,7 @@
       "years": [
         2025
       ],
-      "rows": 1353
+      "rows": 1352
     },
     {
       "race_key": "NeverStop永不放棄挑戰巔峰－武嶺",
@@ -349,6 +349,17 @@
         2024
       ],
       "rows": 1341
+    },
+    {
+      "race_key": "花蓮太平洋盃公路賽團隊計時賽挑戰",
+      "series": "花蓮太平洋盃",
+      "platform": "cyclist.org.tw",
+      "years": [
+        2024,
+        2025,
+        2026
+      ],
+      "rows": 1336
     },
     {
       "race_key": "雙塔2024",
@@ -388,6 +399,15 @@
         2023
       ],
       "rows": 1134
+    },
+    {
+      "race_key": "南庄山水悠遊行悠遊騎慢城",
+      "series": null,
+      "platform": "bravelog.tw",
+      "years": [
+        2024
+      ],
+      "rows": 1119
     },
     {
       "race_key": "環花東國際自行車賽",
@@ -433,7 +453,7 @@
       "years": [
         2023
       ],
-      "rows": 971
+      "rows": 970
     },
     {
       "race_key": "仙山單車挑戰賽一輪盃3",
@@ -462,7 +482,7 @@
         2024,
         2025
       ],
-      "rows": 926
+      "rows": 925
     },
     {
       "race_key": "花蓮太平洋盃自行車系列活動",
@@ -541,6 +561,17 @@
       "rows": 809
     },
     {
+      "race_key": "臺灣自行車登山王挑戰",
+      "series": "臺灣KOM登山王挑戰",
+      "platform": "cyclist.org.tw",
+      "years": [
+        2022,
+        2023,
+        2026
+      ],
+      "rows": 804
+    },
+    {
       "race_key": "96Heroes台北站",
       "series": "96聯賽",
       "platform": "tsu.com.tw",
@@ -548,26 +579,6 @@
         2024
       ],
       "rows": 796
-    },
-    {
-      "race_key": "臺灣自行車登山王挑戰",
-      "series": "臺灣KOM登山王挑戰",
-      "platform": "cyclist.org.tw",
-      "years": [
-        2022,
-        2023
-      ],
-      "rows": 785
-    },
-    {
-      "race_key": "花蓮太平洋盃公路賽團隊計時賽挑戰",
-      "series": "花蓮太平洋盃",
-      "platform": "cyclist.org.tw",
-      "years": [
-        2024,
-        2025
-      ],
-      "rows": 780
     },
     {
       "race_key": "雙塔2025",
@@ -642,6 +653,31 @@
       "rows": 622
     },
     {
+      "race_key": "臺灣KOM登山王之路春季",
+      "series": "臺灣KOM登山王之路",
+      "platform": "cyclist.org.tw",
+      "years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "rows": 594
+    },
+    {
+      "race_key": "GravelFundo-台南玉井-迷你全地形賽",
+      "series": "GravelFundo 礫石越野系列",
+      "platform": "irunner.biji.co",
+      "years": [
+        2024,
+        2025,
+        2026
+      ],
+      "rows": 581
+    },
+    {
       "race_key": "VWLAVanLife玩賽樂園落日飛車｜350自行車挑戰",
       "series": "LAVA 落日飛車350",
       "platform": "bravelog.tw",
@@ -658,6 +694,16 @@
         2025
       ],
       "rows": 578
+    },
+    {
+      "race_key": "銅礦88經典自行車挑戰賽",
+      "series": "銅礦88經典挑戰賽",
+      "platform": "bravelog.tw",
+      "years": [
+        2025,
+        2026
+      ],
+      "rows": 577
     },
     {
       "race_key": "96Heroes彰化站",
@@ -707,30 +753,17 @@
     {
       "race_key": "【96Heroes挑戰組】桃竹站",
       "series": "96聯賽",
-      "platform": "bravelog.tw",
+      "platform": "tsu.com.tw",
       "years": [
         2025
       ],
-      "rows": 511
+      "rows": 512
     },
     {
       "race_key": "苗栗繞圈賽第七屆",
       "series": null,
       "platform": "criterium.tw",
       "years": [
-        2026
-      ],
-      "rows": 509
-    },
-    {
-      "race_key": "臺灣KOM登山王之路春季",
-      "series": "臺灣KOM登山王之路",
-      "platform": "cyclist.org.tw",
-      "years": [
-        2021,
-        2023,
-        2024,
-        2025,
         2026
       ],
       "rows": 509
@@ -790,16 +823,6 @@
       "rows": 414
     },
     {
-      "race_key": "GravelFundo-台南玉井-迷你全地形賽",
-      "series": "GravelFundo 礫石越野系列",
-      "platform": "irunner.biji.co",
-      "years": [
-        2024,
-        2025
-      ],
-      "rows": 413
-    },
-    {
       "race_key": "LIVDAY初夏大山102寂寞公路挑戰活動",
       "series": "捷安特自行車嘉年華",
       "platform": "bravelog.tw",
@@ -807,6 +830,24 @@
         2025
       ],
       "rows": 412
+    },
+    {
+      "race_key": "世界自行車日環大苗栗",
+      "series": "世界自行車日",
+      "platform": "irunner.biji.co",
+      "years": [
+        2026
+      ],
+      "rows": 410
+    },
+    {
+      "race_key": "雲嘉南霸天濱海自行車賽",
+      "series": null,
+      "platform": "irunner.biji.co",
+      "years": [
+        2025
+      ],
+      "rows": 409
     },
     {
       "race_key": "【96聯賽第五站】「從心出發挑戰巔峰」",
@@ -818,6 +859,15 @@
       "rows": 398
     },
     {
+      "race_key": "桃園航空城繞圈賽",
+      "series": null,
+      "platform": "cyclist.org.tw",
+      "years": [
+        2026
+      ],
+      "rows": 393
+    },
+    {
       "race_key": "左營單車挑戰百里快樂行",
       "series": null,
       "platform": "bravelog.tw",
@@ -825,15 +875,6 @@
         2025
       ],
       "rows": 391
-    },
-    {
-      "race_key": "世界自行車日環大苗栗",
-      "series": "世界自行車日",
-      "platform": "irunner.biji.co",
-      "years": [
-        2026
-      ],
-      "rows": 390
     },
     {
       "race_key": "龍井單車騎福踩風行暨節能減碳宣導活動",
@@ -854,6 +895,17 @@
       "rows": 383
     },
     {
+      "race_key": "GravelFundo-台南玉井-礫石車賽",
+      "series": "GravelFundo 礫石越野系列",
+      "platform": "irunner.biji.co",
+      "years": [
+        2024,
+        2025,
+        2026
+      ],
+      "rows": 383
+    },
+    {
       "race_key": "GravelFundoStage3台南年終站",
       "series": "GravelFundo 礫石越野系列",
       "platform": "irunner.biji.co",
@@ -862,15 +914,6 @@
         2025
       ],
       "rows": 383
-    },
-    {
-      "race_key": "雲嘉南霸天濱海自行車賽",
-      "series": null,
-      "platform": "irunner.biji.co",
-      "years": [
-        2025
-      ],
-      "rows": 381
     },
     {
       "race_key": "96聯賽第三站NeverStop永不放棄塔塔加",
@@ -964,13 +1007,13 @@
       "rows": 326
     },
     {
-      "race_key": "銅礦88經典自行車挑戰賽",
-      "series": "銅礦88經典挑戰賽",
-      "platform": "bravelog.tw",
+      "race_key": "0501DOSUN宜蘭太平山自行車系列",
+      "series": null,
+      "platform": "cyclist.org.tw",
       "years": [
-        2025
+        2021
       ],
-      "rows": 322
+      "rows": 318
     },
     {
       "race_key": "年台灣登山大滿貫自行車系列賽–大雪山站",
@@ -1019,16 +1062,6 @@
       "rows": 299
     },
     {
-      "race_key": "GravelFundo-台南玉井-礫石車賽",
-      "series": "GravelFundo 礫石越野系列",
-      "platform": "irunner.biji.co",
-      "years": [
-        2024,
-        2025
-      ],
-      "rows": 284
-    },
-    {
       "race_key": "LAVA玩賽樂園350自行車挑戰Day2",
       "series": "LAVA 落日飛車350",
       "platform": "bravelog.tw",
@@ -1074,6 +1107,17 @@
         2025
       ],
       "rows": 267
+    },
+    {
+      "race_key": "GravelFundo-台南玉井-越野林道賽",
+      "series": "GravelFundo 礫石越野系列",
+      "platform": "irunner.biji.co",
+      "years": [
+        2024,
+        2025,
+        2026
+      ],
+      "rows": 264
     },
     {
       "race_key": "雙認證雙塔5202023",
@@ -1215,16 +1259,6 @@
       "rows": 187
     },
     {
-      "race_key": "GravelFundo-台南玉井-越野林道賽",
-      "series": "GravelFundo 礫石越野系列",
-      "platform": "irunner.biji.co",
-      "years": [
-        2024,
-        2025
-      ],
-      "rows": 186
-    },
-    {
       "race_key": "年台灣登山大滿貫自行車系列賽陽明山站",
       "series": "台灣登山大滿貫(雪巴)",
       "platform": "bravelog.tw",
@@ -1235,11 +1269,29 @@
       "rows": 182
     },
     {
+      "race_key": "GravelFundoStage3新北貢寮站【GravelRace礫石車賽】",
+      "series": "GravelFundo 礫石越野系列",
+      "platform": "irunner.biji.co",
+      "years": [
+        2023
+      ],
+      "rows": 181
+    },
+    {
       "race_key": "彩虹四季運動觀光系列活動環屏東自行車挑戰Day2",
       "series": null,
       "platform": "bravelog.tw",
       "years": [
         2022
+      ],
+      "rows": 177
+    },
+    {
+      "race_key": "GravelFundoStage4台南年終站",
+      "series": "GravelFundo 礫石越野系列",
+      "platform": "irunner.biji.co",
+      "years": [
+        2023
       ],
       "rows": 177
     },
@@ -1314,6 +1366,15 @@
         2025
       ],
       "rows": 128
+    },
+    {
+      "race_key": "GravelFundo台中日南站【GravelRace礫石車賽】",
+      "series": "GravelFundo 礫石越野系列",
+      "platform": "irunner.biji.co",
+      "years": [
+        2023
+      ],
+      "rows": 122
     },
     {
       "race_key": "109年桃園市長盃自由車錦標賽公路賽",
@@ -1403,7 +1464,7 @@
       "years": [
         2025
       ],
-      "rows": 97
+      "rows": 96
     },
     {
       "race_key": "TCU三發國王盃中寮KOM單車挑戰賽",
@@ -1433,6 +1494,42 @@
       "rows": 78
     },
     {
+      "race_key": "GravelFundoStage3新北貢寮站【UrbanAllMountain城市全地形越野賽】S1",
+      "series": "GravelFundo 礫石越野系列",
+      "platform": "irunner.biji.co",
+      "years": [
+        2023
+      ],
+      "rows": 71
+    },
+    {
+      "race_key": "GravelFundoStage3新北貢寮站【UrbanAllMountain城市全地形越野賽】S2",
+      "series": "GravelFundo 礫石越野系列",
+      "platform": "irunner.biji.co",
+      "years": [
+        2023
+      ],
+      "rows": 70
+    },
+    {
+      "race_key": "【GravelCircuit礫石車繞圈賽】2026GravelFundo年度系列Stage3北部年終站",
+      "series": "GravelFundo 礫石越野系列",
+      "platform": "irunner.biji.co",
+      "years": [
+        2026
+      ],
+      "rows": 69
+    },
+    {
+      "race_key": "GravelFundoStage3新北貢寮站【UrbanAllMountain城市全地形越野賽】",
+      "series": "GravelFundo 礫石越野系列",
+      "platform": "irunner.biji.co",
+      "years": [
+        2023
+      ],
+      "rows": 68
+    },
+    {
       "race_key": "年第4季136檢定",
       "series": null,
       "platform": "tsu.com.tw",
@@ -1449,6 +1546,15 @@
         2025
       ],
       "rows": 65
+    },
+    {
+      "race_key": "【MTBXCO越野賽】2026GravelFundo年度系列Stage3北部年終站",
+      "series": "GravelFundo 礫石越野系列",
+      "platform": "irunner.biji.co",
+      "years": [
+        2026
+      ],
+      "rows": 61
     },
     {
       "race_key": "世界自行車日環大苗栗經典挑戰2026",
@@ -1550,6 +1656,15 @@
       "rows": 15
     },
     {
+      "race_key": "GravelFundo台中日南站【DH校園下坡賽】",
+      "series": "GravelFundo 礫石越野系列",
+      "platform": "irunner.biji.co",
+      "years": [
+        2023
+      ],
+      "rows": 10
+    },
+    {
       "race_key": "TCU台中城市繞圈檢定女子組NoviceOpenWomen",
       "series": "TCU 台中城市繞圈賽",
       "platform": "tsu.com.tw",
@@ -1564,6 +1679,15 @@
       "platform": "cyclist.org.tw",
       "years": [
         2015
+      ],
+      "rows": 8
+    },
+    {
+      "race_key": "GravelFundoStage3新北貢寮站【UrbanAllMountain城市全地形越野賽】S3",
+      "series": "GravelFundo 礫石越野系列",
+      "platform": "irunner.biji.co",
+      "years": [
+        2023
       ],
       "rows": 8
     },
