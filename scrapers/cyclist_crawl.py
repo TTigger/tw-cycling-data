@@ -27,6 +27,12 @@ OUT_DIR = os.path.join(os.path.dirname(__file__), "..", "data", "processed")
 os.makedirs(PDF_DIR, exist_ok=True)
 os.makedirs(OUT_DIR, exist_ok=True)
 
+# Events that were in the dataset but have since been removed from the category
+# listing pages (their result pages + PDFs still exist). (pno, year, title, category)
+DELISTED_EVENTS = [
+    ("99", 2020, "扶輪盃陽明山自行車登山王挑戰", 1),
+    ("149", 2025, "環花東國際自行車賽", 13),
+]
 YEARS = {2024, 2025, 2026}  # default; override with --years (e.g. 2014-2023 backfill)
 # category listing pages (pno) that hold competitive ROAD events
 CATEGORIES = {
@@ -95,6 +101,12 @@ def list_events(session, cat_pno, cat_name):
     html = r.text
     events = []
     for m in re.finditer(r'results_txt\.asp\?pno=(\d+)', html):
+        # current layout: <h2>2025 環大臺北自行車挑戰 成績</h2> <ul><li><a results_txt…>
+        h2 = re.findall(r"(?s)<h2[^>]*>(.*?)</h2>", html[max(0, m.start() - 600):m.start()])
+        if h2:
+            title = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", h2[-1])).strip()
+            events.append((m.group(1), title, common.extract_year(title)))
+            continue
         pre = re.sub(r"<[^>]+>", " ", html[max(0, m.start() - 500):m.start()])
         pre = re.sub(r"\s+", " ", pre).strip()
         # title sits right before the "活動簡介＆證書下載" marker
@@ -200,6 +212,8 @@ def main():
             print(f"[cat {cat_pno} {cat_name}] LIST ERROR {e}")
             continue
         kept = [e for e in events if e[2] in YEARS]
+        kept += [(pno, f"(delisted) {t}", y) for pno, y, t, cat in DELISTED_EVENTS
+                 if cat == cat_pno and y in YEARS and pno not in {e[0] for e in events}]
         print(f"\n[cat {cat_pno} {cat_name}] events={len(events)} in-range({min(YEARS)}-{max(YEARS)})={len(kept)}")
         for event_pno, ltitle, yr in kept:
             if args.limit and events_done >= args.limit:

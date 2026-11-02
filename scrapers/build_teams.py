@@ -109,7 +109,8 @@ def build_teams(records, group_keys, field_sizes=None, min_riders=MIN_TEAM_RIDER
 
         highlights = sorted((x for x in rl if x["pct"] is not None),
                             key=lambda x: -x["pct"])[:top_highlights]
-        highlights = [{"id": athlete_id(x["gk"]), "nm": x["nm"], "rn": x["rn"],
+        highlights = [{"id": athlete_id(x["gk"]), "link": gsize[x["gk"]] >= MIN_RESULTS,
+                       "nm": x["nm"], "rn": x["rn"],
                        "rk": x["rk"], "y": x["y"], "rank": x["rank"],
                        "pct": round(x["pct"])} for x in highlights]
 

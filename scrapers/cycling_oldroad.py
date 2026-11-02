@@ -20,6 +20,7 @@ import sys
 import urllib.request
 
 import pandas as pd
+import requests
 
 sys.path.insert(0, os.path.dirname(__file__))
 import common  # noqa: E402
@@ -107,8 +108,8 @@ def parse_xls(path, year, race_name):
 
 
 def listing():
-    h = urllib.request.urlopen(urllib.request.Request(LIST_URL, headers=H), timeout=40, context=_CTX
-                               ).read().decode("utf-8", "replace")
+    # urllib is 403'd by cycling.org.tw (2026-11); requests passes
+    h = requests.get(LIST_URL, headers=H, timeout=40).content.decode("utf-8", "replace")
     items = re.findall(r'<a[^>]+href="([^"]+\.(?:xls|xlsx))"[^>]*>(.*?)</a>', h, re.S | re.I)
     out = []
     for href, txt in items:
@@ -128,7 +129,7 @@ def download(href):
     if os.path.exists(path) and os.path.getsize(path) > 2000:
         return path
     try:
-        d = urllib.request.urlopen(urllib.request.Request(href, headers=H), timeout=40, context=_CTX).read()
+        d = requests.get(href, headers=H, timeout=40).content
         if d[:4] in (b"\xd0\xcf\x11\xe0", b"PK\x03\x04"):
             open(path, "wb").write(d)
             return path

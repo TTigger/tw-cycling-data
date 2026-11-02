@@ -26,6 +26,7 @@ import statistics
 from collections import Counter, defaultdict
 
 import common
+import legacy_identity
 from race_type import classify as race_type
 
 HERE = os.path.dirname(__file__)
@@ -65,6 +66,8 @@ def load_profiles():
 
 def athlete_id(group_key):
     """Stable, salted, non-reversible 10-hex id for a group key (u:<uci> / n:<name>)."""
+    if group_key.startswith("x:"):   # carried-over published id (legacy_identity)
+        return group_key[2:]
     h = hashlib.sha1((_SALT + "|" + group_key).encode("utf-8")).hexdigest()
     return h[:10]
 
@@ -101,7 +104,27 @@ def build_group_keys(records):
             keys.append(f"n:{nm}")
         else:
             keys.append("n:")  # nameless rows lump together; dropped later
-    return keys
+    return _apply_legacy_identity(records, keys)
+
+
+def _apply_legacy_identity(records, keys, legacy=None):
+    """Rows whose SOURCE masked the name (bravelog since 2026-H2) can't be grouped
+    by name — '黃*翔' is many people. Re-attach them to the athlete id we already
+    published for that exact result (legacy_identity map). If another source still
+    yields that athlete's key, join it (same id); otherwise use the id directly
+    ('x:<id>'). Unmatched source-masked rows become singletons, never guessed."""
+    legacy = legacy_identity.load_map() if legacy is None else legacy
+    id_to_key = {}
+    for r, k in zip(records, keys):
+        if not legacy_identity.is_source_masked(r.get("name_raw")):
+            id_to_key.setdefault(athlete_id(k), k)
+    out = []
+    for i, (r, k) in enumerate(zip(records, keys)):
+        if legacy_identity.is_source_masked(r.get("name_raw")):
+            aid = legacy.get(legacy_identity.row_key(r) or "")
+            k = id_to_key.get(aid, f"x:{aid}") if aid else f"s:{i}"
+        out.append(k)
+    return out
 
 
 def confidence(is_anchored, distinct_teams, name_len, mixed_gender=False):

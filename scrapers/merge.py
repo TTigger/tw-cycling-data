@@ -39,7 +39,17 @@ def discover_sources():
 # Races superseded by a better source — their rows are skipped at merge.
 # bravelog's combined 2025 TBA cert (北高360+雙塔520+四極602 in one race_key) is
 # replaced by taiwanbike.org's authoritative per-distance results.
-SUPERSEDED = {("bravelog.tw", "TBA北高360雙塔520四極602自行車認證")}
+# Entries are (platform, race_key) or (platform, race_key, year).
+SUPERSEDED = {("bravelog.tw", "TBA北高360雙塔520四極602自行車認證"),
+              # 彰化經典百K 2023 is on both bravelog (gun time) and iRunner (net
+              # time, ~minutes apart, so the exact-dup check can't pair them).
+              # The published dataset used bravelog; keep it, drop the twin.
+              ("irunner.biji.co", "彰化經典百K", 2023)}
+
+
+def is_superseded(r):
+    return ((r["source_platform"], r["race_key"]) in SUPERSEDED
+            or (r["source_platform"], r["race_key"], r.get("year")) in SUPERSEDED)
 
 iter_records = common.iter_records  # streaming JSON-array reader (RAM-frugal)
 
@@ -51,6 +61,28 @@ def should_drop_zero_time(r):
         return False
     fs = r.get("finish_seconds")
     return fs is not None and fs <= 0
+
+
+def is_dup(r, fs, seen, seen_masked, seen_src_masked):
+    """Cross-source exact duplicate? Keyed on (year, name, whole seconds).
+    A source that masks names itself (bravelog '黃*翔') can't match the real name
+    another source has for the same result, so when EITHER side is source-masked
+    compare masked forms instead. Real-vs-real still needs the exact real name, so
+    two different 黃○翔 with the same time in real-named sources aren't merged."""
+    name = r["name_raw"]
+    mk = (r.get("year"), common.mask_name(name), fs)
+    if "*" in name or "＊" in name:
+        if mk in seen_masked:
+            return True
+        seen_src_masked.add(mk)
+        seen_masked.add(mk)
+        return False
+    k = (r.get("year"), name, fs)
+    if k in seen or mk in seen_src_masked:
+        return True
+    seen.add(k)
+    seen_masked.add(mk)
+    return False
 
 
 def main():
@@ -65,7 +97,7 @@ def main():
     # write each record straight to disk, then free the source. Peak memory stays at
     # ~one source instead of the whole corpus (RAM-tight machines OOM'd otherwise).
     # Dedup keeps the first-loaded source (sources load in sorted-glob order, as before).
-    seen = set()
+    seen, seen_masked, seen_src_masked = set(), set(), set()
     n_out = n_zero = n_dup = n_superseded = 0
     races = defaultdict(lambda: {"rows": 0, "years": set(), "series": None, "platform": None})
     by_platform, by_year, by_gender, by_class, by_series = (Counter() for _ in range(5))
@@ -80,13 +112,11 @@ def main():
                 n_zero += 1
                 continue
             if r.get("name_raw") and fs:        # cross-source exact-dup dedup
-                k = (r.get("year"), r.get("name_raw"), int(fs))
-                if k in seen:
+                if is_dup(r, int(fs), seen, seen_masked, seen_src_masked):
                     n_dup += 1
                     continue
-                seen.add(k)
             normalize.enrich(r)
-            if (r["source_platform"], r["race_key"]) in SUPERSEDED:
+            if is_superseded(r):
                 n_superseded += 1
                 continue
             if r.get("name_raw"):               # re-mask at merge time (policy applied here)
