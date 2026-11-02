@@ -8,6 +8,8 @@ import Tabs from "../Tabs";
 import RacePicker from "./RacePicker";
 import Leaderboard from "./Leaderboard";
 import PercentileWidget from "./PercentileWidget";
+import RaceSummary from "./RaceSummary";
+import { summarizeRace } from "../../lib/race-summary";
 import Podium from "./Podium";
 import DistributionRidge from "../charts/DistributionRidge";
 import { quantile } from "../../lib/aggregate";
@@ -102,7 +104,7 @@ export default function RaceDetailApp({ initRk, initY }: { initRk?: string; init
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <h1 className="font-display text-2xl text-ink">{sel.y} {sel.rn}</h1>
-          <p className="text-sm text-muted">{sel.s} · {sel.rows.toLocaleString()} 筆成績</p>
+          <p className="num text-sm text-muted">{[sel.d, sel.s].filter(Boolean).join(" · ") || `${sel.rows.toLocaleString()} 筆成績`}</p>
           {siblings.length > 1 && (
             <div className="mt-2 flex flex-wrap gap-1">
               {siblings.map((r) => (r.file === sel.file ? (
@@ -119,11 +121,12 @@ export default function RaceDetailApp({ initRk, initY }: { initRk?: string; init
 
       {!detail ? <Skeleton bare cards={2} /> : (
         <>
+          <RaceSummary s={summarizeRace(detail, sel.y, sel.completion, crossYear[sel.rk])} />
           <Tabs tabs={RACE_TABS} active={tab} onChange={setTab} />
           {tab === "results" && (
             <div className="space-y-4">
-              <Card title="領獎台"><Podium rows={detail} /></Card>
               <Card title="你贏過多少%" hint="輸入你的完賽時間"><PercentileWidget rows={detail} /></Card>
+              <Card title="領獎台"><Podium rows={detail} /></Card>
               <Card title="排行榜"><Leaderboard rows={detail} /></Card>
             </div>
           )}

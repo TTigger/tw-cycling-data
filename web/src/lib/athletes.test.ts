@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { percentileInField, searchAthletes, careerSummary, progression, careerSymbolSizes } from "./athletes";
+import { percentileInField, searchAthletes, careerSummary, progression, careerSymbolSizes, athleteHighlights } from "./athletes";
 import type { AthleteIndexEntry, AthleteDetail, AthleteHistoryRow } from "./types";
 
 function a(p: Partial<AthleteIndexEntry>): AthleteIndexEntry {
@@ -96,5 +96,30 @@ describe("careerSymbolSizes", () => {
   });
   it("empty -> []", () => {
     expect(careerSymbolSizes([], 6, 16)).toEqual([]);
+  });
+});
+
+describe("athleteHighlights", () => {
+  const h = (y: number, d: string | null, rank: number | null, field: number | null, rn = `R${y}`): AthleteHistoryRow =>
+    ({ y, rk: rn, rn, cat: null, g: null, ag: null, team: null, rank, t: 3600, label: null, d, field });
+  const det = (history: AthleteHistoryRow[]) => ({ history } as unknown as AthleteDetail);
+
+  it("picks the best share of field beaten and the latest ranked race", () => {
+    const x = athleteHighlights(det([
+      h(2024, "2024-05-01", 10, 100),   // 90%
+      h(2025, "2025-05-01", 2, 10),     // 80%
+      h(2026, "2026-03-01", 5, 100),    // 95%  <- best
+      h(2026, "2026-09-01", null, 50),  // unranked: ignored
+    ]));
+    expect(x.best).toMatchObject({ y: 2026, pct: 95 });
+    expect(x.latest).toMatchObject({ y: 2026, pct: 95, rank: 5, field: 100 });
+    expect(x.recent.map((r) => r.y)).toEqual([2026, 2025, 2024]);
+  });
+
+  it("orders undated rows by year and handles no ranked results", () => {
+    const x = athleteHighlights(det([h(2023, null, 1, 10, "A"), h(2025, null, 3, 10, "B")]));
+    expect(x.latest?.rn).toBe("B");
+    expect(x.best?.rn).toBe("A");
+    expect(athleteHighlights(det([h(2025, null, null, null)]))).toEqual({ best: null, latest: null, recent: [] });
   });
 });

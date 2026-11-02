@@ -49,21 +49,21 @@ export default function Leaderboard({ rows }: { rows: DetailRow[] }) {
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-border text-left text-muted">
-              <th className="py-2 pr-3">名次</th><th className="pr-3">號碼</th><th className="pr-3">姓名</th>
-              <th className="pr-3">組別</th><th className="pr-3">車隊</th><th className="pr-3">完賽</th>
-              <th className="pr-3">原始</th>
+              <th className="py-2 pr-3">名次</th><th className="hidden pr-3 sm:table-cell">號碼</th><th className="pr-3">姓名</th>
+              <th className="hidden pr-3 sm:table-cell">組別</th><th className="pr-3">車隊</th><th className="pr-3">完賽</th>
+              <th className="hidden pr-3 sm:table-cell">原始</th>
             </tr>
           </thead>
           <tbody>
             {slice.map((r, i) => (
               <tr key={`${r.bib}-${i}`} className="border-b border-border/60 transition-colors hover:bg-accent/5">
                 <td className="num py-1.5 pr-3">{r.place ?? "—"}</td>
-                <td className="num pr-3 text-muted">{r.bib ?? ""}</td>
-                <td className="pr-3 text-ink">{r.name ?? "—"}</td>
-                <td className="pr-3 text-muted">{r.cat ?? ""}</td>
-                <td className="pr-3 text-muted">{r.team ?? ""}</td>
+                <td className="num hidden pr-3 text-muted sm:table-cell">{r.bib ?? ""}</td>
+                <td className="whitespace-nowrap pr-3 text-ink">{r.name ?? "—"}</td>
+                <td className="hidden pr-3 text-muted sm:table-cell">{r.cat ?? ""}</td>
+                <td className="max-w-[10rem] truncate pr-3 text-muted sm:max-w-none">{r.team ?? ""}</td>
                 <td className="num pr-3">{secondsToHMS(r.t)}</td>
-                <td className="num pr-3 text-muted">{r.rank ?? ""}</td>
+                <td className="num hidden pr-3 text-muted sm:table-cell">{r.rank ?? ""}</td>
               </tr>
             ))}
           </tbody>

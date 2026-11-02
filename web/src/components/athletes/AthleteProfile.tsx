@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { careerSummary, percentileInField, searchAthletes, CONF_LABEL } from "../../lib/athletes";
+import { athleteHighlights, careerSummary, percentileInField, searchAthletes, CONF_LABEL } from "../../lib/athletes";
 import { raceHref } from "../../lib/race-url";
 import { secondsToHMS } from "../../lib/format";
 import type { AthleteDetail, AthleteIndexEntry } from "../../lib/types";
@@ -11,6 +11,7 @@ import SeasonReview from "./SeasonReview";
 import ShareCard from "./ShareCard";
 import FavButton from "../FavButton";
 import Tabs from "../Tabs";
+import PercentileTrack from "../PercentileTrack";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
@@ -22,9 +23,9 @@ const CONF_STYLE: Record<string, string> = {
 
 function Stat({ label, value }: { label: string; value: string | number }) {
   return (
-    <div className="rounded-lg border border-border bg-surface px-3 py-2">
-      <div className="num text-xl text-ink">{value}</div>
-      <div className="text-xs text-muted">{label}</div>
+    <div>
+      <dt className="text-xs text-muted">{label}</dt>
+      <dd className="num text-lg text-ink">{value}</dd>
     </div>
   );
 }
@@ -34,6 +35,7 @@ export default function AthleteProfile(
   { d: AthleteDetail; index: AthleteIndexEntry[]; onBack: () => void; onCompare: (id: string) => void },
 ) {
   const s = careerSummary(d);
+  const hl = useMemo(() => athleteHighlights(d), [d]);
   const [showCard, setShowCard] = useState(false);
   const [vsQuery, setVsQuery] = useState<string | null>(null); // null = picker closed
   const vsResults = useMemo(
@@ -99,18 +101,51 @@ export default function AthleteProfile(
         </p>
       )}
 
-      <div className="grid grid-cols-3 gap-3 sm:grid-cols-5">
+      {hl.best && (
+        <p className="font-display text-xl leading-snug text-ink sm:text-2xl" style={{ textWrap: "balance" }}>
+          最好的一場是 {hl.best.y} {hl.best.rn},
+          {hl.best.rank === 1
+            ? <>拿下<span className="text-accent">第 1 名</span>(<span className="num">{hl.best.field}</span> 人完賽)</>
+            : <>贏過 <span className="num text-accent">{hl.best.pct}%</span> 的完賽者</>}
+          {hl.latest && (hl.latest.rk !== hl.best.rk || hl.latest.y !== hl.best.y) && (
+            <span className="text-muted">;最近一場 {hl.latest.y} {hl.latest.rn} 贏過 <span className="num">{hl.latest.pct}%</span></span>
+          )}
+        </p>
+      )}
+
+      <dl className="grid grid-cols-3 gap-x-6 gap-y-3 sm:flex sm:flex-wrap sm:gap-x-10">
         <Stat label="出賽場次" value={s.races} />
         <Stat label="涵蓋年數" value={s.years} />
         <Stat label="冠軍" value={s.wins} />
         <Stat label="前三名" value={s.podiums} />
         <Stat label="最佳名次" value={s.bestRank ?? "—"} />
-      </div>
+      </dl>
 
       <Tabs tabs={tabs} active={tab} onChange={setTab} />
 
       {tab === "overview" && (
         <div className="space-y-6">
+          {hl.recent.length > 0 && (
+            <section aria-labelledby="recent-h">
+              <h2 id="recent-h" className="eyebrow">最近成績</h2>
+              <ul className="mt-2">
+                {hl.recent.map((r, i) => (
+                  <li key={i} className="grid grid-cols-[3.5rem_1fr_auto] items-center gap-3 border-b border-border py-2.5 last:border-b-0 sm:grid-cols-[3.5rem_1fr_9rem_auto]">
+                    <span className="num text-xs text-muted">{r.d ? r.d.slice(0, 7).replace("-", "/") : r.y ?? "—"}</span>
+                    <a href={raceHref(r.rk, r.y)} className="min-w-0 truncate text-ink hover:text-accent" title={r.rn}>{r.rn}</a>
+                    <PercentileTrack pct={r.pct} className="hidden w-full sm:inline-block" />
+                    <span className="num whitespace-nowrap text-sm">
+                      <span className="text-ink">贏過 {r.pct}%</span>
+                      <span className="ml-2 text-xs text-muted">{r.rank}/{r.field}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <button type="button" onClick={() => setTab("history")} className="mt-2 font-mono text-sm text-accent hover:underline">
+                全部 {d.history.length} 場 →
+              </button>
+            </section>
+          )}
           <SeasonReview d={d} />
           <section className="rounded-xl border border-border bg-surface p-4">
             <h2 className="font-display text-lg text-ink">進步軌跡</h2>
@@ -179,7 +214,9 @@ export default function AthleteProfile(
                     </td>
                     <td className="py-1.5 pr-3 text-muted">{r.cat ?? "—"}</td>
                     <td className="py-1.5 pr-3 num">{r.rank ?? "—"}{r.field ? <span className="text-muted">/{r.field}</span> : null}</td>
-                    <td className="py-1.5 pr-3 num text-muted">{pct == null ? "—" : `${pct}%`}</td>
+                    <td className="py-1.5 pr-3 num text-muted whitespace-nowrap">
+                      {pct == null ? "—" : <><PercentileTrack pct={pct} className="mr-2 w-12" />{pct}%</>}
+                    </td>
                     <td className="py-1.5 pr-3 num text-muted">{secondsToHMS(r.t)}</td>
                     <td className="py-1.5 pr-3 text-muted">{r.team ?? "—"}</td>
                   </tr>
