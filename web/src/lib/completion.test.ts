@@ -23,4 +23,12 @@ describe("completionParts", () => {
     expect(p.notFinished).toBe(0);
     expect(p.notStarted).toBe(0);
   });
+
+  it("reports unknown-type non-finishers (NF) separately", () => {
+    const c = { fin: 218, total: 509, rate: 0.428, counts: { FIN: 218, NF: 291 } };
+    const p = completionParts(c);
+    expect(p.unknown).toBe(291);
+    expect(p.notFinished).toBe(0);
+    expect(p.notStarted).toBe(0);
+  });
 });

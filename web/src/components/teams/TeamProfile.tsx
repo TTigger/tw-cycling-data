@@ -70,7 +70,9 @@ export default function TeamProfile({ d, onBack }: { d: TeamDetail; onBack: () =
                         : <span className="text-ink">{h.rn ?? "—"}</span>}
                     </td>
                     <td className="py-1.5 pr-3">
-                      <a className="text-ink hover:text-accent" href={`${base}/athletes?id=${h.id}`}>{h.nm}</a>
+                      {h.link === false
+                        ? <span className="text-ink">{h.nm}</span>
+                        : <a className="text-ink hover:text-accent" href={`${base}/athletes?id=${h.id}`}>{h.nm}</a>}
                     </td>
                     <td className="py-1.5 pr-3 num">{h.rank ?? "—"}</td>
                     <td className="py-1.5 pr-3 num text-accent">{h.pct}%</td>
