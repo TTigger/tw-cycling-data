@@ -52,3 +52,4 @@ data/backups/
 # from-scratch rebuild logs/scratch (scrapers/rebuild_all.sh)
 data/raw/_rebuild/
 .venv/
+.vercel
