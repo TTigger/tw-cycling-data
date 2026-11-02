@@ -25,7 +25,13 @@ build_*.py  ──►  web/public/data/*.json   (browser-ready, de-identified)
   `athlete_features.json`, `course_records.json`, `climb_profiles.json`, `climb_vam.json`.
 - `build_teams.py`, `build_difficulty.py`, `build_race_dna.py`, `build_series.py`,
   `build_insights.py`, `build_og.py` (the share image), `build_fonts.py`.
-- `discover.py` writes `coverage.json`.
+- `discover.py` writes `coverage.json`. Run it locally (`scrapers/freshness_local.sh`
+  or `.ps1`) — the calendars 403 cloud IPs. Without `master.public.json` it diffs
+  against `races.json` and keeps the previous summary numbers. A calendar that fails
+  to fetch keeps its previous gaps (marked `stale`). Dated calendars (RACE ON) also
+  get a per-year check: a race held this year whose earlier editions are in master
+  but this year's isn't is flagged `NOT_INGESTED` — the plain name diff strips the
+  year and can't see that.
 
 ## To rebuild after a data/normalization change
 1. `python scrapers/merge.py` (regenerates both master files).

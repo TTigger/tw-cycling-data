@@ -10,7 +10,9 @@ discovery problem from "enumerate every results page" to "diff against a calenda
 Output: data/processed/_discover/missing_races.json  (+ printed report)
 Add new calendars to CALENDARS as they're found (keep SOURCES.md in sync).
 """
+import datetime as _dt
 import html
+import html as html_mod  # parse_* shadow `html` with their argument
 import json
 import os
 import re
@@ -35,7 +37,8 @@ os.makedirs(OUT_DIR, exist_ok=True)
 # Public calendars to mine (listable). Each: id, name, url, parser key.
 CALENDARS = [
     {"id": "raceon2026", "name": "RACE ON 2026 自行車行事曆",
-     "url": "https://www.raceon.com.tw/zh-TW/blogs/news/143647", "parser": "raceon"},
+     "url": "https://www.raceon.com.tw/zh-TW/blogs/news/143647", "parser": "raceon",
+     "year": 2026},  # dated: enables the per-year NOT_INGESTED check
     {"id": "biji2025", "name": "運動筆記 自行車賽事行事曆",
      "url": "https://running.biji.co/index.php?q=news&act=info&id=112100", "parser": "biji"},
     {"id": "ensage2026", "name": "ensage 2026 自行車&三鐵行事曆",
@@ -47,7 +50,6 @@ TRI_RUN = re.compile(r"鐵人|三項|馬拉松|路跑|超馬|超級馬拉松|游
                      r"IRON|Triathlon|swimrun|duathlon|TRI\b", re.I)
 
 _TAGS = re.compile(r"<[^>]+>")
-_DATE = re.compile(r"^\d{1,2}[/.．]\d{1,2}")
 _NOISE = re.compile(r"\d+(?:\.\d+)?\s*K\w*|春季|夏季|秋季|冬季|第[\w一二三四五六七八九十]{1,3}屆|"
                     r"第[\w一二三四五六七八九十]{1,3}站|Stage\s*\d+|年度系列|報名連結|&\w+;|挑戰組|經典組")
 
@@ -61,21 +63,35 @@ def _clean(html):
     return re.sub(r"\s+", " ", _TAGS.sub("", html)).strip()
 
 
-def parse_raceon(html):
-    """RACE ON calendar: <li> items 'M.D｜<race name>：<dist>／報名連結'."""
-    out = []
+def parse_raceon_dated(html, year):
+    """RACE ON calendar: <li> items 'M.D｜<race name>：<dist>／報名連結'.
+    Returns [(name, date)] where date is the event's first day. The list runs in
+    date order, so a month that goes backwards (12 → 1) means the next year."""
+    out, prev_month = [], 0
     for li in re.findall(r"<li[ >].*?</li>", html, re.S):
-        t = _clean(li)
-        if not _DATE.match(t):
+        t = html_mod.unescape(_clean(li))  # decode first: stripping &Eacute; turned L’Étape into Ltape
+        m = re.match(r"(\d{1,2})[/.．](\d{1,2})", t)
+        if not m:
             continue
+        month, day = int(m.group(1)), int(m.group(2))
+        if month < prev_month:
+            year += 1
+        prev_month = month
         after = re.split(r"[｜|]", t, maxsplit=1)
         if len(after) < 2:
             continue
         name = re.split(r"[：:／/]", after[1], maxsplit=1)[0].strip()
         name = re.sub(r"&\w+;|報名連結", "", name).strip()
         if len(name) >= 4:
-            out.append(name)
+            try:
+                out.append((name, _dt.date(year, month, day)))
+            except ValueError:
+                out.append((name, None))
     return out
+
+
+def parse_raceon(html):
+    return [n for n, _ in parse_raceon_dated(html, 2026)]
 
 
 def parse_biji(html_doc):
@@ -171,7 +187,11 @@ def guess_source(name):
 #                  tour ride, or 瘋系列 "無總排" + ATSport chip timing).
 #   OTHER_LEAGUE — calendar mis-tags it; actually belongs to another series.
 #   NOT_HELD     — event date still in the future; re-check after it runs.
-# Last verified 2026-06-22 (see also SOURCES.md). Extend as races are triaged.
+#   HELD_UNCHECKED — date has passed; nobody has checked yet whether results exist.
+#   BLOCKED      — ranked results exist, but on a platform we don't scrape yet.
+# Computed (not curated): NOT_INGESTED — dated calendar race already held this
+#   year, earlier editions are in master, but this year's edition is not.
+# Last verified 2026-06-22; dates refreshed 2026-11-02 (see also SOURCES.md).
 KNOWN_TRIAGE = [
     # already in master under our canonical name (verified by row counts 2026-06-22)
     ("陽明山登山王", "COLLECTED", "= 陽明山王公路賽(cyclist.org.tw, 2026 已收 665 筆)"),
@@ -184,14 +204,19 @@ KNOWN_TRIAGE = [
     ("環海岸山脈", "NO_RANKING", "挑戰/團騎,無逐筆排名"),
     ("環湖饗宴", "NO_RANKING", "明德競技 樂遊騎跑,休閒性質無排名(ctrun.com.tw)"),
     ("西進武嶺圓夢團", "NO_RANKING", "aYa 嚮導團騎,非計時賽"),
-    # calendar mis-tag: these are 96聯賽 (96sporter.com), not 騎士協會, and not yet held
-    ("仙山KOM", "OTHER_LEAGUE", "實為 96聯賽 苗栗站(96sporter.com),2026-10-18 尚未舉辦"),
-    ("北進武嶺", "OTHER_LEAGUE", "實為 96聯賽 武嶺站(96sporter.com),2026-09-07 尚未舉辦"),
+    # calendar mis-tag: these are 96聯賽 (96sporter.com), not 騎士協會
+    ("仙山KOM", "OTHER_LEAGUE", "實為 96聯賽 苗栗站(96sporter.com),2026-10-18 已辦,成績走 Bravelog/tsu 收錄"),
+    ("北進武嶺", "OTHER_LEAGUE", "實為 96聯賽 武嶺站(96sporter.com),2026-09-07 已辦,成績走 Bravelog/tsu 收錄"),
+    # HELD_UNCHECKED — date has passed; check whether a per-rider ranking was published
+    ("無眠征途", "HELD_UNCHECKED", "2026-07-18 已辦;瘋系列限時挑戰,恐無總排,待查驗"),
+    ("小台灣縮時環島", "HELD_UNCHECKED", "2026-09-26 已辦;瘋系列 300K 限時挑戰,恐無總排,待查驗"),
+    ("TIS桃園台南", "HELD_UNCHECKED", "2026-10-31 已辦;往屆僅發完賽獎座/證書,恐無排名,待查驗"),
+    ("騎遊茂林", "HELD_UNCHECKED", "2026-10-24 已辦;挑戰70K/騎玩40K 活動型,待查是否有排名"),
     # not yet held — re-check after the date; remove from this list once ingested
-    ("無眠征途", "NOT_HELD", "2026-07-18 未辦;瘋系列限時挑戰,完賽後恐無總排(屆時查驗)"),
-    ("小台灣縮時環島", "NOT_HELD", "2026-09-26 未辦;瘋系列 300K 限時挑戰,恐無總排"),
-    ("TIS桃園台南", "NOT_HELD", "2026-10-31 未辦;往屆僅發完賽獎座/證書,恐無排名"),
     ("花蓮太平洋盃", "NOT_HELD", "2026-12-04~05 未辦;聯賽末站,辦完應有 cyclist.org.tw PDF 成績"),
+    ("環騎5COOL", "NOT_HELD", "2026-11-07 未辦;新出現於 RACE ON,辦完查驗"),
+    ("鯉魚潭山光水色", "NOT_HELD", "2026-12-12 未辦;限時挑戰(菁英5h/挑戰7h),辦完查驗"),
+    ("超級騎士挑戰", "NOT_HELD", "2027-01-01~02 未辦;瘋系列,恐無總排"),
     # --- ranked per-rider results EXIST but on a platform we don't scrape yet ---
     #     (verified 2026-06-29; future-source lead: add twbike.org/focusline parsing)
     #     NOTE: "TWB" must stay above the 瘋系列 "東三塔" NO_RANKING rule below.
@@ -201,7 +226,7 @@ KNOWN_TRIAGE = [
     ("中雙塔", "NO_RANKING", "瘋系列:無總排 + ATSport(封鎖)"),
     ("東三塔", "NO_RANKING", "瘋系列東三塔/東雙塔:無總排 + ATSport(封鎖)"),
     ("白毛山", "NO_RANKING", "瘋系列白毛山巔峰騎跡:完賽獎牌制,無總排 + ATSport"),
-    ("瘋911", "NOT_HELD", "瘋系列 極限東征:2026-09-11 未辦;瘋系列恐無總排"),
+    ("瘋911", "HELD_UNCHECKED", "瘋系列 極限東征:2026-09-11 已辦;瘋系列恐無總排,待查驗"),
     # --- leisure / guided-tour / festival rides: no per-rider ranking (verified 2026-06-29) ---
     ("樂遊苗栗", "NO_RANKING", "ensage 樂遊苗栗一騎跑:嚮導團騎/集點健康活動,無排名"),
     ("Light One Bike", "NO_RANKING", "低碳慢遊生態團騎,明示非競賽,無排名(報名在伊貝特)"),
@@ -225,25 +250,121 @@ def triage(name):
     return None, None
 
 
+RACES_JSON = os.path.join(WEB_DIR, "races.json")
+
+
+def load_master():
+    """(records, summary_from_master). master.public.json is gitignored and only
+    lives on the machine that ran merge.py. Without it, fall back to the deployed
+    races.json (one row per race-year): good enough for the name/year diff, but
+    row counts are wrong, so the caller keeps the previous coverage summary."""
+    if os.path.exists(MASTER):
+        return list(common.iter_records(MASTER)), True  # RAM-frugal streaming parse
+    print(f"  ! {os.path.relpath(MASTER)} 不存在 → 改用 races.json 比對(摘要沿用上一版 coverage.json)")
+    races = json.load(open(RACES_JSON, encoding="utf-8"))
+    return [{"race_name_canonical": r["rn"], "race_key": r["rk"], "year": r["y"]} for r in races], False
+
+
+def cores_by_year(recs):
+    out = {}
+    for r in recs:
+        c = core(r.get("race_name_canonical"))
+        if c:
+            out.setdefault(c, set()).add(r.get("year"))
+    return out
+
+
+def years_known(cal_core, by_year):
+    """Years in master for the BEST-matching race only. is_known()'s any-match rule
+    is fine for "have we ever seen this race", but for "do we have THIS year" it
+    lumps e.g. all 96聯賽 stops together, hiding a missing stop behind another
+    stop's current-year results. Substring = score 1; ties are unioned."""
+    best, ys = 0.6, set()
+    for mc, years in by_year.items():
+        if not cal_core or not mc:
+            continue
+        sc = 1.0 if (cal_core in mc or mc in cal_core) else _overlap(cal_core, mc)
+        if sc > best:
+            best, ys = sc, set(years)
+        elif sc == best and ys:
+            ys |= years
+    return ys
+
+
+def not_ingested(name, date, today, by_year):
+    """A held, dated race whose earlier editions we have but this year's we don't."""
+    if date is None or date >= today:
+        return None
+    ys = years_known(core(name), by_year)
+    if not ys or date.year in ys:
+        return None
+    return {"race": name, "date": date.isoformat(), "guess_source": guess_source(name),
+            "status": "NOT_INGESTED",
+            "note": f"{date.isoformat()} 已辦;往年已收錄({max(ys)}),今年成績尚未 ingest"}
+
+
+def carry_forward(prev_gaps, cal_id):
+    """Gaps from the last successful run for a calendar we couldn't fetch now —
+    so a site outage doesn't silently wipe its gaps off the /coverage page.
+    Triage is re-applied so curated verdict updates still land."""
+    out = []
+    for g in prev_gaps:
+        if g.get("calendar") != cal_id:
+            continue
+        g = {k: v for k, v in g.items() if k not in ("status", "note")}
+        status, note = triage(g["race"])
+        if status == "COLLECTED":
+            continue
+        if status:
+            g["status"], g["note"] = status, note
+        g["stale"] = True
+        out.append(g)
+    return out
+
+
 def main():
-    recs = list(common.iter_records(MASTER))  # RAM-frugal streaming parse
+    today = _dt.date.today()
+    recs, summary_from_master = load_master()
     master_cores = {core(r.get("race_name_canonical")) for r in recs if r.get("race_name_canonical")}
     master_cores.discard("")
+    by_year = cores_by_year(recs)
 
-    all_missing, seen, collected = [], set(), 0
+    cov = os.path.join(WEB_DIR, "coverage.json")
+    prev_cov = {}
+    if os.path.exists(cov):
+        try:
+            prev_cov = json.load(open(cov, encoding="utf-8"))
+        except Exception:
+            pass
+
+    all_missing, seen, collected, failed = [], set(), 0, []
     for cal in CALENDARS:
         try:
             html = _fetch(cal["url"])
         except Exception as e:
             print(f"  ! calendar fetch failed {cal['id']}: {e}")
+            kept = carry_forward(prev_cov.get("gaps", []), cal["id"])
+            for g in kept:
+                seen.add(core(g["race"]))
+            all_missing.extend(kept)
+            failed.append(cal["id"])
+            print(f"    → 沿用上次的 {len(kept)} 筆缺漏(標記 stale)")
             continue
-        races = PARSERS[cal["parser"]](html)
+        if cal["parser"] == "raceon":
+            dated = parse_raceon_dated(html, cal["year"])
+        else:
+            dated = [(n, None) for n in PARSERS[cal["parser"]](html)]
         miss = []
-        for nm in races:
+        for nm, date in dated:
             c = core(nm)
-            if is_known(c, master_cores):
-                continue
             if c in seen:
+                continue
+            if is_known(c, master_cores):
+                rec = not_ingested(nm, date, today, by_year)
+                if rec and triage(nm)[0] not in ("NO_RANKING", "COLLECTED"):
+                    seen.add(c)
+                    rec["calendar"] = cal["id"]
+                    miss.append(rec)
                 continue
             seen.add(c)
             status, note = triage(nm)
@@ -251,12 +372,14 @@ def main():
                 collected += 1  # already in master under a canonical name — not a real gap
                 continue
             rec = {"race": nm, "calendar": cal["id"], "guess_source": guess_source(nm)}
+            if date:
+                rec["date"] = date.isoformat()
             if status:
                 rec["status"] = status
                 rec["note"] = note
             miss.append(rec)
         all_missing.extend(miss)
-        print(f"  {cal['name']}: {len(races)} 賽事,{len(miss)} 缺漏")
+        print(f"  {cal['name']}: {len(dated)} 賽事,{len(miss)} 缺漏")
 
     out = os.path.join(OUT_DIR, "missing_races.json")
     # Diff against the previous run so the radar can alert only on CHANGE: a race
@@ -274,6 +397,7 @@ def main():
           f"另 {collected} 場已收錄,自動略過)===")
     for m in all_missing:
         tag = f" [{m['status']}]" if m.get("status") else ""
+        tag += " (stale)" if m.get("stale") else ""
         print(f"  ✗ {m['race'][:40]:<40} → {m['guess_source']}{tag}")
     if prev_names:  # skip on first-ever run (no baseline to diff against)
         print(f"\n=== 🆕 本次新增 {len(new_races)} 場(上次沒有,需查驗/triage)===")
@@ -283,20 +407,24 @@ def main():
 
     # Deploy-ready coverage transparency file for the /coverage page.
     from collections import Counter
-    years = [r["year"] for r in recs if r.get("year")]
-    ov_path = os.path.join(WEB_DIR, "overseas", "runnet_383993.json")
-    overseas = len(json.load(open(ov_path, encoding="utf-8"))) if os.path.exists(ov_path) else 0
-    coverage = {
-        "summary": {
+    if summary_from_master:
+        years = [r["year"] for r in recs if r.get("year")]
+        ov_path = os.path.join(WEB_DIR, "overseas", "runnet_383993.json")
+        overseas = len(json.load(open(ov_path, encoding="utf-8"))) if os.path.exists(ov_path) else 0
+        summary = {
             "rows": len(recs),
             "races": len({r["race_key"] for r in recs if r.get("race_key")}),
             "by_source": dict(Counter(r["source_platform"] for r in recs).most_common()),
             "y0": min(years), "y1": max(years), "overseas": overseas,
-            "calendars": [c["name"] for c in CALENDARS],
-        },
-        "gaps": all_missing,
-    }
-    cov = os.path.join(WEB_DIR, "coverage.json")
+        }
+    else:
+        summary = {k: v for k, v in prev_cov.get("summary", {}).items()
+                   if k not in ("calendars", "checked", "failed_calendars")}
+    summary["calendars"] = [c["name"] for c in CALENDARS]
+    summary["checked"] = today.isoformat()
+    if failed:
+        summary["failed_calendars"] = failed
+    coverage = {"summary": summary, "gaps": all_missing}
     json.dump(coverage, open(cov, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
     print(f"  -> {os.path.relpath(cov)} (deploy)")
 
