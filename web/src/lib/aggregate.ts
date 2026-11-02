@@ -14,8 +14,13 @@ export interface Bin { x0: number; x1: number; count: number; }
 export function histogram(values: number[], binSeconds: number): Bin[] {
   const v = values.filter((x) => Number.isFinite(x));
   if (!v.length || binSeconds <= 0) return [];
-  const min = Math.min(...v);
-  const max = Math.max(...v);
+  // Plain loop, not Math.min(...v): spreading the whole dataset (~160k finish
+  // times on /explore) overflows the engine's argument limit.
+  let min = Infinity, max = -Infinity;
+  for (const x of v) {
+    if (x < min) min = x;
+    if (x > max) max = x;
+  }
   const start = Math.floor(min / binSeconds) * binSeconds;
   const bins: Bin[] = [];
   for (let x = start; x <= max; x += binSeconds) bins.push({ x0: x, x1: x + binSeconds, count: 0 });
