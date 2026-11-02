@@ -11,16 +11,10 @@ import AgeBoxplot from "../charts/AgeBoxplot";
 import CompetitivenessSpread from "../charts/CompetitivenessSpread";
 import DistanceSpeedScatter from "../charts/DistanceSpeedScatter";
 import Skeleton from "../Skeleton";
-
-function Card({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
-  return (
-    <section className="rounded-xl border border-border bg-surface p-4">
-      <h2 className="font-display text-lg text-ink">{title}</h2>
-      {hint && <p className="mb-2 text-xs text-muted">{hint}</p>}
-      {children}
-    </section>
-  );
-}
+import Lead from "../analysis/Lead";
+import More from "../analysis/More";
+import { summarizeExplore } from "../../lib/explore-summary";
+import { secondsToHMS } from "../../lib/format";
 
 export default function ExploreApp() {
   const [viz, setViz] = useState<SlimRecord[] | null>(null);
@@ -38,22 +32,44 @@ export default function ExploreApp() {
   const facets = useMemo(() => (viz ? facetOptions(viz) : null), [viz]);
   const filtered = useMemo(() => (viz ? applyFilters(viz, f) : []), [viz, f]);
   const nameMap = useMemo(() => new Map(races.map((r) => [r.rk, r.rn])), [races]);
+  const sum = useMemo(() => summarizeExplore(filtered, !!f.race), [filtered, f.race]);
 
   if (err) return <p className="text-accent">資料載入失敗:{err}</p>;
   if (!viz || !facets) return <Skeleton cards={4} />;
 
+  const fmt = (n: number) => n.toLocaleString("en-US");
+  const yrs = sum.yMin == null ? "" : sum.yMin === sum.yMax ? `${sum.yMin}` : `${sum.yMin}–${sum.yMax}`;
+  const stats: [string, string][] = [["完賽筆數", fmt(sum.n)]];
+  if (sum.races > 1) stats.push(["賽事場數", fmt(sum.races)]);
+  if (yrs) stats.push(["年份", yrs]);
+  if (sum.womenPct != null) stats.push(["女性占比", `${sum.womenPct}%`]);
+  const g = sum.group ?? "";
+  if (sum.median != null) stats.push([`${g}中位`, secondsToHMS(sum.median)], [`${g}最快`, secondsToHMS(sum.fastest)]);
+  const raceName = f.race ? nameMap.get(f.race) ?? f.race : null;
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <FilterBar facets={facets} races={races} />
-      <p className="text-sm text-muted">
-        符合條件:<span className="num text-ink">{filtered.length.toLocaleString()}</span> 筆
-      </p>
-      <div className="grid gap-4 lg:grid-cols-2">
-        <Card title="完賽時間分布" hint="每 10 分鐘一桶"><FinishTimeHistogram rows={filtered} /></Card>
-        <Card title="分齡組 vs 完賽時間" hint="點組別可篩選 · 僅競技型賽事有分齡"><AgeBoxplot rows={filtered} /></Card>
-        <Card title="賽事競爭強度(中位/冠軍 倍數)" hint="點賽事可篩選 · 已排除認證型"><CompetitivenessSpread rows={filtered} nameMap={nameMap} /></Card>
-        <Card title="距離 vs 平均速度" hint="距離可解析者約 48%"><DistanceSpeedScatter rows={filtered} /></Card>
-      </div>
+      {sum.n === 0 ? <p className="text-muted">沒有符合條件的成績,試著放寬篩選。</p> : (
+        <>
+          <Lead stats={stats}>
+            {raceName ? <>{raceName}:</> : <>目前條件:</>}
+            <span className="num text-accent">{fmt(sum.n)}</span> 筆完賽
+            {sum.races > 1 && <>,來自 <span className="num">{fmt(sum.races)}</span> 場賽事</>}
+            {sum.median != null && <>,{g}中位 <span className="num">{secondsToHMS(sum.median)}</span></>}。
+          </Lead>
+          <section>
+            <h2 className="font-display text-xl text-ink">完賽時間分布</h2>
+            <p className="mb-2 text-xs text-muted">每 10 分鐘一桶{!f.race && " · 混合不同距離的賽事,選單一賽事看得更準"}</p>
+            <FinishTimeHistogram rows={filtered} />
+          </section>
+          <div>
+            <More title="分齡組 vs 完賽時間" hint="點組別可篩選 · 僅競技型賽事有分齡"><AgeBoxplot rows={filtered} /></More>
+            <More title="賽事競爭強度" hint="中位/冠軍 倍數 · 點賽事可篩選 · 已排除認證型"><CompetitivenessSpread rows={filtered} nameMap={nameMap} /></More>
+            <More title="距離 vs 平均速度" hint="距離可解析者約 48%"><DistanceSpeedScatter rows={filtered} /></More>
+          </div>
+        </>
+      )}
     </div>
   );
 }
