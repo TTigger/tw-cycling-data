@@ -17,13 +17,13 @@ export interface TrendsSummary {
  * mix depends on which sources have published so far). */
 export function summarizeTrends(gt: GenderTrend, at: AgeTrend, currentYear: number): TrendsSummary {
   const out: TrendsSummary = { women: null, ageUp: null, ageDown: null, ageTop: null };
-  const gi = gt.years.map((y, i) => i).filter((i) => gt.known[i] >= MIN_KNOWN && gt.years[i] < currentYear);
+  const gi = gt.years.map((_, i) => i).filter((i) => gt.known[i] >= MIN_KNOWN && gt.years[i] < currentYear);
   if (gi.length >= 2) {
     const a = gi[0], b = gi[gi.length - 1];
     out.women = { from: gt.years[a], to: gt.years[b],
       fromPct: Math.round((100 * gt.f[a]) / gt.known[a]), toPct: Math.round((100 * gt.f[b]) / gt.known[b]) };
   }
-  const ai = at.years.map((y, i) => i).filter((i) => at.years[i] < currentYear);
+  const ai = at.years.map((_, i) => i).filter((i) => at.years[i] < currentYear);
   if (ai.length >= 2) {
     const a = ai[0], b = ai[ai.length - 1];
     let up: TrendsSummary["ageUp"] = null, down: TrendsSummary["ageDown"] = null, top: TrendsSummary["ageTop"] = null;

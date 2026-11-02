@@ -9,22 +9,12 @@ import ResultConverter from "./ResultConverter";
 import GeoHotspots from "./GeoHotspots";
 import RecordsWall from "./RecordsWall";
 import Skeleton from "../Skeleton";
-import Tabs from "../Tabs";
-
-function Card({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
-  return (
-    <section className="rounded-xl border border-border bg-surface p-4">
-      <h2 className="font-display text-lg text-ink">{title}</h2>
-      {hint && <p className="mb-2 text-xs text-muted">{hint}</p>}
-      {children}
-    </section>
-  );
-}
+import Lead from "../analysis/Lead";
+import More from "../analysis/More";
 
 export default function InsightsApp() {
   const [ins, setIns] = useState<Insights | null>(null);
   const [races, setRaces] = useState<RaceIndex[]>([]);
-  const [tab, setTab] = useState("records");
   const [err, setErr] = useState<string | null>(null);
 
   useEffect(() => {
@@ -35,50 +25,52 @@ export default function InsightsApp() {
   if (err) return <p className="text-accent">資料載入失敗:{err}</p>;
   if (!ins) return <Skeleton cards={4} />;
 
-  const tabs = [
-    ...(ins.records ? [{ key: "records", label: "紀錄牆" }] : []),
-    { key: "riders", label: "選手趨勢" },
-    { key: "races", label: "賽事" },
-    ...(races.length ? [{ key: "tools", label: "工具" }] : []),
-  ];
+  const r = ins.records;
+  const big = r?.biggest_field[0], starts = r?.most_starts[0], wins = r?.most_wins[0];
+  const topRegion = [...ins.geo].sort((a, b) => b.races - a.races)[0];
+  const fmt = (n: number) => n.toLocaleString("en-US");
+  const stats: [string, string][] = [];
+  if (big) stats.push(["單場最多完賽", `${fmt(big.n)} 人`]);
+  if (starts) stats.push(["個人最多出賽", `${starts.v} 場`]);
+  if (wins) stats.push(["個人最多冠軍", `${wins.v} 次`]);
+  if (topRegion) stats.push(["辦最多場的縣市", `${topRegion.region} ${topRegion.races} 場`]);
 
   return (
-    <div className="space-y-5">
-      <Tabs tabs={tabs} active={tab} onChange={setTab} />
-
-      {tab === "records" && ins.records && (
-        <Card title="紀錄牆" hint="跨全站的極值冷知識(已排除高同名風險身分;點擊前往)">
-          <RecordsWall records={ins.records} />
-        </Card>
+    <div className="space-y-8">
+      {big && (
+        <Lead stats={stats}>
+          規模最大的是 {big.y} 年{big.name},<span className="num text-accent">{fmt(big.n)}</span> 人完賽
+          {starts && <>;最勤跑的車友出賽 <span className="num">{starts.v}</span> 場</>}。
+        </Lead>
       )}
 
-      {tab === "riders" && (
-        <div className="space-y-6">
-          <Card title="年齡 vs 全場表現" hint="各年齡層在全場的相對名次落點(跨賽事正規化)">
-            <AgeCurve points={ins.age_curve} />
-          </Card>
-          <Card title="突破之星" hint="年度間相對表現躍升最大的選手">
-            <Breakout entries={ins.breakout} />
-          </Card>
-        </div>
+      {r && (
+        <section>
+          <h2 className="font-display text-xl text-ink">紀錄牆</h2>
+          <p className="mb-3 text-xs text-muted">跨全站的極值(已排除高同名風險的身分;點擊前往)</p>
+          <RecordsWall records={r} />
+        </section>
       )}
 
-      {tab === "races" && (
-        <div className="space-y-6">
-          <Card title="賽事地理熱點" hint="各縣市的賽事場數與參賽人次">
-            <GeoHotspots regions={ins.geo} />
-          </Card>
-          <Card title="賽事星等" hint="規模 × 屆數 × 場域深度的綜合競爭力評分">
-            <RaceRatings ratings={ins.ratings} />
-          </Card>
-        </div>
-      )}
-
-      {tab === "tools" && races.length > 0 && (
-        <Card title="成績換算器" hint="你在某場的名次,換算到另一場大約第幾名">
-          <ResultConverter races={races} />
-        </Card>
-      )}
+      <div>
+        <More title="年齡 vs 全場表現" hint="各年齡層在全場的相對名次落點(跨賽事正規化)">
+          <AgeCurve points={ins.age_curve} />
+        </More>
+        <More title="突破之星" hint="年度間相對表現躍升最大的選手">
+          <Breakout entries={ins.breakout} />
+        </More>
+        <More title="賽事地理熱點" hint="各縣市的賽事場數與參賽人次">
+          <GeoHotspots regions={ins.geo} />
+        </More>
+        <More title="賽事星等" hint="規模 × 屆數 × 場域深度的綜合評分">
+          <RaceRatings ratings={ins.ratings} />
+        </More>
+        {races.length > 0 && (
+          <More title="成績換算器" hint="你在某場的名次,換算到另一場大約第幾名">
+            <ResultConverter races={races} />
+          </More>
+        )}
+      </div>
     </div>
   );
 }
