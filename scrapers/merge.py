@@ -13,6 +13,7 @@ Outputs:
 import glob
 import json
 import os
+import re
 import sys
 from collections import Counter, defaultdict
 
@@ -23,7 +24,7 @@ import normalize  # noqa: E402
 sys.stdout.reconfigure(encoding="utf-8")
 OUT = os.path.join(os.path.dirname(__file__), "..", "data", "processed")
 SOURCE_PREFIXES = ("criterium_", "cyclist_", "bravelog_", "cycling_", "irunner_",
-                   "focusline_", "taiwanbike_")
+                   "focusline_", "taiwanbike_", "sporter96_")
 
 
 def discover_sources():
@@ -85,6 +86,30 @@ def is_dup(r, fs, seen, seen_masked, seen_src_masked):
     return False
 
 
+PERSON_NAME = re.compile(r"[\u4e00-\u9fff]{2,4}")
+
+
+def rider_names(paths):
+    """Every real rider name across all sources (one cheap streaming pass)."""
+    names = set()
+    for p in paths:
+        for r in iter_records(p):
+            nm = r.get("name_raw")
+            if nm and PERSON_NAME.fullmatch(nm):
+                names.add(nm)
+    return names
+
+
+def mask_person_team(team, names):
+    """Riders sometimes enter a person's name (their own or a friend's) as their
+    team. The team field is published, so a team that is exactly some rider's real
+    name is masked like a name (PDPA)."""
+    t = (team or "").strip()
+    if t in names:
+        return common.mask_name(t)
+    return team
+
+
 def main():
     print("merging sources (streaming):")
     import gc
@@ -103,7 +128,10 @@ def main():
     by_platform, by_year, by_gender, by_class, by_series = (Counter() for _ in range(5))
     by_status = Counter()
 
-    for p in discover_sources():
+    sources = discover_sources()
+    names = rider_names(sources)
+    n_team_masked = 0
+    for p in sources:
         src_n = 0
         for r in iter_records(p):
             src_n += 1
@@ -121,6 +149,11 @@ def main():
                 continue
             if r.get("name_raw"):               # re-mask at merge time (policy applied here)
                 r["name_masked"] = common.mask_name(r["name_raw"])
+            if r.get("team"):
+                t = mask_person_team(r["team"], names)
+                if t != r["team"]:
+                    r["team"] = t
+                    n_team_masked += 1
             rk = r["race_key"]
             races[rk]["rows"] += 1
             races[rk]["years"].add(r["year"])
@@ -148,6 +181,8 @@ def main():
         print(f"  dropped {n_zero} zero-time (DNF/未計時) rows")
     if n_dup:
         print(f"  dropped {n_dup} cross-source exact-duplicate rows")
+    if n_team_masked:
+        print(f"  masked {n_team_masked} team values that were a rider's real name")
     if n_superseded:
         print(f"  dropped {n_superseded} superseded rows (bravelog races replaced by a better source)")
 

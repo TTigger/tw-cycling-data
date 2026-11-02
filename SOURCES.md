@@ -4,9 +4,9 @@
 > 最後更新:2026-07-03(統計區塊自此由 `scrapers/gen_docs_stats.py` 自動生成)
 
 <!-- gen:stats:begin -->
-主資料集 master:**159,930 筆 / 2009–2026 / 174 場 / 8 來源**(海外賽另計)。
+主資料集 master:**160,224 筆 / 2009–2026 / 174 場 / 9 來源**(海外賽另計)。
 
-> 各來源現況筆數(master 內,跨源去重後):bravelog 43,423・irunner 42,442・tsu 24,515・taiwanbike 18,204・twbike 15,404・cyclist 13,636・criterium 1,957・cycling 349。
+> 各來源現況筆數(master 內,跨源去重後):bravelog 43,423・irunner 42,442・tsu 24,515・taiwanbike 18,204・twbike 15,404・cyclist 13,636・criterium 1,957・cycling 349・96sporter.com 294。
 > (本區塊由 `scrapers/gen_docs_stats.py` 生成,勿手改。)
 <!-- gen:stats:end -->
 
@@ -22,6 +22,7 @@
 | **cycling.org.tw**<br>(自由車協會) | 國家級:全國公路錦標賽/國手選拔(**含 UCI ID**)+ 2013 舊寬表 | 新制 PDF + 舊 .xls 寬表→長表 reshape | 2013, 2025 | `cycling_crawl.py` + `cycling_oldroad.py` | 349 |
 | **cyclist.org.tw 臺灣自行車聯賽**<br>(子來源:`results_txt.asp` 聯賽頁) | TCL 個人計時賽 ITT + **團隊計時賽 TTT** + 公路繞圈各分組。走 `results_list.asp?pno=13` → `results_txt.asp?pno=N` 落地頁 → 成績公告 PDF,主 `cyclist_crawl` 抓不到。個人列雙版面(組別在 col1/col3);TTT 依車隊分組、把名次與「取第4名時間」傳遞給全隊。排除 road(重複)/積分/累計 | landing 頁 → 成績公告 PDF | 2025–2026 | `cyclist_league.py` | 819(TTT)+ ITT + 繞圈 |
 | **irunner.biji.co**<br>(筆記晶片計時) | 換平台後的競技/市民賽:新玉門關公路賽、美利達盃、輪躍台南、彰化Classic 100、淡江大橋、環大苗栗、Gravel Fundo(Gravel/MTB/Enduro) | **逐筆查 → 翻頁全擷取**(見下「破解」);姓名/名字字/拉丁字母列舉 + GET `?rs=&page=` 分頁,依 memno 去重(~99%);組內完賽時間衍生名次 | 2023–2026 | `irunner_crawl.py` | 32,862 |
+| **96sporter.com**<br>(96聯賽主辦,Dynamic Intelligences 計時) | 2026 起 96聯賽各站成績(競賽組+市民競賽組,含 DNF/DNS/OTL)。不再上 Bravelog/tsu,只在 `player_rank.htm` 掛 Dropbox PDF | PDF,**pypdf 依文字座標分欄**(pdfplumber 讀不到字型 BBox 會漏 8 成);長姓名/隊名跨行置中,依最近名次列併回。待收清單 `data/raw/sporter96_pdfs.json`(手動加,`--find` 列出候選連結) | 2026 | `sporter96_pdf.py` | 294(武嶺站) |
 | **runnet.jp**<br>(海外,獨立別集) | 日本 Mt.富士ヒルクライム等(**不進台灣 master**) | JS/SPA(Next.js);headless 渲染 + 頁內 fetch 受保護 JSON API | 2026 | `overseas_runnet.py` | 8,724 |
 
 > 合併工具:`merge.py`(年份無關、自動納源、跨源去重)。海外賽存 `web/public/data/overseas/`,不進 merge。
@@ -75,6 +76,8 @@
 - ✅ **臺灣自行車聯賽 TTT(團隊計時賽)已收**(`parse_ttt`:依車隊分組、把隊名次與「取第4名時間」傳遞給全隊成員,strip 國籍碼)——819 列。_積分排名/累計總排名_ 為衍生排名仍不收(非完賽列)。
 - **瘋系列(中雙塔/縮時環島300K/911/無眠夜騎/白毛山)**:成績多在**主辦自家頁或 FB**,無統一平台 → 逐場找頁或 OCR。
 - **tsu.com.tw 2026**:已重爬,但 2026 賽事尚無成績公告(0 筆),賽季進行中再回來補。
+- **96聯賽 2026(2026-11-02 發現)**:改由 Dynamic Intelligences 計時,成績只以 PDF 掛在 96sporter.com。武嶺站已收;苗栗站(10/18)、台東站(10/31)PDF 尚未公布 → 公布後把連結加進 `data/raw/sporter96_pdfs.json` 再跑 `rebuild_all.sh crawl sporter96 && build`。
+- **Bravelog 2026 自行車賽大減**:2025 有 27 場自行車賽,2026 只剩 8 場(8 月後只剩路跑)。L'Étape 日月潭、揪你123 等今年都不在 Bravelog,需另找成績平台。
 
 ### FB(社團/粉專)能不能自動爬?
 **不能,也不建議**:需登入、強反爬/封號、違反 ToS,內容多需登入且成績常是**圖片**。可行路線 = **使用者提供成績圖 → OCR/視覺模型轉結構化**(非自動爬 FB)。

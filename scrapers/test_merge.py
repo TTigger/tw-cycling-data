@@ -30,3 +30,15 @@ def test_focusline_and_taiwanbike_prefixes_discovered():
 
 def test_superseded_set_contains_bravelog_tba_combined():
     assert ("bravelog.tw", "TBA北高360雙塔520四極602自行車認證") in merge.SUPERSEDED
+
+
+def test_team_that_is_a_rider_real_name_is_masked():
+    names = {"張允丞", "陳柏安"}
+    assert merge.mask_person_team("張允丞", names) == "張○丞"
+    assert merge.mask_person_team(" 陳柏安 ", names) == "陳○安"
+    assert merge.mask_person_team("新竹市ZIV聯隊", names) == "新竹市ZIV聯隊"
+    assert merge.mask_person_team(None, names) is None
+
+
+def test_sporter96_prefix_discovered():
+    assert "sporter96_" in merge.SOURCE_PREFIXES

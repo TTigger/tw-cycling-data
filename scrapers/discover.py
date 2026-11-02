@@ -166,7 +166,7 @@ def is_known(cal_core, master_cores):
 
 def guess_source(name):
     if re.search(r"96聯賽|96Cycling|96Heroes", name):
-        return "Bravelog / tsu(96系列)"
+        return "96sporter PDF(2026起) / Bravelog / tsu(96系列)"
     if re.search(r"全國|錦標賽|國手|選拔|自由車", name):
         return "cycling.org.tw / tsu"
     if re.search(r"縣長盃|市長盃|繞圈|計時|越野|大專", name):
@@ -204,9 +204,10 @@ KNOWN_TRIAGE = [
     ("環海岸山脈", "NO_RANKING", "挑戰/團騎,無逐筆排名"),
     ("環湖饗宴", "NO_RANKING", "明德競技 樂遊騎跑,休閒性質無排名(ctrun.com.tw)"),
     ("西進武嶺圓夢團", "NO_RANKING", "aYa 嚮導團騎,非計時賽"),
-    # calendar mis-tag: these are 96聯賽 (96sporter.com), not 騎士協會
-    ("仙山KOM", "OTHER_LEAGUE", "實為 96聯賽 苗栗站(96sporter.com),2026-10-18 已辦,成績走 Bravelog/tsu 收錄"),
-    ("北進武嶺", "OTHER_LEAGUE", "實為 96聯賽 武嶺站(96sporter.com),2026-09-07 已辦,成績走 Bravelog/tsu 收錄"),
+    # calendar mis-tag: these are 96聯賽 (96sporter.com), not 騎士協會. Since 2026 the
+    # 96 league posts results only as PDF (scrapers/sporter96_pdf.py worklist).
+    ("北進武嶺", "COLLECTED", "= 96聯賽武嶺站(96sporter PDF, 2026 已收 294 筆)"),
+    ("仙山KOM", "HELD_UNCHECKED", "實為 96聯賽 苗栗站,2026-10-18 已辦;成績 PDF 尚未在 96sporter.com 公布,公布後加入 data/raw/sporter96_pdfs.json"),
     # HELD_UNCHECKED — date has passed; check whether a per-rider ranking was published
     ("無眠征途", "HELD_UNCHECKED", "2026-07-18 已辦;瘋系列限時挑戰,恐無總排,待查驗"),
     ("小台灣縮時環島", "HELD_UNCHECKED", "2026-09-26 已辦;瘋系列 300K 限時挑戰,恐無總排,待查驗"),

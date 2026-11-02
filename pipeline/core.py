@@ -53,6 +53,7 @@ def scrape_steps(year: int) -> list[Step]:
         s("scrape:criterium", "criterium_crawl.py"),
         s("scrape:focusline", "focusline_crawl.py"),
         s("scrape:taiwanbike", "taiwanbike_crawl.py"),
+        s("scrape:sporter96", "sporter96_pdf.py"),
     ]
 
 

@@ -21,7 +21,7 @@ export PYTHONIOENCODING=utf-8
 LOG=data/raw/_rebuild
 mkdir -p "$LOG"
 YEAR_NOW=$(date +%Y)
-SOURCES="tsu cyclist league cycling bravelog irunner criterium focusline taiwanbike"
+SOURCES="tsu cyclist league cycling bravelog irunner criterium focusline taiwanbike sporter96"
 
 # iRunner cycling events live in this track-id window (2023+ ≈ 1200–1650 as of
 # 2026-11); widen IRUNNER_HI as new events are published.
@@ -57,6 +57,7 @@ EOF
     criterium)  $PY scrapers/criterium_crawl.py ;;
     focusline)  $PY scrapers/focusline_crawl.py ;;
     taiwanbike) $PY scrapers/taiwanbike_crawl.py ;;
+    sporter96)  $PY scrapers/sporter96_pdf.py ;;   # PDFs listed in data/raw/sporter96_pdfs.json
     *) echo "unknown source: $1 (one of: $SOURCES)"; return 2 ;;
   esac
 }
