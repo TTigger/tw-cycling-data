@@ -15,7 +15,7 @@ def main(argv=None) -> int:
                    help="rebuild from existing data/processed source files")
     r.add_argument("--source", action="append", metavar="NAME",
                    help="scrape only these sources (repeatable): cyclist, bravelog, "
-                        "tsu, cycling, league, irunner, criterium, focusline, taiwanbike")
+                        "tsu, cycling, league, irunner, criterium, focusline, taiwanbike, sporter96")
     r.add_argument("--clean-race", action="store_true",
                    help="clear web/public/data/v1/race first (after race_key changes)")
     r.add_argument("--og", action="store_true", help="also rebuild the OG share image")

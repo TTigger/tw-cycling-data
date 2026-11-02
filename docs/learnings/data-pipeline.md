@@ -64,3 +64,9 @@ every /athlete/<id> URL. Then run `scrapers/backup.py` so it can't happen again.
   race keys never changes athlete ids. See [PDPA](./pdpa-deidentification.md).
 - Builders that consume aggregates instead of raw rows: see
   [client data loading](./client-data-loading.md).
+- **96聯賽 PDFs need pypdf, not pdfplumber**: their fonts have no FontBBox, so
+  pdfplumber mis-measures glyphs and drops ~80% of rows. `sporter96_pdf.py` reads
+  pypdf text runs with their coordinates and splits columns at the midpoints
+  between header labels. Glyphs of one run share its start x, so sort lines on x
+  only (stable) or names come out scrambled.
+
