@@ -22,6 +22,12 @@ describe("histogram", () => {
     expect(histogram([], 10)).toEqual([]);
     expect(histogram([1, 2], 0)).toEqual([]);
   });
+  it("handles the full dataset without overflowing the call stack", () => {
+    const v = Array.from({ length: 500_000 }, (_, i) => 3600 + (i % 7200));
+    const bins = histogram(v, 600);
+    expect(bins[0].x0).toBe(3600);
+    expect(bins.reduce((n, b) => n + b.count, 0)).toBe(v.length);
+  });
 });
 
 describe("boxByGroup", () => {
