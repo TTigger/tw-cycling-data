@@ -4,7 +4,8 @@ import { searchAthletes } from "../lib/athletes";
 import type { RaceIndex, AthleteIndexEntry } from "../lib/types";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
-const isMac = typeof navigator !== "undefined" && /Mac|iPhone|iPad/.test(navigator.platform);
+/** Other components open the palette with `window.dispatchEvent(new Event(OPEN_SEARCH))`. */
+export const OPEN_SEARCH = "open-search";
 
 interface Item { kind: "頁面" | "賽事" | "選手"; label: string; hint?: string; url: string; }
 
@@ -23,6 +24,9 @@ const PAGES: Item[] = [
 
 export default function CommandPalette() {
   const [open, setOpen] = useState(false);
+  // Decided after mount: the server can't know the platform, and rendering a
+  // different key label on the client caused a hydration mismatch (React #418).
+  const [isMac, setIsMac] = useState(false);
   const [q, setQ] = useState("");
   const [active, setActive] = useState(0);
   const [races, setRaces] = useState<RaceIndex[] | null>(null);
@@ -40,8 +44,14 @@ export default function CommandPalette() {
         setOpen(false);
       }
     };
+    const onOpen = () => setOpen(true);
+    setIsMac(/Mac|iPhone|iPad/.test(navigator.platform));
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    window.addEventListener(OPEN_SEARCH, onOpen);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener(OPEN_SEARCH, onOpen);
+    };
   }, []);
 
   // lazy-load data + focus on first open

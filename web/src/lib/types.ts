@@ -127,7 +127,11 @@ export interface TeamDetail extends TeamIndexEntry {
   highlights: TeamHighlight[];
 }
 
-export interface CoverageGap { race: string; calendar: string; guess_source: string; }
+export interface CoverageGap {
+  race: string; calendar: string; guess_source: string;
+  /** discover.py triage: NOT_INGESTED / HELD_UNCHECKED / BLOCKED / NOT_HELD / NO_RANKING … */
+  status?: string; date?: string; note?: string; stale?: boolean;
+}
 export interface Coverage {
   summary: {
     rows: number; races: number; by_source: Record<string, number>;

@@ -10,6 +10,33 @@ const {
 } = Astro.props;
 // Absolute URLs for canonical + OG (Astro.site set in astro.config.mjs).
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
+
+// Site navigation: three things people look up, then analysis and open data.
+type NavItem = { href: string; label: string; hint?: string };
+type NavGroup = { label: string; href?: string; items?: NavItem[] };
+const NAV: NavGroup[] = [
+  { label: "賽事", items: [
+    { href: "/race", label: "所有賽事", hint: "成績、完賽時間分布、歷年比較" },
+    { href: "/series", label: "系列", hint: "96聯賽、臺灣自行車聯賽…" },
+    { href: "/overseas", label: "海外賽", hint: "富士山登山賽等" },
+  ] },
+  { label: "選手", href: "/athletes" },
+  { label: "車隊", href: "/teams" },
+  { label: "分析", items: [
+    { href: "/explore", label: "探索", hint: "自由篩選全部成績" },
+    { href: "/benchmark", label: "分齡對標", hint: "這個成績在同齡排第幾" },
+    { href: "/trends", label: "長期趨勢", hint: "女性參與、分齡組成、跨年完賽時間" },
+    { href: "/climbs", label: "傳奇爬坡", hint: "爬坡難度與紀錄" },
+    { href: "/insights", label: "洞察", hint: "數據小故事" },
+  ] },
+  { label: "開放資料", items: [
+    { href: "/api", label: "API 與下載", hint: "CC BY 4.0" },
+    { href: "/coverage", label: "資料涵蓋", hint: "收錄了哪些賽事、還缺哪些" },
+  ] },
+];
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const isOn = (href: string) => path === href || path.startsWith(href + "/");
+const groupOn = (g: NavGroup) => (g.href ? isOn(g.href) : (g.items ?? []).some((i) => isOn(i.href)));
 const ogImageUrl = new URL(ogImage, Astro.site).href;
 ---
 <html lang="zh-Hant">
@@ -55,14 +82,28 @@ const ogImageUrl = new URL(ogImage, Astro.site).href;
             class="rounded-lg border border-border px-2.5 py-1.5 text-lg leading-none text-muted hover:border-accent hover:text-accent sm:hidden">☰</button>
         </div>
       </div>
-      <nav id="siteNav" class="mt-2 hidden flex-col gap-0.5 text-sm text-muted sm:mt-1 sm:flex sm:flex-row sm:flex-wrap sm:gap-x-4 sm:gap-y-1">
-        <a href="/" class="py-1 hover:text-accent">總覽</a><a href="/explore" class="py-1 hover:text-accent">探索</a>
-        <a href="/race" class="py-1 hover:text-accent">賽事</a><a href="/series" class="py-1 hover:text-accent">系列</a><a href="/athletes" class="py-1 hover:text-accent">選手</a><a href="/teams" class="py-1 hover:text-accent">車隊</a>
-        <a href="/climbs" class="py-1 hover:text-accent">傳奇爬坡</a><a href="/insights" class="py-1 hover:text-accent">洞察</a>
-        <a href="/benchmark" class="py-1 hover:text-accent">分齡對標</a>
-        <a href="/trends" class="py-1 hover:text-accent">長期趨勢</a>
-        <a href="/api" class="py-1 hover:text-accent">API</a>
-        <a href="/overseas" class="py-1 hover:text-accent">海外賽</a><a href="/coverage" class="py-1 hover:text-accent">資料涵蓋</a>
+      <nav id="siteNav" aria-label="主選單"
+        class="mt-2 hidden flex-col gap-3 text-sm sm:mt-2 sm:flex sm:flex-row sm:items-center sm:gap-1">
+        {NAV.map((g) => g.href ? (
+          <a href={g.href} aria-current={groupOn(g) ? "page" : undefined}
+            class:list={["rounded-md py-1 sm:px-2.5", groupOn(g) ? "text-ink font-medium" : "text-muted hover:text-accent"]}>{g.label}</a>
+        ) : (
+          <details class="navgroup group relative">
+            <summary class:list={["flex cursor-pointer list-none items-center gap-1 rounded-md py-1 sm:px-2.5 [&::-webkit-details-marker]:hidden",
+              groupOn(g) ? "text-ink font-medium" : "text-muted hover:text-accent"]}>
+              {g.label}<span aria-hidden="true" class="text-[10px] transition-transform group-open:rotate-180">▾</span>
+            </summary>
+            <div class="mt-1 grid gap-0.5 border-l border-border pl-3 sm:absolute sm:left-0 sm:z-40 sm:mt-2 sm:w-64 sm:rounded-xl sm:border sm:bg-surface sm:p-2 sm:pl-2 sm:shadow-lg">
+              {(g.items ?? []).map((i) => (
+                <a href={i.href} aria-current={isOn(i.href) ? "page" : undefined}
+                  class:list={["block rounded-lg px-2 py-1.5", isOn(i.href) ? "bg-bg text-ink" : "text-ink hover:bg-bg hover:text-accent"]}>
+                  <span class="block">{i.label}</span>
+                  {i.hint && <span class="block text-xs text-muted">{i.hint}</span>}
+                </a>
+              ))}
+            </div>
+          </details>
+        ))}
       </nav>
       <div class="relative mt-2 h-px w-full bg-border">
         <div id="scrollRidge" class="absolute inset-y-0 left-0 bg-accent" style="width:0" aria-hidden="true"></div>
@@ -75,6 +116,19 @@ const ogImageUrl = new URL(ogImage, Astro.site).href;
         const set = (open) => { n.style.display = open ? "flex" : ""; b.setAttribute("aria-expanded", String(open)); };
         b.addEventListener("click", () => set(n.style.display !== "flex"));
         n.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => set(false)));
+      })();
+      (() => {
+        // desktop dropdowns: one open at a time; close on outside click / Escape
+        const groups = [...document.querySelectorAll("details.navgroup")];
+        groups.forEach((d) => d.addEventListener("toggle", () => {
+          if (d.open) groups.forEach((o) => { if (o !== d) o.open = false; });
+        }));
+        document.addEventListener("click", (e) => {
+          groups.forEach((d) => { if (d.open && !d.contains(e.target)) d.open = false; });
+        });
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") groups.forEach((d) => { d.open = false; });
+        });
       })();
       (() => {
         const t = document.getElementById("themeToggle");

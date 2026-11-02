@@ -2,6 +2,7 @@
 import Base from "../layouts/Base.astro";
 import HomeHero from "../components/home/HomeHero.tsx";
 import OverviewApp from "../components/overview/OverviewApp.tsx";
+import SeasonBoard from "../components/home/SeasonBoard.tsx";
 
 const cards = [
   { t: "我這場成績在同齡排第幾?", href: "/benchmark", k: "分齡對標" },
@@ -11,6 +12,8 @@ const cards = [
 ---
 <Base>
   <HomeHero client:load />
+
+  <div class="mt-12"><SeasonBoard client:load /></div>
 
   <hr class="hairline my-12" />
 
