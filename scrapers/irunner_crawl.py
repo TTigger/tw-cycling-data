@@ -81,6 +81,24 @@ def event_title(track_id):
     return re.sub(r"\s*-\s*找選手.*$|\s*-\s*iRunner.*$", "", t).strip()
 
 
+DATE = re.compile(r"fa-calendar[^>]*>\s*</i>\s*(20\d{2})/(\d{1,2})/(\d{1,2})")
+
+
+def event_date(html):
+    """Race day from the event page header ('<i class=fa-calendar></i>2026/01/25')."""
+    m = DATE.search(html or "")
+    return f"{m.group(1)}-{int(m.group(2)):02d}-{int(m.group(3)):02d}" if m else None
+
+
+def fill_dates(events):
+    """Fetch the race day for events that don't have one yet (one page each)."""
+    for ev in events:
+        if not ev.get("date"):
+            ev["date"] = event_date(_get(f"{BASE}/track/{ev['track_id']}"))
+            print(f"  {ev['track_id']}: {ev['date']}")
+    return events
+
+
 def classify(title):
     if not title:
         return False
@@ -140,7 +158,7 @@ def fetch_event(track_id, polite=0.4, log=True):
     return list(seen.values())
 
 
-def to_records(track_id, title, year, rows):
+def to_records(track_id, title, year, rows, date=None):
     """原始結果列 → master schema 記錄。組別字串(『長距離83K挑戰組．男．車隊』)拆出
     分組/性別/車隊;名次依『同組別內完賽時間』排序衍生(iRunner 結果列不含名次)。"""
     import common
@@ -198,7 +216,7 @@ def to_records(track_id, title, year, rows):
                 source_platform="irunner.biji.co",
                 source_url=f"{BASE}/track/{track_id}/record/{m['memno']}",
                 source_format="html-search-derivedrank",
-                race_name_raw=title, year=year,
+                race_name_raw=title, year=year, date=date,
                 result_label=group, category_raw=category,
                 gender=gender, age_group=age,
                 bib=(m["bib"] or None), team=team,
@@ -245,7 +263,7 @@ def build_processed():
         if not os.path.exists(f):
             continue
         rows = json.load(io.open(f, encoding="utf-8"))
-        recs = to_records(ev["track_id"], ev["title"], ev["year"], rows)
+        recs = to_records(ev["track_id"], ev["title"], ev["year"], rows, ev.get("date"))
         by_year[ev["year"] or 0].extend(recs)
         print(f"  {ev['track_id']} {ev['title'][:30]}: {len(recs)} recs")
     for y, recs in by_year.items():
@@ -275,6 +293,11 @@ if __name__ == "__main__":
             io.open(out_f, "w", encoding="utf-8").write(
                 json.dumps(rows, ensure_ascii=False, indent=2))
             gc.collect()
+    elif cmd == "dates":
+        f = os.path.join(RAW, "irunner_events.json")
+        evs = fill_dates(json.load(io.open(f, encoding="utf-8")))
+        io.open(f, "w", encoding="utf-8").write(json.dumps(evs, ensure_ascii=False, indent=2))
+        print(f"dated {sum(1 for e in evs if e.get('date'))}/{len(evs)} events")
     elif cmd == "build":
         build_processed()
     elif cmd == "test":

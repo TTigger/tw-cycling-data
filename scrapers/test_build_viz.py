@@ -251,3 +251,15 @@ def test_build_overview_by_source_counts():
             + [_viz(s="S", plat=None)])          # None excluded
     ov = bv.build_overview(rows)
     assert ov["by_source"] == {"bravelog.tw": 3, "tsu.com.tw": 2}
+
+
+def test_races_index_race_day_is_earliest_valid_date():
+    recs = [
+        {"race_key": "a", "year": 2026, "race_name_canonical": "A", "date": "2026-09-08"},
+        {"race_key": "a", "year": 2026, "race_name_canonical": "A", "date": "2026-09-07T06:00"},
+        {"race_key": "a", "year": 2026, "race_name_canonical": "A", "date": "bad"},
+        {"race_key": "b", "year": 2026, "race_name_canonical": "B", "date": None},
+    ]
+    by = {e["rk"]: e for e in bv.build_races_index(recs)}
+    assert by["a"]["d"] == "2026-09-07"
+    assert by["b"]["d"] is None
