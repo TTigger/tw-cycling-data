@@ -24,6 +24,10 @@ ROOT = Path(__file__).resolve().parent.parent
 SCRAPERS = ROOT / "scrapers"
 STATE_FILE = ROOT / "data" / ".pipeline_state.json"
 RACE_DIR = ROOT / "web" / "public" / "data" / "v1" / "race"
+# Per-entity dirs the builders fully regenerate. Cleared together with race/:
+# stale athlete/team files otherwise linger forever (2,215 athlete + 151 team
+# files found in 2026-11, some still carrying pre-fix unmasked Latin names).
+ENTITY_DIRS = [RACE_DIR, RACE_DIR.parent / "athlete", RACE_DIR.parent / "team"]
 
 
 @dataclass
@@ -74,7 +78,7 @@ def build_plan(skip_scrape=False, sources=None, clean_race=False,
     plan.append(Step("validate", ["validate.py", "master.json"], group="validate"))
     if clean_race:
         plan.append(Step("clean-race-dir", [], group="build",
-                         note="rm orphan per-race files (race_key changes)"))
+                         note="rm orphan per-race/athlete/team files"))
     for b in BUILDERS:
         plan.append(Step("build:" + b.replace("build_", "").replace(".py", ""),
                          [b], group="build"))
@@ -93,9 +97,10 @@ def build_plan(skip_scrape=False, sources=None, clean_race=False,
 
 def default_runner(step: Step) -> int:
     if step.name == "clean-race-dir":
-        if RACE_DIR.exists():
-            for f in RACE_DIR.iterdir():
-                f.unlink()
+        for d in ENTITY_DIRS:
+            if d.exists():
+                for f in d.iterdir():
+                    f.unlink()
         return 0
     cmd = [sys.executable, str(SCRAPERS / step.argv[0]), *step.argv[1:]]
     env = {**os.environ, "PYTHONIOENCODING": "utf-8", **step.env}

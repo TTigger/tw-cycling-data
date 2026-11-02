@@ -488,23 +488,23 @@
     "confidence": "cycling"
   },
   {
-    "uid": "2025033002",
-    "title": "【96CyclingRace競賽組】台北站",
-    "host": "台灣96自行車協會",
-    "city": "臺北市",
-    "tags": [],
-    "start_date": "2025-03-30 07:40:00",
-    "statusTag": "查成績",
-    "website": null,
-    "confidence": "cycling"
-  },
-  {
     "uid": "2025033003",
     "title": "【96Heroes挑戰組】台北站",
     "host": "台灣96自行車協會",
     "city": "臺北市",
     "tags": [],
     "start_date": "2025-03-30 06:00:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2025033002",
+    "title": "【96CyclingRace競賽組】台北站",
+    "host": "台灣96自行車協會",
+    "city": "臺北市",
+    "tags": [],
+    "start_date": "2025-03-30 07:40:00",
     "statusTag": "查成績",
     "website": null,
     "confidence": "cycling"
@@ -620,23 +620,23 @@
     "confidence": "cycling"
   },
   {
-    "uid": "2025070601",
-    "title": "【96Heroes挑戰組】桃竹站",
-    "host": "台灣96自行車協會",
-    "city": "桃園市",
-    "tags": [],
-    "start_date": "2025-07-06 06:30:00",
-    "statusTag": "查成績",
-    "website": null,
-    "confidence": "cycling"
-  },
-  {
     "uid": "2025070602",
     "title": "【96CyclingRace】 桃竹站暨中華民國114年自由車國手選拔賽積分賽 競賽組 及 巿民競賽組",
     "host": "台灣96自行車協會",
     "city": "桃園市",
     "tags": [],
     "start_date": "2025-07-06 06:00:00",
+    "statusTag": "查成績",
+    "website": null,
+    "confidence": "cycling"
+  },
+  {
+    "uid": "2025070601",
+    "title": "【96Heroes挑戰組】桃竹站",
+    "host": "台灣96自行車協會",
+    "city": "桃園市",
+    "tags": [],
+    "start_date": "2025-07-06 06:30:00",
     "statusTag": "查成績",
     "website": null,
     "confidence": "cycling"

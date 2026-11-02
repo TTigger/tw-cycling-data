@@ -46,3 +46,11 @@ def test_carry_forward_keeps_failed_calendar_gaps_and_retriages():
     kept = d.carry_forward(prev, "ensage2026")
     assert [g["race"] for g in kept] == ["輪霸西濱挑戰"]
     assert kept[0]["status"] == "BLOCKED" and kept[0]["stale"] is True
+
+
+def test_irunner_fill_missing_years_inherits_previous_event():
+    import irunner_crawl as ir
+    evs = [{"track_id": 1327, "year": None}, {"track_id": 1325, "year": 2024},
+           {"track_id": 1346, "year": 2024}, {"track_id": 1328, "year": None}]
+    ir.fill_missing_years(evs)
+    assert {e["track_id"]: e["year"] for e in evs} == {1325: 2024, 1327: 2024, 1328: 2024, 1346: 2024}

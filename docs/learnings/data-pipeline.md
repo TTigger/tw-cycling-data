@@ -33,6 +33,20 @@ build_*.py  ──►  web/public/data/*.json   (browser-ready, de-identified)
   but this year's isn't is flagged `NOT_INGESTED` — the plain name diff strips the
   year and can't see that.
 
+## Rebuild from scratch (new machine / lost master.json)
+`master.json` + `data/raw` are gitignored and live on ONE machine. In 2026-11 that
+machine was lost with no backup, so the dataset was re-crawled. On a fresh clone:
+```
+python3.13 -m venv .venv && .venv/bin/pip install -r requirements.txt
+scrapers/rebuild_all.sh crawl all          # or one source per job, in parallel
+scrapers/rebuild_all.sh build              # merge → validate → builders → manifest
+.venv/bin/python scrapers/compare_rebuild.py   # diff vs the committed site data
+```
+`pipeline refresh` alone is NOT a from-scratch rebuild: it assumes caches exist
+(irunner runs in test mode, bravelog_calendar covers one year, cyclist 2024+).
+Athlete ids are salted hashes of the identity key, so a faithful rebuild keeps
+every /athlete/<id> URL. Then run `scrapers/backup.py` so it can't happen again.
+
 ## To rebuild after a data/normalization change
 1. `python scrapers/merge.py` (regenerates both master files).
 2. Run the affected builders. A race_key change touches almost all of them; also

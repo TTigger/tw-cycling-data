@@ -113,6 +113,8 @@ export interface TeamRosterRider {
   best: number | null; y0: number | null; y1: number | null;
 }
 export interface TeamHighlight {
+  /** false when the athlete has no profile page (fewer than MIN_RESULTS). */
+  link?: boolean;
   id: string; nm: string; rn: string | null; rk: string | null;
   y: number | null; rank: number | null; pct: number;
 }

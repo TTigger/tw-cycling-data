@@ -33,7 +33,7 @@ os.makedirs(OUT_DIR, exist_ok=True)
 # Per-athlete parsing uses a BOUNDED window (anchored on each athlete link) to
 # avoid catastrophic regex backtracking across the whole 68KB page when a row's
 # markup differs (e.g. a chevron-only link with no name/time div).
-ATHLETE = re.compile(r'href="https://www\.bravelog\.tw/athlete/(\d+)/([0-9A-Za-z]+)"')
+ATHLETE = re.compile(r'href="https://(?:www\.)?bravelog\.tw/athlete/(\d+)/([0-9A-Za-z]+)"')
 _NAME = re.compile(r'<div class="name">(.*?)</div>', re.S)
 _DETAIL = re.compile(r'<div class="detail-info">(.*?)</div>', re.S)
 _TIME = re.compile(r'<div class="time">\s*<span>\s*([0-9:]+)', re.S)

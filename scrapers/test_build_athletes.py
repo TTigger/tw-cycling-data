@@ -265,3 +265,20 @@ def test_representative_team_picks_most_recent_real_team():
 def test_representative_team_none_when_no_real_team():
     recs = [_rec("林冠宇", team="個人", year=2024), _rec("林冠宇", team=None, year=2025)]
     assert ba.representative_team(recs) is None
+
+
+def test_source_masked_rows_rejoin_published_athlete():
+    import legacy_identity as li
+    real = {"name_raw": "黃大翔", "race_key": "A", "year": 2024, "finish_seconds": 100.0}
+    masked = {"name_raw": "黃*翔", "race_key": "B", "year": 2025, "finish_seconds": 200.4}
+    orphan = {"name_raw": "黃*翔", "race_key": "C", "year": 2026, "finish_seconds": 300.0}
+    only_old = {"name_raw": "林*宇", "race_key": "B", "year": 2025, "finish_seconds": 250.0}
+    recs = [real, masked, orphan, only_old]
+    base = ["n:黃大翔", "n:黃*翔", "n:黃*翔", "n:林*宇"]
+    aid = ba.athlete_id("n:黃大翔")
+    legacy = {li.row_key(masked): aid, li.row_key(only_old): "abcdef0123"}
+    keys = ba._apply_legacy_identity(recs, base, legacy)
+    assert keys[1] == "n:黃大翔"            # joins the real-name rows → same athlete
+    assert keys[2] == "s:2"                 # unmatched masked row is never guessed
+    assert keys[3] == "x:abcdef0123"
+    assert ba.athlete_id(keys[3]) == "abcdef0123"

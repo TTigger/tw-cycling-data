@@ -13,7 +13,9 @@ export default function Completion({ completion }: { completion?: C }) {
         完賽 {p.fin} / 報到 {p.total} 人
       </p>
       <p className="text-sm text-muted">
-        未完賽 {p.notFinished} · 未出發 {p.notStarted}
+        {p.unknown > 0
+          ? `未完賽或未出發 ${p.unknown}(細項暫缺)`
+          : `未完賽 ${p.notFinished} · 未出發 ${p.notStarted}`}
       </p>
     </section>
   );

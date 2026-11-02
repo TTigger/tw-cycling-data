@@ -50,7 +50,11 @@ def _get(url, enc="utf-8"):
 def landing_pages():
     """results_txt.asp?pno=N landing pages for the league + each page's title."""
     html = _get(LEAGUE_LIST)
-    pnos = sorted(set(int(x) for x in re.findall(r"results_txt\.asp\?pno=(\d+)", html)))
+    pnos = set(int(x) for x in re.findall(r"results_txt\.asp\?pno=(\d+)", html))
+    # league events dropped from the listing but still online (see cyclist_crawl)
+    from cyclist_crawl import DELISTED_EVENTS
+    pnos |= {int(pno) for pno, _y, _t, cat in DELISTED_EVENTS if cat == 13}
+    pnos = sorted(pnos)
     out = []
     for pno in pnos:
         try:

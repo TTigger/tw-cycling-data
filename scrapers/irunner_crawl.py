@@ -211,6 +211,24 @@ def to_records(track_id, title, year, rows):
     return recs
 
 
+def unescape_all(text):
+    import html as _html
+    while text and _html.unescape(text) != text:
+        text = _html.unescape(text)
+    return text
+
+
+def fill_missing_years(events):
+    """Some titles carry no year (e.g. 'Gravel Fundo Stage 1台南玉井站'). Track ids
+    are issued chronologically, so inherit the year of the preceding event."""
+    prev = None
+    for ev in sorted(events, key=lambda e: e["track_id"]):
+        if ev.get("year") is None:
+            ev["year"] = prev
+        prev = ev["year"] or prev
+    return events
+
+
 def build_processed():
     """讀 data/raw/irunner_events.json + 各 irunner_<id>.json → 依年份寫
     data/processed/irunner_<year>.json(含 name_raw,供 merge 重遮罩/去重)。"""
@@ -218,6 +236,9 @@ def build_processed():
     proc = os.path.join(os.path.dirname(__file__), "..", "data", "processed")
     os.makedirs(proc, exist_ok=True)
     events = json.load(io.open(os.path.join(RAW, "irunner_events.json"), encoding="utf-8"))
+    fill_missing_years(events)
+    for ev in events:  # titles arrive HTML-escaped, sometimes twice ('&amp;amp;')
+        ev["title"] = unescape_all(ev["title"])
     by_year = defaultdict(list)
     for ev in events:
         f = os.path.join(RAW, f"irunner_{ev['track_id']}.json")
