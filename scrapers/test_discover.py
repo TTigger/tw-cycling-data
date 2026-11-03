@@ -54,3 +54,24 @@ def test_irunner_fill_missing_years_inherits_previous_event():
            {"track_id": 1346, "year": 2024}, {"track_id": 1328, "year": None}]
     ir.fill_missing_years(evs)
     assert {e["track_id"]: e["year"] for e in evs} == {1325: 2024, 1327: 2024, 1328: 2024, 1346: 2024}
+
+
+def test_known_race_gaps_skips_collected_and_calendar_dupes(tmp_path, monkeypatch):
+    import json
+    reg = {"races": [
+        {"race": "雲嘉南霸天濱海自行車賽", "year": 2026, "status": "HELD_UNCHECKED", "note": "n",
+         "last_seen": {"source": "irunner.biji.co"}, "links": ["https://x"]},
+        {"race": "96聯賽苗栗站", "year": 2026, "date": "2026-10-18", "status": "HELD_UNCHECKED"},
+        {"race": "全國俱樂部聯賽 第2站 台南四草公路繞圈賽", "year": 2015, "status": "FOUND"},
+        {"race": "戀戀197", "year": 2019, "status": "FOUND"},
+    ]}
+    p = tmp_path / "known.json"
+    p.write_text(json.dumps(reg, ensure_ascii=False), encoding="utf-8")
+    monkeypatch.setattr(d, "KNOWN_RACES", str(p))
+    by_year = {d.core("戀戀197"): {2019, 2022},
+               d.core("全國俱樂部聯賽-第3站淡海公路繞圈賽"): {2015}}
+    gaps, done = d.known_race_gaps(by_year, {d.core("96聯賽苗栗站")}, 2026)
+    assert [g["race"] for g in gaps] == ["雲嘉南霸天濱海自行車賽", "全國俱樂部聯賽 第2站 台南四草公路繞圈賽"]
+    assert gaps[0]["guess_source"] == "irunner.biji.co" and gaps[0]["url"] == "https://x"
+    assert gaps[0]["year"] == 2026 and "date" not in gaps[0]
+    assert [k["race"] for k in done] == ["戀戀197"]
