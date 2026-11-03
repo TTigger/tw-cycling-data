@@ -32,6 +32,23 @@ os.makedirs(OUT_DIR, exist_ok=True)
 DELISTED_EVENTS = [
     ("99", 2020, "扶輪盃陽明山自行車登山王挑戰", 1),
     ("149", 2025, "環花東國際自行車賽", 13),
+    # the listing links the 2026 環大臺北 entry to its certificate page (169);
+    # the results PDFs are on the unlisted sibling page 168
+    ("168", 2026, "環大臺北自行車挑戰 成績", 4),
+    # Result pages no listing links to (found by scanning every pno, 2026-11-03).
+    # Year from the PDF upload names; each checked against master for a sibling
+    # page with the same race-year (e.g. 137/147/143 duplicate 136/148/144).
+    # Pre-2021 unlisted pages (unreliable years) and 108 (2021 日月潭, PDF layout
+    # the parser can't read) are listed in data/known_races.json instead.
+    ("109", 2021, "環花東自行車競賽&挑戰", 13),
+    ("117", 2022, "環花東自行車競賽&挑戰", 13),
+    ("118", 2022, "DOSUN 蘇花公路爬坡計時賽&挑戰", 1),
+    ("120", 2022, "DOSUN 太平山自行車賽&挑戰", 1),
+    ("135", 2024, "陽明山王 公路賽.團隊計時賽&挑戰", 1),
+    ("139", 2024, "太平山王 公路賽.團隊計時賽&挑戰", 1),
+    ("141", 2024, "環花東-團隊計時賽&公路賽", 13),
+    ("145", 2024, "雲林公路繞圈賽", 13),
+    ("146", 2025, "陽明山王公路賽.團隊計時賽&挑戰", 1),
 ]
 YEARS = {2024, 2025, 2026}  # default; override with --years (e.g. 2014-2023 backfill)
 # category listing pages (pno) that hold competitive ROAD events
