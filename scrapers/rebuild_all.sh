@@ -21,7 +21,7 @@ export PYTHONIOENCODING=utf-8
 LOG=data/raw/_rebuild
 mkdir -p "$LOG"
 YEAR_NOW=$(date +%Y)
-SOURCES="tsu cyclist league cycling bravelog irunner criterium focusline taiwanbike sporter96"
+SOURCES="tsu cyclist league cycling bravelog irunner criterium focusline taiwanbike sporter96 sport-result ebetter atsport"
 
 # iRunner cycling events live in this track-id window (2023+ ≈ 1200–1650 as of
 # 2026-11); widen IRUNNER_HI as new events are published.
@@ -58,6 +58,11 @@ EOF
     focusline)  $PY scrapers/focusline_crawl.py ;;
     taiwanbike) $PY scrapers/taiwanbike_crawl.py ;;
     sporter96)  $PY scrapers/sporter96_pdf.py ;;   # PDFs listed in data/raw/sporter96_pdfs.json
+    sport-result) $PY scrapers/sport_result_crawl.py ;;
+    # e-better takes results down after a few months: a fresh clone can only
+    # rebuild events still online, or restore data/raw/ebetter/ from backup.
+    ebetter)    $PY scrapers/ebetter_crawl.py ;;   # events listed in data/raw/ebetter_events.json
+    atsport)    $PY scrapers/atsport_crawl.py ;;   # needs a Taiwan IP (blocks overseas clouds)
     *) echo "unknown source: $1 (one of: $SOURCES)"; return 2 ;;
   esac
 }

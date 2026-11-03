@@ -24,7 +24,8 @@ import normalize  # noqa: E402
 sys.stdout.reconfigure(encoding="utf-8")
 OUT = os.path.join(os.path.dirname(__file__), "..", "data", "processed")
 SOURCE_PREFIXES = ("criterium_", "cyclist_", "bravelog_", "cycling_", "irunner_",
-                   "focusline_", "taiwanbike_", "sporter96_")
+                   "focusline_", "taiwanbike_", "sporter96_", "sport_result_", "ebetter_",
+                   "atsport_")
 
 
 def discover_sources():
@@ -45,7 +46,10 @@ SUPERSEDED = {("bravelog.tw", "TBA北高360雙塔520四極602自行車認證"),
               # 彰化經典百K 2023 is on both bravelog (gun time) and iRunner (net
               # time, ~minutes apart, so the exact-dup check can't pair them).
               # The published dataset used bravelog; keep it, drop the twin.
-              ("irunner.biji.co", "彰化經典百K", 2023)}
+              ("irunner.biji.co", "彰化經典百K", 2023),
+              # 96 武嶺 2026: the organizer's PDF covers part of the field; the
+              # timer's own site (sport-result.com) has all of it.
+              ("96sporter.com", "96聯賽武嶺站競賽組及市民競賽組", 2026)}
 
 
 def is_superseded(r):
