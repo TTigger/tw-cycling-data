@@ -61,9 +61,9 @@ export default function CoverageApp() {
       .sort((a, b) => b[1].reduce((x, r) => x + r.rows, 0) - a[1].reduce((x, r) => x + r.rows, 0));
   }, [races]);
 
-  // newest year first; undated calendar entries (current season) on top
+  // newest year first; entries without a year (mostly no-ranking leisure rides) last
   const sortedGaps = useMemo(() => [...(cov?.gaps ?? [])].sort(
-    (a, b) => (gapYear(b) ?? 9999) - (gapYear(a) ?? 9999) || (b.date ?? "").localeCompare(a.date ?? "")),
+    (a, b) => (gapYear(b) ?? 0) - (gapYear(a) ?? 0) || (b.date ?? "").localeCompare(a.date ?? "")),
   [cov]);
 
   if (err) return <p className="text-accent">資料載入失敗:{err}</p>;
