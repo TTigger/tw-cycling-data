@@ -34,6 +34,9 @@ PLATFORM_SHORT = {
     "cyclist.org.tw": "cyclist",
     "criterium.tw": "criterium",
     "cycling.org.tw": "cycling",
+    "sport-result.com": "sport-result",
+    "e-better.com.tw": "e-better",
+    "atsport.com.tw": "atsport",
 }
 
 

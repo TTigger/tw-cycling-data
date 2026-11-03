@@ -21,3 +21,4 @@ real time to (re)discover. Aimed at future contributors and coding agents.
 - [Tailwind v4 dark mode](./tailwind-v4-dark-mode.md) — class-based dark mode tokens get stripped at build; the `@theme inline` + fallback pattern that works.
 - [Race-key normalization](./race-key-normalization.md) — curated canonical merge map + candidate generator + what must NOT be merged.
 - [Race leaderboard ranking](./race-leaderboard-ranking.md) — group by `(cat,label)` and re-rank by finish time; never trust source `rank` or group by `cat` alone.
+- [Source hunting](./source-hunting.md) — timer sites vs registration sites, results that expire (e-better), IP-based blocks, unlisted cyclist pages, names in team fields, `known_races.json`.

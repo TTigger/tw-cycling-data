@@ -38,6 +38,9 @@ def test_team_that_is_a_rider_real_name_is_masked():
     assert merge.mask_person_team(" 陳柏安 ", names) == "陳○安"
     assert merge.mask_person_team("新竹市ZIV聯隊", names) == "新竹市ZIV聯隊"
     assert merge.mask_person_team(None, names) is None
+    # a name inside a longer team string is masked in place
+    assert merge.mask_person_team("張允丞&陳柏安親友團", names) == "張○丞&陳○安親友團"
+    assert merge.mask_person_team("狂抽猛送張允丞", names) == "狂抽猛送張○丞"
 
 
 def test_sporter96_prefix_discovered():

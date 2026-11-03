@@ -251,6 +251,38 @@ def triage(name):
     return None, None
 
 
+KNOWN_RACES = os.path.join(os.path.dirname(__file__), "..", "data", "known_races.json")
+
+
+def known_race_gaps(by_year, seen_this_year, this_year):
+    """Gaps from data/known_races.json, the hand-kept list of races we know exist
+    but can't collect. Calendars only list upcoming races and forget them after,
+    so this list is what keeps a missing race-year on record.
+    Returns (gaps, done): entries now in master (done) are reported, not shown."""
+    if not os.path.exists(KNOWN_RACES):
+        return [], []
+    gaps, done = [], []
+    for k in json.load(open(KNOWN_RACES, encoding="utf-8"))["races"]:
+        c, y = core(k["race"]), k.get("year")
+        # strict name containment: years_known's fuzzy overlap lumps stations
+        # of one series together (俱樂部聯賽 第2站 vs 第3站)
+        if y and k["status"] != "EXCLUDED" and any(
+                y in ys and (c in mc or mc in c) for mc, ys in by_year.items() if mc):
+            done.append(k)
+            continue
+        if y == this_year and c in seen_this_year:
+            continue  # a calendar already reports it
+        g = {"race": k["race"], "calendar": "known_races", "status": k["status"],
+             "guess_source": (k.get("last_seen") or {}).get("source") or "",
+             "note": k.get("note", ""), "year": y}
+        if k.get("date"):
+            g["date"] = k["date"]
+        if k.get("links"):
+            g["url"] = k["links"][0]
+        gaps.append(g)
+    return gaps, done
+
+
 RACES_JSON = os.path.join(WEB_DIR, "races.json")
 
 
@@ -381,6 +413,12 @@ def main():
             miss.append(rec)
         all_missing.extend(miss)
         print(f"  {cal['name']}: {len(dated)} 賽事,{len(miss)} 缺漏")
+
+    known, done = known_race_gaps(by_year, seen, today.year)
+    all_missing.extend(known)
+    print(f"  data/known_races.json: {len(known)} 場已知未收錄")
+    for k in done:
+        print(f"  ✓ 已收錄,可從 known_races.json 刪除:{k['year']} {k['race']}")
 
     out = os.path.join(OUT_DIR, "missing_races.json")
     # Diff against the previous run so the radar can alert only on CHANGE: a race

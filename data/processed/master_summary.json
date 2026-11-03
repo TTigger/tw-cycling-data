@@ -1,69 +1,72 @@
 {
-  "total_records": 160224,
+  "total_records": 180106,
   "by_platform": {
+    "atsport.com.tw": 7385,
     "bravelog.tw": 43423,
     "criterium.tw": 1957,
-    "cyclist.org.tw": 13636,
+    "cyclist.org.tw": 18814,
     "cycling.org.tw": 349,
     "tsu.com.tw": 24515,
+    "e-better.com.tw": 4074,
     "twbike.org": 15404,
     "irunner.biji.co": 42442,
-    "96sporter.com": 294,
+    "sport-result.com": 3539,
     "taiwanbike.org": 18204
   },
   "by_year": {
     "2009": 1062,
     "2011": 1045,
-    "2012": 1092,
-    "2013": 1653,
+    "2012": 2844,
+    "2013": 2515,
+    "2014": 1106,
     "2015": 1424,
     "2016": 698,
     "2017": 947,
-    "2018": 1124,
-    "2019": 1229,
-    "2020": 2763,
-    "2021": 989,
-    "2022": 20280,
+    "2018": 3084,
+    "2019": 2892,
+    "2020": 2805,
+    "2021": 1127,
+    "2022": 22925,
     "2023": 29945,
-    "2024": 44752,
-    "2025": 36595,
-    "2026": 14626
+    "2024": 45691,
+    "2025": 36961,
+    "2026": 23035
   },
   "by_gender": {
-    "null": 53481,
-    "F": 16378,
-    "M": 90365
+    "null": 59391,
+    "F": 17996,
+    "M": 102719
   },
   "by_race_class": {
-    "未分類": 30260,
-    "女子": 807,
-    "挑戰": 55811,
-    "競賽": 7909,
-    "電輔車": 238,
+    "未分類": 33063,
+    "挑戰": 64165,
+    "競賽": 11886,
+    "分齡": 35144,
+    "女子": 935,
+    "團體計時": 1213,
+    "電輔車": 332,
     "市民": 4990,
-    "市民經典": 5269,
-    "團體計時": 1104,
-    "分齡": 31446,
-    "青少年": 1998,
+    "市民經典": 5848,
+    "青少年": 2138,
     "認證": 20392
   },
   "by_series": {
-    "null": 80046,
+    "null": 81231,
     "TBA 長途認證": 20392,
-    "96聯賽": 9752,
-    "捷安特自行車嘉年華": 8755,
-    "TIS崇越盃系列": 7721,
-    "戀戀197": 6546,
-    "環大臺北自行車挑戰": 3520,
+    "戀戀197": 12246,
+    "96聯賽": 10797,
+    "捷安特自行車嘉年華": 10505,
+    "TIS崇越盃系列": 9591,
+    "L'Étape 環法日月潭": 5448,
+    "環花東國際自行車賽": 5081,
+    "環大臺北自行車挑戰": 4518,
     "GravelFundo 礫石越野系列": 3442,
-    "L'Étape 環法日月潭": 3248,
+    "臺灣自行車聯賽(TCL)": 2654,
     "花蓮太平洋盃": 2549,
     "LAVA 落日飛車350": 2188,
     "臺灣KOM登山王之路": 1728,
-    "臺灣自行車聯賽(TCL)": 1613,
-    "臺灣KOM登山王挑戰": 1467,
+    "臺灣KOM登山王挑戰": 1559,
     "仙山單車挑戰賽": 1180,
-    "環花東國際自行車賽": 1080,
     "台灣登山大滿貫(雪巴)": 965,
     "屏東四重溪自行車挑戰賽": 819,
     "TCU 台中城市繞圈賽": 737,
@@ -74,13 +77,11 @@
     "臺灣KOM太平洋經典賽": 78
   },
   "by_status": {
-    "null": 157973,
-    "FIN": 1070,
-    "NF": 1134,
-    "DNF": 17,
-    "DNS": 30
+    "null": 178149,
+    "FIN": 823,
+    "NF": 1134
   },
-  "distinct_races": 174,
+  "distinct_races": 185,
   "races": [
     {
       "race_key": "彰化經典百K",
@@ -94,6 +95,22 @@
         2026
       ],
       "rows": 25137
+    },
+    {
+      "race_key": "戀戀197",
+      "series": "戀戀197",
+      "platform": "bravelog.tw",
+      "years": [
+        2012,
+        2013,
+        2014,
+        2018,
+        2019,
+        2022,
+        2023,
+        2024
+      ],
+      "rows": 12246
     },
     {
       "race_key": "建大武嶺盃",
@@ -126,15 +143,40 @@
       "rows": 8009
     },
     {
-      "race_key": "戀戀197",
-      "series": "戀戀197",
-      "platform": "bravelog.tw",
+      "race_key": "L’Étape環法自行車挑戰賽紐崔萊•日月潭站",
+      "series": "L'Étape 環法日月潭",
+      "platform": "sport-result.com",
       "years": [
+        2024,
+        2025,
+        2026
+      ],
+      "rows": 5448
+    },
+    {
+      "race_key": "環大臺北自行車挑戰成績",
+      "series": "環大臺北自行車挑戰",
+      "platform": "cyclist.org.tw",
+      "years": [
+        2018,
+        2021,
         2022,
         2023,
-        2024
+        2025,
+        2026
       ],
-      "rows": 6546
+      "rows": 4518
+    },
+    {
+      "race_key": "自行車嘉年華GIANTCUPLIVDAY",
+      "series": "捷安特自行車嘉年華",
+      "platform": "e-better.com.tw",
+      "years": [
+        2024,
+        2025,
+        2026
+      ],
+      "rows": 4447
     },
     {
       "race_key": "輪躍台南單車嘉年華",
@@ -147,29 +189,6 @@
         2025
       ],
       "rows": 4133
-    },
-    {
-      "race_key": "環大臺北自行車挑戰成績",
-      "series": "環大臺北自行車挑戰",
-      "platform": "cyclist.org.tw",
-      "years": [
-        2018,
-        2021,
-        2022,
-        2023,
-        2025
-      ],
-      "rows": 3520
-    },
-    {
-      "race_key": "L’Étape環法自行車挑戰賽紐崔萊•日月潭站",
-      "series": "L'Étape 環法日月潭",
-      "platform": "bravelog.tw",
-      "years": [
-        2024,
-        2025
-      ],
-      "rows": 3248
     },
     {
       "race_key": "崇越盃武嶺挑戰賽",
@@ -198,16 +217,6 @@
         2023
       ],
       "rows": 2883
-    },
-    {
-      "race_key": "自行車嘉年華GIANTCUPLIVDAY",
-      "series": "捷安特自行車嘉年華",
-      "platform": "bravelog.tw",
-      "years": [
-        2024,
-        2025
-      ],
-      "rows": 2697
     },
     {
       "race_key": "年NeverStop永不放棄紫南宮一騎來發財環縣自行車999K",
@@ -244,6 +253,26 @@
         2026
       ],
       "rows": 2503
+    },
+    {
+      "race_key": "環花東自行車競賽挑戰成績公告",
+      "series": "環花東國際自行車賽",
+      "platform": "cyclist.org.tw",
+      "years": [
+        2021,
+        2022
+      ],
+      "rows": 2501
+    },
+    {
+      "race_key": "TIS崇越盃武嶺自行車挑戰賽九月場次",
+      "series": "TIS崇越盃系列",
+      "platform": "e-better.com.tw",
+      "years": [
+        2025,
+        2026
+      ],
+      "rows": 2453
     },
     {
       "race_key": "北高360認證成績表2024",
@@ -336,13 +365,15 @@
       "rows": 1458
     },
     {
-      "race_key": "TIS崇越盃武嶺自行車挑戰賽九月場次",
-      "series": "TIS崇越盃系列",
-      "platform": "bravelog.tw",
+      "race_key": "太平山王公路賽團隊計時賽挑戰",
+      "series": "臺灣自行車聯賽(TCL)",
+      "platform": "cyclist.org.tw",
       "years": [
-        2025
+        2024,
+        2025,
+        2026
       ],
-      "rows": 1352
+      "rows": 1402
     },
     {
       "race_key": "NeverStop永不放棄挑戰巔峰－武嶺",
@@ -374,6 +405,36 @@
       "rows": 1326
     },
     {
+      "race_key": "環花東國際自行車大賽",
+      "series": "環花東國際自行車賽",
+      "platform": "atsport.com.tw",
+      "years": [
+        2012
+      ],
+      "rows": 1317
+    },
+    {
+      "race_key": "陽明山王公路賽團隊計時賽挑戰",
+      "series": "臺灣自行車聯賽(TCL)",
+      "platform": "cyclist.org.tw",
+      "years": [
+        2024,
+        2025,
+        2026
+      ],
+      "rows": 1252
+    },
+    {
+      "race_key": "96聯賽武嶺站競賽組及市民競賽組",
+      "series": "96聯賽",
+      "platform": "sport-result.com",
+      "years": [
+        2025,
+        2026
+      ],
+      "rows": 1233
+    },
+    {
       "race_key": "西三塔2024",
       "series": null,
       "platform": "twbike.org",
@@ -381,6 +442,16 @@
         2024
       ],
       "rows": 1212
+    },
+    {
+      "race_key": "96聯賽武嶺站挑戰組",
+      "series": "96聯賽",
+      "platform": "sport-result.com",
+      "years": [
+        2025,
+        2026
+      ],
+      "rows": 1198
     },
     {
       "race_key": "【96聯賽第二站】NeverStop永不放棄塔塔加探索新中橫自行車活動",
@@ -468,16 +539,6 @@
       "rows": 955
     },
     {
-      "race_key": "太平山王公路賽團隊計時賽挑戰",
-      "series": "臺灣自行車聯賽(TCL)",
-      "platform": "cyclist.org.tw",
-      "years": [
-        2025,
-        2026
-      ],
-      "rows": 948
-    },
-    {
       "race_key": "LIVDAY冬之湯旅175咖啡公路挑戰活動",
       "series": "捷安特自行車嘉年華",
       "platform": "bravelog.tw",
@@ -486,6 +547,17 @@
         2025
       ],
       "rows": 925
+    },
+    {
+      "race_key": "臺灣自行車登山王挑戰",
+      "series": "臺灣KOM登山王挑戰",
+      "platform": "cyclist.org.tw",
+      "years": [
+        2022,
+        2023,
+        2026
+      ],
+      "rows": 896
     },
     {
       "race_key": "花蓮太平洋盃自行車系列活動",
@@ -564,17 +636,6 @@
       "rows": 809
     },
     {
-      "race_key": "臺灣自行車登山王挑戰",
-      "series": "臺灣KOM登山王挑戰",
-      "platform": "cyclist.org.tw",
-      "years": [
-        2022,
-        2023,
-        2026
-      ],
-      "rows": 804
-    },
-    {
       "race_key": "96Heroes台北站",
       "series": "96聯賽",
       "platform": "tsu.com.tw",
@@ -584,14 +645,13 @@
       "rows": 796
     },
     {
-      "race_key": "96聯賽武嶺站競賽組及市民競賽組",
-      "series": "96聯賽",
-      "platform": "96sporter.com",
+      "race_key": "TIS桃園台南280KM雙城挑戰賽",
+      "series": "TIS崇越盃系列",
+      "platform": "e-better.com.tw",
       "years": [
-        2025,
         2026
       ],
-      "rows": 736
+      "rows": 769
     },
     {
       "race_key": "雙塔2025",
@@ -621,15 +681,6 @@
       "rows": 687
     },
     {
-      "race_key": "陽明山王公路賽團隊計時賽挑戰",
-      "series": "臺灣自行車聯賽(TCL)",
-      "platform": "cyclist.org.tw",
-      "years": [
-        2026
-      ],
-      "rows": 665
-    },
-    {
       "race_key": "LIVDAY初夏大山平溪五分挑戰活動",
       "series": "捷安特自行車嘉年華",
       "platform": "bravelog.tw",
@@ -637,15 +688,6 @@
         2023
       ],
       "rows": 664
-    },
-    {
-      "race_key": "96聯賽武嶺站挑戰組",
-      "series": "96聯賽",
-      "platform": "bravelog.tw",
-      "years": [
-        2025
-      ],
-      "rows": 650
     },
     {
       "race_key": "08272023環大苗栗107K挑戰成績2023",
@@ -789,6 +831,15 @@
         2024
       ],
       "rows": 502
+    },
+    {
+      "race_key": "澎湖跳島101K自行車活動",
+      "series": null,
+      "platform": "e-better.com.tw",
+      "years": [
+        2026
+      ],
+      "rows": 454
     },
     {
       "race_key": "Ciao!Wilier2000xThermaltakeBicycle",
@@ -1217,6 +1268,15 @@
       "rows": 208
     },
     {
+      "race_key": "DOSUN太平山自行車賽挑戰電輔車趣味賽",
+      "series": null,
+      "platform": "cyclist.org.tw",
+      "years": [
+        2022
+      ],
+      "rows": 206
+    },
+    {
       "race_key": "東三塔5502026",
       "series": null,
       "platform": "twbike.org",
@@ -1261,6 +1321,15 @@
         2025
       ],
       "rows": 187
+    },
+    {
+      "race_key": "環花東團隊計時賽公路賽",
+      "series": "環花東國際自行車賽",
+      "platform": "cyclist.org.tw",
+      "years": [
+        2024
+      ],
+      "rows": 183
     },
     {
       "race_key": "年台灣登山大滿貫自行車系列賽陽明山站",
@@ -1309,6 +1378,15 @@
       "rows": 176
     },
     {
+      "race_key": "全國自由車公路錦標賽青少年計時賽",
+      "series": null,
+      "platform": "atsport.com.tw",
+      "years": [
+        2018
+      ],
+      "rows": 172
+    },
+    {
       "race_key": "南投國王盃x三發武林大會中寮爬坡計時檢定賽",
       "series": null,
       "platform": "tsu.com.tw",
@@ -1325,6 +1403,15 @@
         2023
       ],
       "rows": 162
+    },
+    {
+      "race_key": "金針山自行車登山賽",
+      "series": null,
+      "platform": "atsport.com.tw",
+      "years": [
+        2013
+      ],
+      "rows": 154
     },
     {
       "race_key": "年台灣登山大滿貫自行車系列賽–阿里山站",
@@ -1480,6 +1567,15 @@
       "rows": 95
     },
     {
+      "race_key": "雲林公路繞圈賽",
+      "series": null,
+      "platform": "cyclist.org.tw",
+      "years": [
+        2024
+      ],
+      "rows": 81
+    },
+    {
       "race_key": "冬季TCU台中城市繞圈賽",
       "series": "TCU 台中城市繞圈賽",
       "platform": "tsu.com.tw",
@@ -1496,6 +1592,15 @@
         2025
       ],
       "rows": 78
+    },
+    {
+      "race_key": "DOSUN蘇花公路爬坡計時賽挑戰電輔車趣味賽",
+      "series": null,
+      "platform": "cyclist.org.tw",
+      "years": [
+        2022
+      ],
+      "rows": 76
     },
     {
       "race_key": "GravelFundoStage3新北貢寮站【UrbanAllMountain城市全地形越野賽】S1",
@@ -1604,6 +1709,15 @@
         2024
       ],
       "rows": 46
+    },
+    {
+      "race_key": "DanCup桃園市主委盃公路繞圈賽",
+      "series": null,
+      "platform": "atsport.com.tw",
+      "years": [
+        2020
+      ],
+      "rows": 42
     },
     {
       "race_key": "全國自由車【公路】菁英排名賽二成績總表",

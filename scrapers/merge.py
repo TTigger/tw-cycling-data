@@ -24,7 +24,8 @@ import normalize  # noqa: E402
 sys.stdout.reconfigure(encoding="utf-8")
 OUT = os.path.join(os.path.dirname(__file__), "..", "data", "processed")
 SOURCE_PREFIXES = ("criterium_", "cyclist_", "bravelog_", "cycling_", "irunner_",
-                   "focusline_", "taiwanbike_", "sporter96_")
+                   "focusline_", "taiwanbike_", "sporter96_", "sport_result_", "ebetter_",
+                   "atsport_")
 
 
 def discover_sources():
@@ -45,7 +46,10 @@ SUPERSEDED = {("bravelog.tw", "TBA北高360雙塔520四極602自行車認證"),
               # 彰化經典百K 2023 is on both bravelog (gun time) and iRunner (net
               # time, ~minutes apart, so the exact-dup check can't pair them).
               # The published dataset used bravelog; keep it, drop the twin.
-              ("irunner.biji.co", "彰化經典百K", 2023)}
+              ("irunner.biji.co", "彰化經典百K", 2023),
+              # 96 武嶺 2026: the organizer's PDF covers part of the field; the
+              # timer's own site (sport-result.com) has all of it.
+              ("96sporter.com", "96聯賽武嶺站競賽組及市民競賽組", 2026)}
 
 
 def is_superseded(r):
@@ -100,14 +104,35 @@ def rider_names(paths):
     return names
 
 
+_CJK_RUN = re.compile(r"[\u4e00-\u9fff]{3,}")
+
+
 def mask_person_team(team, names):
     """Riders sometimes enter a person's name (their own or a friend's) as their
-    team. The team field is published, so a team that is exactly some rider's real
-    name is masked like a name (PDPA)."""
+    team, alone or inside a longer string ("王大明&陳小美親友團", "狂抽猛送王大明").
+    The team field is published, so any 3–4 character stretch of it that is some
+    rider's real name is masked like a name (PDPA). Two-character names are left
+    alone: too many ordinary words would match."""
     t = (team or "").strip()
     if t in names:
         return common.mask_name(t)
-    return team
+    if not team:
+        return team
+
+    def fix(m):
+        s, out, i = m.group(0), [], 0
+        while i < len(s):
+            for n in (4, 3):
+                if i + n <= len(s) and s[i:i + n] in names:
+                    out.append(common.mask_name(s[i:i + n]))
+                    i += n
+                    break
+            else:
+                out.append(s[i])
+                i += 1
+        return "".join(out)
+
+    return _CJK_RUN.sub(fix, team)
 
 
 def main():
