@@ -104,14 +104,35 @@ def rider_names(paths):
     return names
 
 
+_CJK_RUN = re.compile(r"[\u4e00-\u9fff]{3,}")
+
+
 def mask_person_team(team, names):
     """Riders sometimes enter a person's name (their own or a friend's) as their
-    team. The team field is published, so a team that is exactly some rider's real
-    name is masked like a name (PDPA)."""
+    team, alone or inside a longer string ("王大明&陳小美親友團", "狂抽猛送王大明").
+    The team field is published, so any 3–4 character stretch of it that is some
+    rider's real name is masked like a name (PDPA). Two-character names are left
+    alone: too many ordinary words would match."""
     t = (team or "").strip()
     if t in names:
         return common.mask_name(t)
-    return team
+    if not team:
+        return team
+
+    def fix(m):
+        s, out, i = m.group(0), [], 0
+        while i < len(s):
+            for n in (4, 3):
+                if i + n <= len(s) and s[i:i + n] in names:
+                    out.append(common.mask_name(s[i:i + n]))
+                    i += n
+                    break
+            else:
+                out.append(s[i])
+                i += 1
+        return "".join(out)
+
+    return _CJK_RUN.sub(fix, team)
 
 
 def main():
