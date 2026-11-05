@@ -37,7 +37,10 @@ CACHE = os.path.join(ROOT, "data", "raw", "ebetter")
 OUT = os.path.join(ROOT, "data", "processed", "ebetter_2026.json")
 PAGE = 100
 
-CYCLING = re.compile(r"自行車|單車|公路|武嶺|騎|bike|GIANT|LIVDAY|KOM|\d{2,3}\s*K(?:M)?\b", re.I)
+# CJK counts as a word character, so "280KM雙城" has no \b after KM: match the
+# distance without a word boundary. Series names cover titles with no cycling word.
+CYCLING = re.compile(r"自行車|單車|公路|武嶺|騎|bike|GIANT|LIVDAY|KOM|雪巴|大滿貫|瘋系列|環台|"
+                     r"Wilier|\d{2,3}\s*K(?:M)?(?![A-Za-z])", re.I)
 NOT_CYCLING = re.compile(r"鐵人|三項|馬拉松|路跑|健走|越野|Run\b", re.I)
 _AGE = re.compile(r"[MWFmwf](\d{2})")
 _TITLE = re.compile(r"<title>\s*成績查詢\s*-\s*(.*?)\s*</title>", re.S)

@@ -4,9 +4,9 @@
 > 最後更新:2026-11-03(統計區塊自此由 `scrapers/gen_docs_stats.py` 自動生成)
 
 <!-- gen:stats:begin -->
-主資料集 master:**180,106 筆 / 2009–2026 / 185 場 / 11 來源**(海外賽另計)。
+主資料集 master:**186,615 筆完賽 / 2009–2026 / 191 場 / 12 來源**(海外賽另計;另有 1,134 筆未完賽紀錄,只用於完賽率)。
 
-> 各來源現況筆數(master 內,跨源去重後):bravelog 43,423・irunner 42,442・tsu 24,515・cyclist 18,814・taiwanbike 18,204・twbike 15,404・atsport 7,385・e-better 4,074・sport-result 3,539・criterium 1,957・cycling 349。
+> 各來源完賽筆數(跨源去重後,與網站一致):bravelog 43,423・irunner 42,441・tsu 24,515・cyclist 18,814・taiwanbike 18,204・twbike 15,404・focusline 7,644・atsport 7,385・e-better 4,074・sport-result 3,539・criterium 823・cycling 349。
 > (本區塊由 `scrapers/gen_docs_stats.py` 生成,勿手改。)
 <!-- gen:stats:end -->
 
@@ -19,13 +19,14 @@
 | **cyclist.org.tw**<br>(自行車騎士協會) | 臺灣自行車聯賽全系列(陽明山王/太平山王/環花東/花蓮太平洋盃)+ KOM 登山王 | 靜態 PDF,pdfplumber 逐行;表頭自動判欄序 | 2015–2026 | `cyclist_crawl.py` | 11,276 |
 | **bravelog.tw**<br>(運動趣) | 市民/挑戰賽龍頭(96聯賽/雪巴大滿貫/L'Étape/落日飛車/銅礦88/LIVDAY) | `/search` JSON API 探索 → server-rendered rank 頁分頁 | 2018–2026 | `bravelog_calendar.py` + `bravelog_crawl.py` | 46,553 |
 | **tsu.com.tw**<br>(台灣自行車聯盟) | 縣長盃繞圈、越野/gravel、NeverStop武嶺、96系列、大專/地方賽;**含 TCU 選手 ID** | 靜態 HTML(UTF-8),表頭對映;`/race?y=` 年份×分頁 → `/race/result` | 2009–2025 | `tsu_crawl.py` | 24,925 |
-| **cycling.org.tw**<br>(自由車協會) | 國家級:全國公路錦標賽/國手選拔(**含 UCI ID**)+ 2013 舊寬表 | 新制 PDF + 舊 .xls 寬表→長表 reshape | 2013, 2025 | `cycling_crawl.py` + `cycling_oldroad.py` | 349 |
+| **cycling.org.tw**<br>(自由車協會) | 國家級:全國公路錦標賽/國手選拔(**含 UCI ID**)+ 2013 舊寬表 | 新制 PDF + 舊 .xls 寬表→長表 reshape | 2013, 2025 | `cycling_crawl.py` + `cycling_oldroad.py` | 349(下載區另有 2016–2026 共 22 份 PDF 版面不同、還沒解析,列在 `data/known_races.json` FOUND) |
 | **cyclist.org.tw 臺灣自行車聯賽**<br>(子來源:`results_txt.asp` 聯賽頁) | TCL 個人計時賽 ITT + **團隊計時賽 TTT** + 公路繞圈各分組。走 `results_list.asp?pno=13` → `results_txt.asp?pno=N` 落地頁 → 成績公告 PDF,主 `cyclist_crawl` 抓不到。個人列雙版面(組別在 col1/col3);TTT 依車隊分組、把名次與「取第4名時間」傳遞給全隊。排除 road(重複)/積分/累計 | landing 頁 → 成績公告 PDF | 2025–2026 | `cyclist_league.py` | 819(TTT)+ ITT + 繞圈 |
 | **irunner.biji.co**<br>(筆記晶片計時) | 換平台後的競技/市民賽:新玉門關公路賽、美利達盃、輪躍台南、彰化Classic 100、淡江大橋、環大苗栗、Gravel Fundo(Gravel/MTB/Enduro) | **逐筆查 → 翻頁全擷取**(見下「破解」);姓名/名字字/拉丁字母列舉 + GET `?rs=&page=` 分頁,依 memno 去重(~99%);組內完賽時間衍生名次 | 2023–2026 | `irunner_crawl.py` | 32,862 |
 | **96sporter.com**<br>(96聯賽主辦,Dynamic Intelligences 計時) | 2026 起 96聯賽各站成績(競賽組+市民競賽組,含 DNF/DNS/OTL)。不再上 Bravelog/tsu,只在 `player_rank.htm` 掛 Dropbox PDF | PDF,**pypdf 依文字座標分欄**(pdfplumber 讀不到字型 BBox 會漏 8 成);長姓名/隊名跨行置中,依最近名次列併回。待收清單 `data/raw/sporter96_pdfs.json`(手動加,`--find` 列出候選連結) | 2026 | `sporter96_pdf.py` | 武嶺站已由 sport-result 取代;留作苗栗/台東站備援 |
 | **sport-result.com**<br>(Dynamic Intelligences 計時,96聯賽/L'Étape) | 2026 起自家成績站:L'Étape 日月潭、96Heroes 武嶺挑戰組、96 武嶺競賽組+市民競賽組(比主辦 PDF 完整,取代該 PDF) | 乾淨 JSON API:`/api/contests` → `/api/contests/{slug}/results?page=N&pageSize=200`;只收 status=0 完賽列(非完賽代碼不分 DNF/DNS) | 2026 | `sport_result_crawl.py` | 3,539 |
 | **gr.e-better.com.tw**<br>(伊貝特 晶片計時成績站) | 崇越盃武嶺九月、TIS 桃園台南 280K、澎湖跳島 101K、GIANT CUP/LIVDAY 2026 | GET `/eb/gr/{sn}` 拿 cookie → POST `/eb/gr/{sn}/getList` JSON 分頁。**只保留近幾個月**,下架前抓下的原始檔存 `data/raw/ebetter/`(不進 git,靠備份);待收清單 `data/raw/ebetter_events.json`,`--scan LO HI` 找新場次 | 2026 | `ebetter_crawl.py` | 4,074 |
 | **atsport.com.tw**<br>(ATSport 運計科技) | 早期公路賽:戀戀197(2012/13/14/18/19)、2012 環花東、2013 金針山、2018 全國錦標賽青少年計時賽、2020 Dan Cup 繞圈 | server-rendered 頁 `/race/{id}?event_detail_id={組}&p={頁}`;**需台灣 IP**(封國外雲端主機) | 2012–2020 | `atsport_crawl.py` | 7,385 |
+| **score.focusline.com.tw**<br>(focusline 計時成績站) | TWB 塔系列認證(列為 twbike.org)+ 2026-11-05 起也收有名次的公路挑戰賽:梅山36彎、櫻花勇士騎行羅馬、西螺媽祖祈福(2024/25)、蘭陽百K(2023/25)、高雄百K(2025)、第五屆新玉門關(2023) | JSON API:`/api/Activity?urlPath=focusline` 列場次 → `/api/Member/focusline?code=&categoryName=&page=`;挑戰賽清單在 `CHALLENGES`(手動加),休閒/接力組不收 | 2023–2026 | `focusline_crawl.py` | 7,647(挑戰賽) |
 | **runnet.jp**<br>(海外,獨立別集) | 日本 Mt.富士ヒルクライム等(**不進台灣 master**) | JS/SPA(Next.js);headless 渲染 + 頁內 fetch 受保護 JSON API | 2026 | `overseas_runnet.py` | 8,724 |
 
 > 合併工具:`merge.py`(年份無關、自動納源、跨源去重)。海外賽存 `web/public/data/overseas/`,不進 merge。

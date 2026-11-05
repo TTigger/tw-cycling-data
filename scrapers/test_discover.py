@@ -75,3 +75,11 @@ def test_known_race_gaps_skips_collected_and_calendar_dupes(tmp_path, monkeypatc
     assert gaps[0]["guess_source"] == "irunner.biji.co" and gaps[0]["url"] == "https://x"
     assert gaps[0]["year"] == 2026 and "date" not in gaps[0]
     assert [k["race"] for k in done] == ["戀戀197"]
+
+
+def test_curated_triage_corrects_calendar_and_aliases():
+    # the calendar's date for 台東站 is wrong (it is 12-19), so it is not "held, missing"
+    assert d.triage("96聯賽台東站 全國自由車公路錦標選拔賽")[0] == "NOT_HELD"
+    # ensage's English name for L'Étape is already collected under our name
+    assert d.triage("L'Étape Sun Moon Lake 單車旅遊環法賽：台灣南投日月潭")[0] == "COLLECTED"
+    assert d.triage("96聯賽苗栗站 仙山自行車登山賽")[0] == "NOT_INGESTED"

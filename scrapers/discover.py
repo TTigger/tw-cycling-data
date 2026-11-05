@@ -198,6 +198,7 @@ KNOWN_TRIAGE = [
     ("春季登山王之路", "COLLECTED", "= 臺灣KOM登山王之路-春季(cyclist.org.tw, 2026 已收)"),
     ("環花東", "COLLECTED", "= 環花東國際自行車賽(cyclist.org.tw, 2026 已收 580 筆)"),
     ("太平山", "COLLECTED", "= 太平山王公路賽(cyclist.org.tw, 2026 已收)"),
+    ("Sun Moon Lake", "COLLECTED", "= L’Étape環法自行車挑戰賽-紐崔萊 • 日月潭站(sport-result.com, 2026 已收)"),
     # held but no scrapeable per-rider ranking
     ("八卦山傳奇", "NO_RANKING", "瘋系列：主辦明示「所有成績沒有總排」+ ATSport 計時"),
     ("谷關雪見", "NO_RANKING", "瘋系列：無總排 + ATSport(封鎖平台)"),
@@ -207,14 +208,17 @@ KNOWN_TRIAGE = [
     # calendar mis-tag: these are 96聯賽 (96sporter.com), not 騎士協會. Since 2026 the
     # 96 league posts results only as PDF (scrapers/sporter96_pdf.py worklist).
     ("北進武嶺", "COLLECTED", "= 96聯賽武嶺站(96sporter PDF, 2026 已收 294 筆)"),
-    ("仙山KOM", "HELD_UNCHECKED", "實為 96聯賽 苗栗站,2026-10-18 已辦;成績 PDF 尚未在 96sporter.com 公布,公布後加入 data/raw/sporter96_pdfs.json"),
+    ("仙山", "NOT_INGESTED", "96聯賽 苗栗站,2026-10-18 已辦;成績尚未公布(2026-11-05 查 sport-result.com 與 96sporter.com 都還沒有)。計時為 Dynamic Intelligences,出現在 sport-result 後重跑 sport-result 爬蟲"),
+    ("96聯賽台東站", "NOT_HELD", "96聯賽 台東站:行事曆寫 10/31,但 96sporter.com 官網為 2026-12-19(報名至 11/9);辦完查 sport-result.com"),
+    ("揪你123", "NOT_INGESTED", "2026-11-01 已辦;往年由 Dynamic Intelligences 計時,成績應會出現在 sport-result.com(2026-11-05 尚未公布)"),
     # HELD_UNCHECKED — date has passed; check whether a per-rider ranking was published
     ("無眠征途", "HELD_UNCHECKED", "2026-07-18 已辦;瘋系列限時挑戰,恐無總排,待查驗"),
     ("小台灣縮時環島", "HELD_UNCHECKED", "2026-09-26 已辦;瘋系列 300K 限時挑戰,恐無總排,待查驗"),
     ("TIS桃園台南", "HELD_UNCHECKED", "2026-10-31 已辦;往屆僅發完賽獎座/證書,恐無排名,待查驗"),
-    ("騎遊茂林", "HELD_UNCHECKED", "2026-10-24 已辦;挑戰70K/騎玩40K 活動型,待查是否有排名"),
+    ("騎遊茂林", "NO_RANKING", "茂林國家風景區管理處主辦的騎遊活動(22K 休閒/70K 挑戰/深度騎玩),報導與報名頁都沒有計時排名(2026-11-05 查)"),
     # not yet held — re-check after the date; remove from this list once ingested
     ("花蓮太平洋盃", "NOT_HELD", "2026-12-04~05 未辦;聯賽末站,辦完應有 cyclist.org.tw PDF 成績"),
+    ("四極", "NOT_HELD", "TBA 四極點620 認證:2026-11-13 起;往年成績在 taiwanbike.org(已有爬蟲),辦完重爬"),
     ("環騎5COOL", "NOT_HELD", "2026-11-07 未辦;新出現於 RACE ON,辦完查驗"),
     ("鯉魚潭山光水色", "NOT_HELD", "2026-12-12 未辦;限時挑戰(菁英5h/挑戰7h),辦完查驗"),
     ("超級騎士挑戰", "NOT_HELD", "2027-01-01~02 未辦;瘋系列,恐無總排"),
@@ -394,9 +398,12 @@ def main():
                 continue
             if is_known(c, master_cores):
                 rec = not_ingested(nm, date, today, by_year)
-                if rec and triage(nm)[0] not in ("NO_RANKING", "COLLECTED"):
+                status, note = triage(nm)
+                if rec and status not in ("NO_RANKING", "COLLECTED"):
                     seen.add(c)
                     rec["calendar"] = cal["id"]
+                    if status:  # a curated verdict beats the computed one
+                        rec["status"], rec["note"] = status, note  # (e.g. calendar date wrong)
                     miss.append(rec)
                 continue
             seen.add(c)
@@ -450,10 +457,14 @@ def main():
         years = [r["year"] for r in recs if r.get("year")]
         ov_path = os.path.join(WEB_DIR, "overseas", "runnet_383993.json")
         overseas = len(json.load(open(ov_path, encoding="utf-8"))) if os.path.exists(ov_path) else 0
+        # Same count as the site (manifest/overview): finishers only. DNF-style
+        # rows (criterium.tw "NF") are reported separately as non_finishers.
+        fin = [r for r in recs if r.get("status") in (None, "FIN")]
         summary = {
-            "rows": len(recs),
+            "rows": len(fin),
+            "non_finishers": len(recs) - len(fin),
             "races": len({r["race_key"] for r in recs if r.get("race_key")}),
-            "by_source": dict(Counter(r["source_platform"] for r in recs).most_common()),
+            "by_source": dict(Counter(r["source_platform"] for r in fin).most_common()),
             "y0": min(years), "y1": max(years), "overseas": overseas,
         }
     else:

@@ -119,3 +119,10 @@ def test_merge_discovers_new_sources_and_drops_the_96_pdf():
     pdf = {"source_platform": "96sporter.com", "race_key": "96聯賽武嶺站競賽組及市民競賽組", "year": 2026}
     assert merge.is_superseded(pdf)
     assert not merge.is_superseded({**pdf, "source_platform": "sport-result.com"})
+
+
+def test_ebetter_scan_keywords():
+    for t in ("2026 TIS桃園台南280KM雙城挑戰賽", "2026台灣登山大滿貫自行車系列賽", "瘋系列第三屆環台賽-西部段",
+              "Ciao! Wilier 2000 x Thermaltake"):
+        assert eb.CYCLING.search(t) and not eb.NOT_CYCLING.search(t), t
+    assert eb.NOT_CYCLING.search("2026 某某馬拉松 42K")

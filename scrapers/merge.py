@@ -151,7 +151,7 @@ def main():
     n_out = n_zero = n_dup = n_superseded = 0
     races = defaultdict(lambda: {"rows": 0, "years": set(), "series": None, "platform": None})
     by_platform, by_year, by_gender, by_class, by_series = (Counter() for _ in range(5))
-    by_status = Counter()
+    by_status, finishers_by_platform = Counter(), Counter()
 
     sources = discover_sources()
     names = rider_names(sources)
@@ -190,6 +190,8 @@ def main():
             by_class[r["race_class"]] += 1
             by_series[r["series"]] += 1
             by_status[r.get("status")] += 1
+            if r.get("status") in (None, "FIN"):
+                finishers_by_platform[r["source_platform"]] += 1
             sep = ",\n" if n_out else ""
             mf.write(sep)
             json.dump(r, mf, ensure_ascii=False)
@@ -213,7 +215,11 @@ def main():
 
     summary = {
         "total_records": n_out,
+        # finishers = rows the site counts (status None/FIN); the rest are
+        # DNF/DNS-style rows kept for completion rates (criterium.tw "NF").
+        "finishers": sum(v for k, v in by_status.items() if k in (None, "FIN")),
         "by_platform": dict(by_platform),
+        "finishers_by_platform": dict(finishers_by_platform),
         "by_year": dict(sorted(by_year.items(), key=lambda x: str(x[0]))),
         "by_gender": dict(by_gender),
         "by_race_class": dict(by_class),
@@ -229,7 +235,7 @@ def main():
     json.dump(summary, open(os.path.join(OUT, "master_summary.json"), "w", encoding="utf-8"),
               ensure_ascii=False, indent=2)
 
-    print(f"\n=== MASTER === records={summary['total_records']}  races={summary['distinct_races']}")
+    print(f"\n=== MASTER === records={summary['total_records']}  finishers={summary['finishers']}  races={summary['distinct_races']}")
     print(f"  platform: {summary['by_platform']}")
     print(f"  year:     {summary['by_year']}")
     print(f"  gender:   {summary['by_gender']}")
