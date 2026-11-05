@@ -282,3 +282,17 @@ def test_source_masked_rows_rejoin_published_athlete():
     assert keys[2] == "s:2"                 # unmatched masked row is never guessed
     assert keys[3] == "x:abcdef0123"
     assert ba.athlete_id(keys[3]) == "abcdef0123"
+
+
+def test_carryover_keeps_published_id_when_group_is_rekeyed(monkeypatch):
+    import legacy_identity as li
+    old_id = ba.raw_athlete_id("n:王小明")
+    recs = [{"name_raw": "王小明", "race_key": "r1", "year": 2020, "finish_seconds": 3600.0},
+            {"name_raw": "王小明", "race_key": "r2", "year": 2025, "finish_seconds": 1800.0,
+             "uci_id": "10000000001"}]                 # new PDF row adds a UCI id
+    keys = ba.build_group_keys(recs)
+    assert set(keys) == {"u:10000000001"}
+    monkeypatch.setattr(li, "published_ids", lambda ref="HEAD": {old_id})
+    monkeypatch.setattr(li, "build_map", lambda ref, wanted=None: ({li.row_key(recs[0]): old_id}, 0))
+    carry = li.build_carryover(recs, keys, ba.raw_athlete_id)
+    assert carry == {ba.raw_athlete_id("u:10000000001"): old_id}

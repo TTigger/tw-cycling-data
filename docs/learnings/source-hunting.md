@@ -65,3 +65,21 @@ Curated triage in `discover.py` now overrides the computed status for this.
 `cycling_crawl.py` reads only the 114年 national-championship PDF layout; the
 other 22 road PDFs on cycling.org.tw (2016–2026) parse to 0 rows. A crawler
 that "runs fine" can still be silently empty — check rows per input file.
+(Fixed 2026-11-06: `cycling_generic.py` reads the per-category pages of all
+layouts. Checks that caught bad picks: implied speed = distance ÷ time must be
+12–55 km/h, and time must not drop as rank goes up within a category.)
+
+## Sanitised file names can collide
+Replacing every CJK character with `_` turned two different 110年 PDF titles
+into the same file name, so one silently overwrote the other. Add a hash of
+the URL to cached file names.
+
+## New ids re-key old athletes
+A source that adds UCI ids moves riders from `n:<name>` to `u:<uci>`, which
+changes their hashed id and breaks published URLs (216 would have broken).
+`data/identity/id_carryover.json` maps the new hash back to the published id.
+
+## One result table, two events
+cyclist.org.tw linked the same 11/01 ITT from 花蓮太平洋盃 and KOM. Row-level
+dedup split it 47/19 between the two races. `merge.cross_listed_tables` drops
+the copy (a table ≥95% inside a larger table of another race, same year).

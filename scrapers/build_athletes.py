@@ -64,12 +64,19 @@ def load_profiles():
         return {p["race_key"]: p for p in json.load(f)}
 
 
-def athlete_id(group_key):
-    """Stable, salted, non-reversible 10-hex id for a group key (u:<uci> / n:<name>)."""
+def raw_athlete_id(group_key):
+    """Salted, non-reversible 10-hex hash of a group key (u:<uci> / n:<name>)."""
     if group_key.startswith("x:"):   # carried-over published id (legacy_identity)
         return group_key[2:]
     h = hashlib.sha1((_SALT + "|" + group_key).encode("utf-8")).hexdigest()
     return h[:10]
+
+
+def athlete_id(group_key):
+    """Public athlete id: the hash, unless that rider was already published under
+    another id (data/identity/id_carryover.json keeps their URL)."""
+    h = raw_athlete_id(group_key)
+    return legacy_identity.load_carryover().get(h, h)
 
 
 def build_group_keys(records):
@@ -518,6 +525,10 @@ def build_head_to_head(records, details, min_results=6, min_meets=3, top_rivals=
 
 def main():
     records = list(common.iter_records(IN))  # RAM-frugal streaming parse
+    carry = legacy_identity.build_carryover(records, build_group_keys(records), raw_athlete_id,
+                                            existing=legacy_identity.load_carryover())
+    legacy_identity.save_carryover(carry)
+    print(f"id carryover: {len(carry)} re-keyed athletes keep their published id")
     index, details = build_athletes(records)
     rivals = build_head_to_head(records, details)
     for aid, rows in rivals.items():

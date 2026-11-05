@@ -93,6 +93,41 @@ def is_dup(r, fs, seen, seen_masked, seen_src_masked):
 PERSON_NAME = re.compile(r"[\u4e00-\u9fff]{2,4}")
 
 
+def _table_key(r):
+    return (r.get("year"), r.get("source_url"), r.get("result_label"))
+
+
+def cross_listed_tables(records, min_rows=10, share=0.95):
+    """Result tables one source posted under two different events.
+
+    cyclist.org.tw linked the 2026-11-01 ITT from both 花蓮太平洋盃 (pno=170) and
+    臺灣KOM登山王 (pno=172); the plain (year, name, seconds) dedup then split that
+    one ITT 47/19 between the two races. A table whose finishers are (almost) all
+    inside a strictly larger table of ANOTHER race in the same year is the copy:
+    drop it whole, so the result stays with one race. Returns the table keys."""
+    tables, race_of = defaultdict(set), {}
+    for r in records:
+        fs = r.get("finish_seconds")
+        if r.get("name_raw") and fs and r.get("status") in (None, "FIN"):
+            k = _table_key(r)
+            tables[k].add((r["name_raw"], int(fs)))
+            race_of[k] = r.get("race_key")
+    by_year = defaultdict(list)
+    for k, rows in tables.items():
+        by_year[k[0]].append((k, rows))
+    drop = set()
+    for lst in by_year.values():
+        for k, rows in lst:
+            if len(rows) < min_rows:
+                continue
+            for k2, rows2 in lst:
+                if race_of[k2] != race_of[k] and len(rows2) > len(rows) \
+                        and len(rows & rows2) >= share * len(rows):
+                    drop.add(k)
+                    break
+    return drop
+
+
 def rider_names(paths):
     """Every real rider name across all sources (one cheap streaming pass)."""
     names = set()
@@ -148,7 +183,7 @@ def main():
     # ~one source instead of the whole corpus (RAM-tight machines OOM'd otherwise).
     # Dedup keeps the first-loaded source (sources load in sorted-glob order, as before).
     seen, seen_masked, seen_src_masked = set(), set(), set()
-    n_out = n_zero = n_dup = n_superseded = 0
+    n_out = n_zero = n_dup = n_superseded = n_cross = 0
     races = defaultdict(lambda: {"rows": 0, "years": set(), "series": None, "platform": None})
     by_platform, by_year, by_gender, by_class, by_series = (Counter() for _ in range(5))
     by_status, finishers_by_platform = Counter(), Counter()
@@ -158,8 +193,12 @@ def main():
     n_team_masked = 0
     for p in sources:
         src_n = 0
+        cross = cross_listed_tables(iter_records(p))
         for r in iter_records(p):
             src_n += 1
+            if cross and _table_key(r) in cross:   # same table posted under 2 events
+                n_cross += 1
+                continue
             fs = r.get("finish_seconds")
             if should_drop_zero_time(r):      # zero-time noise, but keep DNF/DNS
                 n_zero += 1
@@ -212,6 +251,8 @@ def main():
         print(f"  masked {n_team_masked} team values that were a rider's real name")
     if n_superseded:
         print(f"  dropped {n_superseded} superseded rows (bravelog races replaced by a better source)")
+    if n_cross:
+        print(f"  dropped {n_cross} rows of result tables posted under two events (kept with the larger one)")
 
     summary = {
         "total_records": n_out,
