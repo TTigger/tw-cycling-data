@@ -42,3 +42,26 @@ that is a rider's real name. Names of people who never raced can't be detected.
 `data/known_races.json` lists race-years we know about but can't collect, with
 status, note and lead link. Calendars forget a race once it has passed; this
 list doesn't. `discover.py` folds it into `coverage.json`.
+
+## Ask Bravelog who timed it
+Bravelog's `/search` JSON has a `timing_vendor` id per contest. Races whose
+2025 edition was on Bravelog but whose 2026 edition vanished mostly share one
+vendor id with the races we now get from 伊貝特 — a strong hint the 2026 results
+went to (and expired from) gr.e-better.com.tw. Check the vendor before searching
+the open web; web search is US-centred and finds little for Taiwanese races.
+
+## A timer's other events
+focusline (score.focusline.com.tw) was crawled only for TWB tower rides, but its
+activity list also held ranked road challenges (梅山36彎, 西螺媽祖, 蘭陽百K…).
+When a timer is already wired up, list all its events, not just the series we
+came for.
+
+## Calendars get dates wrong
+RACE ON listed 96聯賽台東站 on 10/31; the organizer's site says 12/19. A
+"held but not ingested" gap can be a wrong calendar date — check the organizer.
+Curated triage in `discover.py` now overrides the computed status for this.
+
+## One parser, one layout
+`cycling_crawl.py` reads only the 114年 national-championship PDF layout; the
+other 22 road PDFs on cycling.org.tw (2016–2026) parse to 0 rows. A crawler
+that "runs fine" can still be silently empty — check rows per input file.

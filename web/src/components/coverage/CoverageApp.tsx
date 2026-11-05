@@ -23,7 +23,7 @@ function Card({ title, hint, children }: { title: string; hint?: string; childre
 const GAP_LABEL: Record<string, string> = {
   NOT_INGESTED: "已辦、待收錄", HELD_UNCHECKED: "已辦、未找到成績", NOT_HELD: "尚未舉辦",
   BLOCKED: "來源讀不到", NO_RANKING: "無排名", FOUND: "已找到、待收錄",
-  EXCLUDED: "不收錄", OTHER_LEAGUE: "其他系列",
+  EXCLUDED: "不收錄", OTHER_LEAGUE: "其他系列", NO_EDITION: "今年未辦",
 };
 
 function gapYear(g: CoverageGap): number | null {

@@ -38,3 +38,21 @@ def test_build_records_maps_and_filters_placeholder():
     assert r["rank_overall"] is None and r["team"] is None
     assert r["name_masked"] == "林○清" and "name_raw" in r
     assert recs[1]["gender"] == "F"  # 陳美玲 from gender field
+
+
+def test_challenge_keeps_rank_and_race_name():
+    meta = {"category": "72KM挑戰組", "year": 2026, "date": "2026-02-01", "url": "u",
+            "race": "梅山36彎自行車挑戰賽", "region": "嘉義縣"}
+    rows = [{"name": "王小明", "number": "1801", "gender": "", "group": "男子組",
+             "gunTime": "02:21:08", "totalSort": "1"}]
+    r = fc.build_records(rows, meta, "d")[0]
+    assert r["source_platform"] == "focusline.com.tw"
+    assert r["race_key"] == "梅山36彎自行車挑戰賽" and r["year"] == 2026
+    assert r["rank_overall"] == 1 and r["region"] == "嘉義縣"
+    assert r["result_label"] == "72KM挑戰組"
+
+
+def test_skip_leisure_and_relay():
+    assert fc.SKIP_CATEGORY.search("50K 休閒組")
+    assert fc.SKIP_CATEGORY.search("團體接力組-東三塔550")
+    assert not fc.SKIP_CATEGORY.search("103K 挑戰組")

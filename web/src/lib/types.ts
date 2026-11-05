@@ -129,7 +129,7 @@ export interface TeamDetail extends TeamIndexEntry {
 
 export interface CoverageGap {
   race: string; calendar: string; guess_source: string;
-  /** discover.py triage: NOT_INGESTED / HELD_UNCHECKED / BLOCKED / NOT_HELD / NO_RANKING … */
+  /** discover.py triage: NOT_INGESTED / HELD_UNCHECKED / BLOCKED / NOT_HELD / NO_RANKING / NO_EDITION … */
   status?: string; date?: string; note?: string; stale?: boolean;
   /** entries from data/known_races.json carry the race-year and a lead link */
   year?: number | null; url?: string;

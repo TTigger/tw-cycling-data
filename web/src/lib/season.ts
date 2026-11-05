@@ -28,7 +28,7 @@ export interface Season {
 }
 
 // discover.py triage status -> board status. Statuses not listed here
-// (NO_RANKING, OTHER_LEAGUE, COLLECTED…) are not shown: either nothing to
+// (NO_RANKING, OTHER_LEAGUE, NO_EDITION, COLLECTED…) are not shown: either nothing to
 // collect, or already in the data under another name.
 const GAP_STATUS: Record<string, SeasonStatus> = {
   NOT_INGESTED: "wait", HELD_UNCHECKED: "wait", BLOCKED: "miss", NOT_HELD: "soon",

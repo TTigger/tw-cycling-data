@@ -37,6 +37,7 @@ PLATFORM_SHORT = {
     "sport-result.com": "sport-result",
     "e-better.com.tw": "e-better",
     "atsport.com.tw": "atsport",
+    "focusline.com.tw": "focusline",
 }
 
 
@@ -50,21 +51,24 @@ def replace_block(text: str, name: str, body: str) -> str:
 
 
 def render_sources_stats() -> str:
-    # Everything from master_summary.json — this block describes the master
-    # dataset (incl. DNF/DNS rows), not the public manifest counts.
+    # Everything from master_summary.json. Counts are finishers, the same
+    # number the site shows (manifest.json); DNF-style rows are noted apart.
     summary = json.loads(SUMMARY.read_text(encoding="utf-8"))
-    by_platform = summary["by_platform"]
+    by_platform = summary.get("finishers_by_platform") or summary["by_platform"]
+    total = summary.get("finishers", summary["total_records"])
+    extra = summary["total_records"] - total
     years = [int(y) for y in summary["by_year"]]
     parts = "・".join(
         f"{PLATFORM_SHORT.get(k, k)} {v:,}"
         for k, v in sorted(by_platform.items(), key=lambda kv: -kv[1])
     )
     return (
-        f"主資料集 master:**{summary['total_records']:,} 筆 / "
+        f"主資料集 master:**{total:,} 筆完賽 / "
         f"{min(years)}–{max(years)} / "
         f"{summary['distinct_races']} 場 / "
-        f"{len(by_platform)} 來源**(海外賽另計)。\n\n"
-        f"> 各來源現況筆數(master 內,跨源去重後):{parts}。\n"
+        f"{len(by_platform)} 來源**(海外賽另計"
+        + (f";另有 {extra:,} 筆未完賽紀錄,只用於完賽率" if extra else "") + ")。\n\n"
+        f"> 各來源完賽筆數(跨源去重後,與網站一致):{parts}。\n"
         f"> (本區塊由 `scrapers/gen_docs_stats.py` 生成,勿手改。)"
     )
 
