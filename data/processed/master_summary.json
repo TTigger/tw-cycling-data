@@ -1,5 +1,6 @@
 {
-  "total_records": 180106,
+  "total_records": 187749,
+  "finishers": 186615,
   "by_platform": {
     "atsport.com.tw": 7385,
     "bravelog.tw": 43423,
@@ -8,8 +9,23 @@
     "cycling.org.tw": 349,
     "tsu.com.tw": 24515,
     "e-better.com.tw": 4074,
+    "focusline.com.tw": 7644,
     "twbike.org": 15404,
-    "irunner.biji.co": 42442,
+    "irunner.biji.co": 42441,
+    "sport-result.com": 3539,
+    "taiwanbike.org": 18204
+  },
+  "finishers_by_platform": {
+    "atsport.com.tw": 7385,
+    "bravelog.tw": 43423,
+    "criterium.tw": 823,
+    "cyclist.org.tw": 18814,
+    "cycling.org.tw": 349,
+    "tsu.com.tw": 24515,
+    "e-better.com.tw": 4074,
+    "focusline.com.tw": 7644,
+    "twbike.org": 15404,
+    "irunner.biji.co": 42441,
     "sport-result.com": 3539,
     "taiwanbike.org": 18204
   },
@@ -27,20 +43,20 @@
     "2020": 2805,
     "2021": 1127,
     "2022": 22925,
-    "2023": 29945,
-    "2024": 45691,
-    "2025": 36961,
-    "2026": 23035
+    "2023": 32942,
+    "2024": 46159,
+    "2025": 39555,
+    "2026": 24619
   },
   "by_gender": {
-    "null": 59391,
-    "F": 17996,
-    "M": 102719
+    "null": 59451,
+    "F": 19263,
+    "M": 109035
   },
   "by_race_class": {
-    "未分類": 33063,
-    "挑戰": 64165,
-    "競賽": 11886,
+    "未分類": 33691,
+    "挑戰": 70323,
+    "競賽": 11964,
     "分齡": 35144,
     "女子": 935,
     "團體計時": 1213,
@@ -48,11 +64,11 @@
     "市民": 4990,
     "市民經典": 5848,
     "青少年": 2138,
-    "認證": 20392
+    "認證": 21171
   },
   "by_series": {
-    "null": 81231,
-    "TBA 長途認證": 20392,
+    "null": 88095,
+    "TBA 長途認證": 21171,
     "戀戀197": 12246,
     "96聯賽": 10797,
     "捷安特自行車嘉年華": 10505,
@@ -77,11 +93,11 @@
     "臺灣KOM太平洋經典賽": 78
   },
   "by_status": {
-    "null": 178149,
+    "null": 185792,
     "FIN": 823,
     "NF": 1134
   },
-  "distinct_races": 185,
+  "distinct_races": 191,
   "races": [
     {
       "race_key": "彰化經典百K",
@@ -94,7 +110,7 @@
         2025,
         2026
       ],
-      "rows": 25137
+      "rows": 25136
     },
     {
       "race_key": "戀戀197",
@@ -189,6 +205,16 @@
         2025
       ],
       "rows": 4133
+    },
+    {
+      "race_key": "蘭陽百K自行車挑戰賽",
+      "series": null,
+      "platform": "focusline.com.tw",
+      "years": [
+        2023,
+        2025
+      ],
+      "rows": 3009
     },
     {
       "race_key": "崇越盃武嶺挑戰賽",
@@ -376,6 +402,15 @@
       "rows": 1402
     },
     {
+      "race_key": "第五屆經典新玉門關公路自行車賽",
+      "series": null,
+      "platform": "focusline.com.tw",
+      "years": [
+        2023
+      ],
+      "rows": 1354
+    },
+    {
       "race_key": "NeverStop永不放棄挑戰巔峰－武嶺",
       "series": null,
       "platform": "tsu.com.tw",
@@ -530,6 +565,15 @@
       "rows": 970
     },
     {
+      "race_key": "梅山36彎自行車挑戰賽",
+      "series": null,
+      "platform": "focusline.com.tw",
+      "years": [
+        2026
+      ],
+      "rows": 956
+    },
+    {
       "race_key": "仙山單車挑戰賽一輪盃3",
       "series": "仙山單車挑戰賽",
       "platform": "bravelog.tw",
@@ -547,6 +591,16 @@
         2025
       ],
       "rows": 925
+    },
+    {
+      "race_key": "西螺媽祖太平媽祈福自行車挑戰賽",
+      "series": null,
+      "platform": "focusline.com.tw",
+      "years": [
+        2024,
+        2025
+      ],
+      "rows": 918
     },
     {
       "race_key": "臺灣自行車登山王挑戰",
@@ -645,6 +699,15 @@
       "rows": 796
     },
     {
+      "race_key": "全球百鐵認證高雄百K自行車挑戰賽",
+      "series": "TBA 長途認證",
+      "platform": "focusline.com.tw",
+      "years": [
+        2025
+      ],
+      "rows": 779
+    },
+    {
       "race_key": "TIS桃園台南280KM雙城挑戰賽",
       "series": "TIS崇越盃系列",
       "platform": "e-better.com.tw",
@@ -688,6 +751,15 @@
         2023
       ],
       "rows": 664
+    },
+    {
+      "race_key": "櫻花勇士探索北橫騎行羅馬",
+      "series": null,
+      "platform": "focusline.com.tw",
+      "years": [
+        2026
+      ],
+      "rows": 628
     },
     {
       "race_key": "08272023環大苗栗107K挑戰成績2023",
