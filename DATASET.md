@@ -1,6 +1,6 @@
 # tw-cycling-data 開放資料集
 
-台灣公路自行車賽事成績的**去識別化**逐筆資料集:8 個來源正規化彙整,147,609 筆、2009–2026。供研究與分析使用。
+台灣公路自行車賽事成績的**去識別化**逐筆資料集:12 個來源正規化彙整,210,691 筆(其中完賽 208,441 筆)、2009–2026。供研究與分析使用。
 
 - **授權**:[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。使用請標註來源 `tw-cycling-data`(https://github.com/TTigger/tw-cycling-data)。
 - **下載**:見本專案 [GitHub Releases](https://github.com/TTigger/tw-cycling-data/releases)(`tw-cycling-results.csv.gz` / `.json.gz` + `datapackage.json`)。

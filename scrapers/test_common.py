@@ -12,7 +12,7 @@ def test_make_record_defaults_status_and_laps_to_none():
 
 def test_make_record_carries_status_and_laps():
     r = common.make_record(race_name_raw="苗栗繞圈賽（第七屆）", year=2026,
-                           name_raw="洪稟詠", status="DNF", laps=25)
+                           name_raw="洪甲詠", status="DNF", laps=25)
     assert r["status"] == "DNF"
     assert r["laps"] == 25
     assert r["finish_seconds"] is None  # DNF has no time
@@ -38,7 +38,7 @@ def test_mask_name_romanized_every_token_initialed():
     assert common.mask_name("Alex") == "A○"
     # surname-first / comma forms must NOT leak the given name:
     assert common.mask_name("OBoyle, Paul") == "O○ P○"
-    assert common.mask_name("Wong Ho Yin") == "W○ H○ Y○"
+    assert common.mask_name("Wai Hon Yat") == "W○ H○ Y○"
     assert common.mask_name("Santen, Paul NED") == "S○ P○ N○"
     assert common.mask_name("[JP] Brocket") == "J○ B○"   # first alpha of bracket token
 
@@ -46,7 +46,7 @@ def test_mask_name_romanized_every_token_initialed():
 def test_mask_name_no_kept_full_token():
     # order-agnostic property: every space-separated token of a latin masked name
     # is exactly one letter + ○ (no full given/surname token survives)
-    for raw in ("Alex Dupont", "OBoyle, Paul", "Wong Ho Yin", "Kim, Chul Min"):
+    for raw in ("Alex Dupont", "OBoyle, Paul", "Wai Hon Yat", "Kim, Chul Min"):
         out = common.mask_name(raw)
         for tok in out.split():
             assert len(tok) == 2 and tok[1] == "○", (raw, out, tok)

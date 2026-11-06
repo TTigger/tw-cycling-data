@@ -45,11 +45,11 @@ import focusline_crawl as fc
 META = {"category": "雙塔", "year": 2025, "date": "2025-11-14",
         "url": "https://score.focusline.com.tw/api/Member/focusline?code=51114JR&categoryName=100102"}
 ROWS = [
-    {"name": "林玉清", "number": "H75532", "gender": "", "category": "雙塔",
+    {"name": "林甲清", "number": "H75532", "gender": "", "category": "雙塔",
      "group": "M50", "gunTime": "17:39:10", "totalSort": "1"},
-    {"name": "陳美玲", "number": "W1234", "gender": "女", "category": "雙塔",
+    {"name": "陳甲玲", "number": "W1234", "gender": "女", "category": "雙塔",
      "group": "W40", "gunTime": "20:05:00", "totalSort": "5"},
-    {"name": "張弘瑜", "number": "D42012", "gender": "", "category": "雙塔",
+    {"name": "張甲瑜", "number": "D42012", "gender": "", "category": "雙塔",
      "group": "M30", "gunTime": "00:00:07", "totalSort": "291"},  # placeholder -> dropped
 ]
 
@@ -76,7 +76,7 @@ def test_build_records_maps_and_filters_placeholder():
     assert r["finish_seconds"] == 17 * 3600 + 39 * 60 + 10
     assert r["rank_overall"] is None and r["team"] is None
     assert r["name_masked"] == "林○清" and "name_raw" in r
-    assert recs[1]["gender"] == "F"  # 陳美玲 from gender field
+    assert recs[1]["gender"] == "F"  # 陳甲玲 from gender field
 ```
 
 - [ ] **Step 2: Run test to verify it fails**
@@ -190,7 +190,7 @@ if __name__ == "__main__":
 - [ ] **Step 4: Run test to verify it passes**
 
 Run: `python -m pytest scrapers/test_focusline_crawl.py -v`
-Expected: PASS (2 passed). (`林玉清` masks to `林○清`.)
+Expected: PASS (2 passed). (`林甲清` masks to `林○清`.)
 
 - [ ] **Step 5: Commit**
 
@@ -233,7 +233,7 @@ LISTING = (
 
 # 雙塔520 (duplicate 組別 header: event-name col + age-group col)
 H1 = ["參加編號", "姓名", "隊名", "組別", "性別", "組別", "起點時間", "終點時間", "成績"]
-R1 = ["6000", "蔡正一", "騎就對了", "2025TBA雙塔520自行車認證", "男", "M25",
+R1 = ["6000", "蔡甲一", "騎就對了", "2025TBA雙塔520自行車認證", "男", "M25",
       "2025-11-08 00:01:25", "2025-11-08 22:05:15", "22:03:49"]
 
 # 環大苗栗 (has 名次 + chip time; different schema)
@@ -253,7 +253,7 @@ def test_extract_sheet_links_filters_to_2022plus_sheets():
 def test_map_row_dual_group_picks_age_code_and_chip_time():
     m = tp.map_row(H1, R1)
     assert m["bib"] == "6000"
-    assert m["name"] == "蔡正一"
+    assert m["name"] == "蔡甲一"
     assert m["team"] == "騎就對了"
     assert m["category"] == "M25"        # the age-group code, not the event name
     assert m["gender"] == "M"
@@ -390,7 +390,7 @@ import taiwanbike_crawl as tc
 def test_records_from_sheet_maps_and_masks():
     tabs = {"雙塔520選手總表": [
         ["參加編號", "姓名", "隊名", "組別", "性別", "組別", "成績"],
-        ["6000", "蔡正一", "騎就對了", "2025TBA雙塔520", "男", "M25", "22:03:49"],
+        ["6000", "蔡甲一", "騎就對了", "2025TBA雙塔520", "男", "M25", "22:03:49"],
         ["7", "李四", "", "x", "男", "M30", ""],          # no time -> dropped
         ["8", "陳一", "隊B", "y", "男", "M40", "00:00:30"],  # placeholder <1h -> dropped
     ]}
@@ -520,7 +520,7 @@ if __name__ == "__main__":
 - [ ] **Step 4: Run test to verify it passes**
 
 Run: `python -m pytest scrapers/test_taiwanbike_parse.py -v`
-Expected: PASS (5 passed). (`蔡正一` masks to `蔡○一`.)
+Expected: PASS (5 passed). (`蔡甲一` masks to `蔡○一`.)
 
 - [ ] **Step 5: Commit**
 
