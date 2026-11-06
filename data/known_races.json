@@ -16,11 +16,11 @@
    "date": "2026-10-18",
    "region": "苗栗縣",
    "status": "HELD_UNCHECKED",
-   "note": "2026-10-18 已辦(96sporter 報名頁)。計時為 Dynamic Intelligences,成績會出現在 sport-result.com;2026-11-05 查 sport-result.com 與 96sporter.com 都還沒公布",
+   "note": "2026-10-18 已辦(96sporter 報名頁)。計時為 Dynamic Intelligences,成績會出現在 sport-result.com;2026-11-06 再查 sport-result.com 仍未公布,96sporter.com 只有積分排名(無完賽時間)",
    "links": [
     "https://www.96sporter.com/event_detail127.htm"
    ],
-   "checked": "2026-11-05"
+   "checked": "2026-11-06"
   },
   {
    "race": "96聯賽台東站 全國自由車公路錦標選拔賽",
@@ -56,7 +56,7 @@
    "date": "2026-11-01",
    "region": "臺東縣",
    "status": "HELD_UNCHECKED",
-   "note": "2026-11-01 已辦。2025 年由 Dynamic Intelligences 計時(Bravelog 標示),今年成績應會出現在 sport-result.com;2026-11-05 尚未公布",
+   "note": "2026-11-01 已辦。2025 年由 Dynamic Intelligences 計時(Bravelog 標示),今年成績應會出現在 sport-result.com;2026-11-06 仍未公布",
    "last_seen": {
     "year": 2025,
     "date": "2025-11-23",
@@ -64,7 +64,7 @@
     "url": null
    },
    "links": [],
-   "checked": "2026-11-05"
+   "checked": "2026-11-06"
   },
   {
    "race": "115年全國自由車公路錦標賽暨選拔賽",
@@ -232,7 +232,7 @@
    "date": null,
    "region": "臺中市",
    "status": "BLOCKED",
-   "note": "成績在 events.criterium.tw,該站 2026-11-05 仍回 Cloudflare 525(主站 criterium.tw 已恢復,但只是購物頁)。恢復後重跑 criterium 爬蟲",
+   "note": "成績在 events.criterium.tw,該站 2026-11-06 仍回 Cloudflare 525(主站 criterium.tw 已恢復,但只是購物頁)。恢復後重跑 criterium 爬蟲",
    "last_seen": {
     "year": 2025,
     "date": "2025-04-20",
@@ -242,7 +242,7 @@
    "links": [
     "https://criterium.tw/"
    ],
-   "checked": "2026-11-05"
+   "checked": "2026-11-06"
   },
   {
    "race": "TCU三發國王盃中寮KOM單車挑戰賽",
@@ -250,7 +250,7 @@
    "date": null,
    "region": "南投縣",
    "status": "BLOCKED",
-   "note": "TCU 2026 年的賽事成績改放 events.criterium.tw(例:苗栗縣長盃 6/28 在那裡,tsu.com.tw 只剩賽事頁沒有成績)。該站 2026-11-05 仍連不上(Cloudflare 525),推測這場也在那裡;恢復後重查",
+   "note": "TCU 2026 年的賽事成績改放 events.criterium.tw(例:苗栗縣長盃 6/28 在那裡,tsu.com.tw 只剩賽事頁沒有成績)。該站 2026-11-06 仍連不上(Cloudflare 525),推測這場也在那裡;恢復後重查",
    "last_seen": {
     "year": 2025,
     "date": "2025-01-01",
@@ -258,7 +258,7 @@
     "url": null
    },
    "links": [],
-   "checked": "2026-11-05"
+   "checked": "2026-11-06"
   },
   {
    "race": "春季TCU台中城市繞圈賽",
@@ -266,7 +266,7 @@
    "date": null,
    "region": "臺中市",
    "status": "BLOCKED",
-   "note": "TCU 2026 年的賽事成績改放 events.criterium.tw(例:苗栗縣長盃 6/28 在那裡,tsu.com.tw 只剩賽事頁沒有成績)。該站 2026-11-05 仍連不上(Cloudflare 525),推測這場也在那裡;恢復後重查",
+   "note": "TCU 2026 年的賽事成績改放 events.criterium.tw(例:苗栗縣長盃 6/28 在那裡,tsu.com.tw 只剩賽事頁沒有成績)。該站 2026-11-06 仍連不上(Cloudflare 525),推測這場也在那裡;恢復後重查",
    "last_seen": {
     "year": 2025,
     "date": "2025-04-20",
@@ -274,7 +274,7 @@
     "url": null
    },
    "links": [],
-   "checked": "2026-11-05"
+   "checked": "2026-11-06"
   },
   {
    "race": "Ciao! Wilier 2000 x Thermaltake Bicycle",
@@ -511,340 +511,16 @@
    "checked": "2026-11-03"
   },
   {
-   "race": "全國俱樂部聯賽 第2站 台南四草公路繞圈賽",
-   "year": 2015,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "騎士協會網站上有成績 PDF,但分類列表沒有連到這頁。年份由 PDF 上傳日期推估,需先確認年份、且不和已收的同年同賽重複,再加進 cyclist_crawl.py 的 DELISTED_EVENTS",
-   "links": [
-    "https://www.cyclist.org.tw/results_txt.asp?pno=13"
-   ],
-   "checked": "2026-11-03"
-  },
-  {
-   "race": "全國俱樂部聯賽 第5站 彰濱工業區公路繞圈賽",
-   "year": null,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "騎士協會網站上有成績 PDF,但分類列表沒有連到這頁。年份由 PDF 上傳日期推估,需先確認年份、且不和已收的同年同賽重複,再加進 cyclist_crawl.py 的 DELISTED_EVENTS",
-   "links": [
-    "https://www.cyclist.org.tw/results_txt.asp?pno=23"
-   ],
-   "checked": "2026-11-03"
-  },
-  {
-   "race": "全國俱樂部聯賽 第6站 阿里山自行車賽",
-   "year": null,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "騎士協會網站上有成績 PDF,但分類列表沒有連到這頁。年份由 PDF 上傳日期推估,需先確認年份、且不和已收的同年同賽重複,再加進 cyclist_crawl.py 的 DELISTED_EVENTS",
-   "links": [
-    "https://www.cyclist.org.tw/results_txt.asp?pno=24"
-   ],
-   "checked": "2026-11-03"
-  },
-  {
-   "race": "全國俱樂部聯賽 第7站 玉山塔塔加自行車賽",
-   "year": null,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "騎士協會網站上有成績 PDF,但分類列表沒有連到這頁。年份由 PDF 上傳日期推估,需先確認年份、且不和已收的同年同賽重複,再加進 cyclist_crawl.py 的 DELISTED_EVENTS",
-   "links": [
-    "https://www.cyclist.org.tw/results_txt.asp?pno=25"
-   ],
-   "checked": "2026-11-03"
-  },
-  {
-   "race": "全國俱樂部聯賽 第8站 彰濱工業區公路繞圈賽",
-   "year": null,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "騎士協會網站上有成績 PDF,但分類列表沒有連到這頁。年份由 PDF 上傳日期推估,需先確認年份、且不和已收的同年同賽重複,再加進 cyclist_crawl.py 的 DELISTED_EVENTS",
-   "links": [
-    "https://www.cyclist.org.tw/results_txt.asp?pno=41"
-   ],
-   "checked": "2026-11-03"
-  },
-  {
-   "race": "全國俱樂部聯賽 第3站 環東台灣自行車賽",
-   "year": null,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "騎士協會網站上有成績 PDF,但分類列表沒有連到這頁。年份由 PDF 上傳日期推估,需先確認年份、且不和已收的同年同賽重複,再加進 cyclist_crawl.py 的 DELISTED_EVENTS",
-   "links": [
-    "https://www.cyclist.org.tw/results_txt.asp?pno=43"
-   ],
-   "checked": "2026-11-03"
-  },
-  {
-   "race": "春季臺灣KOM登山王之路",
-   "year": 2017,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "騎士協會網站上有成績 PDF,但分類列表沒有連到這頁。年份由 PDF 上傳日期推估,需先確認年份、且不和已收的同年同賽重複,再加進 cyclist_crawl.py 的 DELISTED_EVENTS",
-   "links": [
-    "https://www.cyclist.org.tw/results_txt.asp?pno=57"
-   ],
-   "checked": "2026-11-03"
-  },
-  {
    "race": "夏季臺灣KOM登山王之路",
    "year": 2017,
-   "date": null,
+   "date": "2017-07-08",
    "region": null,
-   "status": "FOUND",
-   "note": "騎士協會網站上有成績 PDF,但分類列表沒有連到這頁。年份由 PDF 上傳日期推估,需先確認年份、且不和已收的同年同賽重複,再加進 cyclist_crawl.py 的 DELISTED_EVENTS",
+   "status": "BLOCKED",
+   "note": "成績頁還在,但兩份成績 PDF 都已從騎士協會網站移除(404),其他平台也沒有這場的成績。2026-11-06 確認",
    "links": [
     "https://www.cyclist.org.tw/results_txt.asp?pno=61"
    ],
-   "checked": "2026-11-03"
-  },
-  {
-   "race": "臺灣自行車登山王挑戰",
-   "year": 2017,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "騎士協會網站上有成績 PDF,但分類列表沒有連到這頁。年份由 PDF 上傳日期推估,需先確認年份、且不和已收的同年同賽重複,再加進 cyclist_crawl.py 的 DELISTED_EVENTS",
-   "links": [
-    "https://www.cyclist.org.tw/results_txt.asp?pno=73"
-   ],
-   "checked": "2026-11-03"
-  },
-  {
-   "race": "臺灣自行車登山王挑戰",
-   "year": 2017,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "騎士協會網站上有成績 PDF,但分類列表沒有連到這頁。年份由 PDF 上傳日期推估,需先確認年份、且不和已收的同年同賽重複,再加進 cyclist_crawl.py 的 DELISTED_EVENTS",
-   "links": [
-    "https://www.cyclist.org.tw/results_txt.asp?pno=74"
-   ],
-   "checked": "2026-11-03"
-  },
-  {
-   "race": "扶輪盃北海櫻木花道",
-   "year": 2018,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "騎士協會網站上有成績 PDF,但分類列表沒有連到這頁。年份由 PDF 上傳日期推估,需先確認年份、且不和已收的同年同賽重複,再加進 cyclist_crawl.py 的 DELISTED_EVENTS",
-   "links": [
-    "https://www.cyclist.org.tw/results_txt.asp?pno=75"
-   ],
-   "checked": "2026-11-03"
-  },
-  {
-   "race": "環花東365超級挑戰",
-   "year": 2018,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "騎士協會網站上有成績 PDF,但分類列表沒有連到這頁。年份由 PDF 上傳日期推估,需先確認年份、且不和已收的同年同賽重複,再加進 cyclist_crawl.py 的 DELISTED_EVENTS",
-   "links": [
-    "https://www.cyclist.org.tw/results_txt.asp?pno=76"
-   ],
-   "checked": "2026-11-03"
-  },
-  {
-   "race": "環海岸山脈挑戰",
-   "year": 2018,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "騎士協會網站上有成績 PDF,但分類列表沒有連到這頁。年份由 PDF 上傳日期推估,需先確認年份、且不和已收的同年同賽重複,再加進 cyclist_crawl.py 的 DELISTED_EVENTS",
-   "links": [
-    "https://www.cyclist.org.tw/results_txt.asp?pno=77"
-   ],
-   "checked": "2026-11-03"
-  },
-  {
-   "race": "詩情畫意羅馬公路挑戰",
-   "year": 2018,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "騎士協會網站上有成績 PDF,但分類列表沒有連到這頁。年份由 PDF 上傳日期推估,需先確認年份、且不和已收的同年同賽重複,再加進 cyclist_crawl.py 的 DELISTED_EVENTS",
-   "links": [
-    "https://www.cyclist.org.tw/results_txt.asp?pno=78"
-   ],
-   "checked": "2026-11-03"
-  },
-  {
-   "race": "春季臺灣KOM登山王之路",
-   "year": 2018,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "騎士協會網站上有成績 PDF,但分類列表沒有連到這頁。年份由 PDF 上傳日期推估,需先確認年份、且不和已收的同年同賽重複,再加進 cyclist_crawl.py 的 DELISTED_EVENTS",
-   "links": [
-    "https://www.cyclist.org.tw/results_txt.asp?pno=79"
-   ],
-   "checked": "2026-11-03"
-  },
-  {
-   "race": "夏季臺灣KOM登山王之路",
-   "year": 2018,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "騎士協會網站上有成績 PDF,但分類列表沒有連到這頁。年份由 PDF 上傳日期推估,需先確認年份、且不和已收的同年同賽重複,再加進 cyclist_crawl.py 的 DELISTED_EVENTS",
-   "links": [
-    "https://www.cyclist.org.tw/results_txt.asp?pno=80"
-   ],
-   "checked": "2026-11-03"
-  },
-  {
-   "race": "臺灣自行車登山王挑戰",
-   "year": 2018,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "騎士協會網站上有成績 PDF,但分類列表沒有連到這頁。年份由 PDF 上傳日期推估,需先確認年份、且不和已收的同年同賽重複,再加進 cyclist_crawl.py 的 DELISTED_EVENTS",
-   "links": [
-    "https://www.cyclist.org.tw/results_txt.asp?pno=82"
-   ],
-   "checked": "2026-11-03"
-  },
-  {
-   "race": "陽明山自行車登山王挑戰",
-   "year": 2018,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "騎士協會網站上有成績 PDF,但分類列表沒有連到這頁。年份由 PDF 上傳日期推估,需先確認年份、且不和已收的同年同賽重複,再加進 cyclist_crawl.py 的 DELISTED_EVENTS",
-   "links": [
-    "https://www.cyclist.org.tw/results_txt.asp?pno=83"
-   ],
-   "checked": "2026-11-03"
-  },
-  {
-   "race": "日月潭Come!Bikeday 潭南部落挑戰 & 環潭挑戰遊",
-   "year": 2018,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "騎士協會網站上有成績 PDF,但分類列表沒有連到這頁。年份由 PDF 上傳日期推估,需先確認年份、且不和已收的同年同賽重複,再加進 cyclist_crawl.py 的 DELISTED_EVENTS",
-   "links": [
-    "https://www.cyclist.org.tw/results_txt.asp?pno=87"
-   ],
-   "checked": "2026-11-03"
-  },
-  {
-   "race": "扶輪盃北海櫻木花道",
-   "year": 2019,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "騎士協會網站上有成績 PDF,但分類列表沒有連到這頁。年份由 PDF 上傳日期推估,需先確認年份、且不和已收的同年同賽重複,再加進 cyclist_crawl.py 的 DELISTED_EVENTS",
-   "links": [
-    "https://www.cyclist.org.tw/results_txt.asp?pno=88"
-   ],
-   "checked": "2026-11-03"
-  },
-  {
-   "race": "康健人壽環花東365挑戰系列",
-   "year": 2019,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "騎士協會網站上有成績 PDF,但分類列表沒有連到這頁。年份由 PDF 上傳日期推估,需先確認年份、且不和已收的同年同賽重複,再加進 cyclist_crawl.py 的 DELISTED_EVENTS",
-   "links": [
-    "https://www.cyclist.org.tw/results_txt.asp?pno=89"
-   ],
-   "checked": "2026-11-03"
-  },
-  {
-   "race": "環海岸山脈挑戰",
-   "year": 2019,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "騎士協會網站上有成績 PDF,但分類列表沒有連到這頁。年份由 PDF 上傳日期推估,需先確認年份、且不和已收的同年同賽重複,再加進 cyclist_crawl.py 的 DELISTED_EVENTS",
-   "links": [
-    "https://www.cyclist.org.tw/results_txt.asp?pno=90"
-   ],
-   "checked": "2026-11-03"
-  },
-  {
-   "race": "臺灣KOM登山王之路-夏季",
-   "year": 2019,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "騎士協會網站上有成績 PDF,但分類列表沒有連到這頁。年份由 PDF 上傳日期推估,需先確認年份、且不和已收的同年同賽重複,再加進 cyclist_crawl.py 的 DELISTED_EVENTS",
-   "links": [
-    "https://www.cyclist.org.tw/results_txt.asp?pno=91"
-   ],
-   "checked": "2026-11-03"
-  },
-  {
-   "race": "詩情畫意羅馬公路挑戰",
-   "year": 2019,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "騎士協會網站上有成績 PDF,但分類列表沒有連到這頁。年份由 PDF 上傳日期推估,需先確認年份、且不和已收的同年同賽重複,再加進 cyclist_crawl.py 的 DELISTED_EVENTS",
-   "links": [
-    "https://www.cyclist.org.tw/results_txt.asp?pno=92"
-   ],
-   "checked": "2026-11-03"
-  },
-  {
-   "race": "臺灣自行車登山王挑戰",
-   "year": 2019,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "騎士協會網站上有成績 PDF,但分類列表沒有連到這頁。年份由 PDF 上傳日期推估,需先確認年份、且不和已收的同年同賽重複,再加進 cyclist_crawl.py 的 DELISTED_EVENTS",
-   "links": [
-    "https://www.cyclist.org.tw/results_txt.asp?pno=96"
-   ],
-   "checked": "2026-11-03"
-  },
-  {
-   "race": "日月潭Come!Bikeday 塔塔加阿里山 & 環潭",
-   "year": 2020,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "騎士協會網站上有成績 PDF,但分類列表沒有連到這頁。年份由 PDF 上傳日期推估,需先確認年份、且不和已收的同年同賽重複,再加進 cyclist_crawl.py 的 DELISTED_EVENTS",
-   "links": [
-    "https://www.cyclist.org.tw/results_txt.asp?pno=104"
-   ],
-   "checked": "2026-11-03"
-  },
-  {
-   "race": "環花東20感恩年 環花東自行車賽&挑戰",
-   "year": 2020,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "騎士協會網站上有成績 PDF,但分類列表沒有連到這頁。年份由 PDF 上傳日期推估,需先確認年份、且不和已收的同年同賽重複,再加進 cyclist_crawl.py 的 DELISTED_EVENTS",
-   "links": [
-    "https://www.cyclist.org.tw/results_txt.asp?pno=105"
-   ],
-   "checked": "2026-11-03"
-  },
-  {
-   "race": "日月潭Come!Bikeday 塔塔加阿里山挑戰",
-   "year": 2021,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "成績 PDF 已找到,但版面和其他 PDF 不同,現有解析器讀不出資料",
-   "links": [
-    "https://www.cyclist.org.tw/results_txt.asp?pno=108"
-   ],
-   "checked": "2026-11-03"
+   "checked": "2026-11-06"
   },
   {
    "race": "2012 輪轉花東單車嘉年華",
