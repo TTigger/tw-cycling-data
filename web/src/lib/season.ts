@@ -34,6 +34,16 @@ const GAP_STATUS: Record<string, SeasonStatus> = {
   NOT_INGESTED: "wait", HELD_UNCHECKED: "wait", BLOCKED: "miss", NOT_HELD: "soon",
 };
 
+// Statuses that are not missing results: not held yet, no ranking published,
+// no edition this year, or excluded on purpose. The coverage page lists them
+// apart and leaves them out of the "missing" count.
+const NOT_A_GAP = new Set(["NOT_HELD", "NO_RANKING", "NO_EDITION", "EXCLUDED", "OTHER_LEAGUE", "COLLECTED"]);
+
+/** True when a coverage gap is a race whose results we are actually missing. */
+export function isRealGap(g: { status?: string | null }): boolean {
+  return !NOT_A_GAP.has(g.status ?? "");
+}
+
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
 
 /** Years that have ingested races, newest first. */

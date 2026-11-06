@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { buildSeason, seasonYears, shortDate } from "./season";
+import { buildSeason, isRealGap, seasonYears, shortDate } from "./season";
 import type { RaceIndex, CoverageGap } from "./types";
 
 const race = (rk: string, y: number, d: string | null, rows = 100): RaceIndex => ({
@@ -55,5 +55,15 @@ describe("seasonYears / shortDate", () => {
   it("formats MM/DD", () => {
     expect(shortDate("2026-09-07")).toBe("09/07");
     expect(shortDate(null)).toBe("—");
+  });
+});
+
+describe("isRealGap", () => {
+  it("counts only races whose results are missing", () => {
+    expect(isRealGap({ status: "NOT_INGESTED" })).toBe(true);
+    expect(isRealGap({ status: "BLOCKED" })).toBe(true);
+    expect(isRealGap({ status: undefined })).toBe(true);
+    expect(isRealGap({ status: "NO_RANKING" })).toBe(false);
+    expect(isRealGap({ status: "NOT_HELD" })).toBe(false);
   });
 });

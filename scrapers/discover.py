@@ -132,6 +132,9 @@ def parse_ensage(html_doc):
             continue
         if not re.search(r"賽|挑戰|盃|車|KOM|繞圈|武嶺|環|登山|騎|P字|塔|gravel|Gravel", name):
             continue
+        # links and article titles mixed into the table ("TWB https://…", "輪霸西濱 五大重點 降低雨天騎乘風險")
+        if re.search(r"https?://|www\.|重點|風險|注意事項|攻略|懶人包|提醒", name):
+            continue
         name = re.sub(r"【[^】]*】|&\w+;|^\W+", "", name).strip()
         if len(name) >= 4:
             out.append(name[:48])
@@ -208,9 +211,9 @@ KNOWN_TRIAGE = [
     # calendar mis-tag: these are 96聯賽 (96sporter.com), not 騎士協會. Since 2026 the
     # 96 league posts results only as PDF (scrapers/sporter96_pdf.py worklist).
     ("北進武嶺", "COLLECTED", "= 96聯賽武嶺站(96sporter PDF, 2026 已收 294 筆)"),
-    ("仙山", "NOT_INGESTED", "96聯賽 苗栗站,2026-10-18 已辦;成績尚未公布(2026-11-05 查 sport-result.com 與 96sporter.com 都還沒有)。計時為 Dynamic Intelligences,出現在 sport-result 後重跑 sport-result 爬蟲"),
+    ("仙山", "NOT_INGESTED", "96聯賽 苗栗站,2026-10-18 已辦;成績尚未公布(2026-11-06 查 sport-result.com 還沒有;96sporter.com 只有積分排名,沒有完賽時間)。計時為 Dynamic Intelligences,出現在 sport-result 後重跑 sport-result 爬蟲"),
     ("96聯賽台東站", "NOT_HELD", "96聯賽 台東站:行事曆寫 10/31,但 96sporter.com 官網為 2026-12-19(報名至 11/9);辦完查 sport-result.com"),
-    ("揪你123", "NOT_INGESTED", "2026-11-01 已辦;往年由 Dynamic Intelligences 計時,成績應會出現在 sport-result.com(2026-11-05 尚未公布)"),
+    ("揪你123", "NOT_INGESTED", "2026-11-01 已辦;往年由 Dynamic Intelligences 計時,成績應會出現在 sport-result.com(2026-11-06 尚未公布)"),
     # HELD_UNCHECKED — date has passed; check whether a per-rider ranking was published
     ("無眠征途", "HELD_UNCHECKED", "2026-07-18 已辦;瘋系列限時挑戰,恐無總排,待查驗"),
     ("小台灣縮時環島", "HELD_UNCHECKED", "2026-09-26 已辦;瘋系列 300K 限時挑戰,恐無總排,待查驗"),
@@ -222,11 +225,12 @@ KNOWN_TRIAGE = [
     ("環騎5COOL", "NOT_HELD", "2026-11-07 未辦;新出現於 RACE ON,辦完查驗"),
     ("鯉魚潭山光水色", "NOT_HELD", "2026-12-12 未辦;限時挑戰(菁英5h/挑戰7h),辦完查驗"),
     ("超級騎士挑戰", "NOT_HELD", "2027-01-01~02 未辦;瘋系列,恐無總排"),
-    # --- ranked per-rider results EXIST but on a platform we don't scrape yet ---
-    #     (verified 2026-06-29; future-source lead: add twbike.org/focusline parsing)
+    # --- TWB / TBA (re-checked 2026-11-06) ---
     #     NOTE: "TWB" must stay above the 瘋系列 "東三塔" NO_RANKING rule below.
-    ("TWB", "BLOCKED", "台灣自行車協會 雙塔/三塔/北高360/騎福:成績在 twbike.org PDF + score.focusline(非可爬平台)"),
-    ("輪霸西濱", "BLOCKED", "TBA 中華民國自行車協會 西濱挑戰:成績為 taiwanbike.org Google Sheets(非可爬平台)"),
+    #     TWB 雙塔/三塔/北高 are collected via score.focusline (focusline_crawl).
+    ("彰化騎福", "HELD_UNCHECKED", "TWB 台灣自行車協會 彰化騎福:行事曆沒寫日期;twbike.org、score.focusline 和網路搜尋都查不到成績(2026-11-06)"),
+    ("TWB", "HELD_UNCHECKED", "TWB 台灣自行車協會:雙塔/三塔/北高 已從 score.focusline 收錄;這場在 focusline 上沒有成績(2026-11-06 查)"),
+    ("輪霸西濱", "BLOCKED", "TBA 輪霸西濱:2026 成績只在 bao-ming.com(有機器人驗證,不繞過);2012–2015 舊成績是 taiwanbike.org 上的 xls / OneDrive 連結"),
     # --- 瘋系列 challenge: organizer states 無總排, timing on ATSport (blocked) ---
     ("中雙塔", "NO_RANKING", "瘋系列:無總排 + ATSport(封鎖)"),
     ("東三塔", "NO_RANKING", "瘋系列東三塔/東雙塔:無總排 + ATSport(封鎖)"),
