@@ -14,7 +14,8 @@ def names(plan):
 def test_order_invariants():
     n = names(build_plan())
     assert n.index("merge") < n.index("validate") < n.index("build:viz")
-    assert n[-1] == "backup" and n[-2] == "docs-gen"
+    assert n[-1] == "backup" and n[-2] == "check-names" and n[-3] == "docs-gen"
+    assert n.index("validate") < n.index("names") < n.index("build:viz")
     assert n.index("build:manifest") == n.index("docs-gen") - 1  # manifest last builder
 
 
