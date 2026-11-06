@@ -83,3 +83,15 @@ def test_curated_triage_corrects_calendar_and_aliases():
     # ensage's English name for L'Étape is already collected under our name
     assert d.triage("L'Étape Sun Moon Lake 單車旅遊環法賽：台灣南投日月潭")[0] == "COLLECTED"
     assert d.triage("96聯賽苗栗站 仙山自行車登山賽")[0] == "NOT_INGESTED"
+
+
+def test_ensage_drops_links_and_article_titles():
+    html_doc = ("<tr><td>4/12</td><td>TWB台灣自行車協會 https://www.twbike.org/register</td></tr>"
+                "<tr><td>4/12</td><td>輪霸西濱 五大重點 降低雨天騎乘風險</td></tr>"
+                "<tr><td>4/12</td><td>TBA中華民國自行車協會 輪霸西濱挑戰</td></tr>")
+    assert d.parse_ensage(html_doc) == ["TBA中華民國自行車協會 輪霸西濱挑戰"]
+
+
+def test_twb_triage_specific_rule_wins():
+    assert d.triage("TWB台灣自行車協會 彰化騎福")[0] == "HELD_UNCHECKED"
+    assert d.triage("TBA中華民國自行車協會 輪霸西濱挑戰")[0] == "BLOCKED"
