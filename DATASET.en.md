@@ -1,6 +1,6 @@
 # tw-cycling-data Open Dataset
 
-A **de-identified**, row-level dataset of Taiwan road-cycling race results: 8 sources normalized into one file — 147,609 rows, 2009–2026. For research and analysis.
+A **de-identified**, row-level dataset of Taiwan road-cycling race results: 12 sources normalized into one file — 210,691 rows (208,441 finishers), 2009–2026. For research and analysis.
 
 - **License**: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Please attribute `tw-cycling-data` (https://github.com/TTigger/tw-cycling-data).
 - **Download**: see [GitHub Releases](https://github.com/TTigger/tw-cycling-data/releases) (`tw-cycling-results.csv.gz` / `.json.gz` + `datapackage.json`).

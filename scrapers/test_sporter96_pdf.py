@@ -14,9 +14,9 @@ def page(*body, category="男⼦ M30"):
 
 def test_rows_status_and_category_normalised():
     cat, rows = s.parse_stage_lines(page(
-        (616.2, [(58.8, "1"), (109.0, "32"), (162.5, "何硯宜"), (220.0, "Equipo Kern Pharma"),
+        (616.2, [(58.8, "1"), (109.0, "32"), (162.5, "何甲宜"), (220.0, "Equipo Kern Pharma"),
                  (366.6, "02:24:54"), (428.6, "+00:00"), (496.3, "65")]),
-        (600.0, [(50.1, "DNS"), (109.0, "27"), (162.5, "洪坤弘"), (220.0, "個⼈"), (496.3, "0")]),
+        (600.0, [(50.1, "DNS"), (109.0, "27"), (162.5, "洪甲弘"), (220.0, "個⼈"), (496.3, "0")]),
         (580.0, [(50.1, "Participants")]),
         (560.0, [(50.1, "DNF 退賽 4 OTL 超時 0")])))
     assert cat == "男子 M30"                     # NFKC folds the ⼦ radical
@@ -33,12 +33,12 @@ def test_rows_status_and_category_normalised():
 def test_wrapped_name_above_and_below_rank_line():
     # long names are drawn vertically centred: part above, part below the rank line
     _cat, rows = s.parse_stage_lines(page(
-        (592.2, [(136.0, " BAENGSANTHIA")]),                       # starts in BIB column
+        (592.2, [(136.0, " SAMPLE")]),                       # starts in BIB column
         (585.0, [(58.8, "53"), (109.0, "207"), (220.0, "Hungchen-2Y3"),
                  (366.6, "03:26:23"), (428.6, "+01:01:29"), (496.3, "2")]),
-        (577.9, [(151.5, "SANYALAK")])))
+        (577.9, [(151.5, "RIDERNAME")])))
     assert len(rows) == 1
-    assert rows[0]["Name"] == "BAENGSANTHIA SANYALAK"
+    assert rows[0]["Name"] == "SAMPLE RIDERNAME"
     assert rows[0]["Team"] == "Hungchen-2Y3"
 
 

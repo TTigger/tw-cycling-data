@@ -8,7 +8,7 @@ META = {"name": "苗栗繞圈賽（第七屆）", "date": "2026-06-28",
 ROWS = [
     {"rank": 1, "bib": "2", "name": "陳大文", "category": "M / M30",
      "team": "宇都宮車隊", "finish_time": "00:47:38", "laps": 35, "status": "FIN"},
-    {"rank": None, "bib": "21", "name": "洪稟詠", "category": "M / U23",
+    {"rank": None, "bib": "21", "name": "洪甲詠", "category": "M / U23",
      "team": "TEAM CYTO TRIGON", "finish_time": None, "laps": 25, "status": "DNF"},
     {"rank": None, "bib": "99", "name": "王小明", "category": "M / M35",
      "team": "Solo", "finish_time": None, "laps": 0, "status": "DNS"},

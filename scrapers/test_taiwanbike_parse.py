@@ -14,7 +14,7 @@ LISTING = (
 
 # 雙塔520 (duplicate 組別 header: event-name col + age-group col)
 H1 = ["參加編號", "姓名", "隊名", "組別", "性別", "組別", "起點時間", "終點時間", "成績"]
-R1 = ["6000", "蔡正一", "騎就對了", "2025TBA雙塔520自行車認證", "男", "M25",
+R1 = ["6000", "蔡甲一", "騎就對了", "2025TBA雙塔520自行車認證", "男", "M25",
       "2025-11-08 00:01:25", "2025-11-08 22:05:15", "22:03:49"]
 
 # 環大苗栗 (has 名次 + chip time; different schema)
@@ -27,7 +27,7 @@ R3 = ["7", "李四", ""]
 
 # 2022 TBA cert sheet (雙塔520/北高360 認證) with 參賽編號 and 淨時間
 H4 = ["參賽編號", "姓名", "組別", "總排", "分排", "淨時間", "出發時間(富貴角)", "完成時間(鵝鑾鼻)"]
-R4 = ["1171", "陳亞倫", "男子組", "1", "1.0", "15:21:08.000", "2022-11-12 06:00:00", "2022-11-12 21:21:08"]
+R4 = ["1171", "陳甲倫", "男子組", "1", "1.0", "15:21:08.000", "2022-11-12 06:00:00", "2022-11-12 21:21:08"]
 
 
 def test_extract_sheet_links_filters_to_2022plus_sheets():
@@ -38,7 +38,7 @@ def test_extract_sheet_links_filters_to_2022plus_sheets():
 def test_map_row_dual_group_picks_age_code_and_chip_time():
     m = tp.map_row(H1, R1)
     assert m["bib"] == "6000"
-    assert m["name"] == "蔡正一"
+    assert m["name"] == "蔡甲一"
     assert m["team"] == "騎就對了"
     assert m["category"] == "M25"        # the age-group code, not the event name
     assert m["gender"] == "M"
@@ -60,7 +60,7 @@ def test_map_row_2022_tba_cert_sheet_with_cert_number_and_net_time():
     """Regression: recover 2022 TBA cert sheets with 參賽編號 and 淨時間 columns."""
     m = tp.map_row(H4, R4)
     assert m["bib"] == "1171"
-    assert m["name"] == "陳亞倫"
+    assert m["name"] == "陳甲倫"
     assert m["category"] == "男子組"
     assert m["gender"] == "M"  # inferred from category prefix
     assert m["finish_time"] == "15:21:08.000"  # net/chip time with .000 suffix
@@ -71,7 +71,7 @@ import taiwanbike_crawl as tc
 def test_records_from_sheet_maps_and_masks():
     tabs = {"雙塔520選手總表": [
         ["參加編號", "姓名", "隊名", "組別", "性別", "組別", "成績"],
-        ["6000", "蔡正一", "騎就對了", "2025TBA雙塔520", "男", "M25", "22:03:49"],
+        ["6000", "蔡甲一", "騎就對了", "2025TBA雙塔520", "男", "M25", "22:03:49"],
         ["7", "李四", "", "x", "男", "M30", ""],          # no time -> dropped
         ["8", "陳一", "隊B", "y", "男", "M40", "00:00:30"],  # placeholder <1h -> dropped
     ]}

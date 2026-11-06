@@ -6,11 +6,11 @@ import focusline_crawl as fc
 META = {"category": "雙塔", "year": 2025, "date": "2025-11-14",
         "url": "https://score.focusline.com.tw/api/Member/focusline?code=51114JR&categoryName=100102"}
 ROWS = [
-    {"name": "林玉清", "number": "H75532", "gender": "", "category": "雙塔",
+    {"name": "林甲清", "number": "H75532", "gender": "", "category": "雙塔",
      "group": "M50", "gunTime": "17:39:10", "totalSort": "1"},
-    {"name": "陳美玲", "number": "W1234", "gender": "女", "category": "雙塔",
+    {"name": "陳甲玲", "number": "W1234", "gender": "女", "category": "雙塔",
      "group": "W40", "gunTime": "20:05:00", "totalSort": "5"},
-    {"name": "張弘瑜", "number": "D42012", "gender": "", "category": "雙塔",
+    {"name": "張甲瑜", "number": "D42012", "gender": "", "category": "雙塔",
      "group": "M30", "gunTime": "00:00:07", "totalSort": "291"},  # placeholder -> dropped
 ]
 
@@ -37,7 +37,7 @@ def test_build_records_maps_and_filters_placeholder():
     assert r["finish_seconds"] == 17 * 3600 + 39 * 60 + 10
     assert r["rank_overall"] is None and r["team"] is None
     assert r["name_masked"] == "林○清" and "name_raw" in r
-    assert recs[1]["gender"] == "F"  # 陳美玲 from gender field
+    assert recs[1]["gender"] == "F"  # 陳甲玲 from gender field
 
 
 def test_challenge_keeps_rank_and_race_name():

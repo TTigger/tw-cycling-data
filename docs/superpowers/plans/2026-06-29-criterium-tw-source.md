@@ -46,7 +46,7 @@ def test_make_record_defaults_status_and_laps_to_none():
 
 def test_make_record_carries_status_and_laps():
     r = common.make_record(race_name_raw="苗栗繞圈賽（第七屆）", year=2026,
-                           name_raw="洪稟詠", status="DNF", laps=25)
+                           name_raw="洪甲詠", status="DNF", laps=25)
     assert r["status"] == "DNF"
     assert r["laps"] == 25
     assert r["finish_seconds"] is None  # DNF has no time
@@ -115,12 +115,12 @@ EVENT_HTML = (
     '<td class="tnum">00:47:38</td><td class="tnum">35</td>'
     '<td><span class="pill fin"><span class="dot"></span>FIN</span></td></tr>'
     '<tr class="row-link"><td class="rank"><span class="pos">—</span></td>'
-    '<td class="tnum">21</td><td>洪稟詠<!-- --> </td>'
+    '<td class="tnum">21</td><td>洪甲詠<!-- --> </td>'
     '<td class="tnum">M<!-- --> / U23</td><td>TEAM CYTO TRIGON</td>'
     '<td class="tnum">—</td><td class="tnum">25</td>'
     '<td><span class="pill dnf"><span class="dot"></span>DNF</span></td></tr>'
     '<tr class="row-link"><td class="rank"><span class="pos">—</span></td>'
-    '<td class="tnum">13</td><td>朱耿宏<!-- --> </td>'
+    '<td class="tnum">13</td><td>朱甲宏<!-- --> </td>'
     '<td class="tnum">M<!-- --> / ELITE</td><td>MSG CYCLING TEAM 衝線單車</td>'
     '<td class="tnum">—</td><td class="tnum">0</td>'
     '<td><span class="pill dnf"><span class="dot"></span>DNS</span></td></tr>'
@@ -342,7 +342,7 @@ META = {"name": "苗栗繞圈賽（第七屆）", "date": "2026-06-28",
 ROWS = [
     {"rank": 1, "bib": "2", "name": "陳大文", "category": "M / M30",
      "team": "宇都宮車隊", "finish_time": "00:47:38", "laps": 35, "status": "FIN"},
-    {"rank": None, "bib": "21", "name": "洪稟詠", "category": "M / U23",
+    {"rank": None, "bib": "21", "name": "洪甲詠", "category": "M / U23",
      "team": "TEAM CYTO TRIGON", "finish_time": None, "laps": 25, "status": "DNF"},
 ]
 
