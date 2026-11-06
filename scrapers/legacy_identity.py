@@ -83,6 +83,76 @@ def build_map(ref, wanted_race_years=None):
     return out, len(ambiguous)
 
 
+CARRY_PATH = os.path.join(ROOT, "data", "identity", "id_carryover.json")
+
+
+def published_ids(ref="HEAD"):
+    """Athlete ids that are live at `ref` (file names only — cheap)."""
+    try:
+        ls = subprocess.run(["git", "ls-tree", "--name-only", f"{ref}:{ATHLETE_DIR}"],
+                            cwd=ROOT, capture_output=True, text=True, check=True).stdout.split()
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return set()
+    return {n[:-5] for n in ls if n.endswith(".json")}
+
+
+def build_carryover(records, keys, raw_id, ref="HEAD", existing=None):
+    """Keep published athlete URLs alive when a group's key changes.
+
+    A new source can re-key a rider without changing who they are — e.g. a
+    federation PDF adds a UCI id, so 'n:<name>' becomes 'u:<uci>' and the hashed
+    id changes. For every group whose freshly hashed id was never published, look
+    up the ids its rows had at `ref` (same matching as the masked-name map) and,
+    if the most common one is free, keep it. Returns {new_id: published_id};
+    both sides are salted hashes, so the file is safe to commit."""
+    from collections import Counter, defaultdict
+    published = published_ids(ref)
+    if not published:
+        return dict(existing or {})
+    groups = defaultdict(list)
+    for r, k in zip(records, keys):
+        groups[k].append(r)
+    new_ids = {k: raw_id(k) for k in groups}
+    # 'x:<id>' groups are source-masked rows already pinned to a published id;
+    # once that id is carried over, _apply_legacy_identity folds them back in.
+    used = {i for k, i in new_ids.items() if not k.startswith("x:")}
+    need = [k for k, i in new_ids.items() if i not in published and not k.startswith(("x:", "s:"))]
+    carry = {n: o for n, o in (existing or {}).items() if o not in used and n in used}
+    if not need:
+        return carry
+    wanted = {(r.get("race_key"), r.get("year")) for k in need for r in groups[k]}
+    old_map, _ = build_map(ref, wanted)
+    taken = set(carry.values())
+    for k in need:
+        votes = Counter(old_map.get(row_key(r)) for r in groups[k])
+        votes.pop(None, None)
+        if not votes:
+            continue
+        old = votes.most_common(1)[0][0]
+        if old in used or old in taken:
+            continue
+        carry[new_ids[k]] = old
+        taken.add(old)
+    return carry
+
+
+_CARRY = None
+
+
+def load_carryover():
+    global _CARRY
+    if _CARRY is None:
+        _CARRY = json.load(open(CARRY_PATH, encoding="utf-8")) if os.path.exists(CARRY_PATH) else {}
+    return _CARRY
+
+
+def save_carryover(carry):
+    global _CARRY
+    os.makedirs(os.path.dirname(CARRY_PATH), exist_ok=True)
+    json.dump(dict(sorted(carry.items())), open(CARRY_PATH, "w", encoding="utf-8"), indent=0)
+    _CARRY = dict(carry)
+
+
 _MAP = None
 
 

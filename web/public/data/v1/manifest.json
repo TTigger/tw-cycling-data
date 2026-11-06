@@ -5,12 +5,12 @@
  "license": "CC-BY-4.0",
  "attribution": "tw-cycling-data (https://github.com/TTigger/tw-cycling-data)",
  "stats": {
-  "records": 186615,
-  "races": 191,
-  "race_editions": 272,
+  "records": 190370,
+  "races": 209,
+  "race_editions": 290,
   "series": 23,
-  "athletes": 31664,
-  "teams": 1263,
+  "athletes": 32211,
+  "teams": 1349,
   "sources": 12,
   "year_min": 2009,
   "year_max": 2026

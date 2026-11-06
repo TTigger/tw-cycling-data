@@ -172,5 +172,5 @@ npm run build                           # 產出 web/dist(靜態)
 
 - 自訂網域(若未來綁定,需更新 `astro.config` 的 `site`;目前指向 `tw-cycling-data.vercel.app`)。
 - 賽名/組別正規化續精修(候選產生器 `scrapers/suggest_race_merges.py` 產人工核可表)。
-- cycling.org.tw 舊年份寬表格式回填(目前僅 2025 國家級源)。
+- cycling.org.tw 2009–2015 舊 Excel 寬表回填(目前只有 2013;2016–2026 PDF 已收)。
 - 維護者請先讀 `docs/learnings/` 與 `AGENTS.md`(這次大改的非顯而易見決策與陷阱)。

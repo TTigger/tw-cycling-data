@@ -8,7 +8,7 @@
   "EXCLUDED": "有資料但決定不收(資料有誤或非公路賽),附原因",
   "NO_EDITION": "今年沒有辦(停辦、改期到明年或改辦別的形式),附依據"
  },
- "updated": "2026-11-05",
+ "updated": "2026-11-06",
  "races": [
   {
    "race": "96聯賽苗栗站 仙山自行車登山賽",
@@ -859,268 +859,40 @@
    "checked": "2026-11-03"
   },
   {
-   "race": "全國少年個人公路計時錦標賽-成績冊及成績總表",
-   "year": 2026,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "中華民國自由車協會下載區的成績 PDF(「115年度全國少年個人公路計時錦標賽-成績冊及成績總表」)。PDF 有文字,但版面和 114 年那份不同,cycling_crawl.py 解析出 0 筆,需要為這種版面寫解析器",
-   "links": [
-    "https://cycling.org.tw/wp-content/uploads/2026/08/115年度全國少年個人公路計時錦標賽-成績冊及成績總表-1.pdf"
-   ],
-   "checked": "2026-11-05"
-  },
-  {
-   "race": "全國中等學校暨國小自由車公路錦標賽成績(完整)",
-   "year": 2026,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "中華民國自由車協會下載區的成績 PDF(「115年全國中等學校暨國小自由車公路錦標賽成績(完整)」)。PDF 有文字,但版面和 114 年那份不同,cycling_crawl.py 解析出 0 筆,需要為這種版面寫解析器",
-   "links": [
-    "https://cycling.org.tw/wp-content/uploads/2026/02/115年全國中等學校暨國小自由車公路錦標賽成績完整.pdf"
-   ],
-   "checked": "2026-11-05"
-  },
-  {
    "race": "自由車公路賽國手選拔積分賽排名",
    "year": 2025,
    "date": null,
    "region": null,
-   "status": "FOUND",
-   "note": "自由車協會的積分排名表,只有積分沒有完賽時間,大概不能收;留作紀錄",
+   "status": "EXCLUDED",
+   "note": "自由車協會的國手選拔積分排名表,只有積分、沒有完賽時間,不收。2026-11-06 確認",
    "links": [
     "https://cycling.org.tw/wp-content/uploads/2025/12/中華民國自由車協會-114年自由車公路賽國手選拔積分賽排名-V5.pdf"
    ],
-   "checked": "2026-11-05"
-  },
-  {
-   "race": "全國中等學校暨國小自由車公路錦標賽-成績公告",
-   "year": 2025,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "中華民國自由車協會下載區的成績 PDF(「114年全國中等學校暨國小自由車公路錦標賽-成績公告」)。PDF 有文字,但版面和 114 年那份不同,cycling_crawl.py 解析出 0 筆,需要為這種版面寫解析器。前 3 頁讀不到完賽時間,可能是掃描圖檔或只有名次",
-   "links": [
-    "https://cycling.org.tw/wp-content/uploads/2025/04/114年全國中等學校暨國小自由車公路錦標賽-成績公告.pdf"
-   ],
-   "checked": "2026-11-05"
-  },
-  {
-   "race": "全國公路錦標賽暨選拔賽-成績公告",
-   "year": 2024,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "中華民國自由車協會下載區的成績 PDF(「113年全國公路錦標賽暨選拔賽-成績公告」)。PDF 有文字,但版面和 114 年那份不同,cycling_crawl.py 解析出 0 筆,需要為這種版面寫解析器",
-   "links": [
-    "https://cycling.org.tw/wp-content/uploads/2024/12/113完整成績公告.pdf"
-   ],
-   "checked": "2026-11-05"
-  },
-  {
-   "race": "中等學校公路錦標賽-成績公告",
-   "year": 2024,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "中華民國自由車協會下載區的成績 PDF(「113年中等學校公路錦標賽-成績公告」)。PDF 有文字,但版面和 114 年那份不同,cycling_crawl.py 解析出 0 筆,需要為這種版面寫解析器",
-   "links": [
-    "https://cycling.org.tw/wp-content/uploads/2024/06/2024全中錦公路賽成績-all.pdf"
-   ],
-   "checked": "2026-11-05"
-  },
-  {
-   "race": "全國自由車公路錦標賽暨選拔賽(二)成績公告N1",
-   "year": 2023,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "中華民國自由車協會下載區的成績 PDF(「112年全國自由車公路錦標賽暨選拔賽(二)成績公告N1」)。PDF 有文字,但版面和 114 年那份不同,cycling_crawl.py 解析出 0 筆,需要為這種版面寫解析器。前 3 頁讀不到完賽時間,可能是掃描圖檔或只有名次",
-   "links": [
-    "https://cycling.org.tw/wp-content/uploads/2023/11/112年全國自由車公路錦標賽暨選拔賽二成績公告N1.pdf"
-   ],
-   "checked": "2026-11-05"
-  },
-  {
-   "race": "佛光山全國中等學校公路成績",
-   "year": 2023,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "中華民國自由車協會下載區的成績 PDF(「112年佛光山全國中等學校公路成績」)。PDF 有文字,但版面和 114 年那份不同,cycling_crawl.py 解析出 0 筆,需要為這種版面寫解析器",
-   "links": [
-    "https://cycling.org.tw/wp-content/uploads/2023/09/112年全國中等學校公路成績.pdf"
-   ],
-   "checked": "2026-11-05"
-  },
-  {
-   "race": "全國自由車公路國手自由選拔賽",
-   "year": 2023,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "中華民國自由車協會下載區的成績 PDF(「112年全國自由車公路國手自由選拔賽」)。PDF 有文字,但版面和 114 年那份不同,cycling_crawl.py 解析出 0 筆,需要為這種版面寫解析器",
-   "links": [
-    "https://cycling.org.tw/wp-content/uploads/2023/09/112年全國自由車公路國手自由選拔賽.pdf"
-   ],
-   "checked": "2026-11-05"
+   "checked": "2026-11-06"
   },
   {
    "race": "全國公路錦標賽暨選拔賽(二)-成績總表",
    "year": 2022,
    "date": null,
    "region": null,
-   "status": "FOUND",
-   "note": "中華民國自由車協會下載區的成績 PDF(「111年全國公路錦標賽暨選拔賽(二)-成績總表」)。PDF 有文字,但版面和 114 年那份不同,cycling_crawl.py 解析出 0 筆,需要為這種版面寫解析器",
+   "status": "BLOCKED",
+   "note": "自由車協會下載區只有這份 1 頁的「總成績表」(每組前 8 名,欄位擠在同一列),沒有逐人成績頁,無法可靠解析。等協會補上完整成績冊再收。2026-11-06 確認",
    "links": [
     "https://cycling.org.tw/wp-content/uploads/2023/09/111年全國公路錦標賽暨選拔賽二-成績總表.pdf"
    ],
-   "checked": "2026-11-05"
-  },
-  {
-   "race": "全國自由車公路錦標賽暨菁英排名賽-成績總表",
-   "year": 2021,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "中華民國自由車協會下載區的成績 PDF(「110年全國自由車公路錦標賽暨菁英排名賽-成績總表」)。PDF 有文字,但版面和 114 年那份不同,cycling_crawl.py 解析出 0 筆,需要為這種版面寫解析器",
-   "links": [
-    "https://cycling.org.tw/wp-content/uploads/2021/11/110年公路錦標賽暨菁英排名賽-成績總表-1.pdf"
-   ],
-   "checked": "2026-11-05"
-  },
-  {
-   "race": "公路菁英排名賽(一)-成績總表",
-   "year": 2021,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "中華民國自由車協會下載區的成績 PDF(「110年公路菁英排名賽(一)-成績總表」)。PDF 有文字,但版面和 114 年那份不同,cycling_crawl.py 解析出 0 筆,需要為這種版面寫解析器",
-   "links": [
-    "https://cycling.org.tw/wp-content/uploads/2021/09/110年公路菁英排名賽一-總成績表.pdf"
-   ],
-   "checked": "2026-11-05"
-  },
-  {
-   "race": "青少年公路錦標賽-成績總表",
-   "year": 2021,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "中華民國自由車協會下載區的成績 PDF(「110年青少年公路錦標賽-成績總表」)。PDF 有文字,但版面和 114 年那份不同,cycling_crawl.py 解析出 0 筆,需要為這種版面寫解析器。檔案內容看起來和「110年公路菁英排名賽(一)」相同,收錄前先比對",
-   "links": [
-    "https://cycling.org.tw/wp-content/uploads/2021/09/110年青少年公路錦標賽-總成績表.pdf"
-   ],
-   "checked": "2026-11-05"
-  },
-  {
-   "race": "全國自由車公路錦標賽成績總表",
-   "year": 2020,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "中華民國自由車協會下載區的成績 PDF(「109年全國自由車公路錦標賽成績總表」)。PDF 有文字,但版面和 114 年那份不同,cycling_crawl.py 解析出 0 筆,需要為這種版面寫解析器",
-   "links": [
-    "https://cycling.org.tw/wp-content/uploads/2020/11/109公路錦標賽_總成績.pdf"
-   ],
-   "checked": "2026-11-05"
-  },
-  {
-   "race": "全國自由車公路錦標賽暨菁英選拔賽(2020年亞洲自由車公路錦標賽)",
-   "year": 2019,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "中華民國自由車協會下載區的成績 PDF(「108年全國自由車公路錦標賽暨菁英選拔賽(2020年亞洲自由車公路錦標賽)」)。PDF 有文字,但版面和 114 年那份不同,cycling_crawl.py 解析出 0 筆,需要為這種版面寫解析器",
-   "links": [
-    "https://cycling.org.tw/wp-content/uploads/2019/10/NRC-2019.pdf"
-   ],
-   "checked": "2026-11-05"
-  },
-  {
-   "race": "全國自由車公路錦標賽(成績公告)",
-   "year": 2018,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "中華民國自由車協會下載區的成績 PDF(「107年全國自由車公路錦標賽(成績公告)」)。PDF 有文字,但版面和 114 年那份不同,cycling_crawl.py 解析出 0 筆,需要為這種版面寫解析器",
-   "links": [
-    "https://cycling.org.tw/wp-content/uploads/2019/01/107年全國自由車公路錦標賽成績公告.pdf"
-   ],
-   "checked": "2026-11-05"
-  },
-  {
-   "race": "全國自由車少年公路錦標賽(成績公告)",
-   "year": 2018,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "中華民國自由車協會下載區的成績 PDF(「107年全國自由車少年公路錦標賽(成績公告)」)。PDF 有文字,但版面和 114 年那份不同,cycling_crawl.py 解析出 0 筆,需要為這種版面寫解析器",
-   "links": [
-    "https://cycling.org.tw/wp-content/uploads/2018/09/YR-RESULT.pdf"
-   ],
-   "checked": "2026-11-05"
-  },
-  {
-   "race": "全國自由車公路錦標賽(總成績&成績公告)",
-   "year": 2017,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "中華民國自由車協會下載區的成績 PDF(「106年全國自由車公路錦標賽(總成績&成績公告)」)。PDF 有文字,但版面和 114 年那份不同,cycling_crawl.py 解析出 0 筆,需要為這種版面寫解析器",
-   "links": [
-    "https://cycling.org.tw/wp-content/uploads/2017/12/NationalCEJ.pdf"
-   ],
-   "checked": "2026-11-05"
-  },
-  {
-   "race": "全國自由車少年公路錦標賽(總成績&成績公告)",
-   "year": 2017,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "中華民國自由車協會下載區的成績 PDF(「106年全國自由車少年公路錦標賽(總成績&成績公告)」)。PDF 有文字,但版面和 114 年那份不同,cycling_crawl.py 解析出 0 筆,需要為這種版面寫解析器",
-   "links": [
-    "https://cycling.org.tw/wp-content/uploads/2017/12/NationalCY.pdf"
-   ],
-   "checked": "2026-11-05"
-  },
-  {
-   "race": "全國自由車公路錦標賽",
-   "year": 2016,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "中華民國自由車協會下載區的成績 PDF(「105年全國自由車公路錦標賽」)。PDF 有文字,但版面和 114 年那份不同,cycling_crawl.py 解析出 0 筆,需要為這種版面寫解析器",
-   "links": [
-    "https://cycling.org.tw/wp-content/uploads/2017/01/e7b8bde68890e7b8bee8a1a82.pdf"
-   ],
-   "checked": "2026-11-05"
+   "checked": "2026-11-06"
   },
   {
    "race": "全國自由車公路菁英排名賽",
    "year": 2016,
    "date": null,
    "region": null,
-   "status": "FOUND",
-   "note": "中華民國自由車協會下載區的成績 PDF(「105年全國自由車公路菁英排名賽」)。PDF 有文字,但版面和 114 年那份不同,cycling_crawl.py 解析出 0 筆,需要為這種版面寫解析器。前 3 頁讀不到完賽時間,可能是掃描圖檔或只有名次",
+   "status": "BLOCKED",
+   "note": "自由車協會下載區只有 1 頁「總成績表」(每組前幾名),沒有逐人成績頁,無法可靠解析。2026-11-06 確認",
    "links": [
     "https://cycling.org.tw/wp-content/uploads/2016/11/105e585ace8b7afe88f81e88bb1e68e92e5908de8b3bd-e7b8bde68890e7b8bee8a1a81.pdf"
    ],
-   "checked": "2026-11-05"
-  },
-  {
-   "race": "全國自由車公路錦標賽",
-   "year": 2016,
-   "date": null,
-   "region": null,
-   "status": "FOUND",
-   "note": "中華民國自由車協會下載區的成績 PDF(「105年全國自由車公路錦標賽」)。PDF 有文字,但版面和 114 年那份不同,cycling_crawl.py 解析出 0 筆,需要為這種版面寫解析器",
-   "links": [
-    "https://cycling.org.tw/wp-content/uploads/2016/11/e5ae8ce695b4e585ace5918ae590abe7b8bde68890e7b8bee8a1a8-e7b6b2e7ab99e585ace5918a-e69bb4e6ada31103-11.pdf"
-   ],
-   "checked": "2026-11-05"
+   "checked": "2026-11-06"
   }
  ]
 }

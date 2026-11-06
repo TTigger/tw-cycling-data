@@ -1,12 +1,12 @@
 {
-  "total_records": 187749,
-  "finishers": 186615,
+  "total_records": 192200,
+  "finishers": 190370,
   "by_platform": {
     "atsport.com.tw": 7385,
     "bravelog.tw": 43423,
     "criterium.tw": 1957,
     "cyclist.org.tw": 18814,
-    "cycling.org.tw": 349,
+    "cycling.org.tw": 4800,
     "tsu.com.tw": 24515,
     "e-better.com.tw": 4074,
     "focusline.com.tw": 7644,
@@ -20,7 +20,7 @@
     "bravelog.tw": 43423,
     "criterium.tw": 823,
     "cyclist.org.tw": 18814,
-    "cycling.org.tw": 349,
+    "cycling.org.tw": 4104,
     "tsu.com.tw": 24515,
     "e-better.com.tw": 4074,
     "focusline.com.tw": 7644,
@@ -36,29 +36,29 @@
     "2013": 2515,
     "2014": 1106,
     "2015": 1424,
-    "2016": 698,
-    "2017": 947,
-    "2018": 3084,
-    "2019": 2892,
-    "2020": 2805,
-    "2021": 1127,
+    "2016": 965,
+    "2017": 1288,
+    "2018": 3551,
+    "2019": 3261,
+    "2020": 3120,
+    "2021": 1533,
     "2022": 22925,
-    "2023": 32942,
-    "2024": 46159,
-    "2025": 39555,
-    "2026": 24619
+    "2023": 33146,
+    "2024": 46577,
+    "2025": 40181,
+    "2026": 25657
   },
   "by_gender": {
-    "null": 59451,
-    "F": 19263,
-    "M": 109035
+    "null": 59581,
+    "F": 20141,
+    "M": 112478
   },
   "by_race_class": {
-    "未分類": 33691,
+    "未分類": 37642,
     "挑戰": 70323,
     "競賽": 11964,
     "分齡": 35144,
-    "女子": 935,
+    "女子": 1435,
     "團體計時": 1213,
     "電輔車": 332,
     "市民": 4990,
@@ -67,7 +67,7 @@
     "認證": 21171
   },
   "by_series": {
-    "null": 88095,
+    "null": 92327,
     "TBA 長途認證": 21171,
     "戀戀197": 12246,
     "96聯賽": 10797,
@@ -78,26 +78,31 @@
     "環大臺北自行車挑戰": 4518,
     "GravelFundo 礫石越野系列": 3442,
     "臺灣自行車聯賽(TCL)": 2654,
-    "花蓮太平洋盃": 2549,
+    "花蓮太平洋盃": 2568,
     "LAVA 落日飛車350": 2188,
     "臺灣KOM登山王之路": 1728,
-    "臺灣KOM登山王挑戰": 1559,
+    "臺灣KOM登山王挑戰": 1540,
     "仙山單車挑戰賽": 1180,
     "台灣登山大滿貫(雪巴)": 965,
+    "自由車錦標賽/選拔": 842,
     "屏東四重溪自行車挑戰賽": 819,
     "TCU 台中城市繞圈賽": 737,
     "瘋系列環台賽": 696,
-    "自由車錦標賽/選拔": 623,
     "銅礦88經典挑戰賽": 577,
     "世界自行車日": 502,
     "臺灣KOM太平洋經典賽": 78
   },
   "by_status": {
-    "null": 185792,
+    "null": 189547,
     "FIN": 823,
-    "NF": 1134
+    "NF": 1134,
+    "DNS": 78,
+    "DNF": 578,
+    "DSQ": 10,
+    "OTL": 7,
+    "LAP": 23
   },
-  "distinct_races": 191,
+  "distinct_races": 209,
   "races": [
     {
       "race_key": "彰化經典百K",
@@ -402,6 +407,17 @@
       "rows": 1402
     },
     {
+      "race_key": "花蓮太平洋盃公路賽團隊計時賽挑戰",
+      "series": "花蓮太平洋盃",
+      "platform": "cyclist.org.tw",
+      "years": [
+        2024,
+        2025,
+        2026
+      ],
+      "rows": 1355
+    },
+    {
       "race_key": "第五屆經典新玉門關公路自行車賽",
       "series": null,
       "platform": "focusline.com.tw",
@@ -418,17 +434,6 @@
         2024
       ],
       "rows": 1341
-    },
-    {
-      "race_key": "花蓮太平洋盃公路賽團隊計時賽挑戰",
-      "series": "花蓮太平洋盃",
-      "platform": "cyclist.org.tw",
-      "years": [
-        2024,
-        2025,
-        2026
-      ],
-      "rows": 1336
     },
     {
       "race_key": "雙塔2024",
@@ -603,17 +608,6 @@
       "rows": 918
     },
     {
-      "race_key": "臺灣自行車登山王挑戰",
-      "series": "臺灣KOM登山王挑戰",
-      "platform": "cyclist.org.tw",
-      "years": [
-        2022,
-        2023,
-        2026
-      ],
-      "rows": 896
-    },
-    {
       "race_key": "花蓮太平洋盃自行車系列活動",
       "series": "花蓮太平洋盃",
       "platform": "cyclist.org.tw",
@@ -623,6 +617,17 @@
         2023
       ],
       "rows": 887
+    },
+    {
+      "race_key": "臺灣自行車登山王挑戰",
+      "series": "臺灣KOM登山王挑戰",
+      "platform": "cyclist.org.tw",
+      "years": [
+        2022,
+        2023,
+        2026
+      ],
+      "rows": 877
     },
     {
       "race_key": "雙塔520認證成績表2024",
@@ -659,6 +664,15 @@
         2025
       ],
       "rows": 858
+    },
+    {
+      "race_key": "115年全國中等學校暨國小自由車公路錦標賽成績完整",
+      "series": null,
+      "platform": "cycling.org.tw",
+      "years": [
+        2026
+      ],
+      "rows": 849
     },
     {
       "race_key": "扶輪盃陽明山自行車登山王挑戰",
@@ -831,6 +845,15 @@
         2026
       ],
       "rows": 577
+    },
+    {
+      "race_key": "114年全國中等學校暨國小自由車公路錦標賽成績公告",
+      "series": null,
+      "platform": "cycling.org.tw",
+      "years": [
+        2025
+      ],
+      "rows": 569
     },
     {
       "race_key": "96Heroes彰化站",
@@ -1052,6 +1075,15 @@
       "rows": 372
     },
     {
+      "race_key": "108年全國自由車公路錦標賽暨菁英選拔賽2020年亞洲自由車公路錦標賽",
+      "series": null,
+      "platform": "cycling.org.tw",
+      "years": [
+        2019
+      ],
+      "rows": 369
+    },
+    {
       "race_key": "LIVDAY初夏大山風中劍20挑戰活動",
       "series": "捷安特自行車嘉年華",
       "platform": "bravelog.tw",
@@ -1143,6 +1175,15 @@
       "rows": 318
     },
     {
+      "race_key": "109年全國自由車公路錦標賽成績總表",
+      "series": null,
+      "platform": "cycling.org.tw",
+      "years": [
+        2020
+      ],
+      "rows": 315
+    },
+    {
       "race_key": "年台灣登山大滿貫自行車系列賽–大雪山站",
       "series": "台灣登山大滿貫(雪巴)",
       "platform": "bravelog.tw",
@@ -1207,6 +1248,15 @@
       "rows": 281
     },
     {
+      "race_key": "107年全國自由車公路錦標賽成績公告",
+      "series": null,
+      "platform": "cycling.org.tw",
+      "years": [
+        2018
+      ],
+      "rows": 280
+    },
+    {
       "race_key": "LAVA玩賽樂園350自行車挑戰Day1",
       "series": "LAVA 落日飛車350",
       "platform": "bravelog.tw",
@@ -1224,6 +1274,15 @@
         2024
       ],
       "rows": 275
+    },
+    {
+      "race_key": "105年全國自由車公路錦標賽",
+      "series": null,
+      "platform": "cycling.org.tw",
+      "years": [
+        2016
+      ],
+      "rows": 267
     },
     {
       "race_key": "GravelFundo-彰化員林-礫石車賽",
@@ -1256,6 +1315,15 @@
       "rows": 261
     },
     {
+      "race_key": "114年全國自由車公路錦標賽暨選拔賽成績總表",
+      "series": null,
+      "platform": "cycling.org.tw",
+      "years": [
+        2025
+      ],
+      "rows": 260
+    },
+    {
       "race_key": "台中春季繞圈賽第五屆",
       "series": null,
       "platform": "criterium.tw",
@@ -1280,6 +1348,15 @@
       "years": [
         2024,
         2025
+      ],
+      "rows": 239
+    },
+    {
+      "race_key": "106年全國自由車公路錦標賽總成績成績公告",
+      "series": null,
+      "platform": "cycling.org.tw",
+      "years": [
+        2017
       ],
       "rows": 239
     },
@@ -1331,6 +1408,24 @@
       "rows": 225
     },
     {
+      "race_key": "110年全國自由車公路錦標賽暨菁英排名賽成績總表",
+      "series": null,
+      "platform": "cycling.org.tw",
+      "years": [
+        2021
+      ],
+      "rows": 222
+    },
+    {
+      "race_key": "113年全國公路錦標賽暨選拔賽成績公告",
+      "series": "自由車錦標賽/選拔",
+      "platform": "cycling.org.tw",
+      "years": [
+        2024
+      ],
+      "rows": 219
+    },
+    {
       "race_key": "【96聯賽第六站】96CyclingRace彰化站",
       "series": "96聯賽",
       "platform": "tsu.com.tw",
@@ -1358,13 +1453,13 @@
       "rows": 206
     },
     {
-      "race_key": "114年全國自由車公路錦標賽暨選拔賽成績總表",
+      "race_key": "113年中等學校公路錦標賽成績公告",
       "series": null,
       "platform": "cycling.org.tw",
       "years": [
-        2025
+        2024
       ],
-      "rows": 203
+      "rows": 199
     },
     {
       "race_key": "【96聯賽】96CyclingRace台中站",
@@ -1383,6 +1478,24 @@
         2025
       ],
       "rows": 197
+    },
+    {
+      "race_key": "115年度全國少年個人公路計時錦標賽成績冊及成績總表",
+      "series": null,
+      "platform": "cycling.org.tw",
+      "years": [
+        2026
+      ],
+      "rows": 189
+    },
+    {
+      "race_key": "107年全國自由車少年公路錦標賽成績公告",
+      "series": null,
+      "platform": "cycling.org.tw",
+      "years": [
+        2018
+      ],
+      "rows": 187
     },
     {
       "race_key": "GravelFundo-彰化員林-越野林道賽",
@@ -1513,6 +1626,15 @@
       "rows": 136
     },
     {
+      "race_key": "110年青少年公路錦標賽成績總表",
+      "series": null,
+      "platform": "cycling.org.tw",
+      "years": [
+        2021
+      ],
+      "rows": 130
+    },
+    {
       "race_key": "GravelFundo年度系列Stage1台中老外林道站【GravelRace礫石車賽】",
       "series": "GravelFundo 礫石越野系列",
       "platform": "irunner.biji.co",
@@ -1529,6 +1651,15 @@
         2025
       ],
       "rows": 128
+    },
+    {
+      "race_key": "112年全國自由車公路錦標賽暨選拔賽二成績公告N1",
+      "series": null,
+      "platform": "cycling.org.tw",
+      "years": [
+        2023
+      ],
+      "rows": 122
     },
     {
       "race_key": "GravelFundo台中日南站【GravelRace礫石車賽】",
@@ -1610,6 +1741,15 @@
         2026
       ],
       "rows": 106
+    },
+    {
+      "race_key": "106年全國自由車少年公路錦標賽總成績成績公告",
+      "series": null,
+      "platform": "cycling.org.tw",
+      "years": [
+        2017
+      ],
+      "rows": 102
     },
     {
       "race_key": "東雙塔4702026",
@@ -1711,6 +1851,15 @@
       "rows": 68
     },
     {
+      "race_key": "112年佛光山全國中等學校公路成績",
+      "series": null,
+      "platform": "cycling.org.tw",
+      "years": [
+        2023
+      ],
+      "rows": 67
+    },
+    {
       "race_key": "年第4季136檢定",
       "series": null,
       "platform": "tsu.com.tw",
@@ -1745,6 +1894,15 @@
         2026
       ],
       "rows": 60
+    },
+    {
+      "race_key": "110年公路菁英排名賽一成績總表",
+      "series": null,
+      "platform": "cycling.org.tw",
+      "years": [
+        2021
+      ],
+      "rows": 54
     },
     {
       "race_key": "TAIWANSUMMITSERIES陽明山北海岸",
@@ -1835,6 +1993,15 @@
         2025
       ],
       "rows": 19
+    },
+    {
+      "race_key": "112年全國自由車公路國手自由選拔賽",
+      "series": null,
+      "platform": "cycling.org.tw",
+      "years": [
+        2023
+      ],
+      "rows": 15
     },
     {
       "race_key": "全國俱樂部聯賽第4站宜蘭牛鬥公路賽",
