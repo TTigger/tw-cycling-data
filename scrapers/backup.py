@@ -85,6 +85,15 @@ def verify_archive(path: Path, passphrase: bytes) -> list[str]:
         return z.namelist()
 
 
+def prune_local(out_dir: Path, keep: int) -> list[Path]:
+    """Delete all but the newest `keep` local archives (each is a few hundred MB)."""
+    zips = sorted(out_dir.glob("master-*.zip"), key=lambda p: p.name, reverse=True)
+    old = zips[keep:] if keep > 0 else []
+    for p in old:
+        p.unlink()
+    return old
+
+
 def r2_client():
     import boto3  # deferred: not needed for --no-upload / --verify
     account = os.environ["R2_ACCOUNT_ID"]
@@ -118,6 +127,8 @@ def main(argv=None) -> int:
                     help="extra file/dir (repo-relative) to add, repeatable")
     ap.add_argument("--no-upload", action="store_true",
                     help="create the encrypted zip but skip R2")
+    ap.add_argument("--keep", type=int, default=0,
+                    help="keep only the newest N local archives (0 = keep all)")
     ap.add_argument("--verify", metavar="ZIP",
                     help="restore drill: decrypt + CRC-check an existing backup")
     args = ap.parse_args(argv)
@@ -137,6 +148,8 @@ def main(argv=None) -> int:
     # immediate self-check so a bad passphrase/zip never goes off-site unnoticed
     verify_archive(archive, pw)
     print("self-verify OK")
+    for p in prune_local(BACKUP_DIR, args.keep):
+        print(f"removed old local archive {p.name}")
 
     if args.no_upload:
         print("skipped upload (--no-upload)")
