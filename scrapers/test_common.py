@@ -40,7 +40,7 @@ def test_mask_name_romanized_every_token_initialed():
     assert common.mask_name("OBoyle, Paul") == "O○ P○"
     assert common.mask_name("Wai Hon Yat") == "W○ H○ Y○"
     assert common.mask_name("Santen, Paul NED") == "S○ P○ N○"
-    assert common.mask_name("[JP] Brocket") == "J○ B○"   # first alpha of bracket token
+    assert common.mask_name("[XY] Sample") == "X○ S○"   # first alpha of bracket token
 
 
 def test_mask_name_no_kept_full_token():

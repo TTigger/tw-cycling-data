@@ -13,6 +13,9 @@ learn something that cost time to discover.
 ## Hard constraints
 - **PDPA**: only masked names (`王○明`) are ever committed/shipped; real names stay
   client-side and transient. See [docs/learnings/pdpa-deidentification.md](./docs/learnings/pdpa-deidentification.md).
+  Tests and docs use placeholder names. `scrapers/check_names.py` blocks real
+  rider names: enable the hook once per clone with `git config core.hooksPath .githooks`
+  (the pipeline also runs it after every build).
 - **Verify before claiming done**: `npx astro check` (0 errors) → vitest
   (`--no-file-parallelism`) / `pytest scrapers/` → `npx astro build` →
   browser-verify → commit per feature. Commit footer:

@@ -80,6 +80,8 @@ def build_plan(skip_scrape=False, sources=None, clean_race=False,
             plan.append(st)
     plan.append(Step("merge", ["merge.py"], group="merge"))
     plan.append(Step("validate", ["validate.py", "master.json"], group="validate"))
+    plan.append(Step("names", ["check_names.py", "--build"], group="validate",
+                     note="refresh the local real-name list (gitignored)"))
     if clean_race:
         plan.append(Step("clean-race-dir", [], group="build",
                          note="rm orphan per-race/athlete/team files"))
@@ -91,6 +93,8 @@ def build_plan(skip_scrape=False, sources=None, clean_race=False,
     plan.append(Step("build:manifest", ["build_manifest.py"], group="build",
                      note="must run last of the builders"))
     plan.append(Step("docs-gen", ["gen_docs_stats.py"], group="publish"))
+    plan.append(Step("check-names", ["check_names.py", "--ref", "HEAD"], group="publish",
+                     note="fail if a changed file holds a real rider name"))
     if with_backup:
         argv = ["backup.py", "--include", "data/raw_archive"]
         if not os.environ.get("R2_ACCOUNT_ID"):
