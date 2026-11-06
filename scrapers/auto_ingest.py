@@ -155,6 +155,33 @@ def scan_ebetter():
             if ln.strip() and "(in worklist)" not in ln]
 
 
+# ---- backup --------------------------------------------------------------
+BACKUP_INCLUDES = ["data/raw_archive", "data/raw", "data/pdf"]
+
+
+def run_backup():
+    """Encrypted backup of master.json + raw caches (sources take results down,
+    so these are the only copy). Uploads to R2 when configured. Never blocks the
+    ingest; returns a short note for the notification."""
+    if not os.environ.get("TWCD_BACKUP_PASSPHRASE"):
+        return "未備份(沒有設定備份密碼)"
+    argv = [PY, "scrapers/backup.py", "--keep", "2"]
+    for inc in BACKUP_INCLUDES:
+        argv += ["--include", inc]
+    if not os.environ.get("R2_ACCOUNT_ID"):
+        argv.append("--no-upload")
+    try:
+        r = run(argv, timeout=3600, capture=True)
+    except subprocess.TimeoutExpired:
+        log("backup timed out")
+        return "備份逾時"
+    log("backup: " + " | ".join((r.stdout or "").strip().splitlines()[-3:]))
+    if r.returncode != 0:
+        log((r.stderr or "")[-1000:])
+        return "備份失敗"
+    return "已備份到 R2" if os.environ.get("R2_ACCOUNT_ID") else "已在本機備份(R2 未設定)"
+
+
 # ---- gates ---------------------------------------------------------------
 def gate(cmp):
     """Problems that stop a PR. `cmp` is compare_rebuild --json output. (tested)"""
@@ -266,7 +293,8 @@ def main():
         if not has_news(cmp):
             log("no new results")
             restore_checkout()
-            notify("自動收錄:這週沒有新成績" + (f"(伊貝特有 {len(ebetter_new)} 場新賽事待加)" if ebetter_new else ""))
+            note = run_backup()
+            notify("自動收錄:這週沒有新成績" + (f",伊貝特有 {len(ebetter_new)} 場新賽事待加" if ebetter_new else "") + f";{note}")
             return 0
         t = run([PY, "-m", "pytest", "scrapers", "-q"], timeout=1800, capture=True)
         if t.returncode != 0:
@@ -290,7 +318,7 @@ def main():
                    "--body", body], capture=True).stdout.strip()
         git("checkout", "-q", "master")
         log(f"PR {url}")
-        notify("自動收錄:有新成績,PR 已開好,請檢查後合併")
+        notify(f"自動收錄:有新成績,PR 已開好,請檢查後合併;{run_backup()}")
         return 0
     except Exception as e:  # noqa: BLE001 - report every failure, leave a clean checkout
         log(f"FAILED: {e}")
@@ -299,7 +327,7 @@ def main():
         if git("rev-parse", "--abbrev-ref", "HEAD").startswith("auto/"):
             git("checkout", "-q", "-f", "master")
         restore_checkout()
-        notify("自動收錄失敗,請看 data/processed/_auto/report.md")
+        notify(f"自動收錄失敗,請看 data/processed/_auto/report.md;{run_backup()}")
         return 1
 
 

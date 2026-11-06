@@ -81,3 +81,13 @@ def test_archive_response_opt_out(tmp_path, monkeypatch):
     monkeypatch.setenv("TWCD_RAW_ARCHIVE", "0")
     assert common.archive_response("https://x.tw/a", b"data") is None
     assert list(tmp_path.iterdir()) == []
+
+
+def test_prune_local_keeps_newest(tmp_path):
+    for stamp in ("20261101-083000", "20261108-083000", "20261115-083000"):
+        (tmp_path / f"master-{stamp}.zip").write_bytes(b"x")
+    removed = backup.prune_local(tmp_path, 2)
+    assert [p.name for p in removed] == ["master-20261101-083000.zip"]
+    assert sorted(p.name for p in tmp_path.iterdir()) == [
+        "master-20261108-083000.zip", "master-20261115-083000.zip"]
+    assert backup.prune_local(tmp_path, 0) == []
