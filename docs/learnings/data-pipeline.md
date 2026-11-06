@@ -70,3 +70,12 @@ every /athlete/<id> URL. Then run `scrapers/backup.py` so it can't happen again.
   between header labels. Glyphs of one run share its start x, so sort lines on x
   only (stable) or names come out scrambled.
 
+
+## Unattended weekly ingest (2026-11-06)
+`scrapers/auto_ingest.py` runs every source, then gates before opening a PR:
+no race-year disappears or loses rows, no athlete URL breaks, no real name,
+pytest passes. A source whose output shrinks (site down, half a crawl) gets its
+previous file back, so one broken site never blocks the rest. Worklist sources
+(e-better, 96 PDFs) need a person to name new events; the PR lists e-better
+candidates it found. iRunner's event list is re-scanned up to 150 ids past the
+newest known event.
