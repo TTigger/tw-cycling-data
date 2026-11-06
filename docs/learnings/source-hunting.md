@@ -72,7 +72,8 @@ layouts. Checks that caught bad picks: implied speed = distance ÷ time must be
 ## Sanitised file names can collide
 Replacing every CJK character with `_` turned two different 110年 PDF titles
 into the same file name, so one silently overwrote the other. Add a hash of
-the URL to cached file names.
+the URL to cached file names. (cyclist_crawl had the same bug: 41/菁英組成績
+and 41/市民組成績 shared one file. Fixed 2026-11-06.)
 
 ## New ids re-key old athletes
 A source that adds UCI ids moves riders from `n:<name>` to `u:<uci>`, which
@@ -83,3 +84,13 @@ changes their hashed id and breaks published URLs (216 would have broken).
 cyclist.org.tw linked the same 11/01 ITT from 花蓮太平洋盃 and KOM. Row-level
 dedup split it 47/19 between the two races. `merge.cross_listed_tables` drops
 the copy (a table ≥95% inside a larger table of another race, same year).
+
+## Old PDFs: columns by position, not by splitting on spaces
+The 2013–2021 cyclist.org.tw pages (`cyclist_archive.py`) come in about six
+layouts, and foreign riders' names are several words long ("Jane Q Doe
+美利達自行車"). Splitting on whitespace can't tell name from team. Find the
+columns from the gaps no data row writes across, then match header labels to
+them. Labels don't always sit over their column (編號 / 總排名 swapped places
+in 2018–2020), so also check which number column counts 1, 2, 3.
+Take the year from the PDF's own header: many old pages also link a 2017
+calendar PDF, so the page's upload date says 2017 for 2018–2021 races.
