@@ -22,3 +22,7 @@ learn something that cost time to discover.
   `Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>`.
 - **Data changes** go through `python scrapers/merge.py` then the builders — see
   [docs/learnings/data-pipeline.md](./docs/learnings/data-pipeline.md).
+- **Weekly auto-ingest** (Mac launchd, `bash scrapers/install_launchd.sh`): Monday
+  `scrapers/auto_ingest.py` re-crawls, rebuilds and, if there are new results,
+  opens a PR (`auto/ingest-<date>`) — it never merges. Thursday is calendar-only.
+  Report: `data/processed/_auto/report.md`.
