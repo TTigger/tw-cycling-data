@@ -33,14 +33,21 @@ def test_superseded_set_contains_bravelog_tba_combined():
 
 
 def test_team_that_is_a_rider_real_name_is_masked():
-    names = {"張允丞", "陳柏安"}
-    assert merge.mask_person_team("張允丞", names) == "張○丞"
-    assert merge.mask_person_team(" 陳柏安 ", names) == "陳○安"
+    names = {"王大明", "陳小美"}
+    assert merge.mask_person_team("王大明", names) == "王○明"
+    assert merge.mask_person_team(" 陳小美 ", names) == "陳○美"
     assert merge.mask_person_team("新竹市ZIV聯隊", names) == "新竹市ZIV聯隊"
     assert merge.mask_person_team(None, names) is None
     # a name inside a longer team string is masked in place
-    assert merge.mask_person_team("張允丞&陳柏安親友團", names) == "張○丞&陳○安親友團"
-    assert merge.mask_person_team("狂抽猛送張允丞", names) == "狂抽猛送張○丞"
+    assert merge.mask_person_team("王大明&陳小美親友團", names) == "王○明&陳○美親友團"
+    assert merge.mask_person_team("狂抽猛送王大明", names) == "狂抽猛送王○明"
+
+
+def test_latin_team_that_is_a_rider_name_is_masked():
+    names = {merge._latin_key("Jane Q Public")}
+    assert merge.mask_person_team("Jane Q Public", names) == "J○ Q○ P○"
+    assert merge.mask_person_team("JANE  Q PUBLIC", names) == "J○ Q○ P○"
+    assert merge.mask_person_team("VM cycling Team", names) == "VM cycling Team"
 
 
 def test_sporter96_prefix_discovered():

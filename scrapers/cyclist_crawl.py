@@ -10,6 +10,7 @@ Usage:
   python cyclist_crawl.py --limit 3  # only first 3 events (smoke test)
 """
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -167,10 +168,21 @@ def event_pdfs(session, event_pno):
     return title, date, pdfs
 
 
+def local_name(href):
+    """Cache file name. Old names turned every CJK char into '_', so pdfs like
+    41/菁英組成績.pdf and 41/市民組成績.pdf (same length) shared one file.
+    ASCII-only hrefs keep their old name; the rest get a hash of the URL."""
+    flat = href.strip("/").replace("/", "_")
+    safe = re.sub(r"[^0-9A-Za-z._-]", "_", flat)
+    if safe == flat:
+        return safe
+    stem = safe[:-4] if safe.lower().endswith(".pdf") else safe
+    return f"{stem[:60]}-{hashlib.md5(href.encode()).hexdigest()[:8]}.pdf"
+
+
 def download_pdf(session, href):
     url = href if href.startswith("http") else f"{BASE}/{href.lstrip('/')}"
-    fn = re.sub(r"[^0-9A-Za-z._-]", "_", href.strip("/").replace("/", "_"))
-    path = os.path.join(PDF_DIR, fn)
+    path = os.path.join(PDF_DIR, local_name(href))
     if os.path.exists(path) and os.path.getsize(path) > 1000:
         return path
     r = common.polite_get(session, url)

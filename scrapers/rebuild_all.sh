@@ -31,7 +31,7 @@ IRUNNER_HI=${IRUNNER_HI:-1700}
 crawl_one() {
   case "$1" in
     tsu)        $PY scrapers/tsu_crawl.py --years 2009-$YEAR_NOW ;;
-    cyclist)    $PY scrapers/cyclist_crawl.py --years 2014-$YEAR_NOW --out cyclist_2014_$YEAR_NOW.json ;;
+    cyclist)    $PY scrapers/cyclist_crawl.py --years 2014-$YEAR_NOW --out cyclist_2014_$YEAR_NOW.json && $PY scrapers/cyclist_archive.py ;;
     league)     $PY scrapers/cyclist_league.py ;;
     cycling)    $PY scrapers/cycling_crawl.py && $PY scrapers/cycling_oldroad.py ;;
     bravelog)

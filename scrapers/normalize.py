@@ -83,7 +83,7 @@ RACE_KEY_CANONICAL = {
 def race_class(result_label=None, category_raw=None):
     lab = result_label or ""
     cat = category_raw or ""
-    if "電輔" in cat or "電動輔助" in cat:
+    if "電輔" in cat or "電動輔助" in cat or "電助" in cat:
         return "電輔車"
     if "挑戰" in lab or cat in ("挑戰組", "挑戰") or "挑戰組" in cat:
         return "挑戰"

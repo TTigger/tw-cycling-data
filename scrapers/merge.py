@@ -91,6 +91,12 @@ def is_dup(r, fs, seen, seen_masked, seen_src_masked):
 
 
 PERSON_NAME = re.compile(r"[\u4e00-\u9fff]{2,4}")
+# foreign riders who typed their own name as the team ("Jane Doe")
+LATIN_NAME = re.compile(r"[A-Za-zÀ-ÿ'’.\-]+(?:\s+[A-Za-zÀ-ÿ'’.\-]+){1,3}")
+
+
+def _latin_key(s):
+    return " ".join(s.split()).casefold()
 
 
 def _table_key(r):
@@ -136,6 +142,8 @@ def rider_names(paths):
             nm = r.get("name_raw")
             if nm and PERSON_NAME.fullmatch(nm):
                 names.add(nm)
+            elif nm and LATIN_NAME.fullmatch(nm.strip()):
+                names.add(_latin_key(nm))
     return names
 
 
@@ -147,9 +155,12 @@ def mask_person_team(team, names):
     team, alone or inside a longer string ("王大明&陳小美親友團", "狂抽猛送王大明").
     The team field is published, so any 3–4 character stretch of it that is some
     rider's real name is masked like a name (PDPA). Two-character names are left
-    alone: too many ordinary words would match."""
+    alone: too many ordinary words would match. A Latin team equal to a 2–4 word
+    rider name (any case) is masked too; one-word names like "Tim" are not."""
     t = (team or "").strip()
     if t in names:
+        return common.mask_name(t)
+    if LATIN_NAME.fullmatch(t) and _latin_key(t) in names:
         return common.mask_name(t)
     if not team:
         return team

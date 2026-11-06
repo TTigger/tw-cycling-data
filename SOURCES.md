@@ -4,9 +4,9 @@
 > 最後更新:2026-11-03(統計區塊自此由 `scrapers/gen_docs_stats.py` 自動生成)
 
 <!-- gen:stats:begin -->
-主資料集 master:**190,370 筆完賽 / 2009–2026 / 209 場 / 12 來源**(海外賽另計;另有 1,830 筆未完賽紀錄,只用於完賽率)。
+主資料集 master:**208,441 筆完賽 / 2009–2026 / 221 場 / 12 來源**(海外賽另計;另有 2,250 筆未完賽紀錄,只用於完賽率)。
 
-> 各來源完賽筆數(跨源去重後,與網站一致):bravelog 43,423・irunner 42,441・tsu 24,515・cyclist 18,814・taiwanbike 18,204・twbike 15,404・focusline 7,644・atsport 7,385・cycling 4,104・e-better 4,074・sport-result 3,539・criterium 823。
+> 各來源完賽筆數(跨源去重後,與網站一致):bravelog 43,423・irunner 42,441・cyclist 36,885・tsu 24,515・taiwanbike 18,204・twbike 15,404・focusline 7,644・atsport 7,385・cycling 4,104・e-better 4,074・sport-result 3,539・criterium 823。
 > (本區塊由 `scrapers/gen_docs_stats.py` 生成,勿手改。)
 <!-- gen:stats:end -->
 
@@ -17,6 +17,7 @@
 | 來源 | 內容 | 格式 / 方式 | 涵蓋 | 爬蟲 | 筆數 |
 |---|---|---|---|---|---|
 | **cyclist.org.tw**<br>(自行車騎士協會) | 臺灣自行車聯賽全系列(陽明山王/太平山王/環花東/花蓮太平洋盃)+ KOM 登山王 | 靜態 PDF,pdfplumber 逐行;表頭自動判欄序 | 2015–2026 | `cyclist_crawl.py` | 11,276 |
+| **cyclist.org.tw 舊成績頁**<br>(分類列表沒連到的頁面) | 2013–2015 全國俱樂部聯賽、2016–2019 KOM 登山王挑戰、2017–2019 登山王之路、2018–2021 滿天星系列(北海櫻木花道/環花東365/環海岸山脈/羅馬公路/日月潭) | 靜態 PDF,依字的位置分欄(約 6 種版面);年份取自 PDF 表頭 | 2013–2021 | `cyclist_archive.py` | 見上方各來源完賽數 |
 | **bravelog.tw**<br>(運動趣) | 市民/挑戰賽龍頭(96聯賽/雪巴大滿貫/L'Étape/落日飛車/銅礦88/LIVDAY) | `/search` JSON API 探索 → server-rendered rank 頁分頁 | 2018–2026 | `bravelog_calendar.py` + `bravelog_crawl.py` | 46,553 |
 | **tsu.com.tw**<br>(台灣自行車聯盟) | 縣長盃繞圈、越野/gravel、NeverStop武嶺、96系列、大專/地方賽;**含 TCU 選手 ID** | 靜態 HTML(UTF-8),表頭對映;`/race?y=` 年份×分頁 → `/race/result` | 2009–2025 | `tsu_crawl.py` | 24,925 |
 | **cycling.org.tw**<br>(自由車協會) | 國家級:全國公路錦標賽/國手選拔(**含 UCI ID**)+ 2013 舊寬表 | 新制 PDF(`cycling_generic.py` 讀十幾種版面)+ 舊 .xls 寬表→長表 reshape | 2013, 2016–2026 | `cycling_crawl.py` + `cycling_oldroad.py` | 4,104(下載區 23 份公路 PDF 收 19 份;只有前幾名總表的 2 份與只有積分的 1 份不收,見 `data/known_races.json`) |
@@ -81,7 +82,7 @@
 - **瘋系列(中雙塔/縮時環島300K/911/無眠夜騎/白毛山)**:成績多在**主辦自家頁或 FB**,無統一平台 → 逐場找頁或 OCR。
 - **tsu.com.tw 2026**:已重爬,但 2026 賽事尚無成績公告(0 筆),賽季進行中再回來補。
 - **96聯賽 2026(2026-11-02 發現)**:改由 Dynamic Intelligences 計時。計時公司自家站 sport-result.com 有完整成績(`sport_result_crawl.py` 自動列舉);主辦 96sporter.com 另掛 PDF。苗栗站(10/18)、台東站(10/31)尚未公布 → 出現在 sport-result 後重跑 `rebuild_all.sh crawl sport-result && build`。
-- **騎士協會未列出的成績頁(2026-11-03 掃描 pno 1–175)**:分類列表有時連到「證書下載」頁,成績在相鄰編號。2021 年後確定不重複的 10 頁已加進 `cyclist_crawl.py` 的 `DELISTED_EVENTS`;更早的頁面年份標示不可靠,列在 `data/known_races.json`(狀態 FOUND)待查。
+- **騎士協會未列出的成績頁(2026-11-03 掃描 pno 1–175)**:分類列表有時連到「證書下載」頁,成績在相鄰編號。2021 年後確定不重複的 10 頁已加進 `cyclist_crawl.py` 的 `DELISTED_EVENTS`;更早的 27 頁由 `cyclist_archive.py` 收錄(2026-11-06),年份取自 PDF 表頭。2017 夏季 KOM(pno=61)的 PDF 已 404,收不到。
 
 ### 已知未收錄賽事清單 `data/known_races.json`
 人工維護、進 git 的清單:**知道有辦、但目前收不到成績**的賽事(含成績尚未公布、找不到公開頁、成績頁已下架、資料有誤不收),每筆記錄狀態、說明、上一屆在哪個平台、可查的連結。行事曆只列近期賽事、過了就消失,這份清單讓缺口不會被忘記。`discover.py` 會把還沒收錄的條目併進 `coverage.json`(網站「資料涵蓋」頁與首頁賽季看板會顯示),某場收錄後會提示可以從清單刪除。
