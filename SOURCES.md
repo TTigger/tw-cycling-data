@@ -4,9 +4,9 @@
 > 最後更新:2026-11-03(統計區塊自此由 `scrapers/gen_docs_stats.py` 自動生成)
 
 <!-- gen:stats:begin -->
-主資料集 master:**208,441 筆完賽 / 2009–2026 / 221 場 / 12 來源**(海外賽另計;另有 2,250 筆未完賽紀錄,只用於完賽率)。
+主資料集 master:**208,598 筆完賽 / 2009–2026 / 221 場 / 12 來源**(海外賽另計;另有 2,250 筆未完賽紀錄,只用於完賽率)。
 
-> 各來源完賽筆數(跨源去重後,與網站一致):bravelog 43,423・irunner 42,441・cyclist 36,885・tsu 24,515・taiwanbike 18,204・twbike 15,404・focusline 7,644・atsport 7,385・cycling 4,104・e-better 4,074・sport-result 3,539・criterium 823。
+> 各來源完賽筆數(跨源去重後,與網站一致):bravelog 43,423・irunner 42,441・cyclist 37,042・tsu 24,515・taiwanbike 18,204・twbike 15,404・focusline 7,644・atsport 7,385・cycling 4,104・e-better 4,074・sport-result 3,539・criterium 823。
 > (本區塊由 `scrapers/gen_docs_stats.py` 生成,勿手改。)
 <!-- gen:stats:end -->
 

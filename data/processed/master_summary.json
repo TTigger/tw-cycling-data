@@ -1,11 +1,11 @@
 {
-  "total_records": 210691,
-  "finishers": 208441,
+  "total_records": 210848,
+  "finishers": 208598,
   "by_platform": {
     "atsport.com.tw": 7385,
     "bravelog.tw": 43423,
     "criterium.tw": 1957,
-    "cyclist.org.tw": 37305,
+    "cyclist.org.tw": 37462,
     "cycling.org.tw": 4800,
     "tsu.com.tw": 24515,
     "e-better.com.tw": 4074,
@@ -19,7 +19,7 @@
     "atsport.com.tw": 7385,
     "bravelog.tw": 43423,
     "criterium.tw": 823,
-    "cyclist.org.tw": 36885,
+    "cyclist.org.tw": 37042,
     "cycling.org.tw": 4104,
     "tsu.com.tw": 24515,
     "e-better.com.tw": 4074,
@@ -44,22 +44,22 @@
     "2021": 1681,
     "2022": 22925,
     "2023": 33146,
-    "2024": 46577,
+    "2024": 46734,
     "2025": 40181,
     "2026": 25657
   },
   "by_gender": {
-    "null": 59727,
+    "null": 59884,
     "F": 22629,
     "M": 128335
   },
   "by_race_class": {
-    "未分類": 38541,
+    "未分類": 38539,
     "挑戰": 76924,
     "競賽": 12287,
     "分齡": 45457,
     "女子": 1477,
-    "團體計時": 1213,
+    "團體計時": 1372,
     "電輔車": 357,
     "市民": 5278,
     "市民經典": 5848,
@@ -67,9 +67,9 @@
     "認證": 21171
   },
   "by_series": {
-    "null": 98589,
+    "null": 98682,
     "TBA 長途認證": 21171,
-    "環花東國際自行車賽": 12416,
+    "環花東國際自行車賽": 12480,
     "戀戀197": 12246,
     "TIS崇越盃系列": 11216,
     "96聯賽": 10797,
@@ -93,7 +93,7 @@
     "臺灣KOM太平洋經典賽": 78
   },
   "by_status": {
-    "null": 207618,
+    "null": 207775,
     "FIN": 823,
     "NF": 1134,
     "DNS": 220,
@@ -1438,6 +1438,15 @@
       "rows": 258
     },
     {
+      "race_key": "環花東團隊計時賽公路賽",
+      "series": "環花東國際自行車賽",
+      "platform": "cyclist.org.tw",
+      "years": [
+        2024
+      ],
+      "rows": 247
+    },
+    {
       "race_key": "花蓮太平洋自行車節",
       "series": null,
       "platform": "cyclist.org.tw",
@@ -1622,15 +1631,6 @@
       "rows": 187
     },
     {
-      "race_key": "環花東團隊計時賽公路賽",
-      "series": "環花東國際自行車賽",
-      "platform": "cyclist.org.tw",
-      "years": [
-        2024
-      ],
-      "rows": 183
-    },
-    {
       "race_key": "年台灣登山大滿貫自行車系列賽陽明山站",
       "series": "台灣登山大滿貫(雪巴)",
       "platform": "bravelog.tw",
@@ -1675,6 +1675,15 @@
         2024
       ],
       "rows": 176
+    },
+    {
+      "race_key": "雲林公路繞圈賽",
+      "series": null,
+      "platform": "cyclist.org.tw",
+      "years": [
+        2024
+      ],
+      "rows": 174
     },
     {
       "race_key": "全國自由車公路錦標賽青少年計時賽",
@@ -1900,15 +1909,6 @@
         2018
       ],
       "rows": 87
-    },
-    {
-      "race_key": "雲林公路繞圈賽",
-      "series": null,
-      "platform": "cyclist.org.tw",
-      "years": [
-        2024
-      ],
-      "rows": 81
     },
     {
       "race_key": "冬季TCU台中城市繞圈賽",
