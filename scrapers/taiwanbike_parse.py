@@ -68,6 +68,9 @@ def map_row(header, row):
     g = "M" if gender in ("男", "M") else "F" if gender in ("女", "W", "F") else None
     if g is None and group:
         g = "M" if group[:1] in ("M", "男") else "F" if group[:1] in ("W", "F", "女") else None
-    return {"bib": _first(cells, _BIB), "name": _first(cells, _NAME),
+    bib = _first(cells, _BIB)
+    if bib and re.fullmatch(r"\d+\.0", bib):   # sheet stored the bib as a number
+        bib = bib[:-2]
+    return {"bib": bib, "name": _first(cells, _NAME),
             "team": _first(cells, _TEAM), "category": group, "gender": g,
             "finish_time": finish}
