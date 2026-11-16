@@ -158,6 +158,13 @@ def fetch_event(track_id, polite=0.4, log=True):
     return list(seen.values())
 
 
+# Tracks that hold several separate events under one title. Each award group
+# becomes its own race, named the way the other source names it, so years line up
+# and times of different distances are never compared.
+#   1581: TBA 2026 北高360 / 雙塔520 / 四極620 認證 (taiwanbike.org: "北高360認證成績表 2025")
+SPLIT_BY_GROUP = {1581: "{group}認證成績表 {year}"}
+
+
 def to_records(track_id, title, year, rows, date=None):
     """原始結果列 → master schema 記錄。組別字串(『長距離83K挑戰組．男．車隊』)拆出
     分組/性別/車隊;名次依『同組別內完賽時間』排序衍生(iRunner 結果列不含名次)。"""
@@ -216,7 +223,9 @@ def to_records(track_id, title, year, rows, date=None):
                 source_platform="irunner.biji.co",
                 source_url=f"{BASE}/track/{track_id}/record/{m['memno']}",
                 source_format="html-search-derivedrank",
-                race_name_raw=title, year=year, date=date,
+                race_name_raw=(SPLIT_BY_GROUP[track_id].format(group=group, year=year)
+                               if track_id in SPLIT_BY_GROUP and group else title),
+                year=year, date=date,
                 result_label=group, category_raw=category,
                 gender=gender, age_group=age,
                 bib=(m["bib"] or None), team=team,

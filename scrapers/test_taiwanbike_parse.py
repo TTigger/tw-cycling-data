@@ -84,3 +84,7 @@ def test_records_from_sheet_maps_and_masks():
     assert r["rank_overall"] is None
     assert r["finish_seconds"] == 22 * 3600 + 3 * 60 + 49
     assert r["name_masked"] == "蔡○一"
+
+
+def test_map_row_numeric_bib_loses_trailing_point_zero():
+    assert tp.map_row(H1, ["8000.0"] + list(R1[1:]))["bib"] == "8000"
