@@ -1,17 +1,17 @@
 {
-  "total_records": 210691,
-  "finishers": 208441,
+  "total_records": 215990,
+  "finishers": 213740,
   "by_platform": {
     "atsport.com.tw": 7385,
     "bravelog.tw": 43423,
     "criterium.tw": 1957,
-    "cyclist.org.tw": 37305,
+    "cyclist.org.tw": 37463,
     "cycling.org.tw": 4800,
     "tsu.com.tw": 24515,
     "e-better.com.tw": 4074,
     "focusline.com.tw": 7644,
     "twbike.org": 15404,
-    "irunner.biji.co": 42441,
+    "irunner.biji.co": 47582,
     "sport-result.com": 3539,
     "taiwanbike.org": 18204
   },
@@ -19,13 +19,13 @@
     "atsport.com.tw": 7385,
     "bravelog.tw": 43423,
     "criterium.tw": 823,
-    "cyclist.org.tw": 36885,
+    "cyclist.org.tw": 37043,
     "cycling.org.tw": 4104,
     "tsu.com.tw": 24515,
     "e-better.com.tw": 4074,
     "focusline.com.tw": 7644,
     "twbike.org": 15404,
-    "irunner.biji.co": 42441,
+    "irunner.biji.co": 47582,
     "sport-result.com": 3539,
     "taiwanbike.org": 18204
   },
@@ -44,32 +44,32 @@
     "2021": 1681,
     "2022": 22925,
     "2023": 33146,
-    "2024": 46577,
+    "2024": 46734,
     "2025": 40181,
-    "2026": 25657
+    "2026": 30799
   },
   "by_gender": {
-    "null": 59727,
+    "null": 65025,
     "F": 22629,
-    "M": 128335
+    "M": 128336
   },
   "by_race_class": {
-    "未分類": 38541,
+    "未分類": 38539,
     "挑戰": 76924,
-    "競賽": 12287,
+    "競賽": 12288,
     "分齡": 45457,
     "女子": 1477,
-    "團體計時": 1213,
+    "團體計時": 1372,
     "電輔車": 357,
     "市民": 5278,
     "市民經典": 5848,
     "青少年": 2138,
-    "認證": 21171
+    "認證": 26312
   },
   "by_series": {
-    "null": 98589,
-    "TBA 長途認證": 21171,
-    "環花東國際自行車賽": 12416,
+    "null": 98682,
+    "TBA 長途認證": 26312,
+    "環花東國際自行車賽": 12480,
     "戀戀197": 12246,
     "TIS崇越盃系列": 11216,
     "96聯賽": 10797,
@@ -80,7 +80,7 @@
     "GravelFundo 礫石越野系列": 3442,
     "臺灣KOM登山王之路": 3036,
     "臺灣自行車聯賽(TCL)": 2654,
-    "花蓮太平洋盃": 2568,
+    "花蓮太平洋盃": 2569,
     "LAVA 落日飛車350": 2188,
     "仙山單車挑戰賽": 1180,
     "台灣登山大滿貫(雪巴)": 965,
@@ -93,7 +93,7 @@
     "臺灣KOM太平洋經典賽": 78
   },
   "by_status": {
-    "null": 207618,
+    "null": 212917,
     "FIN": 823,
     "NF": 1134,
     "DNS": 220,
@@ -102,7 +102,7 @@
     "OTL": 7,
     "LAP": 23
   },
-  "distinct_races": 221,
+  "distinct_races": 222,
   "races": [
     {
       "race_key": "彰化經典百K",
@@ -184,6 +184,15 @@
         2026
       ],
       "rows": 5448
+    },
+    {
+      "race_key": "中華民國自行車協會2026TBA北高360+雙塔520+四極燈塔620",
+      "series": "TBA 長途認證",
+      "platform": "irunner.biji.co",
+      "years": [
+        2026
+      ],
+      "rows": 5141
     },
     {
       "race_key": "環大臺北自行車挑戰成績",
@@ -476,7 +485,7 @@
         2025,
         2026
       ],
-      "rows": 1355
+      "rows": 1356
     },
     {
       "race_key": "第五屆經典新玉門關公路自行車賽",
@@ -1438,6 +1447,15 @@
       "rows": 258
     },
     {
+      "race_key": "環花東團隊計時賽公路賽",
+      "series": "環花東國際自行車賽",
+      "platform": "cyclist.org.tw",
+      "years": [
+        2024
+      ],
+      "rows": 247
+    },
+    {
       "race_key": "花蓮太平洋自行車節",
       "series": null,
       "platform": "cyclist.org.tw",
@@ -1622,15 +1640,6 @@
       "rows": 187
     },
     {
-      "race_key": "環花東團隊計時賽公路賽",
-      "series": "環花東國際自行車賽",
-      "platform": "cyclist.org.tw",
-      "years": [
-        2024
-      ],
-      "rows": 183
-    },
-    {
       "race_key": "年台灣登山大滿貫自行車系列賽陽明山站",
       "series": "台灣登山大滿貫(雪巴)",
       "platform": "bravelog.tw",
@@ -1675,6 +1684,15 @@
         2024
       ],
       "rows": 176
+    },
+    {
+      "race_key": "雲林公路繞圈賽",
+      "series": null,
+      "platform": "cyclist.org.tw",
+      "years": [
+        2024
+      ],
+      "rows": 174
     },
     {
       "race_key": "全國自由車公路錦標賽青少年計時賽",
@@ -1900,15 +1918,6 @@
         2018
       ],
       "rows": 87
-    },
-    {
-      "race_key": "雲林公路繞圈賽",
-      "series": null,
-      "platform": "cyclist.org.tw",
-      "years": [
-        2024
-      ],
-      "rows": 81
     },
     {
       "race_key": "冬季TCU台中城市繞圈賽",
